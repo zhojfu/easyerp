@@ -21,7 +21,6 @@
         [Required]
         public string CreateBy { get; set; }
 
-        [Timestamp]
         [Required]
         public byte[] Updated { get; set; }
 

@@ -21,7 +21,6 @@
         [Required]
         public string CreateBy { get; set; }
 
-        [Timestamp]
         [Required]
         public byte[] Updated { get; set; }
 
@@ -39,18 +38,5 @@
         public string Description { get; set; }
 
         public bool IsInvoiced { get; set; }
-
-        #region Foreign Keys
-
-        public string TaxCategoryId { get; set; }
-
-        [ForeignKey("TaxCategoryId")]
-        public TaxCategory TaxCategory { get; set; }
-
-        public string ProductCategoryId { get; set; }
-
-        public ProductCategory ProductCategory { get; set; }
-
-        #endregion Foreign Keys
     }
 }

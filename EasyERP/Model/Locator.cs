@@ -8,7 +8,7 @@
         [Key]
         [Column(TypeName = "VARCHAR")]
         [StringLength(32)]
-        public string CategoryId { get; set; }
+        public string LocatorId { get; set; }
 
         [Required]
         public bool IsActive { get; set; }
@@ -21,7 +21,6 @@
         [Required]
         public string CreateBy { get; set; }
 
-        [Timestamp]
         [Required]
         public byte[] Updated { get; set; }
 
@@ -39,9 +38,6 @@
         public string Description { get; set; }
 
         public bool IsDefault { get; set; }
-
-        [Required]
-        public int PriorityNo { get; set; }
 
         [Column(TypeName = "ntext")]
         [MaxLength(60)]

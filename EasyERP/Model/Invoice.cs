@@ -8,7 +8,7 @@
         [Key]
         [Column(TypeName = "VARCHAR")]
         [StringLength(32)]
-        public string ExpenseTypeId { get; set; }
+        public string InvoiceId { get; set; }
 
         [Required]
         public bool IsActive { get; set; }
@@ -21,7 +21,6 @@
         [Required]
         public string CreateBy { get; set; }
 
-        [Timestamp]
         [Required]
         public byte[] Updated { get; set; }
 

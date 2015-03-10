@@ -21,7 +21,6 @@
         [Required]
         public string CreateBy { get; set; }
 
-        [Timestamp]
         [Required]
         public byte[] Updated { get; set; }
 
@@ -53,8 +52,6 @@
         public string CurrencyId { get; set; }
 
         public Currency Currency { get; set; }
-
-        public string AcctSchemaId { get; set; }
 
         #endregion Foreign Keys
     }

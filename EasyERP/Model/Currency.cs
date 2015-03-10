@@ -8,7 +8,7 @@
         [Key]
         [Column(TypeName = "VARCHAR")]
         [StringLength(32)]
-        public string ExpenseTypeId { get; set; }
+        public string CurrencyId { get; set; }
 
         [Required]
         public bool IsActive { get; set; }
@@ -21,7 +21,6 @@
         [Required]
         public string CreateBy { get; set; }
 
-        [Timestamp]
         [Required]
         public byte[] Updated { get; set; }
 
@@ -50,7 +49,7 @@
         public int StdPrecision { get; set; }
 
         [Required]
-        public int SostingPrecision { get; set; }
+        public int CostingPrecision { get; set; }
 
         [Required]
         public int PricePrecision { get; set; }

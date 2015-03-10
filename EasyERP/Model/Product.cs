@@ -22,7 +22,6 @@
         [Required]
         public string CreateBy { get; set; }
 
-        [Timestamp]
         [Required]
         public byte[] Updated { get; set; }
 
@@ -41,6 +40,7 @@
 
         [Column(TypeName = "Varchar")]
         [StringLength(30)]
+        [Required]
         public string Sku { get; set; }
 
         [Required]
@@ -88,12 +88,7 @@
         [ForeignKey("ProductCategoryId")]
         public ProductCategory ProductCategory { get; set; }
 
-        public string TaxCategoryId { get; set; }
-
-        [ForeignKey("TaxCategoryId")]
-        public TaxCategory TaxCategory { get; set; }
-
-        public int LocatorId { get; set; }
+        public string LocatorId { get; set; }
 
         [ForeignKey("LocatorId")]
         public Locator Locator { get; set; }

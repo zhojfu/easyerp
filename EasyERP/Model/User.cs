@@ -7,7 +7,7 @@
     {
         [Key]
         [Column(TypeName = "VARCHAR")]
-        [StringLength(32)]
+        [StringLength(2)]
         public string UserId { get; set; }
 
         [Required]
@@ -21,7 +21,6 @@
         [Required]
         public string CreateBy { get; set; }
 
-        [Timestamp]
         [Required]
         public byte[] Updated { get; set; }
 
@@ -45,7 +44,6 @@
 
         [Column(TypeName = "ntext")]
         [MaxLength(255)]
-        [Required]
         public string Email { get; set; }
 
         public bool Processing { get; set; }
@@ -74,7 +72,6 @@
         [MaxLength(40)]
         public string Phone2 { get; set; }
 
-        [Timestamp]
         public byte[] Brithday { get; set; }
 
         [Column(TypeName = "ntext")]
@@ -88,13 +85,14 @@
         [Required]
         public bool IsStocked { get; set; }
 
-        [Required]
         public bool GrantPortalAccess { get; set; }
 
         #region Foreign Keys
 
         [ForeignKey("ImageId")]
         public Image Image { get; set; }
+
+        public string ImageId { get; set; }
 
         public string RoleId { get; set; }
 
