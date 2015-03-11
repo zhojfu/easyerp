@@ -1,14 +1,14 @@
-﻿namespace EasyERP.Model
+﻿namespace EasyERP.Data.Model
 {
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    public class Image
+    public class ProductCategory
     {
         [Key]
         [Column(TypeName = "VARCHAR")]
         [StringLength(32)]
-        public string ImageId { get; set; }
+        public string ProductCategoryId { get; set; }
 
         [Required]
         public bool IsActive { get; set; }
@@ -37,18 +37,6 @@
         [MaxLength(255)]
         public string Description { get; set; }
 
-        [Column(TypeName = "ntext")]
-        [MaxLength(120)]
-        public string ImageUrl { get; set; }
-
-        [MaxLength]
-        public byte[] BinaryData { get; set; }
-
-        public int Width { get; set; }
-
-        public int Height { get; set; }
-
-        [MaxLength]
-        public string MimeType { get; set; }
+        public bool IsDefault { get; set; }
     }
 }

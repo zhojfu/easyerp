@@ -1,6 +1,6 @@
-﻿namespace EasyERP
+﻿namespace EasyERP.Data
 {
-    using Model;
+    using EasyERP.Data.Model;
     using System.Data.Entity;
 
     public class EasyErpContext : DbContext
@@ -17,9 +17,9 @@
 
         public DbSet<Order> Orders { get; set; }
 
-        public DbSet<Orgnize> Orgnizes { get; set; }
+        public DbSet<Organize> Orgnizes { get; set; }
 
-        public DbSet<OrgnizeType> OrgnizeTypes { get; set; }
+        public DbSet<OrganizeType> OrgnizeTypes { get; set; }
 
         public DbSet<Product> Products { get; set; }
 

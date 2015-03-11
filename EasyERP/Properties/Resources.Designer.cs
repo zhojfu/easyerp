@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace EasyERP.Properties
+namespace EasyERP.Data.Properties
 {
 
 

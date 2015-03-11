@@ -1,14 +1,14 @@
-﻿namespace EasyERP.Model
+﻿namespace EasyERP.Data.Model
 {
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    public class ExpenseType
+    public class OrganizeType
     {
         [Key]
         [Column(TypeName = "VARCHAR")]
         [StringLength(32)]
-        public string ExpenseTypeId { get; set; }
+        public string OrgnizeTypeId { get; set; }
 
         [Required]
         public bool IsActive { get; set; }
@@ -37,6 +37,7 @@
         [MaxLength(255)]
         public string Description { get; set; }
 
-        public bool IsInvoiced { get; set; }
+        [Required]
+        public bool IsBusnessUnit { get; set; }
     }
 }

@@ -1,15 +1,14 @@
-﻿namespace EasyERP.Model
+﻿namespace EasyERP.Data.Model
 {
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    [Table("UOM")]
-    public class UnitOfMeasure
+    public class Currency
     {
         [Key]
         [Column(TypeName = "VARCHAR")]
         [StringLength(32)]
-        public string UomId { get; set; }
+        public string CurrencyId { get; set; }
 
         [Required]
         public bool IsActive { get; set; }
@@ -38,19 +37,21 @@
         [MaxLength(255)]
         public string Description { get; set; }
 
-        public string UomSymbol { get; set; }
+        [Column(TypeName = "char")]
+        [StringLength(3)]
+        [Required]
+        public string IsoCode { get; set; }
+
+        [Column(TypeName = "ntext")]
+        public string CurrencySymbol { get; set; }
 
         [Required]
-        public decimal StdPrecision { get; set; }
+        public int StdPrecision { get; set; }
 
         [Required]
-        public decimal CostingPrecision { get; set; }
+        public int CostingPrecision { get; set; }
 
         [Required]
-        public bool IsDefault { get; set; }
-
-        [Column(TypeName = "VARCHAR")]
-        [StringLength(60)]
-        public string UomType { get; set; }
+        public int PricePrecision { get; set; }
     }
 }

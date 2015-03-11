@@ -1,6 +1,7 @@
 ﻿namespace EasyERP
 {
-    using Model;
+    using EasyERP.Data;
+    using EasyERP.Data.Model;
     using System;
     using System.Windows;
 
@@ -67,7 +68,10 @@
                     Updatedy = "pancake",
                     Processed = false,
                     Processing = false,
-                    Order = new Order { OrderId = "1" },
+                    Order = new Order
+                    {
+                        OrderId = "1"
+                    },
                     OrderId = "1"
                 };
 
@@ -97,7 +101,7 @@
                     }
                 };
 
-                var orgnize = new Orgnize
+                var orgnize = new Organize
                 {
                     OrgnizeId = "1",
                     Name = "test",
@@ -108,7 +112,7 @@
                     IsActive = true,
                     Updatedy = "pancake",
                     OrgnizeTypeId = "1",
-                    OrgnizeType = new OrgnizeType
+                    OrgnizeType = new OrganizeType
                     {
                         OrgnizeTypeId = "1",
                         Name = "test",

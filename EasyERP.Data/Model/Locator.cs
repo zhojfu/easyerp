@@ -1,14 +1,14 @@
-﻿namespace EasyERP.Model
+﻿namespace EasyERP.Data.Model
 {
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    public class Currency
+    public class Locator
     {
         [Key]
         [Column(TypeName = "VARCHAR")]
         [StringLength(32)]
-        public string CurrencyId { get; set; }
+        public string LocatorId { get; set; }
 
         [Required]
         public bool IsActive { get; set; }
@@ -37,21 +37,31 @@
         [MaxLength(255)]
         public string Description { get; set; }
 
-        [Column(TypeName = "char")]
-        [StringLength(3)]
-        [Required]
-        public string IsoCode { get; set; }
+        public bool IsDefault { get; set; }
 
         [Column(TypeName = "ntext")]
-        public string CurrencySymbol { get; set; }
+        [MaxLength(60)]
+        public string X { get; set; }
 
-        [Required]
-        public int StdPrecision { get; set; }
+        [Column(TypeName = "ntext")]
+        [MaxLength(60)]
+        public string Z { get; set; }
 
-        [Required]
-        public int CostingPrecision { get; set; }
+        [Column(TypeName = "ntext")]
+        [MaxLength(60)]
+        public string Y { get; set; }
 
-        [Required]
-        public int PricePrecision { get; set; }
+        [Column(TypeName = "VARCHAR")]
+        [StringLength(30)]
+        public string BarCode { get; set; }
+
+        #region Foreign Keys
+
+        public string WareHouseId { get; set; }
+
+        [ForeignKey("WareHouseId")]
+        public WareHouse WareHouse { get; set; }
+
+        #endregion Foreign Keys
     }
 }

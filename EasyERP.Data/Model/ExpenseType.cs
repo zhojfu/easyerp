@@ -1,14 +1,14 @@
-﻿namespace EasyERP.Model
+﻿namespace EasyERP.Data.Model
 {
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    public class Invoice
+    public class ExpenseType
     {
         [Key]
         [Column(TypeName = "VARCHAR")]
         [StringLength(32)]
-        public string InvoiceId { get; set; }
+        public string ExpenseTypeId { get; set; }
 
         [Required]
         public bool IsActive { get; set; }
@@ -37,18 +37,6 @@
         [MaxLength(255)]
         public string Description { get; set; }
 
-        [Required]
-        public bool Processing { get; set; }
-
-        [Required]
-        public bool Processed { get; set; }
-
-        #region Foreign Keys
-
-        public string OrderId { get; set; }
-
-        public Order Order { get; set; }
-
-        #endregion Foreign Keys
+        public bool IsInvoiced { get; set; }
     }
 }

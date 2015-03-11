@@ -1,14 +1,14 @@
-﻿namespace EasyERP.Model
+﻿namespace EasyERP.Data.Model
 {
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    public class Orgnize
+    public class TaxCategory
     {
         [Key]
         [Column(TypeName = "VARCHAR")]
         [StringLength(32)]
-        public string OrgnizeId { get; set; }
+        public string TaxCategoryId { get; set; }
 
         [Required]
         public bool IsActive { get; set; }
@@ -37,22 +37,6 @@
         [MaxLength(255)]
         public string Description { get; set; }
 
-        public bool IsReady { get; set; }
-
-        [Column(TypeName = "ntext")]
-        [MaxLength(60)]
-        public string SocialName { get; set; }
-
-        #region Foreign Keys
-
-        public string OrgnizeTypeId { get; set; }
-
-        public OrgnizeType OrgnizeType { get; set; }
-
-        public string CurrencyId { get; set; }
-
-        public Currency Currency { get; set; }
-
-        #endregion Foreign Keys
+        public bool IsDefault { get; set; }
     }
 }

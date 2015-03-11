@@ -1,4 +1,4 @@
-﻿namespace EasyERP.Model
+﻿namespace EasyERP.Data.Model
 {
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
@@ -101,7 +101,7 @@
         public string OgnizeId { get; set; }
 
         [ForeignKey("OgnizeId")]
-        public Orgnize Orgnize { get; set; }
+        public Organize Orgnize { get; set; }
 
         public string DefaultWareHouseId { get; set; }
 

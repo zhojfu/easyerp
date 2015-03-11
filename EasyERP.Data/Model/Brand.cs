@@ -1,14 +1,14 @@
-﻿namespace EasyERP.Model
+﻿namespace EasyERP.Data.Model
 {
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    public class WareHouse
+    public class Brand
     {
         [Key]
         [Column(TypeName = "VARCHAR")]
         [StringLength(32)]
-        public string WarHouseId { get; set; }
+        public string BrandId { get; set; }
 
         [Required]
         public bool IsActive { get; set; }
@@ -36,14 +36,5 @@
         [Column(TypeName = "ntext")]
         [MaxLength(255)]
         public string Description { get; set; }
-
-        public bool IsShipper { get; set; }
-
-        [Column(TypeName = "VARCHAR")]
-        [StringLength(20)]
-        public string ShipperCode { get; set; }
-
-        [Required]
-        public bool IsAllocated { get; set; }
     }
 }

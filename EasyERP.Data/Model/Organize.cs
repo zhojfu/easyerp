@@ -1,14 +1,14 @@
-﻿namespace EasyERP.Model
+﻿namespace EasyERP.Data.Model
 {
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    public class Role
+    public class Organize
     {
         [Key]
         [Column(TypeName = "VARCHAR")]
         [StringLength(32)]
-        public string RoleId { get; set; }
+        public string OrgnizeId { get; set; }
 
         [Required]
         public bool IsActive { get; set; }
@@ -37,22 +37,17 @@
         [MaxLength(255)]
         public string Description { get; set; }
 
+        public bool IsReady { get; set; }
+
         [Column(TypeName = "ntext")]
         [MaxLength(60)]
-        [Required]
-        public string UserLevel { get; set; }
-
-        public bool IsManual { get; set; }
-
-        public bool IsAdvanced { get; set; }
-
-        public bool IsRestrictBacked { get; set; }
-
-        public bool IsPortal { get; set; }
-
-        public bool IsPortalAdmin { get; set; }
+        public string SocialName { get; set; }
 
         #region Foreign Keys
+
+        public string OrgnizeTypeId { get; set; }
+
+        public OrganizeType OrgnizeType { get; set; }
 
         public string CurrencyId { get; set; }
 

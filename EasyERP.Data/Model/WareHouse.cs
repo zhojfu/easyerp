@@ -1,14 +1,14 @@
-﻿namespace EasyERP.Model
+﻿namespace EasyERP.Data.Model
 {
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    public class OrgnizeType
+    public class WareHouse
     {
         [Key]
         [Column(TypeName = "VARCHAR")]
         [StringLength(32)]
-        public string OrgnizeTypeId { get; set; }
+        public string WarHouseId { get; set; }
 
         [Required]
         public bool IsActive { get; set; }
@@ -37,7 +37,13 @@
         [MaxLength(255)]
         public string Description { get; set; }
 
+        public bool IsShipper { get; set; }
+
+        [Column(TypeName = "VARCHAR")]
+        [StringLength(20)]
+        public string ShipperCode { get; set; }
+
         [Required]
-        public bool IsBusnessUnit { get; set; }
+        public bool IsAllocated { get; set; }
     }
 }

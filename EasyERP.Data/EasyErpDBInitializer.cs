@@ -1,4 +1,4 @@
-﻿namespace EasyERP
+﻿namespace EasyERP.Data
 {
     using System.Data.Entity;
 
