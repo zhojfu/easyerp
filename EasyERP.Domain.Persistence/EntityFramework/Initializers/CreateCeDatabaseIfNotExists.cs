@@ -2,7 +2,7 @@
 using System.Data.Entity;
 using System.Transactions;
 
-namespace EasyERP.Infrastructure.Persistence.EntityFramework.Initializers
+namespace EasyERP.Domain.Persistence.EntityFramework.Initializers
 {
     /// <summary>
     /// An implementation of IDatabaseInitializer that will recreate and optionally re-seed the

@@ -7,10 +7,10 @@ using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Reflection;
 using EasyERP.Infrastructure.Core;
-using EasyERP.Infrastructure.Persistence.EntityFramework.Mapping;
+using EasyERP.Domain.Persistence.EntityFramework.Mapping;
 
 
-namespace EasyERP.Infrastructure.Persistence.EntityFramework
+namespace EasyERP.Domain.Persistence.EntityFramework
 {
     /// <summary>
     /// Object context

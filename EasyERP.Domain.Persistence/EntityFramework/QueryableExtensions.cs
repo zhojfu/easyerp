@@ -3,7 +3,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace EasyERP.Infrastructure.Persistence.EntityFramework 
+namespace EasyERP.Domain.Persistence.EntityFramework 
 {
     /// <summary>
     /// Queryable extensions

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Reflection;
 
-namespace EasyERP.Infrastructure.Persistence.EntityFramework
+namespace EasyERP.Domain.Persistence.EntityFramework
 {
     public static class DataReaderExtensions
     {

@@ -8,9 +8,9 @@ using System.IO;
 using System.Text;
 using System.Web.Hosting;
 using EasyERP.Infrastructure.Core.Data;
-using EasyERP.Infrastructure.Persistence.EntityFramework.Initializers;
+using EasyERP.Domain.Persistence.EntityFramework.Initializers;
 
-namespace EasyERP.Infrastructure.Persistence.EntityFramework
+namespace EasyERP.Domain.Persistence.EntityFramework
 {
     public class SqlServerDataProvider : IDataProvider
     {

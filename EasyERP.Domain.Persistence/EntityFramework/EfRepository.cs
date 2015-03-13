@@ -7,7 +7,7 @@ using System.Linq;
 using EasyERP.Infrastructure.Core;
 using EasyERP.Infrastructure.Core.Data;
 
-namespace EasyERP.Infrastructure.Persistence.EntityFramework
+namespace EasyERP.Domain.Persistence.EntityFramework
 {
     /// <summary>
     /// Entity Framework repository

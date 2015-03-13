@@ -2,7 +2,7 @@
 using System.Data.Entity.Core.Objects;
 using EasyERP.Infrastructure.Core;
 
-namespace EasyERP.Infrastructure.Persistence.EntityFramework
+namespace EasyERP.Domain.Persistence.EntityFramework
 {
     public static class Extensions
     {

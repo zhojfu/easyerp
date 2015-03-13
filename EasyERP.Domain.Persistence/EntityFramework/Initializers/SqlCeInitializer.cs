@@ -3,7 +3,7 @@ using System.Data.Entity;
 using System.Data.SqlServerCe;
 using System.IO;
 
-namespace EasyERP.Infrastructure.Persistence.EntityFramework.Initializers
+namespace EasyERP.Domain.Persistence.EntityFramework.Initializers
 {
     public abstract class SqlCeInitializer<T> : IDatabaseInitializer<T> where T : DbContext
     {

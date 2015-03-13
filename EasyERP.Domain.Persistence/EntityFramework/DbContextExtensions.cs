@@ -6,7 +6,7 @@ using System.Linq;
 
 using EasyERP.Infrastructure.Core;
 
-namespace EasyERP.Infrastructure.Persistence.EntityFramework 
+namespace EasyERP.Domain.Persistence.EntityFramework 
 {
     public static class DbContextExtensions
     {

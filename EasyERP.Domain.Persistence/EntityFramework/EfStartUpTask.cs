@@ -3,7 +3,7 @@ using EasyERP.Infrastructure.Core;
 
 using EasyERP.Infrastructure;
 
-namespace EasyERP.Infrastructure.Persistence.EntityFramework
+namespace EasyERP.Domain.Persistence.EntityFramework
 {
     public class EfStartUpTask : IStartupTask
     {

@@ -1,6 +1,6 @@
 using System.Data.Entity.ModelConfiguration;
 
-namespace EasyERP.Infrastructure.Persistence.EntityFramework.Mapping
+namespace EasyERP.Domain.Persistence.EntityFramework.Mapping
 {
     public abstract class NopEntityTypeConfiguration<T> : EntityTypeConfiguration<T> where T : class
     {

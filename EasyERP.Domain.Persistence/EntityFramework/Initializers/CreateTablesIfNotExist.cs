@@ -5,7 +5,7 @@ using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Transactions;
 
-namespace EasyERP.Infrastructure.Persistence.EntityFramework.Initializers
+namespace EasyERP.Domain.Persistence.EntityFramework.Initializers
 {
     public class CreateTablesIfNotExist<TContext> : IDatabaseInitializer<TContext> where TContext : DbContext
     {

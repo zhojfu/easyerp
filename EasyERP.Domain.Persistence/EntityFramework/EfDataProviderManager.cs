@@ -2,7 +2,7 @@
 using EasyERP.Infrastructure.Core.Data;
 using EasyERP.Infrastructure.Core;
 
-namespace EasyERP.Infrastructure.Persistence.EntityFramework
+namespace EasyERP.Domain.Persistence.EntityFramework
 {
     public partial class EfDataProviderManager : BaseDataProviderManager
     {

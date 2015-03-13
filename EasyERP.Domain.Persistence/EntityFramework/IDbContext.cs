@@ -2,7 +2,7 @@
 using System.Data.Entity;
 using EasyERP.Infrastructure.Core;
 
-namespace EasyERP.Infrastructure.Persistence.EntityFramework
+namespace EasyERP.Domain.Persistence.EntityFramework
 {
     public interface IDbContext
     {

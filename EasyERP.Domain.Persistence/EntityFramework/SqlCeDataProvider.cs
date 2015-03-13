@@ -3,9 +3,9 @@ using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Data.SqlClient;
 using EasyERP.Infrastructure.Core.Data;
-using EasyERP.Infrastructure.Persistence.EntityFramework.Initializers;
+using EasyERP.Domain.Persistence.EntityFramework.Initializers;
 
-namespace EasyERP.Infrastructure.Persistence.EntityFramework
+namespace EasyERP.Domain.Persistence.EntityFramework
 {
     
     public class SqlCeDataProvider : IDataProvider
