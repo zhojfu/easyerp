@@ -47,10 +47,6 @@
       <Project>{9A1DEFAC-0977-4B5C-896B-F079B2D26382}</Project>
       <Name>Domain.Model</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Domain.Repository\Domain.Repository.csproj">
-      <Project>{8E24CDF3-F7FD-47A2-9CBD-1181C574E43A}</Project>
-      <Name>Domain.Repository</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Infrastructure.Domain\Infrastructure.Domain.csproj">
       <Project>{35B3A042-0187-4530-A9F5-2063E2EEBDAD}</Project>
       <Name>Infrastructure.Domain</Name>

@@ -1,13 +1,13 @@
 ﻿using Domain.Model;
-using Domain.Repository;
+using Infrastructure.Domain;
 
 namespace Doamin.Service
 {
     public class ProductService
     {
-        private IProductRepository _repository;
+        private IRepository<Product> _repository;
 
-        public ProductService(IProductRepository repository)
+        public ProductService(IRepository<Product> repository)
         {
             _repository = repository;
         }
