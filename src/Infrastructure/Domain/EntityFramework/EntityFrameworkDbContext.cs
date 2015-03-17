@@ -1,16 +1,16 @@
-﻿using System.Data.Entity;
-using Infrastructure.Domain.Model;
-
-namespace Infrastructure.Domain.EntityFramework
+﻿namespace Infrastructure.Domain.EntityFramework
 {
+    using Infrastructure.Domain.Model;
+    using System;
+    using System.Data.Entity;
+    using System.Linq;
+    using System.Reflection;
+
     public class EntityFrameworkDbContext : DbContext, IEntityFrameworkDbContext
     {
-        private readonly ISetupConfiguration _configuration;
-
-        public EntityFrameworkDbContext(string connectionString, ISetupConfiguration configuration)
+        public EntityFrameworkDbContext(string connectionString)
             : base(connectionString)
         {
-            this._configuration = configuration;
         }
 
         public new IDbSet<TEntity> Set<TEntity>() where TEntity : class, IAggregateRoot
@@ -20,7 +20,17 @@ namespace Infrastructure.Domain.EntityFramework
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            this._configuration.SetupEntityConfiguration(modelBuilder);
+            var typesToRegister = Assembly.GetExecutingAssembly().GetTypes()
+                                          .Where(type => !String.IsNullOrEmpty(type.Namespace))
+                                          .Where(
+                                              type => type.BaseType != null && type.BaseType.IsGenericType &&
+                                                      type.BaseType.GetGenericTypeDefinition() ==
+                                                      typeof(ISetupConfiguration));
+            foreach (var configurationInstance in typesToRegister.Select(Activator.CreateInstance))
+            {
+                modelBuilder.Configurations.Add((dynamic)configurationInstance);
+            }
+
             base.OnModelCreating(modelBuilder);
         }
     }
