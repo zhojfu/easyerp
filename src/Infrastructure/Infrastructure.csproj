@@ -7,10 +7,12 @@
     <ProjectGuid>{35B3A042-0187-4530-A9F5-2063E2EEBDAD}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Infrastructure.Domain</RootNamespace>
-    <AssemblyName>Infrastructure.Domain</AssemblyName>
+    <RootNamespace>Infrastructure</RootNamespace>
+    <AssemblyName>Infrastructure</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -30,6 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Autofac">
+      <HintPath>..\packages\Autofac.3.5.2\lib\net40\Autofac.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -47,26 +52,35 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BaseRepository.cs" />
-    <Compile Include="EntityFramework\EntityFrameworkDbContext.cs" />
-    <Compile Include="EntityFramework\EntityFrameworkRepository.cs" />
-    <Compile Include="EntityFramework\EntityFrameworkUnitOfWork.cs" />
-    <Compile Include="EntityFramework\ISetupConfiguration.cs" />
-    <Compile Include="EntityFramework\IEntityFrameworkDbContext.cs" />
-    <Compile Include="Model\BaseEntity.cs" />
-    <Compile Include="Model\IAggregateRoot.cs" />
-    <Compile Include="Model\IEntity.cs" />
-    <Compile Include="IRepository.cs" />
-    <Compile Include="IUnitOfWork.cs" />
-    <Compile Include="IUnitOfWorkRepository.cs" />
+    <Compile Include="DependencyManagement\IDependencyRegistrar.cs" />
+    <Compile Include="DependencyManagement\ITypeFinder.cs" />
+    <Compile Include="Domain\BaseRepository.cs" />
+    <Compile Include="Domain\EntityFramework\EntityFrameworkDbContext.cs" />
+    <Compile Include="Domain\EntityFramework\EntityFrameworkRepository.cs" />
+    <Compile Include="Domain\EntityFramework\EntityFrameworkUnitOfWork.cs" />
+    <Compile Include="Domain\EntityFramework\ISetupConfiguration.cs" />
+    <Compile Include="Domain\EntityFramework\IEntityFrameworkDbContext.cs" />
+    <Compile Include="Domain\Model\BaseEntity.cs" />
+    <Compile Include="Domain\Model\IAggregateRoot.cs" />
+    <Compile Include="Domain\Model\IEntity.cs" />
+    <Compile Include="Domain\IRepository.cs" />
+    <Compile Include="Domain\IUnitOfWork.cs" />
+    <Compile Include="Domain\IUnitOfWorkRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UnitOfWork.cs" />
+    <Compile Include="Domain\UnitOfWork.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

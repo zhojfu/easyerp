@@ -1,20 +1,31 @@
-﻿using Domain.Model;
-using Infrastructure.Domain;
-
-namespace Doamin.Service
+﻿namespace Doamin.Service
 {
+    using Domain.Model;
+    using Infrastructure.Domain;
+    using System;
+    using System.Collections.Generic;
+
     public class ProductService
     {
-        private IRepository<Product> _repository;
+        private IRepository<Product> repository;
 
         public ProductService(IRepository<Product> repository)
         {
-            _repository = repository;
+            this.repository = repository;
+        }
+
+        public Product GetProductById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IList<Product> GetProductsByIds(int[] ids)
+        {
+            throw new NotImplementedException();
         }
 
         public void AddNewProduct( /*ViewProduct viewModel*/)
         {
-            
         }
 
         private Product ConvertViewModelToModel()

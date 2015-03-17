@@ -61,10 +61,6 @@
       <Project>{9A1DEFAC-0977-4B5C-896B-F079B2D26382}</Project>
       <Name>Domain.Model</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Infrastructure.Domain\Infrastructure.Domain.csproj">
-      <Project>{35B3A042-0187-4530-A9F5-2063E2EEBDAD}</Project>
-      <Name>Infrastructure.Domain</Name>
-    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
