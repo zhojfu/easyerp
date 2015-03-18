@@ -71,6 +71,7 @@
     <Compile Include="Domain\IRepository.cs" />
     <Compile Include="Domain\IUnitOfWork.cs" />
     <Compile Include="Domain\IUnitOfWorkRepository.cs" />
+    <Compile Include="IStartupTask.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Domain\UnitOfWork.cs" />
   </ItemGroup>
