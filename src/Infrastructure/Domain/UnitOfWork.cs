@@ -1,24 +1,24 @@
-﻿using System;
+﻿using Infrastructure.Domain.Model;
+using System;
 using System.Collections.Generic;
 using System.Transactions;
-using Infrastructure.Domain.Model;
 
 namespace Infrastructure.Domain
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private readonly List<Operation> _operations = new List<Operation>(); 
+        private readonly List<Operation> _operations = new List<Operation>();
 
         public void RegisterAdd(IAggregateRoot aggregateRoot, IUnitOfWorkRepository repository)
         {
             if (!this._operations.Exists(op => (op.AggregateRoot.Id == aggregateRoot.Id)))
             {
-                this._operations.Add(new Operation 
+                this._operations.Add(new Operation
                      {
-                        Type = Operation.OperationType.Insert,
-                        AggregateRoot = aggregateRoot,
-                        ProcessDate = DateTime.Now,
-                        Repository = repository
+                         Type = Operation.OperationType.Insert,
+                         AggregateRoot = aggregateRoot,
+                         ProcessDate = DateTime.Now,
+                         Repository = repository
                      });
             }
         }
@@ -62,9 +62,11 @@ namespace Infrastructure.Domain
                         case Operation.OperationType.Insert:
                             operation.Repository.PersistNewItem(operation.AggregateRoot);
                             break;
+
                         case Operation.OperationType.Remove:
                             operation.Repository.PersistRemoveItem(operation.AggregateRoot);
                             break;
+
                         case Operation.OperationType.Update:
                             operation.Repository.PersistUpdateItem(operation.AggregateRoot);
                             break;
@@ -72,7 +74,7 @@ namespace Infrastructure.Domain
                 }
                 this._operations.Clear();
                 scope.Complete();
-            } 
+            }
         }
     }
 

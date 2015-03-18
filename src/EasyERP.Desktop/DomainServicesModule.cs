@@ -2,6 +2,7 @@
 {
     using Autofac;
     using Doamin.Service;
+    using Doamin.Service.Installation;
     using Domain.EntityFramework;
     using Domain.Model;
     using Infrastructure.Domain;
@@ -38,12 +39,15 @@
             }
             else
             {
-                var dataContext = new EntityFrameworkDbContext(dataSettingsManager.LoadSettings().DataConnectionString);
+                var dataContext = new EntityFrameworkDbContext(
+                    dataSettingsManager.LoadSettings().DataConnectionString,
+                    new EntitySetupConfiguration());
                 builder.Register<IEntityFrameworkDbContext>(c => dataContext).InstancePerLifetimeScope();
                 builder.Register<IUnitOfWork>(i => new EntityFrameworkUnitOfWork(dataContext))
                        .InstancePerLifetimeScope();
             }
 
+            builder.RegisterType<CodeFirstInstallationService>().As<IInstallationService>();
             builder.RegisterGeneric(typeof(EntityFrameworkRepository<>))
                    .As(typeof(IRepository<>))
                    .InstancePerLifetimeScope();

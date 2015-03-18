@@ -39,6 +39,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Installation\CodeFirstInstallationService.cs" />
+    <Compile Include="Installation\IInstallationService.cs" />
+    <Compile Include="Installation\SqlFileInstallationService.cs" />
     <Compile Include="ProductService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
