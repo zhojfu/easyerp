@@ -68,6 +68,11 @@
 
         public void AddProduct()
         {
+            var edit = new EditProductViewModel(this.productService)
+            {
+                Product = new Product()
+            };
+            IoC.Get<IWindowManager>().ShowWindow(edit);
         }
 
         public void Delete()

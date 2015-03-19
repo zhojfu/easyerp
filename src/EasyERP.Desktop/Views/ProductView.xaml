@@ -5,7 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
              xmlns:cal="http://www.caliburnproject.org"
-             xmlns:viewModels1="clr-namespace:EasyERP.Desktop.ViewModels"
+             xmlns:viewModels="clr-namespace:EasyERP.Desktop.ViewModels"
+             d:DataContext="{d:DesignInstance Type=viewModels:ShellViewModel, IsDesignTimeCreatable=True}"
              mc:Ignorable="d"
              d:DesignHeight="400" d:DesignWidth="680">
     <Grid>
