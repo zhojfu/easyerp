@@ -2,7 +2,6 @@
 {
     using Domain.EntityFramework.Initializers;
     using Infrastructure.Domain.Data;
-    using Infrastructure.Domain.EntityFramework;
     using System;
     using System.Collections.Generic;
     using System.Data.Common;

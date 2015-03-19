@@ -39,9 +39,7 @@
             }
             else
             {
-                var dataContext = new EntityFrameworkDbContext(
-                    dataSettingsManager.LoadSettings().DataConnectionString,
-                    new EntitySetupConfiguration());
+                var dataContext = new EntityFrameworkDbContext(dataSettingsManager.LoadSettings().DataConnectionString);
                 builder.Register<IEntityFrameworkDbContext>(c => dataContext).InstancePerLifetimeScope();
                 builder.Register<IUnitOfWork>(i => new EntityFrameworkUnitOfWork(dataContext))
                        .InstancePerLifetimeScope();

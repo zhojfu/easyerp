@@ -4,6 +4,7 @@
     using Infrastructure.Domain;
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     public class ProductService
     {
@@ -21,6 +22,7 @@
 
         public IList<Product> GetProductsByIds(int[] ids)
         {
+            return this.repository.FindAll(a => a.Name.Contains("cake")).ToList();
             return new List<Product>
             {
                 new Product

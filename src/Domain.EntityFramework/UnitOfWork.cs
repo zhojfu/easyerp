@@ -1,33 +1,36 @@
-﻿using Infrastructure.Domain.Model;
-using System;
-using System.Collections.Generic;
-using System.Transactions;
-
-namespace Infrastructure.Domain
+﻿namespace Domain.EntityFramework
 {
+    using Infrastructure.Domain;
+    using Infrastructure.Domain.Model;
+    using System;
+    using System.Collections.Generic;
+    using System.Transactions;
+
     public class UnitOfWork : IUnitOfWork
     {
-        private readonly List<Operation> _operations = new List<Operation>();
+        private readonly List<Operation> operations = new List<Operation>();
 
         public void RegisterAdd(IAggregateRoot aggregateRoot, IUnitOfWorkRepository repository)
         {
-            if (!this._operations.Exists(op => (op.AggregateRoot.Id == aggregateRoot.Id)))
+            if (!this.operations.Exists(op => (op.AggregateRoot.Id == aggregateRoot.Id)))
             {
-                this._operations.Add(new Operation
-                     {
-                         Type = Operation.OperationType.Insert,
-                         AggregateRoot = aggregateRoot,
-                         ProcessDate = DateTime.Now,
-                         Repository = repository
-                     });
+                this.operations.Add(
+                    new Operation
+                    {
+                        Type = Operation.OperationType.Insert,
+                        AggregateRoot = aggregateRoot,
+                        ProcessDate = DateTime.Now,
+                        Repository = repository
+                    });
             }
         }
 
         public void RegisterUpdate(IAggregateRoot aggregateRoot, IUnitOfWorkRepository repository)
         {
-            if (!this._operations.Exists(op => (op.AggregateRoot.Id == aggregateRoot.Id)))
+            if (!this.operations.Exists(op => (op.AggregateRoot.Id == aggregateRoot.Id)))
             {
-                this._operations.Add(new Operation
+                this.operations.Add(
+                    new Operation
                     {
                         Type = Operation.OperationType.Update,
                         AggregateRoot = aggregateRoot,
@@ -39,9 +42,10 @@ namespace Infrastructure.Domain
 
         public void RegisterRemoved(IAggregateRoot aggregateRoot, IUnitOfWorkRepository repository)
         {
-            if (!this._operations.Exists(op => (op.AggregateRoot.Id == aggregateRoot.Id)))
+            if (!this.operations.Exists(op => (op.AggregateRoot.Id == aggregateRoot.Id)))
             {
-                this._operations.Add(new Operation
+                this.operations.Add(
+                    new Operation
                     {
                         Type = Operation.OperationType.Remove,
                         AggregateRoot = aggregateRoot,
@@ -53,9 +57,9 @@ namespace Infrastructure.Domain
 
         public virtual void Commit()
         {
-            using (TransactionScope scope = new TransactionScope())
+            using (var scope = new TransactionScope())
             {
-                foreach (var operation in this._operations)
+                foreach (var operation in this.operations)
                 {
                     switch (operation.Type)
                     {
@@ -72,7 +76,7 @@ namespace Infrastructure.Domain
                             break;
                     }
                 }
-                this._operations.Clear();
+                this.operations.Clear();
                 scope.Complete();
             }
         }
@@ -83,7 +87,9 @@ namespace Infrastructure.Domain
         public enum OperationType
         {
             Insert,
+
             Update,
+
             Remove
         }
 

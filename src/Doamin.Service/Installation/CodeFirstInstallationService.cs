@@ -2,7 +2,6 @@
 {
     using Domain.Model;
     using Infrastructure.Domain;
-    using Infrastructure.Domain.EntityFramework;
     using System;
     using System.Collections.Generic;
 
@@ -84,19 +83,8 @@
                 }
             };
 
-            //var dbContext = new EntityFrameworkDbContext("easyERP_test");
-
-            //IUnitOfWork unitOfWork = new EntityFrameworkUnitOfWork(dbContext);
-            //var testRepository = new EntityFrameworkRepository<TestDoubles>(dbContext, unitOfWork);
-            //var testModel = new TestDoubles
-            //{
-            //    Id = new Guid("00000000-0000-0000-0000-000000000002"),
-            //    Name = "test description"
-            //};
-            //testRepository.Add(testModel);
-            //unitOfWork.Commit();
-
             products.ForEach(p => this.ProducrRepository.Add(p));
+            this.ProducrRepository.Update();
         }
 
         private void InstallOrder()

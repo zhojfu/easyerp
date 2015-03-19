@@ -1,7 +1,7 @@
-﻿using System.Data.Entity;
-
-namespace Infrastructure.Domain.EntityFramework
+﻿namespace Domain.EntityFramework
 {
+    using System.Data.Entity;
+
     public class EntityFrameworkUnitOfWork : UnitOfWork
     {
         private readonly DbContext dbContext;

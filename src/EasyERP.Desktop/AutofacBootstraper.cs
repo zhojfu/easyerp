@@ -80,13 +80,13 @@
             }
 
             // install the database to sqlce
-            var databasePath = @"|DataDirectory|\" + "nop.db.sdf";
+            var databasePath = @"|DataDirectory|\" + @"\App_Data\" + "easyerp.db.sdf";
 
             var connectionString = "Data Source=" + databasePath + ";Persist Security Info=False";
 
             //drop database if exists
             var baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
-            var databaseFullPath = Path.Combine(baseDirectory, "App_Data", "nop.db.sdf");
+            var databaseFullPath = Path.Combine(baseDirectory, "App_Data", "easyerp.db.sdf");
             if (File.Exists(databaseFullPath))
             {
                 File.Delete(databaseFullPath);
