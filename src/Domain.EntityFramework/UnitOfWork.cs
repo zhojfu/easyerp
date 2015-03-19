@@ -57,28 +57,28 @@
 
         public virtual void Commit()
         {
-            using (var scope = new TransactionScope())
+            //using (var scope = new TransactionScope())
+            //{
+            foreach (var operation in this.operations)
             {
-                foreach (var operation in this.operations)
+                switch (operation.Type)
                 {
-                    switch (operation.Type)
-                    {
-                        case Operation.OperationType.Insert:
-                            operation.Repository.PersistNewItem(operation.AggregateRoot);
-                            break;
+                    case Operation.OperationType.Insert:
+                        operation.Repository.PersistNewItem(operation.AggregateRoot);
+                        break;
 
-                        case Operation.OperationType.Remove:
-                            operation.Repository.PersistRemoveItem(operation.AggregateRoot);
-                            break;
+                    case Operation.OperationType.Remove:
+                        operation.Repository.PersistRemoveItem(operation.AggregateRoot);
+                        break;
 
-                        case Operation.OperationType.Update:
-                            operation.Repository.PersistUpdateItem(operation.AggregateRoot);
-                            break;
-                    }
+                    case Operation.OperationType.Update:
+                        operation.Repository.PersistUpdateItem(operation.AggregateRoot);
+                        break;
                 }
-                this.operations.Clear();
-                scope.Complete();
             }
+            this.operations.Clear();
+            //    scope.Complete();
+            //}
         }
     }
 

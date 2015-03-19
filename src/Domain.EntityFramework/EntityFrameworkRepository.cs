@@ -9,7 +9,8 @@
     using System.Linq;
     using System.Linq.Expressions;
 
-    public class EntityFrameworkRepository<TAggregateRoot> : BaseRepository<TAggregateRoot> where TAggregateRoot : class, IAggregateRoot
+    public class EntityFrameworkRepository<TAggregateRoot> : BaseRepository<TAggregateRoot>
+        where TAggregateRoot : class, IAggregateRoot
     {
         private readonly IEntityFrameworkDbContext dbContext;
 
@@ -19,7 +20,7 @@
             this.dbContext = dbcontext;
         }
 
-        public override TAggregateRoot GetByKey(Guid key)
+        public override TAggregateRoot GetByKey(long key)
         {
             return this.dbContext.Set<TAggregateRoot>().First(p => p.Id == key);
         }

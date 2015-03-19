@@ -28,7 +28,7 @@
             {
                 new Product
                 {
-                    Id = Guid.NewGuid(),
+                    Id = 1,
                     Cost = 5,
                     Description = "pancake description",
                     Name = "pancake",
@@ -39,7 +39,7 @@
                 },
                 new Product
                 {
-                    Id = Guid.NewGuid(),
+                    Id = 2,
                     Cost = 6,
                     Description = "pancake description",
                     Name = "cupcake",
@@ -50,7 +50,7 @@
                 },
                 new Product
                 {
-                    Id = Guid.NewGuid(),
+                    Id = 3,
                     Cost = 7,
                     Description = "cup description",
                     Name = "cup",
@@ -61,7 +61,7 @@
                 },
                 new Product
                 {
-                    Id = Guid.NewGuid(),
+                    Id = 4,
                     Cost = 9,
                     Description = "pan description",
                     Name = "pan",
@@ -72,7 +72,7 @@
                 },
                 new Product
                 {
-                    Id = Guid.NewGuid(),
+                    Id = 5,
                     Cost = 25,
                     Description = "cake description",
                     Name = "cake",
