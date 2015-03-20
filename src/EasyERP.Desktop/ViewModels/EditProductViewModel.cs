@@ -1,33 +1,21 @@
 ﻿namespace EasyERP.Desktop.ViewModels
 {
     using Caliburn.Micro;
-    using Doamin.Service;
-    using Domain.Model;
     using PropertyChanged;
 
     [ImplementPropertyChanged]
-    public class EditProductViewModel : PropertyChangedBase
+    public class EditProductViewModel : Screen
     {
-        private readonly ProductService productService;
-
-        public EditProductViewModel(ProductService productService)
-        {
-            this.productService = productService;
-        }
-
-        public Product Product { get; set; }
-
-        public bool Result { get; set; }
+        public ProductViewModel Product { get; set; }
 
         public void Ok()
         {
-            this.Result = true;
-            this.productService.AddNewProduct(this.Product);
+            this.TryClose(true);
         }
 
         public void Cancel()
         {
-            this.Result = false;
+            this.TryClose();
         }
     }
 }

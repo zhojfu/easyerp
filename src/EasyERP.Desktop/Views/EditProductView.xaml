@@ -4,22 +4,22 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
-             xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d"
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="600" d:DesignWidth="600">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
-            <RowDefinition Height="40" />
+            <RowDefinition Height="50" />
         </Grid.RowDefinitions>
 
         <telerik:RadPropertyGrid Grid.Row="0" x:Name="PropertyGrid1" Item="{Binding Path=Product, Mode=TwoWay}"
                                  NestedPropertiesVisibility="Visible"
-                                 RenderMode="Flat" />
+                                 RenderMode="Flat" IsVirtualizing="True" Width="600" Height="400"
+                                 VerticalAlignment="Top" />
 
         <StackPanel Grid.Row="1" Margin="10" Orientation="Horizontal" FlowDirection="RightToLeft">
-            <Button x:Name="Cancel" Content="Cancel" Width="40" Height="30" />
-            <Button x:Name="Ok" Margin="10,0,0,0" Content="Ok" Width="50" Height="30" />
+            <Button x:Name="Cancel" Content="Cancel" Width="80" Height="30" />
+            <Button x:Name="Ok" Margin="20,0,0,0" Content="Ok" Width="80" Height="30" />
         </StackPanel>
     </Grid>
 </UserControl>

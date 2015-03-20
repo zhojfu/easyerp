@@ -1,5 +1,6 @@
 ﻿namespace EasyERP.Desktop.Views
 {
+    using System.Windows;
     using System.Windows.Controls;
 
     /// <summary>
