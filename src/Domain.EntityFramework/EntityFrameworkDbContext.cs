@@ -1,8 +1,10 @@
-﻿namespace Infrastructure.Domain.EntityFramework
+﻿namespace Domain.EntityFramework
 {
+    using Infrastructure.Domain.EntityFramework;
     using Infrastructure.Domain.Model;
     using System;
     using System.Data.Entity;
+    using System.Data.Entity.ModelConfiguration;
     using System.Linq;
     using System.Reflection;
 
@@ -25,10 +27,11 @@
                                           .Where(
                                               type => type.BaseType != null && type.BaseType.IsGenericType &&
                                                       type.BaseType.GetGenericTypeDefinition() ==
-                                                      typeof(ISetupConfiguration));
-            foreach (var configurationInstance in typesToRegister.Select(Activator.CreateInstance))
+                                                      typeof(EntityTypeConfiguration<>));
+            foreach (var type in typesToRegister)
             {
-                modelBuilder.Configurations.Add((dynamic)configurationInstance);
+                dynamic configurationInstance = Activator.CreateInstance(type);
+                modelBuilder.Configurations.Add(configurationInstance);
             }
 
             base.OnModelCreating(modelBuilder);

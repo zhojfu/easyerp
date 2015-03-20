@@ -2,11 +2,13 @@
 {
     using Autofac;
     using Caliburn.Micro;
+    using Doamin.Service.Installation;
     using EasyERP.Desktop.Contacts;
-    using EasyERP.Desktop.ViewModels;
+    using Infrastructure.Domain.Data;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.IO;
     using System.Linq;
     using System.Reflection;
     using System.Windows;
@@ -14,6 +16,8 @@
 
     public class AutofacBootstrapper : BootstrapperBase
     {
+        private bool isDatabaseInstalled;
+
         public AutofacBootstrapper()
         {
             this.Initialize();
@@ -44,7 +48,6 @@
                    .AsSelf()
                    .InstancePerDependency();
 
-            //  register views
             builder.RegisterAssemblyTypes(AssemblySource.Instance.ToArray())
                    .Where(type => type.Name.EndsWith("View"))
                    .Where(
@@ -57,44 +60,65 @@
             builder.Register(c => this.CreateWindowManager()).InstancePerLifetimeScope();
             builder.Register(c => this.CreateEventAggregator()).InstancePerLifetimeScope();
 
-            //  should we install the auto-subscribe event aggregation handler module?
             if (this.AutoSubscribeEventAggegatorHandlers)
             {
                 builder.RegisterModule<EventAggregationAutoSubscriptionModule>();
             }
 
-            //  allow derived classes to add to the container
             this.ConfigureContainer(builder);
 
             this.Container = builder.Build();
         }
 
+        private void LoadDataSettings()
+        {
+            this.isDatabaseInstalled = DataSettingsHelper.DatabaseIsInstalled();
+
+            if (this.isDatabaseInstalled)
+            {
+                return;
+            }
+
+            // install the database to sqlce
+            var databasePath = @"|DataDirectory|\" + "easyerp.db.sdf";
+
+            var connectionString = "Data Source=" + databasePath + ";Persist Security Info=False";
+
+            //drop database if exists
+            var baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            var databaseFullPath = Path.Combine(baseDirectory, "easyerp.db.sdf");
+            if (File.Exists(databaseFullPath))
+            {
+                File.Delete(databaseFullPath);
+            }
+
+            //save settings
+            var settings = new DataSettings
+            {
+                DataProvider = "sqlce",
+                DataConnectionString = connectionString
+            };
+
+            var settingsManager = new DataSettingsManager();
+            settingsManager.SaveSettings(settings);
+        }
+
         protected void RunStartupTasks()
         {
-            //var typeFinder = this.Container.Resolve<ITypeFinder>();
-            //var startUpTaskTypes = typeFinder.FindClassesOfType<IStartupTask>();
-            //var startUpTasks = new List<IStartupTask>();
-            //foreach (var startUpTaskType in startUpTaskTypes)
-            //{
-            //    startUpTasks.Add((IStartupTask)Activator.CreateInstance(startUpTaskType));
-            //}
+            if (!this.isDatabaseInstalled)
+            {
+                //init data provider
+                var dataProviderInstance = IoC.Get<BaseDataProviderManager>().LoadDataProvider();
+                dataProviderInstance.InitDatabase();
 
-            ////sort
-            //startUpTasks = startUpTasks.AsQueryable().OrderBy(st => st.Order).ToList();
-            //foreach (var startUpTask in startUpTasks)
-            //{
-            //    startUpTask.Execute();
-            //}
+                //now resolve installation service
+                var installationService = IoC.Get<IInstallationService>();
+                installationService.InstallData();
+            }
         }
 
         protected override void OnStartup(object sender, StartupEventArgs e)
         {
-            ////ensure database is installed
-            //if (!DataSettingsHelper.DatabaseIsInstalled())
-            //{
-            //}
-
-            //EngineContext.Initialize(false);
             this.RunStartupTasks();
             this.DisplayRootViewFor<IShell>();
         }
@@ -144,6 +168,8 @@
             this.EnforceNamespaceConvention = false;
 
             this.AutoSubscribeEventAggegatorHandlers = true;
+
+            this.LoadDataSettings();
         }
 
         protected override IEnumerable<Assembly> SelectAssemblies()
@@ -160,6 +186,7 @@
         {
             builder.RegisterModule<DomainServicesModule>();
             builder.RegisterModule<AutofacDesktopModule>();
+
             //var typeFinder = new DesktopTypeFinder();
 
             //builder.RegisterInstance(typeFinder).As<ITypeFinder>().SingleInstance();

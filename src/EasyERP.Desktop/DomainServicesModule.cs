@@ -2,6 +2,7 @@
 {
     using Autofac;
     using Doamin.Service;
+    using Doamin.Service.Installation;
     using Domain.EntityFramework;
     using Domain.Model;
     using Infrastructure.Domain;
@@ -44,6 +45,7 @@
                        .InstancePerLifetimeScope();
             }
 
+            builder.RegisterType<CodeFirstInstallationService>().As<IInstallationService>();
             builder.RegisterGeneric(typeof(EntityFrameworkRepository<>))
                    .As(typeof(IRepository<>))
                    .InstancePerLifetimeScope();

@@ -4,10 +4,6 @@
     using System.Collections.Generic;
     using System.Reflection;
 
-    /// <summary>
-    /// Classes implementing this interface provide information about types
-    /// to various services in the Nop engine.
-    /// </summary>
     public interface ITypeFinder
     {
         IList<Assembly> GetAssemblies();

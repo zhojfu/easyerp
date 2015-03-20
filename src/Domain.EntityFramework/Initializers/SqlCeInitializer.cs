@@ -2,6 +2,7 @@
 {
     using System;
     using System.Data.Entity;
+    using System.Data.SqlServerCe;
     using System.IO;
 
     public abstract class SqlCeInitializer<T> : IDatabaseInitializer<T> where T : DbContext
@@ -17,15 +18,15 @@
         /// <returns></returns>
         protected static DbContext ReplaceSqlCeConnection(DbContext context)
         {
-            //if (context.Database.Connection is SqlCeConnection)
-            //{
-            //    var builder = new SqlCeConnectionStringBuilder(context.Database.Connection.ConnectionString);
-            //    if (!String.IsNullOrWhiteSpace(builder.DataSource))
-            //    {
-            //        builder.DataSource = ReplaceDataDirectory(builder.DataSource);
-            //        return new DbContext(builder.ConnectionString);
-            //    }
-            //}
+            if (context.Database.Connection is SqlCeConnection)
+            {
+                var builder = new SqlCeConnectionStringBuilder(context.Database.Connection.ConnectionString);
+                if (!String.IsNullOrWhiteSpace(builder.DataSource))
+                {
+                    builder.DataSource = ReplaceDataDirectory(builder.DataSource);
+                    return new DbContext(builder.ConnectionString);
+                }
+            }
             return context;
         }
 
