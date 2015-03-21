@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyERP.Desktop", "EasyERP.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{35B3A042-0187-4530-A9F5-2063E2EEBDAD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Desktop", "Infrastructure.Desktop\Infrastructure.Desktop.csproj", "{FD916824-B817-4C83-BAE1-05DDE888EABD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,6 +61,10 @@ Global
 		{35B3A042-0187-4530-A9F5-2063E2EEBDAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{35B3A042-0187-4530-A9F5-2063E2EEBDAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{35B3A042-0187-4530-A9F5-2063E2EEBDAD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD916824-B817-4C83-BAE1-05DDE888EABD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD916824-B817-4C83-BAE1-05DDE888EABD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD916824-B817-4C83-BAE1-05DDE888EABD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD916824-B817-4C83-BAE1-05DDE888EABD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -71,5 +77,6 @@ Global
 		{6D159381-DFCC-4374-A7DC-2F29AE976493} = {B2A24814-17C1-4B36-A5BE-899FC9A78168}
 		{3E7E5C1C-5783-4141-B301-F4AE6DA860E3} = {EF2005F7-07CC-43EC-AC53-B519A7485C70}
 		{35B3A042-0187-4530-A9F5-2063E2EEBDAD} = {DE2544E3-3B00-4AFC-A53F-E0145261F4EB}
+		{FD916824-B817-4C83-BAE1-05DDE888EABD} = {DE2544E3-3B00-4AFC-A53F-E0145261F4EB}
 	EndGlobalSection
 EndGlobal

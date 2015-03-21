@@ -9,7 +9,7 @@
         protected override void Load(ContainerBuilder builder)
         {
             //builder.RegisterType<ViewModelMetadataAttribute>().AsSelf();
-            builder.RegisterType<ProductViewModel>().As<IViewModel>().WithMetadata("Order", 100);
+            builder.RegisterType<ListProductsViewModel>().As<IViewModel>().WithMetadata("Order", 100);
             builder.RegisterType<ShellViewModel>().AsSelf().As<IShell>().SingleInstance();
         }
     }

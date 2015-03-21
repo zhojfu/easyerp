@@ -1,90 +1,30 @@
 ﻿namespace EasyERP.Desktop.ViewModels
 {
-    using Caliburn.Micro;
-    using Doamin.Service;
-    using Domain.Model;
-    using EasyERP.Desktop.Contacts;
+    using NullGuard;
     using PropertyChanged;
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
 
     [ImplementPropertyChanged]
-    public class ProductViewModel : Screen, IViewModel
+    public class ProductViewModel
     {
-        private readonly ProductService productService;
+        [AllowNull]
+        public string Upc { get; set; } //条形码
 
-        public ProductViewModel(ProductService productService)
-        {
-            this.productService = productService;
-        }
+        [AllowNull]
+        public string Name { get; set; }
 
-        public override string DisplayName
-        {
-            get { return "Product Management"; }
-            set { }
-        }
+        [AllowNull]
+        public string Description { get; set; }
 
-        public string SearchProductName { get; set; }
+        [AllowNull]
+        public double Price { get; set; }
 
-        public int SearchCategoryId { get; set; }
+        [AllowNull]
+        public double Cost { get; set; }
 
-        public IList<string> CategoryList { get; set; }
+        [AllowNull]
+        public double Volume { get; set; }
 
-        public bool SearchIncludeSubCategories { get; set; }
-
-        public IList<string> ManufactureList { get; set; }
-
-        public int SearchManufacturerId { get; set; }
-
-        public IList<string> StoreList { get; set; }
-
-        public int SearchStoreId { get; set; }
-
-        public IList<string> VendorList { get; set; }
-
-        public int SearchVendorId { get; set; }
-
-        public IList<string> WarehouseList { get; set; }
-
-        public int SearchWarehouseId { get; set; }
-
-        public IList<string> ProductTypeList { get; set; }
-
-        public int SearchProductTypeId { get; set; }
-
-        public int SearchPublishedId { get; set; }
-
-        public string GoDirectlyToSku { get; set; }
-
-        public ObservableCollection<Product> Products
-        {
-            get
-            {
-                var ids = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
-                return new ObservableCollection<Product>(this.productService.GetProductsByIds(ids));
-            }
-            set { }
-        }
-
-        public void AddProduct()
-        {
-        }
-
-        public void Delete()
-        {
-        }
-
-        public void Import()
-        {
-        }
-
-        public void Export()
-        {
-        }
-
-        public void GoToSku()
-        {
-            //var product = this.productService.GetProductBySku(this.GoDirectlyToSku);
-        }
+        [AllowNull]
+        public string Origin { get; set; }
     }
 }

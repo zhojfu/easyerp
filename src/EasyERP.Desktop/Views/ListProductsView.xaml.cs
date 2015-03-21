@@ -3,11 +3,11 @@
     using System.Windows.Controls;
 
     /// <summary>
-    /// Interaction logic for ProductView.xaml
+    /// Interaction logic for ListProductsView.xaml
     /// </summary>
-    public partial class ProductView : UserControl
+    public partial class ListProductsView : UserControl
     {
-        public ProductView()
+        public ListProductsView()
         {
             this.InitializeComponent();
         }

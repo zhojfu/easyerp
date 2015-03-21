@@ -8,7 +8,7 @@
 
     public class ProductService
     {
-        private IRepository<Product> repository;
+        private readonly IRepository<Product> repository;
 
         public ProductService(IRepository<Product> repository)
         {
@@ -25,8 +25,10 @@
             return this.repository.FindAll(a => a.Name.Contains("cake")).ToList();
         }
 
-        public void AddNewProduct( /*ViewProduct viewModel*/)
+        public void AddNewProduct(Product product)
         {
+            this.repository.Add(product);
+            this.repository.Update();
         }
 
         private Product ConvertViewModelToModel()
