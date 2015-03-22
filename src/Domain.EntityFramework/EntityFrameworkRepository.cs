@@ -20,7 +20,7 @@
             this.dbContext = dbcontext;
         }
 
-        public override TAggregateRoot GetByKey(long key)
+        public override TAggregateRoot GetByKey(Guid key)
         {
             return this.dbContext.Set<TAggregateRoot>().First(p => p.Id == key);
         }
