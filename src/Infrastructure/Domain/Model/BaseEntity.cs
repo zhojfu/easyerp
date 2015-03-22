@@ -1,8 +1,10 @@
 ﻿namespace Infrastructure.Domain.Model
 {
+    using System;
+
     public abstract class BaseEntity : IEntity
     {
-        public long Id { get; set; }
+        public Guid Id { get; set; }
 
         #region Equality
 

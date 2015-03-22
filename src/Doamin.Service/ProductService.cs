@@ -10,9 +10,12 @@
     {
         private readonly IRepository<Product> repository;
 
-        public ProductService(IRepository<Product> repository)
+        private readonly IUnitOfWork unitOfWork;
+
+        public ProductService(IRepository<Product> repository, IUnitOfWork unitOfWork)
         {
             this.repository = repository;
+            this.unitOfWork = unitOfWork;
         }
 
         public Product GetProductById(int id)
@@ -22,6 +25,13 @@
 
         public IList<Product> GetProductsByIds(int[] ids)
         {
+            return null;
+            //return this.repository.FindAll(a => a.Name.Contains("cake")).ToList();
+        }
+
+        public IList<Product> GetAllProducts()
+        {
+           // return null;
             return this.repository.FindAll(a => a.Name.Contains("cake")).ToList();
         }
 
@@ -30,6 +40,12 @@
             this.repository.Add(product);
             this.repository.Update();
         }
+
+        //public void AddTestDouble(TestDoubles test)
+        //{
+        //    this.repository.Add(test);
+        //    this.unitOfWork.Commit();
+        //}
 
         private Product ConvertViewModelToModel()
         {

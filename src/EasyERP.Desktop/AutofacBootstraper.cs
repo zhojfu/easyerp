@@ -67,6 +67,7 @@
             this.ConfigureContainer(builder);
 
             this.Container = builder.Build();
+           
         }
 
         /*private void LoadDataSettings()
