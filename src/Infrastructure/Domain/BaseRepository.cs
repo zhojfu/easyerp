@@ -1,10 +1,9 @@
-﻿namespace Domain.EntityFramework
+﻿namespace Infrastructure.Domain
 {
-    using Infrastructure.Domain;
-    using Infrastructure.Domain.Model;
     using System;
     using System.Collections.Generic;
     using System.Linq.Expressions;
+    using Infrastructure.Domain.Model;
 
     public abstract class BaseRepository<TAggregateRoot> : IRepository<TAggregateRoot>, IUnitOfWorkRepository
         where TAggregateRoot : IAggregateRoot

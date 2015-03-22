@@ -15,7 +15,7 @@
         <telerik:RadPropertyGrid Grid.Row="0" x:Name="PropertyGrid1" Item="{Binding Path=Product, Mode=TwoWay}"
                                  NestedPropertiesVisibility="Visible"
                                  RenderMode="Flat" IsVirtualizing="True" Width="600" Height="400"
-                                 VerticalAlignment="Top" />
+                                 VerticalAlignment="Top" Margin="-10,0,10,0" />
 
         <StackPanel Grid.Row="1" Margin="10" Orientation="Horizontal" FlowDirection="RightToLeft">
             <Button x:Name="Cancel" Content="Cancel" Width="80" Height="30" />

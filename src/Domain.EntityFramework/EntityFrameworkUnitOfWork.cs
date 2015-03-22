@@ -1,6 +1,7 @@
 ﻿namespace Domain.EntityFramework
 {
     using System.Data.Entity;
+    using Infrastructure.Domain;
 
     public class EntityFrameworkUnitOfWork : UnitOfWork
     {

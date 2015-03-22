@@ -54,11 +54,7 @@
   <ItemGroup>
     <Compile Include="DependencyManagement\IDependencyRegistrar.cs" />
     <Compile Include="DependencyManagement\ITypeFinder.cs" />
-    <Compile Include="Domain\Data\BaseDataProviderManager.cs" />
-    <Compile Include="Domain\Data\DataSettings.cs" />
-    <Compile Include="Domain\Data\DataSettingsHelper.cs" />
-    <Compile Include="Domain\Data\DataSettingsManager.cs" />
-    <Compile Include="Domain\Data\IDataProvider.cs" />
+    <Compile Include="Domain\BaseRepository.cs" />
     <Compile Include="Domain\EntityFramework\ISetupConfiguration.cs" />
     <Compile Include="Domain\EntityFramework\IEntityFrameworkDbContext.cs" />
     <Compile Include="Domain\Model\BaseEntity.cs" />
@@ -67,7 +63,7 @@
     <Compile Include="Domain\IRepository.cs" />
     <Compile Include="Domain\IUnitOfWork.cs" />
     <Compile Include="Domain\IUnitOfWorkRepository.cs" />
-    <Compile Include="IStartupTask.cs" />
+    <Compile Include="Domain\UnitOfWork.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -1,12 +1,12 @@
 ﻿namespace Domain.EntityFramework
 {
-    using Infrastructure.Domain.EntityFramework;
-    using Infrastructure.Domain.Model;
     using System;
-    using System.Data.Entity;
     using System.Data.Entity.ModelConfiguration;
     using System.Linq;
     using System.Reflection;
+    using Infrastructure.Domain.EntityFramework;
+    using Infrastructure.Domain.Model;
+    using System.Data.Entity;
 
     public class EntityFrameworkDbContext : DbContext, IEntityFrameworkDbContext
     {
