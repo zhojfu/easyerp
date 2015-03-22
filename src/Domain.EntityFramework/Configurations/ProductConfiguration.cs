@@ -14,7 +14,7 @@
             this.Property(t => t.Unit);
             this.HasMany(t => t.Prices);
 
-            //this.HasMany(t => t.RepositoryStocks);
+            this.HasMany(t => t.RepositoryStocks);
         }
     }
 }

@@ -39,6 +39,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Material.cs" />
+    <Compile Include="MaterialConsumption.cs" />
     <Compile Include="OrderComposition.cs" />
     <Compile Include="Price.cs" />
     <Compile Include="RepositoryStock.cs" />
@@ -51,7 +53,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj">
       <Project>{35B3A042-0187-4530-A9F5-2063E2EEBDAD}</Project>
-      <Name>Infrastructure</Name>
+      <Name>Infrastructure %28Infrastructure\Infrastructure%29</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

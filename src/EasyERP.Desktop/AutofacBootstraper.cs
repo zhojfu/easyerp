@@ -4,7 +4,6 @@
     using Caliburn.Micro;
     using Doamin.Service.Installation;
     using EasyERP.Desktop.Contacts;
-    using Infrastructure.Domain.Data;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
@@ -68,9 +67,10 @@
             this.ConfigureContainer(builder);
 
             this.Container = builder.Build();
+           
         }
 
-        private void LoadDataSettings()
+        /*private void LoadDataSettings()
         {
             this.isDatabaseInstalled = DataSettingsHelper.DatabaseIsInstalled();
 
@@ -115,11 +115,11 @@
                 var installationService = IoC.Get<IInstallationService>();
                 installationService.InstallData();
             }
-        }
+        }*/
 
         protected override void OnStartup(object sender, StartupEventArgs e)
         {
-            this.RunStartupTasks();
+            // this.RunStartupTasks();
             this.DisplayRootViewFor<IShell>();
         }
 
@@ -169,7 +169,7 @@
 
             this.AutoSubscribeEventAggegatorHandlers = true;
 
-            this.LoadDataSettings();
+            // this.LoadDataSettings();
         }
 
         protected override IEnumerable<Assembly> SelectAssemblies()

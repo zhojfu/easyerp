@@ -1,10 +1,8 @@
-﻿namespace Domain.EntityFramework
+﻿namespace Infrastructure.Domain
 {
-    using Infrastructure.Domain;
-    using Infrastructure.Domain.Model;
     using System;
     using System.Collections.Generic;
-    using System.Transactions;
+    using Infrastructure.Domain.Model;
 
     public class UnitOfWork : IUnitOfWork
     {

@@ -1,5 +1,6 @@
 ﻿namespace EasyERP.Desktop.ViewModels
 {
+    using System;
     using Caliburn.Micro;
     using Doamin.Service;
     using Domain.Model;
@@ -73,8 +74,25 @@
         {
             get
             {
-                var ids = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
-                return new ObservableCollection<Product>(this.productService.GetProductsByIds(ids));
+                var a = new Product
+                {
+                    Id = Guid.NewGuid(),
+                    Description = "cake description",
+                    Unit = "t",
+                    Name = "cake",
+                    Upc = "690193901",
+                };
+                //this.productService.AddNewProduct(a);
+                //var t = new TestDoubles
+                //{
+                //    Id = Guid.NewGuid(),
+                //    Name = "test"
+                //};
+                //this.productService.AddTestDouble(t);
+
+                // var ids = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+                //return null;
+                return new ObservableCollection<Product>(this.productService.GetAllProducts());
             }
             set { }
         }
@@ -94,7 +112,7 @@
 
             if (result)
             {
-                this.productService.AddNewProduct(edit.Product.ToEntity());
+                // this.productService.AddNewProduct(edit.Product.ToEntity());
             }
         }
 
