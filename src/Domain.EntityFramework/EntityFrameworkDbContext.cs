@@ -24,7 +24,7 @@
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            /*var typesToRegister = Assembly.GetExecutingAssembly().GetTypes()
+            var typesToRegister = Assembly.GetExecutingAssembly().GetTypes()
                                           .Where(type => !String.IsNullOrEmpty(type.Namespace))
                                           .Where(
                                               type => type.BaseType != null && type.BaseType.IsGenericType &&
@@ -34,10 +34,10 @@
             {
                 dynamic configurationInstance = Activator.CreateInstance(type);
                 modelBuilder.Configurations.Add(configurationInstance);
-            }*/
+            }
             
             ////modelBuilder.Configurations.Add(new TestDoublesConfiguration());
-            modelBuilder.Configurations.Add(new ProductConfiguration());
+            //modelBuilder.Configurations.Add(new ProductConfiguration());
             base.OnModelCreating(modelBuilder);
         }
     }
