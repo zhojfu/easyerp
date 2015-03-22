@@ -53,6 +53,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configurations\Factory\AttritionConfiguration.cs" />
+    <Compile Include="Configurations\Factory\AttritionStatisticConfiguration.cs" />
+    <Compile Include="Configurations\Factory\MaterialStatisticConfiguration.cs" />
+    <Compile Include="Configurations\Factory\ProductStatisticConfiguration.cs" />
+    <Compile Include="Configurations\Factory\WorkTimeStatisticConfiguration.cs" />
     <Compile Include="Configurations\OrderCompositionConfiguration.cs" />
     <Compile Include="Configurations\PriceConfiguration.cs" />
     <Compile Include="Configurations\RepositoryStockConfiguration.cs" />
