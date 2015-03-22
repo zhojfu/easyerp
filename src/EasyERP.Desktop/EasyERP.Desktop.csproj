@@ -198,12 +198,19 @@
     <Compile Include="DependencyRegistrar.cs" />
     <Compile Include="DomainServicesModule.cs" />
     <Compile Include="Extensions\MappingExtensions.cs" />
+    <Compile Include="RibbonViewContainer.xaml.cs">
+      <DependentUpon>RibbonViewContainer.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\EditProductViewModel.cs" />
+    <Compile Include="ViewModels\ListOrdersViewModel.cs" />
     <Compile Include="ViewModels\ListProductsViewModel.cs" />
     <Compile Include="ViewModels\ProductViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="Views\EditProductView.xaml.cs">
       <DependentUpon>EditProductView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ListOrdersView.xaml.cs">
+      <DependentUpon>ListOrdersView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ListProductsView.xaml.cs">
       <DependentUpon>ListProductsView.xaml</DependentUpon>
@@ -222,7 +229,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="RibbonViewContainer.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\EditProductView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ListOrdersView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -317,7 +332,12 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Images\Backstage_Icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\paste.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Fody.1.26.4\build\Fody.targets" Condition="Exists('..\packages\Fody.1.26.4\build\Fody.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

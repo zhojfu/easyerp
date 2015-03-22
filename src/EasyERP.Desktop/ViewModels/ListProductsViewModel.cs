@@ -11,7 +11,6 @@
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Dynamic;
-    using System.Linq;
     using System.Windows;
 
     [ImplementPropertyChanged]
@@ -95,6 +94,11 @@
                 return new ObservableCollection<Product>(this.productService.GetAllProducts());
             }
             set { }
+        }
+
+        public string Tag
+        {
+            get { return "ProductManagement"; }
         }
 
         public void AddProduct()

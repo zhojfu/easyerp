@@ -31,7 +31,7 @@
                 <Button Margin="10,0,0,0" Width="60" Height="30" Content="Delete" cal:Message.Attach="Delete" />
                 <Button Margin="10,0,0,0" Width="60" Height="30" Content="Export" cal:Message.Attach="Export" />
                 <Button Margin="10,0,0,0" Width="60" Height="30" Content="Import" cal:Message.Attach="Import" />
-                <Button Margin="10,0,0,0" Width="60" Height="30" Content="Add" cal:Message.Attach="AddProduct" />
+                <Button Margin="10,0,0,0" Width="60" Height="30" Content="Add" x:Name="AddProduct" />
             </StackPanel>
         </Grid>
 

@@ -2,5 +2,6 @@
 {
     public interface IViewModel
     {
+        string Tag { get; }
     }
 }

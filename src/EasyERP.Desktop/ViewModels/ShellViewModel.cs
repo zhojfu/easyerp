@@ -5,6 +5,7 @@
     using EasyERP.Desktop.Contacts;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Windows;
 
     public class ShellViewModel : Conductor<Screen>.Collection.OneActive, IShell
     {
@@ -18,6 +19,8 @@
                     this.NotifyOfPropertyChange(() => this.CanCloseActiveItem);
                 }
             };
+
+            this.Initialize();
         }
 
         public override string DisplayName
@@ -34,6 +37,38 @@
         public void CloseActiveItem()
         {
             this.DeactivateItem(this.ActiveItem, true);
+        }
+
+        public void SelectionChanged(object sender)
+        {
+            var model = this.ActiveItem as IViewModel;
+            var ribbonTap = sender as FrameworkElement;
+            if (ribbonTap == null ||
+                model == null)
+            {
+                return;
+            }
+            if (model.Tag == ribbonTap.Tag as string)
+            {
+                return;
+            }
+
+            var screen = this.Items.FirstOrDefault(
+                i =>
+                {
+                    var m = i as IViewModel;
+                    if (m == null)
+                    {
+                        return false;
+                    }
+                    return m.Tag == ribbonTap.Tag as string;
+                });
+            this.ChangeActiveItem(screen, false);
+        }
+
+        private void Initialize()
+        {
+            this.ActivateItem(this.Items.First());
         }
     }
 }
