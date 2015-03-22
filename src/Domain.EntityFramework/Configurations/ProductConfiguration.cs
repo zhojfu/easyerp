@@ -1,20 +1,20 @@
-﻿using System.Data.Entity.ModelConfiguration;
-using Domain.Model;
-
-namespace Domain.EntityFramework.Configurations
+﻿namespace Domain.EntityFramework.Configurations
 {
+    using Domain.Model;
+    using System.Data.Entity.ModelConfiguration;
+
     public class ProductConfiguration : EntityTypeConfiguration<Product>
     {
         public ProductConfiguration()
         {
-            HasKey(t => t.Id).ToTable("Products");
-            Property(t => t.Upc).HasMaxLength(50);
-            Property(t => t.Name).HasMaxLength(50);
-            Property(t => t.Description).HasMaxLength(50);
-            Property(t => t.Price);
-            Property(t => t.Cost);
-            Property(t => t.Volume);
-            Property(t => t.Origin).HasMaxLength(50);
+            this.HasKey(t => t.Upc).ToTable("Products");
+            this.Property(t => t.Upc).HasMaxLength(50);
+            this.Property(t => t.Name).HasMaxLength(50);
+            this.Property(t => t.Description).HasMaxLength(50);
+            this.Property(t => t.Unit);
+            this.HasMany(t => t.Prices);
+
+            //this.HasMany(t => t.RepositoryStocks);
         }
     }
 }

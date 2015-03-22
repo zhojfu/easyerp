@@ -69,12 +69,12 @@
         [AllowNull]
         public string GoDirectlyToSku { get; set; }
 
-        public ObservableCollection<ProductViewModel> Products
+        public ObservableCollection<Product> Products
         {
             get
             {
                 var ids = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
-                return new ObservableCollection<ProductViewModel>(this.productService.GetProductsByIds(ids).Select(p => p.ToEntity()));
+                return new ObservableCollection<Product>(this.productService.GetProductsByIds(ids));
             }
             set { }
         }

@@ -39,6 +39,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="OrderComposition.cs" />
+    <Compile Include="Price.cs" />
+    <Compile Include="RepositoryStock.cs" />
+    <Compile Include="Store.cs" />
     <Compile Include="Test\TestDoubles.cs" />
     <Compile Include="Order.cs" />
     <Compile Include="Product.cs" />

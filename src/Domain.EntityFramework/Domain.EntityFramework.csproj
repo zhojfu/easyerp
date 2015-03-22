@@ -54,6 +54,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseRepository.cs" />
+    <Compile Include="Configurations\OrderCompositionConfiguration.cs" />
+    <Compile Include="Configurations\PriceConfiguration.cs" />
+    <Compile Include="Configurations\RepositoryStockConfiguration.cs" />
+    <Compile Include="Configurations\StoreConfiguration.cs" />
     <Compile Include="Configurations\Test\TestDoublesConfiguration.cs" />
     <Compile Include="Configurations\OrderConfiguration.cs" />
     <Compile Include="Configurations\ProductConfiguration.cs" />

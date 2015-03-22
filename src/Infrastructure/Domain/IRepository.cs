@@ -6,7 +6,7 @@
 
     public interface IRepository<TAggregateRoot>
     {
-        TAggregateRoot GetByKey(long key);
+        TAggregateRoot GetByKey(Guid key);
 
         IEnumerable<TAggregateRoot> FindAll(Expression<Func<TAggregateRoot, bool>> expression);
 

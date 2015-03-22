@@ -1,7 +1,9 @@
 ﻿namespace Infrastructure.Domain.Model
 {
+    using System;
+
     public interface IEntity
     {
-        long Id { get; }
+        Guid Id { get; }
     }
 }

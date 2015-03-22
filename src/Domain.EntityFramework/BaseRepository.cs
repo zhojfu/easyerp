@@ -36,7 +36,7 @@
             this.unitOfWork.Commit();
         }
 
-        public abstract TAggregateRoot GetByKey(long key);
+        public abstract TAggregateRoot GetByKey(Guid key);
 
         public abstract IEnumerable<TAggregateRoot> FindAll(Expression<Func<TAggregateRoot, bool>> expression);
 
