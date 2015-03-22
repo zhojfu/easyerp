@@ -1,9 +1,7 @@
 ﻿namespace EasyERP.Desktop.ViewModels
 {
-    using System;
     using Caliburn.Micro;
     using Doamin.Service;
-    using Domain.Model;
     using EasyERP.Desktop.Contacts;
     using EasyERP.Desktop.Extensions;
     using NullGuard;
@@ -11,6 +9,7 @@
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Dynamic;
+    using System.Linq;
     using System.Windows;
 
     [ImplementPropertyChanged]
@@ -69,31 +68,14 @@
         [AllowNull]
         public string GoDirectlyToSku { get; set; }
 
-        public ObservableCollection<Product> Products
+        public ObservableCollection<ProductViewModel> Products
         {
             get
             {
-                var a = new Product
-                {
-                    Id = Guid.NewGuid(),
-                    Description = "cake description",
-                    Unit = "t",
-                    Name = "cake",
-                    Upc = "690193901",
-                };
-                //this.productService.AddNewProduct(a);
-                //var t = new TestDoubles
-                //{
-                //    Id = Guid.NewGuid(),
-                //    Name = "test"
-                //};
-                //this.productService.AddTestDouble(t);
-
-                // var ids = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
-                //return null;
-                return new ObservableCollection<Product>(this.productService.GetAllProducts());
+                return
+                    new ObservableCollection<ProductViewModel>(
+                        this.productService.GetAllProducts().Select(p => p.ToViewModel()));
             }
-            set { }
         }
 
         public string Tag
@@ -116,7 +98,7 @@
 
             if (result)
             {
-                // this.productService.AddNewProduct(edit.Product.ToEntity());
+                this.productService.AddNewProduct(edit.Product.ToEntity());
             }
         }
 

@@ -192,7 +192,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="AutofacDesktopModule.cs" />
-    <Compile Include="AutoMapperStartupTask.cs" />
+    <Compile Include="AutoMapperStartupTas.cs" />
     <Compile Include="Contacts\IViewModel.cs" />
     <Compile Include="Contacts\ViewModelMetadataAttribute.cs" />
     <Compile Include="DependencyRegistrar.cs" />
@@ -310,6 +310,7 @@
       <Name>Infrastructure %28Infrastructure\Infrastructure%29</Name>
     </ProjectReference>
   </ItemGroup>
+<<<<<<< HEAD
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">
       <Visible>False</Visible>
@@ -332,12 +333,16 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
+||||||| merged common ancestors
+=======
   <ItemGroup>
     <Resource Include="Images\Backstage_Icon.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\paste.png" />
   </ItemGroup>
+>>>>>>> use ribbon window
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Fody.1.26.4\build\Fody.targets" Condition="Exists('..\packages\Fody.1.26.4\build\Fody.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

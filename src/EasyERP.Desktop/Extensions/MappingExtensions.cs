@@ -21,7 +21,7 @@
             return model.MapTo<ProductViewModel, Product>();
         }
 
-        public static ProductViewModel ToEntity(this Product entity)
+        public static ProductViewModel ToViewModel(this Product entity)
         {
             return entity.MapTo<Product, ProductViewModel>();
         }
