@@ -33,7 +33,7 @@
             {
                 return
                     new ObservableCollection<StockItemViewModel>(
-                        this.stockService.GetAllStockList().Select(i => i.ToViewModel()));
+                        this.stockService.GetAllStockList().Select(i => i.ToModel()));
             }
         }
 

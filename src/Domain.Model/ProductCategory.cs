@@ -5,7 +5,7 @@ namespace Domain.Model
 
     public class ProductCategory : BaseEntity, IAggregateRoot
     {
-        public string ProductId { get; set; }
+        public Guid ProductId { get; set; }
 
         public Guid CategoryId { get; set; }
 

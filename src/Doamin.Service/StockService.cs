@@ -30,9 +30,15 @@
 
         public void AddStock(RepositoryStock stock)
         {
-            if (!this.productRepository.Exist(stock.Product))
+            var product = this.productRepository.GetByKey(stock.ProductId);
+            if (product == null)
             {
-                this.productRepository.Add(stock.Product);
+                this.productRepository.Add(
+                    new Product
+                    {
+                        Id = stock.ProductId,
+                        Upc = "test"
+                    });
             }
 
             this.repository.Add(stock);

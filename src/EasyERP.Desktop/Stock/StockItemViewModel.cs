@@ -8,15 +8,6 @@
     public class StockItemViewModel
     {
         [AllowNull]
-        public string ProductName { get; set; } //mapto Product.Name
-
-        [AllowNull]
-        public string ProductDescription { get; set; }
-
-        [AllowNull]
-        public string Upc { get; set; }
-
-        [AllowNull]
         public DateTime ProductionTime { get; set; }
 
         [AllowNull]
@@ -28,5 +19,8 @@
 
         [AllowNull]
         public string Origin { get; set; }
+
+        [AllowNull]
+        public string ProductId { get; set; }
     }
 }

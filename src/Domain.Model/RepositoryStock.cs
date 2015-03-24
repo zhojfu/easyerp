@@ -15,8 +15,8 @@
 
         public string Origin { get; set; }
 
-        public Product Product { get; set; }
+        public Guid ProductId { get; set; }
 
-        public string ProductId { get; set; }
+        public Product Product { get; set; }
     }
 }

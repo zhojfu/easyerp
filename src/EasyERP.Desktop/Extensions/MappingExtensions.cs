@@ -5,7 +5,6 @@
     using EasyERP.Desktop.Product;
     using EasyERP.Desktop.Stock;
     using Infrastructure;
-    using System;
     using System.Linq;
 
     public static class MappingExtensions
@@ -51,41 +50,14 @@
             return vm;
         }
 
-        public static StockItemViewModel ToViewModel(this RepositoryStock entity)
+        public static StockItemViewModel ToModel(this RepositoryStock entity)
         {
-            var vm = new StockItemViewModel
-            {
-                ProductName = entity.Product.Name,
-                ProductionTime = entity.ProductionTime,
-                Upc = entity.Product.Upc,
-                Quantity = entity.Quantity,
-                Cost = entity.Cost,
-                Origin = entity.Origin,
-                StockTime = entity.StockTime,
-                ProductDescription = entity.Product.Description
-            };
-            return vm;
+            return entity.MapTo<RepositoryStock, StockItemViewModel>();
         }
 
         public static RepositoryStock ToEntity(this StockItemViewModel model)
         {
-            var entity = new RepositoryStock
-            {
-                Product = new Product
-                {
-                    Name = model.ProductName,
-                    Description = model.ProductDescription,
-                    Upc = model.Upc
-                },
-                ProductId = model.Upc,
-                ProductionTime = model.ProductionTime,
-                StockTime = model.StockTime,
-                Origin = model.Origin,
-                Cost = model.Cost,
-                Quantity = model.Quantity,
-                Id = Guid.NewGuid()
-            };
-            return entity;
+            return model.MapTo<StockItemViewModel, RepositoryStock>();
         }
     }
 }
