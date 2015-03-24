@@ -2,9 +2,7 @@
 {
     using Autofac;
     using Doamin.Service;
-    using Doamin.Service.Installation;
     using Domain.EntityFramework;
-    using Domain.Model;
     using Infrastructure.Domain;
     using Infrastructure.Domain.EntityFramework;
 
@@ -19,13 +17,14 @@
             builder.Register<IUnitOfWork>(i => new EntityFrameworkUnitOfWork(dataContext))
                    .InstancePerLifetimeScope();
 
-//            builder.RegisterType<CodeFirstInstallationService>().As<IInstallationService>();
+            //            builder.RegisterType<CodeFirstInstallationService>().As<IInstallationService>();
             builder.RegisterGeneric(typeof(EntityFrameworkRepository<>))
                    .As(typeof(IRepository<>))
                    .InstancePerLifetimeScope();
 
-            builder.RegisterType<Product>().AsSelf();
+            builder.RegisterType<Domain.Model.Product>().AsSelf();
             builder.RegisterType<ProductService>().AsSelf();
+            builder.RegisterType<StockService>().AsSelf();
         }
     }
 }

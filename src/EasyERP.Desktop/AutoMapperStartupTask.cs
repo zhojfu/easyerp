@@ -1,8 +1,7 @@
 ﻿namespace EasyERP.Desktop
 {
     using AutoMapper;
-    using Domain.Model;
-    using EasyERP.Desktop.ViewModels;
+    using EasyERP.Desktop.Product;
     using Infrastructure.Desktop;
     using System;
 
@@ -10,7 +9,7 @@
     {
         public void Execute()
         {
-            Mapper.CreateMap<ProductViewModel, Product>();
+            Mapper.CreateMap<ProductViewModel, Domain.Model.Product>();
         }
 
         public int Order

@@ -6,6 +6,8 @@
 
     public class Product : BaseEntity, IAggregateRoot
     {
+        public ICollection<ProductCategory> ProductCategories { get; set; }
+
         public string Upc { get; set; } //条形码 KEY
 
         public string Name { get; set; }
@@ -15,8 +17,11 @@
         public string Unit { get; set; }
 
         public ICollection<RepositoryStock> RepositoryStocks { get; set; }
-        public ICollection<ProductStatistic> ProduceRecord { get; set; } 
-        public ICollection<MaterialStatisitc> MaterialComsumptions { get; set; } 
+
+        public ICollection<ProductStatistic> ProduceRecord { get; set; }
+
+        public ICollection<MaterialStatisitc> MaterialComsumptions { get; set; }
+
         public ICollection<Price> Prices { get; set; }
     }
 }

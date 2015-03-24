@@ -1,4 +1,4 @@
-﻿namespace EasyERP.Desktop.Views
+﻿namespace EasyERP.Desktop
 {
     using Telerik.Windows.Controls;
 

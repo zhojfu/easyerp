@@ -1,9 +1,10 @@
-﻿namespace EasyERP.Desktop.ViewModels
+﻿namespace EasyERP.Desktop.Product
 {
     using Caliburn.Micro;
     using Doamin.Service;
     using EasyERP.Desktop.Contacts;
     using EasyERP.Desktop.Extensions;
+    using EasyERP.Desktop.ViewModels;
     using NullGuard;
     using PropertyChanged;
     using System.Collections.Generic;
@@ -13,11 +14,11 @@
     using System.Windows;
 
     [ImplementPropertyChanged]
-    public class ListProductsViewModel : Screen, IViewModel
+    public class ProductListViewModel : Screen, IViewModel
     {
         private readonly ProductService productService;
 
-        public ListProductsViewModel(ProductService productService)
+        public ProductListViewModel(ProductService productService)
         {
             this.productService = productService;
         }

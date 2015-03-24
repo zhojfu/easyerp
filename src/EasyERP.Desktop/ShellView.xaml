@@ -1,4 +1,4 @@
-﻿<telerik:RadRibbonWindow x:Class="EasyERP.Desktop.Views.ShellView"
+﻿<telerik:RadRibbonWindow x:Class="EasyERP.Desktop.ShellView"
                          xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                          xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                          xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -6,9 +6,9 @@
                          xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
                          xmlns:viewModels="clr-namespace:EasyERP.Desktop.ViewModels"
                          xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
-                         xmlns:desktop="clr-namespace:EasyERP.Desktop"
                          xmlns:cal="http://www.caliburnproject.org"
-                         d:DataContext="{d:DesignInstance Type=viewModels:ShellViewModel, IsDesignTimeCreatable=True}"
+                         xmlns:desktop="clr-namespace:EasyERP.Desktop"
+                         d:DataContext="{d:DesignInstance Type=desktop:ShellViewModel, IsDesignTimeCreatable=True}"
                          mc:Ignorable="d"
                          d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
@@ -19,43 +19,53 @@
         </Grid.RowDefinitions>
         <telerik:RadRibbonView Title="{Binding Path=DisplayName, Mode=OneWay}"
                                ApplicationName="EasyERP"
-                               ApplicationButtonImageSource="..\Images/Backstage_Icon.png"
+                               ApplicationButtonImageSource="Images/Backstage_Icon.png"
                                cal:Message.Attach="[Event SelectionChanged]=[Action SelectionChanged($this)]">
             <telerik:RadRibbonTab Header="Stock Management">
                 <telerik:RadRibbonGroup Header="Stock Management" Tag="ProductManagement">
                     <telerik:RadRibbonButton Text="Add"
-                                             SmallImage="..\Images/paste.png"
-                                             LargeImage="..\images/paste.png" Size="Large" />
+                                             SmallImage="Images/paste.png"
+                                             LargeImage="images/paste.png" Size="Large" />
                     <telerik:RadRibbonButton Text="Import"
-                                             SmallImage="..\images/paste.png"
-                                             LargeImage="..\images/paste.png" Size="Large" />
+                                             SmallImage="images/paste.png"
+                                             LargeImage="images/paste.png" Size="Large" />
                     <telerik:RadRibbonButton Text="Delete"
-                                             SmallImage="..\images/paste.png"
-                                             LargeImage="..\images/paste.png" Size="Large" />
+                                             SmallImage="images/paste.png"
+                                             LargeImage="images/paste.png" Size="Large" />
                     <telerik:RadRibbonButton Text="Export"
-                                             SmallImage="..\images/paste.png"
-                                             LargeImage="..\images/paste.png" Size="Large" />
+                                             SmallImage="images/paste.png"
+                                             LargeImage="images/paste.png" Size="Large" />
                 </telerik:RadRibbonGroup>
             </telerik:RadRibbonTab>
 
             <telerik:RadRibbonTab Header="Order Management" Tag="OrderManagement">
                 <telerik:RadRibbonGroup Header="Order Management">
                     <telerik:RadRibbonButton Text="Add"
-                                             SmallImage="..\Images/paste.png"
-                                             LargeImage="..\images/paste.png" Size="Large" />
+                                             SmallImage="Images/paste.png"
+                                             LargeImage="images/paste.png" Size="Large" />
                     <telerik:RadRibbonButton Text="Import"
-                                             SmallImage="..\images/paste.png"
-                                             LargeImage="..\images/paste.png" Size="Large" />
+                                             SmallImage="images/paste.png"
+                                             LargeImage="images/paste.png" Size="Large" />
                     <telerik:RadRibbonButton Text="Delete"
-                                             SmallImage="..\images/paste.png"
-                                             LargeImage="..\images/paste.png" Size="Large" />
+                                             SmallImage="images/paste.png"
+                                             LargeImage="images/paste.png" Size="Large" />
                     <telerik:RadRibbonButton Text="Export"
-                                             SmallImage="..\images/paste.png"
-                                             LargeImage="..\images/paste.png" Size="Large" />
+                                             SmallImage="images/paste.png"
+                                             LargeImage="images/paste.png" Size="Large" />
                 </telerik:RadRibbonGroup>
             </telerik:RadRibbonTab>
         </telerik:RadRibbonView>
-        <ContentControl Grid.Row="1" x:Name="ActiveItem" />
+        <!--<ContentControl Grid.Row="1" x:Name="ActiveItem" />-->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <telerik:RadListBox ItemsSource="{Binding Items}" DisplayMemberPath="DisplayName"
+                                HorizontalAlignment="Left" VerticalAlignment="Top"
+                                SelectedItem="{Binding Path=ActiveItem, Mode=TwoWay}" />
+            <ContentControl Grid.Column="1" x:Name="ActiveItem" />
+        </Grid>
 
         <Button Grid.Row="2" x:Name="CloseActiveItem" Content="Close"
                 ToolTipService.ToolTip="Close current module"

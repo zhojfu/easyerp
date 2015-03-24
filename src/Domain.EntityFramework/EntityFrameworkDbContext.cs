@@ -1,20 +1,20 @@
 ﻿namespace Domain.EntityFramework
 {
-    using System;
-    using System.Data.Entity.ModelConfiguration;
-    using System.Linq;
-    using System.Reflection;
     using Domain.EntityFramework.Configurations;
     using Infrastructure.Domain.EntityFramework;
     using Infrastructure.Domain.Model;
+    using System;
     using System.Data.Entity;
+    using System.Data.Entity.ModelConfiguration;
+    using System.Linq;
+    using System.Reflection;
 
     public class EntityFrameworkDbContext : DbContext, IEntityFrameworkDbContext
     {
         public EntityFrameworkDbContext(string connectionString)
             : base(connectionString)
         {
-            //DbDatabase.SetInitialzer(null);
+            Database.SetInitializer(new DropCreateDatabaseIfModelChanges<EntityFrameworkDbContext>());
         }
 
         public new IDbSet<TEntity> Set<TEntity>() where TEntity : class, IAggregateRoot
@@ -35,7 +35,7 @@
                 dynamic configurationInstance = Activator.CreateInstance(type);
                 modelBuilder.Configurations.Add(configurationInstance);
             }
-            
+
             ////modelBuilder.Configurations.Add(new TestDoublesConfiguration());
             //modelBuilder.Configurations.Add(new ProductConfiguration());
             base.OnModelCreating(modelBuilder);

@@ -1,12 +1,12 @@
-﻿<UserControl x:Class="EasyERP.Desktop.Views.ListProductsView"
+﻿<UserControl x:Class="EasyERP.Desktop.Product.ProductListView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
              xmlns:cal="http://www.caliburnproject.org"
-             xmlns:viewModels="clr-namespace:EasyERP.Desktop.ViewModels"
-             d:DataContext="{d:DesignInstance Type=viewModels:ShellViewModel, IsDesignTimeCreatable=True}"
+             xmlns:product="clr-namespace:EasyERP.Desktop.Product"
+             d:DataContext="{d:DesignInstance Type=product:ProductListViewModel, IsDesignTimeCreatable=True}"
              mc:Ignorable="d"
              d:DesignHeight="400" d:DesignWidth="680">
     <Grid Margin="20,0,20,20">
@@ -39,7 +39,6 @@
             <StackPanel x:Name="SearchGrid" Orientation="Vertical">
                 <StackPanel.Resources>
                     <Style TargetType="StackPanel">
-                        <!--<Setter Property="Height" Value="30" />-->
                         <Setter Property="Margin" Value="0,10,0,0" />
                         <Setter Property="Orientation" Value="Horizontal" />
                     </Style>
@@ -53,29 +52,11 @@
                     <ComboBox Width="200" ItemsSource="{Binding CategoryList}"
                               SelectedIndex="{Binding Path=SearchCategoryId, Mode=TwoWay}" />
                 </StackPanel>
-                <StackPanel>
-                    <TextBlock Text="Search sub category:" />
-                    <CheckBox IsChecked="{Binding Path=SearchIncludeSubCategories}" />
-                </StackPanel>
-                <StackPanel>
-                    <TextBlock Text="Manufaturer:" Width="100" />
-                    <ComboBox Width="200" ItemsSource="{Binding ManufactureList}"
-                              SelectedIndex="{Binding Path=SearchManufacturerId, Mode=TwoWay}" />
-                </StackPanel>
-                <StackPanel>
-                    <TextBlock Text="Warehouse:" Width="100" />
-                    <ComboBox Width="200" ItemsSource="{Binding WarehouseList}"
-                              SelectedIndex="{Binding SearchWarehouseId, Mode=TwoWay}" />
-                </StackPanel>
+
                 <StackPanel>
                     <TextBlock Text="Product Type:" Width="100" />
                     <ComboBox Width="200" ItemsSource="{Binding ProductTypeList}"
                               SelectedIndex="{Binding SearchProductTypeId}" />
-                </StackPanel>
-                <StackPanel>
-                    <TextBlock Text="Go to by SKU:" Width="100" />
-                    <TextBox Width="200" Text="{Binding GoDirectlyToSku}" />
-                    <Button Content="Go" cal:Message.Attach="GoToSku" />
                 </StackPanel>
                 <StackPanel>
                     <Button Content="Search" cal:Message.Attach="Search" Width="100" HorizontalAlignment="Left" />
@@ -89,7 +70,7 @@
                 <telerik:RadGridView.Columns>
                     <telerik:GridViewSelectColumn />
                     <!--<telerik:GridViewImageColumn Header="Image" DataMemberBinding="{Binding ProductPictures}"></telerik:GridViewImageColumn>-->
-                    <telerik:GridViewDataColumn Header="Id" DataMemberBinding="{Binding Path=Id}" Width="60" />
+                    <!--<telerik:GridViewDataColumn Header="Id" DataMemberBinding="{Binding Path=Id}" Width="60" />-->
                     <telerik:GridViewDataColumn Header="Name" DataMemberBinding="{Binding Path=Name}" Width="60" />
                     <telerik:GridViewDataColumn Header="SKU" DataMemberBinding="{Binding Path=Description}" Width="80" />
                     <telerik:GridViewDataColumn Header="SKU" DataMemberBinding="{Binding Path=Upc}" Width="80" />

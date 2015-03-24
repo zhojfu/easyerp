@@ -1,4 +1,4 @@
-﻿namespace EasyERP.Desktop.ViewModels
+﻿namespace EasyERP.Desktop
 {
     using Autofac.Features.Metadata;
     using Caliburn.Micro;

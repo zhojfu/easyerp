@@ -31,5 +31,7 @@
         public Guid PriceId { get; set; }
 
         public ICollection<OrderComposition> CompositionProducts { get; set; }
+
+        public ICollection<PayInfo> PayInfos { get; set; }
     }
 }
