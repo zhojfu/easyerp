@@ -30,11 +30,10 @@
 
         public void AddStock(RepositoryStock stock)
         {
-            //if (!this.productRepository.Exist(stock.Product))
-            //{
-            this.productRepository.Add(stock.Product);
-
-            //}
+            if (!this.productRepository.Exist(stock.Product))
+            {
+                this.productRepository.Add(stock.Product);
+            }
 
             this.repository.Add(stock);
             this.unitOfWork.Commit();

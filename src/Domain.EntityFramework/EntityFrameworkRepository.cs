@@ -32,7 +32,7 @@
 
         public override bool Exist(TAggregateRoot aggregateRoot)
         {
-            return this.dbContext.Set<TAggregateRoot>().Count(p => p.Id == aggregateRoot.Id) != 0;
+            return this.dbContext.Set<TAggregateRoot>().Any(p => p.Equals(aggregateRoot));
         }
 
         public override void PersistNewItem(IAggregateRoot entity)
