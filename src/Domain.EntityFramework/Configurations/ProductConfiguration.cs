@@ -7,8 +7,8 @@
     {
         public ProductConfiguration()
         {
-            this.HasKey(t => t.Upc).ToTable("Products");
-            this.Property(t => t.Upc).HasMaxLength(50);
+            this.HasKey(t => t.Id).ToTable("Products");
+            this.Property(t => t.Upc).IsRequired().HasMaxLength(50);
             this.Property(t => t.Name).HasMaxLength(50);
             this.Property(t => t.Description).HasMaxLength(50);
             this.Property(t => t.Unit);

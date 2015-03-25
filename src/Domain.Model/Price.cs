@@ -16,7 +16,9 @@
 
         public Product Product { get; set; }
 
-        public string ProductId { get; set; }
+        public Guid StoreId { get; set; }
+
+        public Guid ProductId { get; set; }
 
         public ICollection<Order> Orders { get; set; }
     }

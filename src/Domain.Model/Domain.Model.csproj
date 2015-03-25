@@ -39,11 +39,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Category.cs" />
     <Compile Include="Factory\Attrition.cs" />
     <Compile Include="Factory\MaterialStatisitc.cs" />
     <Compile Include="OrderComposition.cs" />
+    <Compile Include="PayInfo.cs" />
     <Compile Include="Price.cs" />
     <Compile Include="Factory\ProductStatistic.cs" />
+    <Compile Include="ProductCategory.cs" />
+    <Compile Include="ProductType.cs" />
     <Compile Include="RepositoryStock.cs" />
     <Compile Include="Store.cs" />
     <Compile Include="Factory\AttritionStatistic.cs" />

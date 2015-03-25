@@ -1,4 +1,4 @@
-﻿namespace EasyERP.Desktop.ViewModels
+﻿namespace EasyERP.Desktop.Product
 {
     using Caliburn.Micro;
     using PropertyChanged;

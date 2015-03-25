@@ -67,7 +67,6 @@
             this.ConfigureContainer(builder);
 
             this.Container = builder.Build();
-           
         }
 
         /*private void LoadDataSettings()
@@ -120,6 +119,7 @@
         protected override void OnStartup(object sender, StartupEventArgs e)
         {
             // this.RunStartupTasks();
+            new AutoMapperStartupTask().Execute();
             this.DisplayRootViewFor<IShell>();
         }
 

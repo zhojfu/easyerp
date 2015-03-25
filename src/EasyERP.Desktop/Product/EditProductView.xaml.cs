@@ -1,6 +1,5 @@
-﻿namespace EasyERP.Desktop.Views
+﻿namespace EasyERP.Desktop.Product
 {
-    using System.Windows;
     using System.Windows.Controls;
 
     /// <summary>
