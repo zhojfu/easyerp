@@ -18,6 +18,7 @@
             this.HasRequired(o => o.Store).WithMany(s => s.Orders).HasForeignKey(o => o.StoreId);
             this.HasRequired(o => o.Price).WithMany(p => p.Orders).HasForeignKey(o => o.PriceId);
             this.HasMany(o => o.CompositionProducts).WithRequired(c => c.Order);
+            this.HasMany(o => o.PayInfos);
         }
     }
 }

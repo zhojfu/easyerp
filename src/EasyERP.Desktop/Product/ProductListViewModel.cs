@@ -1,11 +1,10 @@
-﻿namespace EasyERP.Desktop.ViewModels
+﻿namespace EasyERP.Desktop.Product
 {
-    using System;
     using Caliburn.Micro;
     using Doamin.Service;
-    using Domain.Model;
     using EasyERP.Desktop.Contacts;
     using EasyERP.Desktop.Extensions;
+    using EasyERP.Desktop.ViewModels;
     using NullGuard;
     using PropertyChanged;
     using System.Collections.Generic;
@@ -15,11 +14,11 @@
     using System.Windows;
 
     [ImplementPropertyChanged]
-    public class ListProductsViewModel : Screen, IViewModel
+    public class ProductListViewModel : Screen, IViewModel
     {
         private readonly ProductService productService;
 
-        public ListProductsViewModel(ProductService productService)
+        public ProductListViewModel(ProductService productService)
         {
             this.productService = productService;
         }
@@ -70,31 +69,19 @@
         [AllowNull]
         public string GoDirectlyToSku { get; set; }
 
-        public ObservableCollection<Product> Products
+        public ObservableCollection<ProductViewModel> Products
         {
             get
             {
-                var a = new Product
-                {
-                    Id = Guid.NewGuid(),
-                    Description = "cake description",
-                    Unit = "t",
-                    Name = "cake",
-                    Upc = "690193901",
-                };
-                //this.productService.AddNewProduct(a);
-                //var t = new TestDoubles
-                //{
-                //    Id = Guid.NewGuid(),
-                //    Name = "test"
-                //};
-                //this.productService.AddTestDouble(t);
-
-                // var ids = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
-                //return null;
-                return new ObservableCollection<Product>(this.productService.GetAllProducts());
+                return
+                    new ObservableCollection<ProductViewModel>(
+                        this.productService.GetAllProducts().Select(p => p.ToViewModel()));
             }
-            set { }
+        }
+
+        public string Tag
+        {
+            get { return "ProductManagement"; }
         }
 
         public void AddProduct()
@@ -112,7 +99,7 @@
 
             if (result)
             {
-                // this.productService.AddNewProduct(edit.Product.ToEntity());
+                this.productService.AddNewProduct(edit.Product.ToEntity());
             }
         }
 

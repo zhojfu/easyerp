@@ -2,7 +2,6 @@
 {
     using Infrastructure.Domain.Model;
     using System;
-    using System.Collections.Generic;
 
     public class RepositoryStock : BaseEntity, IAggregateRoot
     {
@@ -16,10 +15,8 @@
 
         public string Origin { get; set; }
 
+        public Guid ProductId { get; set; }
+
         public Product Product { get; set; }
-
-        public string ProductId { get; set; }
-
-        //public ICollection<OrderComposition> OrderCompositions { get; set; }
     }
 }

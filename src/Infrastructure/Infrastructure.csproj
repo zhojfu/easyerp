@@ -64,6 +64,7 @@
     <Compile Include="Domain\IUnitOfWork.cs" />
     <Compile Include="Domain\IUnitOfWorkRepository.cs" />
     <Compile Include="Domain\UnitOfWork.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -22,7 +22,7 @@
 
         public override TAggregateRoot GetByKey(Guid key)
         {
-            return this.dbContext.Set<TAggregateRoot>().First(p => p.Id == key);
+            return this.dbContext.Set<TAggregateRoot>().FirstOrDefault(p => p.Id == key);
         }
 
         public override IEnumerable<TAggregateRoot> FindAll(Expression<Func<TAggregateRoot, bool>> expression)
@@ -32,7 +32,7 @@
 
         public override bool Exist(TAggregateRoot aggregateRoot)
         {
-            return this.dbContext.Set<TAggregateRoot>().Count(p => p.Id == aggregateRoot.Id) != 0;
+            return this.dbContext.Set<TAggregateRoot>().Any(p => p.Id == aggregateRoot.Id);
         }
 
         public override void PersistNewItem(IAggregateRoot entity)

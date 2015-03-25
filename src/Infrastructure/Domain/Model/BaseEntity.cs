@@ -25,6 +25,11 @@
 
         public static bool operator ==(BaseEntity left, BaseEntity right)
         {
+            if (ReferenceEquals(left, right))
+            {
+                return true;
+            }
+
             return !ReferenceEquals(left, null) && left.Equals(right);
         }
 

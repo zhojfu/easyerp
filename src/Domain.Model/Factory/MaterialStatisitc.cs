@@ -1,7 +1,7 @@
 ﻿namespace Domain.Model.Factory
 {
-    using System;
     using Infrastructure.Domain.Model;
+    using System;
 
     public class MaterialStatisitc : BaseEntity, IAggregateRoot
     {
@@ -9,7 +9,7 @@
 
         public double ComsumeQuantity { get; set; }
 
-        public string MaterialId { get; set; }
+        public Guid MaterialId { get; set; }
 
         public virtual Product Material { get; set; } //material as same as the product
     }

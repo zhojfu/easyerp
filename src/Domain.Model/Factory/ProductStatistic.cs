@@ -1,6 +1,7 @@
 ﻿namespace Domain.Model.Factory
 {
     using Infrastructure.Domain.Model;
+    using System;
 
     public class ProductStatistic : BaseEntity, IAggregateRoot
     {
@@ -10,10 +11,10 @@
 
         #region foreign Key
 
-        public string Upc { get; set; }
+        public Guid ProductId { get; set; }
 
         public virtual Product Product { get; set; }
 
-        #endregion
+        #endregion foreign Key
     }
 }
