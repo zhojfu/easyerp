@@ -3,7 +3,7 @@
     using Caliburn.Micro;
     using NullGuard;
     using PropertyChanged;
-    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
 
     [ImplementPropertyChanged]
     public class EditProductViewModel : Screen
@@ -11,7 +11,8 @@
         [AllowNull]
         public ProductModel Product { get; set; }
 
-        public List<string> Categories { get; set; }
+        [AllowNull]
+        public ObservableCollection<string> Categories { get; set; }
 
         public void Ok()
         {

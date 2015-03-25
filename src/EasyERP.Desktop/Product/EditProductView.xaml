@@ -17,7 +17,10 @@
         <StackPanel Grid.Row="0" Orientation="Vertical">
             <StackPanel>
                 <TextBlock Text="Category:" />
-                <telerik:RadAutoCompleteBox ItemsSource="{Binding Categories}" />
+                <telerik:RadAutoCompleteBox ItemsSource="{Binding Categories}"
+                                            SelectedItem="{Binding Path=Product.Category, Mode=TwoWay}" />
+                <telerik:RadComboBox IsEditable="True" ItemsSource="{Binding Categories}" DropDownWidth="*"
+                                     SelectedItem="{Binding Path=Product.Category, Mode=TwoWay}" />
             </StackPanel>
             <StackPanel>
                 <TextBlock Text="Product Name:" />

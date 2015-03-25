@@ -18,11 +18,14 @@
     [ImplementPropertyChanged]
     public class ProductListViewModel : Screen, IViewModel
     {
+        private readonly CategoryService categoryService;
+
         private readonly ProductService productService;
 
-        public ProductListViewModel(ProductService productService)
+        public ProductListViewModel(ProductService productService, CategoryService categoryService)
         {
             this.productService = productService;
+            this.categoryService = categoryService;
         }
 
         public override string DisplayName
@@ -107,12 +110,14 @@
 
         public void AddProduct()
         {
+            var categories = this.categoryService.GetAllCategories();
             var edit = new EditProductViewModel
             {
                 Product = new ProductModel
                 {
                     Id = Guid.NewGuid()
-                }
+                },
+                Categories = new ObservableCollection<string>(categories.Select(c => c.Name).ToList())
             };
 
             dynamic settings = new ExpandoObject();
@@ -121,15 +126,37 @@
 
             var result = IoC.Get<IWindowManager>().ShowDialog(edit, null, settings);
 
+            //this.categoryService.GetProductCategoriesByProductId();
+
             if (result)
             {
                 var entity = edit.Product.ToEntity();
+                var category = categories.FirstOrDefault(i => i.Name == edit.Product.Category);
+                if (category == null)
+                {
+                    category = new Category
+                    {
+                        Name = edit.Product.Category,
+                        Descriiption = edit.Product.Category,
+                        Id = Guid.NewGuid()
+                    };
+                    this.categoryService.InsertCategory(category);
+                }
+                var productCategory = new ProductCategory
+                {
+                    Id = Guid.NewGuid(),
+                    ProductId = edit.Product.Id,
+                    DisplayOrder = 1,
+                    CategoryId = category.Id
+                };
                 this.productService.AddNewProduct(entity);
+                this.categoryService.InsertProductCategory(productCategory);
             }
         }
 
         public void Delete()
         {
+            // get all categories
             var edit = new EditProductViewModel
             {
                 Product = new ProductModel()
