@@ -14,7 +14,6 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid Grid.Row="0" Height="50" VerticalAlignment="Top">
@@ -36,46 +35,20 @@
             </StackPanel>
         </Grid>
 
-        <Expander Grid.Row="1" Visibility="Hidden">
-            <StackPanel x:Name="SearchGrid" Orientation="Vertical">
-                <StackPanel.Resources>
-                    <Style TargetType="StackPanel">
-                        <Setter Property="Margin" Value="0,10,0,0" />
-                        <Setter Property="Orientation" Value="Horizontal" />
-                    </Style>
-                </StackPanel.Resources>
-                <StackPanel>
-                    <TextBlock Text="Product name:" Width="100" VerticalAlignment="Center" />
-                    <TextBox Width="200" Text="{Binding Path=SearchProductName, Mode=TwoWay}" />
-                </StackPanel>
-                <StackPanel>
-                    <TextBlock Text="Category:" Width="100" VerticalAlignment="Center" />
-                    <ComboBox Width="200" ItemsSource="{Binding CategoryList}"
-                              SelectedIndex="{Binding Path=SearchCategoryId, Mode=TwoWay}" />
-                </StackPanel>
-
-                <StackPanel>
-                    <TextBlock Text="Product Type:" Width="100" />
-                    <ComboBox Width="200" ItemsSource="{Binding ProductTypeList}"
-                              SelectedIndex="{Binding SearchProductTypeId}" />
-                </StackPanel>
-                <StackPanel>
-                    <Button Content="Search" cal:Message.Attach="Search" Width="100" HorizontalAlignment="Left" />
-                </StackPanel>
-            </StackPanel>
-        </Expander>
-        <GridSplitter Grid.Row="2" Height="3" Background="Azure" />
-        <StackPanel Grid.Row="3">
+        <GridSplitter Grid.Row="1" Height="3" Background="Azure" />
+        <StackPanel Grid.Row="2">
             <telerik:RadGridView ItemsSource="{Binding StockList }" AutoGenerateColumns="False"
                                  SelectionMode="Extended"
                                  ShowGroupPanel="False" Margin="0,10,0,0" IsReadOnly="True">
                 <telerik:RadGridView.Columns>
+                    <telerik:GridViewDataColumn Header="Product Name" DataMemberBinding="{Binding Path=ProductName}"
+                                                Width="120" />
                     <telerik:GridViewDataColumn Header="ProductionTime"
-                                                DataMemberBinding="{Binding Path=ProductionTime}" Width="60" />
+                                                DataMemberBinding="{Binding Path=ProductionTime}" Width="120" />
                     <telerik:GridViewDataColumn Header="Quantity" DataMemberBinding="{Binding Path=Quantity}"
                                                 Width="80" />
                     <telerik:GridViewDataColumn Header="Cost" DataMemberBinding="{Binding Path=Cost}" Width="80" />
-                    <telerik:GridViewDataColumn Header="Origin" DataMemberBinding="{Binding Path=Origin}" Width="60" />
+                    <telerik:GridViewDataColumn Header="Origin" DataMemberBinding="{Binding Path=Origin}" Width="120" />
                 </telerik:RadGridView.Columns>
             </telerik:RadGridView>
         </StackPanel>

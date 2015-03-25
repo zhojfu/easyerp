@@ -2,11 +2,13 @@
 {
     using Caliburn.Micro;
     using Doamin.Service;
+    using Domain.Model;
     using EasyERP.Desktop.Contacts;
     using EasyERP.Desktop.Extensions;
-    using EasyERP.Desktop.ViewModels;
+    using Infrastructure;
     using NullGuard;
     using PropertyChanged;
+    using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Dynamic;
@@ -69,13 +71,13 @@
         [AllowNull]
         public string GoDirectlyToSku { get; set; }
 
-        public ObservableCollection<ProductViewModel> Products
+        public ObservableCollection<ProductModel> Products
         {
             get
             {
                 return
-                    new ObservableCollection<ProductViewModel>(
-                        this.productService.GetAllProducts().Select(p => p.ToViewModel()));
+                    new ObservableCollection<ProductModel>(
+                        this.productService.GetAllProducts().Select(this.PrepareProductModel));
             }
         }
 
@@ -84,11 +86,33 @@
             get { return "ProductManagement"; }
         }
 
+        private ProductModel PrepareProductModel(Product product)
+        {
+            var model = product.ToModel();
+
+            // get related price
+            var prices = this.productService.GetPricesByProductId(model.Id);
+
+            //model.Prices = prices.Select(p => p.ToModel()).ToList();
+
+            if (prices.Any())
+            {
+                model.Price = prices.Aggregate(
+                    (latest, price) =>
+                    (latest == null || latest.UpdataTime > price.UpdataTime ? latest : price))
+                                    .IfNotNull(p => p.SalePrice);
+            }
+            return model;
+        }
+
         public void AddProduct()
         {
             var edit = new EditProductViewModel
             {
-                Product = new ProductViewModel()
+                Product = new ProductModel
+                {
+                    Id = Guid.NewGuid()
+                }
             };
 
             dynamic settings = new ExpandoObject();
@@ -99,7 +123,8 @@
 
             if (result)
             {
-                this.productService.AddNewProduct(edit.Product.ToEntity());
+                var entity = edit.Product.ToEntity();
+                this.productService.AddNewProduct(entity);
             }
         }
 
@@ -107,7 +132,7 @@
         {
             var edit = new EditProductViewModel
             {
-                Product = new ProductViewModel()
+                Product = new ProductModel()
             };
 
             dynamic settings = new ExpandoObject();
@@ -121,7 +146,7 @@
         {
             var edit = new EditProductViewModel
             {
-                Product = new ProductViewModel()
+                Product = new ProductModel()
             };
 
             dynamic settings = new ExpandoObject();

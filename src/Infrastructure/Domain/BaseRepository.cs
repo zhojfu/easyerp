@@ -1,9 +1,10 @@
 ﻿namespace Infrastructure.Domain
 {
+    using Infrastructure.Domain.Model;
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Linq.Expressions;
-    using Infrastructure.Domain.Model;
 
     public abstract class BaseRepository<TAggregateRoot> : IRepository<TAggregateRoot>, IUnitOfWorkRepository
         where TAggregateRoot : IAggregateRoot
@@ -40,6 +41,16 @@
         public abstract IEnumerable<TAggregateRoot> FindAll(Expression<Func<TAggregateRoot, bool>> expression);
 
         public abstract bool Exist(TAggregateRoot aggregateRoot);
+
+        //public IQueryable<TAggregateRoot> Table
+        //{
+        //    get { this.unitOfWork.GetEntities(); }
+        //}
+
+        //public IQueryable<TAggregateRoot> TableNoTracking
+        //{
+        //    get { this.unitOfWork.GetEntities(); }
+        //}
 
         public abstract void PersistNewItem(IAggregateRoot item);
 

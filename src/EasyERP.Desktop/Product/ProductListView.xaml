@@ -35,7 +35,7 @@
             </StackPanel>
         </Grid>
 
-        <Expander Grid.Row="1">
+        <Expander Grid.Row="1" Visibility="Collapsed">
             <StackPanel x:Name="SearchGrid" Orientation="Vertical">
                 <StackPanel.Resources>
                     <Style TargetType="StackPanel">
@@ -70,19 +70,14 @@
                 <telerik:RadGridView.Columns>
                     <telerik:GridViewSelectColumn />
                     <!--<telerik:GridViewImageColumn Header="Image" DataMemberBinding="{Binding ProductPictures}"></telerik:GridViewImageColumn>-->
-                    <!--<telerik:GridViewDataColumn Header="Id" DataMemberBinding="{Binding Path=Id}" Width="60" />-->
+                    <telerik:GridViewDataColumn Header="Id" DataMemberBinding="{Binding Path=Id}" Width="120" />
                     <telerik:GridViewDataColumn Header="Name" DataMemberBinding="{Binding Path=Name}" Width="60" />
-                    <telerik:GridViewDataColumn Header="SKU" DataMemberBinding="{Binding Path=Description}" Width="80" />
+                    <telerik:GridViewDataColumn Header="Description" DataMemberBinding="{Binding Path=Description}"
+                                                Width="80" />
                     <telerik:GridViewDataColumn Header="SKU" DataMemberBinding="{Binding Path=Upc}" Width="80" />
-                    <telerik:GridViewDataColumn Header="Price" DataMemberBinding="{Binding Path=Price}" Width="60" />
-                    <telerik:GridViewDataColumn Header="Origin" DataMemberBinding="{Binding Path=Origin}" Width="60" />
-
-                    <!--<telerik:GridViewDataColumn Header="Stock quanity" DataMemberBinding="{Binding Path=StockQuantity}" Width="80" />-->
-
-                    <!--<telerik:GridViewDataColumn Header="Product type" DataMemberBinding="{Binding Path=ProductType}" Width="80" />-->
-                    <!--<telerik:GridViewDataColumn Header="Published" DataMemberBinding="{Binding Path=Published}" Width="80" />-->
-
-                    <!--<telerik:GridViewDataColumn Header="Edit" DataMemberBinding="{Binding Path=Name}" />-->
+                    <telerik:GridViewDataColumn Header="Unit" DataMemberBinding="{Binding Path=Unit}" Width="80" />
+                    <!--<telerik:GridViewDataColumn Header="Price" DataMemberBinding="{Binding Path=Price}" Width="60" />-->
+                    <!--<telerik:GridViewDataColumn Header="Origin" DataMemberBinding="{Binding Path=Origin}" Width="60" />-->
                 </telerik:RadGridView.Columns>
             </telerik:RadGridView>
         </StackPanel>
