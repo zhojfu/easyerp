@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Domain.EntityFramework.Configurations.Factory
+﻿namespace Domain.EntityFramework.Configurations.Factory
 {
     using System.Data.Entity.ModelConfiguration;
     using Domain.Model.Factory;
 
-    class MaterialStatisticConfiguration : EntityTypeConfiguration<MaterialStatisitc>
+    internal class MaterialStatisticConfiguration : EntityTypeConfiguration<MaterialStatisitc>
     {
         public MaterialStatisticConfiguration()
         {
