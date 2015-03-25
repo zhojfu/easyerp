@@ -54,6 +54,22 @@
                                              LargeImage="images/paste.png" Size="Large" />
                 </telerik:RadRibbonGroup>
             </telerik:RadRibbonTab>
+            <telerik:RadRibbonTab Header="Factory Management" Tag="FactoryManagement">
+                <telerik:RadRibbonGroup Header="Factory Management">
+                    <telerik:RadRibbonButton Text="Attrition Statistic"
+                                             SmallImage="Images/paste.png"
+                                             LargeImage="images/paste.png" Size="Large" />
+                    <telerik:RadRibbonButton Text="Material Statistic"
+                                             SmallImage="images/paste.png"
+                                             LargeImage="images/paste.png" Size="Large" />
+                    <telerik:RadRibbonButton Text="Product Statistic"
+                                             SmallImage="images/paste.png"
+                                             LargeImage="images/paste.png" Size="Large" />
+                    <telerik:RadRibbonButton Text="WorkTime Statistic"
+                                             SmallImage="images/paste.png"
+                                             LargeImage="images/paste.png" Size="Large" />
+                </telerik:RadRibbonGroup>
+            </telerik:RadRibbonTab>
         </telerik:RadRibbonView>
         <!--<ContentControl Grid.Row="1" x:Name="ActiveItem" />-->
         <Grid Grid.Row="1">

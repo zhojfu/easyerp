@@ -39,6 +39,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Factory\AttritionService.cs" />
+    <Compile Include="Factory\IAttritionService.cs" />
     <Compile Include="Installation\CodeFirstInstallationService.cs" />
     <Compile Include="Installation\IInstallationService.cs" />
     <Compile Include="Installation\SqlFileInstallationService.cs" />
@@ -60,6 +62,7 @@
       <Name>Infrastructure %28Infrastructure\Infrastructure%29</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
