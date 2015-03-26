@@ -2,12 +2,10 @@
 {
     using Autofac;
     using Caliburn.Micro;
-    using Doamin.Service.Installation;
     using EasyERP.Desktop.Contacts;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
-    using System.IO;
     using System.Linq;
     using System.Reflection;
     using System.Windows;
@@ -15,8 +13,6 @@
 
     public class AutofacBootstrapper : BootstrapperBase
     {
-        private bool isDatabaseInstalled;
-
         public AutofacBootstrapper()
         {
             this.Initialize();

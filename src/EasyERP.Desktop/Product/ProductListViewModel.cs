@@ -2,11 +2,13 @@
 {
     using Caliburn.Micro;
     using Doamin.Service;
+    using Domain.Model;
     using EasyERP.Desktop.Contacts;
     using EasyERP.Desktop.Extensions;
-    using EasyERP.Desktop.ViewModels;
+    using Infrastructure;
     using NullGuard;
     using PropertyChanged;
+    using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Dynamic;
@@ -16,11 +18,14 @@
     [ImplementPropertyChanged]
     public class ProductListViewModel : Screen, IViewModel
     {
+        private readonly CategoryService categoryService;
+
         private readonly ProductService productService;
 
-        public ProductListViewModel(ProductService productService)
+        public ProductListViewModel(ProductService productService, CategoryService categoryService)
         {
             this.productService = productService;
+            this.categoryService = categoryService;
         }
 
         public override string DisplayName
@@ -69,13 +74,13 @@
         [AllowNull]
         public string GoDirectlyToSku { get; set; }
 
-        public ObservableCollection<ProductViewModel> Products
+        public ObservableCollection<ProductModel> Products
         {
             get
             {
                 return
-                    new ObservableCollection<ProductViewModel>(
-                        this.productService.GetAllProducts().Select(p => p.ToViewModel()));
+                    new ObservableCollection<ProductModel>(
+                        this.productService.GetAllProducts().Select(this.PrepareProductModel));
             }
         }
 
@@ -84,11 +89,35 @@
             get { return "ProductManagement"; }
         }
 
+        private ProductModel PrepareProductModel(Product product)
+        {
+            var model = product.ToModel();
+
+            // get related price
+            var prices = this.productService.GetPricesByProductId(model.Id);
+
+            //model.Prices = prices.Select(p => p.ToModel()).ToList();
+
+            if (prices.Any())
+            {
+                model.Price = prices.Aggregate(
+                    (latest, price) =>
+                    (latest == null || latest.UpdataTime > price.UpdataTime ? latest : price))
+                                    .IfNotNull(p => p.SalePrice);
+            }
+            return model;
+        }
+
         public void AddProduct()
         {
+            var categories = this.categoryService.GetAllCategories();
             var edit = new EditProductViewModel
             {
-                Product = new ProductViewModel()
+                Product = new ProductModel
+                {
+                    Id = Guid.NewGuid()
+                },
+                Categories = new ObservableCollection<string>(categories.Select(c => c.Name).ToList())
             };
 
             dynamic settings = new ExpandoObject();
@@ -97,17 +126,40 @@
 
             var result = IoC.Get<IWindowManager>().ShowDialog(edit, null, settings);
 
+            //this.categoryService.GetProductCategoriesByProductId();
+
             if (result)
             {
-                this.productService.AddNewProduct(edit.Product.ToEntity());
+                var entity = edit.Product.ToEntity();
+                var category = categories.FirstOrDefault(i => i.Name == edit.Product.Category);
+                if (category == null)
+                {
+                    category = new Category
+                    {
+                        Name = edit.Product.Category,
+                        Descriiption = edit.Product.Category,
+                        Id = Guid.NewGuid()
+                    };
+                    this.categoryService.InsertCategory(category);
+                }
+                var productCategory = new ProductCategory
+                {
+                    Id = Guid.NewGuid(),
+                    ProductId = edit.Product.Id,
+                    DisplayOrder = 1,
+                    CategoryId = category.Id
+                };
+                this.productService.AddNewProduct(entity);
+                this.categoryService.InsertProductCategory(productCategory);
             }
         }
 
         public void Delete()
         {
+            // get all categories
             var edit = new EditProductViewModel
             {
-                Product = new ProductViewModel()
+                Product = new ProductModel()
             };
 
             dynamic settings = new ExpandoObject();
@@ -121,7 +173,7 @@
         {
             var edit = new EditProductViewModel
             {
-                Product = new ProductViewModel()
+                Product = new ProductModel()
             };
 
             dynamic settings = new ExpandoObject();

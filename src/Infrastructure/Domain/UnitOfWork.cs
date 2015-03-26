@@ -1,8 +1,9 @@
 ﻿namespace Infrastructure.Domain
 {
+    using Infrastructure.Domain.Model;
     using System;
     using System.Collections.Generic;
-    using Infrastructure.Domain.Model;
+    using System.Transactions;
 
     public class UnitOfWork : IUnitOfWork
     {
@@ -55,28 +56,28 @@
 
         public virtual void Commit()
         {
-            //using (var scope = new TransactionScope())
-            //{
-            foreach (var operation in this.operations)
+            using (var scope = new TransactionScope())
             {
-                switch (operation.Type)
+                foreach (var operation in this.operations)
                 {
-                    case Operation.OperationType.Insert:
-                        operation.Repository.PersistNewItem(operation.AggregateRoot);
-                        break;
+                    switch (operation.Type)
+                    {
+                        case Operation.OperationType.Insert:
+                            operation.Repository.PersistNewItem(operation.AggregateRoot);
+                            break;
 
-                    case Operation.OperationType.Remove:
-                        operation.Repository.PersistRemoveItem(operation.AggregateRoot);
-                        break;
+                        case Operation.OperationType.Remove:
+                            operation.Repository.PersistRemoveItem(operation.AggregateRoot);
+                            break;
 
-                    case Operation.OperationType.Update:
-                        operation.Repository.PersistUpdateItem(operation.AggregateRoot);
-                        break;
+                        case Operation.OperationType.Update:
+                            operation.Repository.PersistUpdateItem(operation.AggregateRoot);
+                            break;
+                    }
                 }
+                this.operations.Clear();
+                scope.Complete();
             }
-            this.operations.Clear();
-            //    scope.Complete();
-            //}
         }
     }
 

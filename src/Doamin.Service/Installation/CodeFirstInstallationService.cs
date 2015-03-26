@@ -6,14 +6,20 @@
 
     public class CodeFirstInstallationService : IInstallationService
     {
-        public readonly IRepository<Order> OrderRepository;
+        private readonly IRepository<Category> categoryRepository;
 
-        public readonly IRepository<Product> ProducrRepository;
+        private readonly IRepository<Order> orderRepository;
 
-        public CodeFirstInstallationService(IRepository<Product> productRepository, IRepository<Order> orderRepository)
+        private readonly IRepository<Product> producrRepository;
+
+        public CodeFirstInstallationService(
+            IRepository<Product> productRepository,
+            IRepository<Order> orderRepository,
+            IRepository<Category> categoryRepository)
         {
-            this.ProducrRepository = productRepository;
-            this.OrderRepository = orderRepository;
+            this.producrRepository = productRepository;
+            this.orderRepository = orderRepository;
+            this.categoryRepository = categoryRepository;
         }
 
         public void InstallData()
@@ -25,8 +31,33 @@
         {
             var products = new List<Product>();
 
-            products.ForEach(p => this.ProducrRepository.Add(p));
-            this.ProducrRepository.Update();
+            products.ForEach(p => this.producrRepository.Add(p));
+            this.producrRepository.Update();
+        }
+
+        protected virtual void InstallCategories()
+        {
+            var allCategories = new List<Category>
+            {
+                new Category
+                {
+                    Name = "Rice",
+                    Descriiption = "Rice category"
+                },
+                new Category
+                {
+                    Name = "Food Oil",
+                    Descriiption = "Food Oil category"
+                },
+                new Category
+                {
+                    Name = "Other",
+                    Descriiption = "Other category"
+                }
+            };
+
+            allCategories.ForEach(c => this.categoryRepository.Add(c));
+            this.categoryRepository.Update();
         }
 
         private void InstallOrder()
