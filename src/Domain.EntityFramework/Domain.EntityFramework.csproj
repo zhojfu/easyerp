@@ -71,6 +71,7 @@
     <Compile Include="EntityFrameworkRepository.cs" />
     <Compile Include="EntityFrameworkUnitOfWork.cs" />
     <Compile Include="EntitySetupConfiguration.cs" />
+    <Compile Include="DatabaseInitializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -1,6 +1,5 @@
 ﻿namespace Domain.EntityFramework
 {
-    using Domain.EntityFramework.Configurations;
     using Infrastructure.Domain.EntityFramework;
     using Infrastructure.Domain.Model;
     using System;
@@ -14,7 +13,7 @@
         public EntityFrameworkDbContext(string connectionString)
             : base(connectionString)
         {
-            Database.SetInitializer(new DropCreateDatabaseIfModelChanges<EntityFrameworkDbContext>());
+            Database.SetInitializer(new DatabaseInitializer());
         }
 
         public new IDbSet<TEntity> Set<TEntity>() where TEntity : class, IAggregateRoot
