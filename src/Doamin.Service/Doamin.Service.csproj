@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CategoryService.cs" />
     <Compile Include="Factory\AttritionService.cs" />
     <Compile Include="Factory\DaliyStatisticService.cs" />
     <Compile Include="Factory\EmployeeService.cs" />
