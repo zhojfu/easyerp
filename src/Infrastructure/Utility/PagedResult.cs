@@ -10,7 +10,7 @@ namespace Infrastructure.Utility
 
     using Infrastructure.Domain.Model;
 
-    public class PagedResult<T> : ICollection<T> where T : IAggregateRoot
+    public class PagedResult<T> : ICollection<T> 
     {
         public PagedResult(int pageSize, int pageNumber, int totalPages, int totalRecords, List<T> data)
         {
