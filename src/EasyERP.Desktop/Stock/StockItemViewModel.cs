@@ -7,11 +7,17 @@
     [ImplementPropertyChanged]
     public class StockItemViewModel
     {
-        [AllowNull]
-        public DateTime ProductionTime { get; set; }
+        public StockItemViewModel()
+        {
+            this.StockTime = null;
+            this.ProductionTime = null;
+        }
 
         [AllowNull]
-        public DateTime StockTime { get; set; }
+        public DateTime? ProductionTime { get; set; }
+
+        [AllowNull]
+        public DateTime? StockTime { get; set; }
 
         public double Quantity { get; set; }
 
@@ -21,6 +27,6 @@
         public string Origin { get; set; }
 
         [AllowNull]
-        public string ProductId { get; set; }
+        public string ProductName { get; set; }
     }
 }

@@ -25,6 +25,7 @@
             builder.RegisterType<Domain.Model.Product>().AsSelf();
             builder.RegisterType<ProductService>().AsSelf();
             builder.RegisterType<StockService>().AsSelf();
+            builder.RegisterType<CategoryService>().AsSelf();
         }
     }
 }

@@ -195,13 +195,15 @@
       <DependentUpon>ListAttritionView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Factory\ListAttritionViewModel.cs" />
+    <Compile Include="Price\PriceModel.cs" />
+    <Compile Include="Product\ProductDetailsModel.cs" />
+    <Compile Include="Product\ProductModel.cs" />
     <Compile Include="RibbonViewContainer.xaml.cs">
       <DependentUpon>RibbonViewContainer.xaml</DependentUpon>
     </Compile>
     <Compile Include="Product\EditProductViewModel.cs" />
     <Compile Include="Order\ListOrdersViewModel.cs" />
     <Compile Include="Product\ProductListViewModel.cs" />
-    <Compile Include="Product\ProductViewModel.cs" />
     <Compile Include="ShellViewModel.cs" />
     <Compile Include="Stock\EditStockItemViewModel.cs" />
     <Compile Include="Stock\StockItemViewModel.cs" />
@@ -319,6 +321,10 @@
       <Project>{9A1DEFAC-0977-4B5C-896B-F079B2D26382}</Project>
       <Name>Domain.Model</Name>
     </ProjectReference>
+    <ProjectReference Include="..\EasyERP.Desktop.Style\Nop.Desktop.Style.csproj">
+      <Project>{af28b468-1f6a-4e71-b72d-7d8b6e08c48b}</Project>
+      <Name>Nop.Desktop.Style</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Infrastructure.Desktop\Infrastructure.Desktop.csproj">
       <Project>{fd916824-b817-4c83-bae1-05dde888eabd}</Project>
       <Name>Infrastructure.Desktop</Name>
@@ -356,7 +362,6 @@
   <ItemGroup>
     <Resource Include="Images\paste.png" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Fody.1.26.4\build\Fody.targets" Condition="Exists('..\packages\Fody.1.26.4\build\Fody.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

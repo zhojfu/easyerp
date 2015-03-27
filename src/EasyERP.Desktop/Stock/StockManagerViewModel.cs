@@ -44,14 +44,20 @@
 
         public void Add()
         {
+            var products = this.productService.GetAllProducts();
+            var productsName = products.Select(p => p.Name).ToList();
+
             var vm = new EditStockItemViewModel
             {
-                StockItem = new StockItemViewModel()
+                StockItem = new StockItemViewModel(),
+                Products = productsName
             };
             var result = IoC.Get<IWindowManager>().ShowDialog(vm);
             if (result.GetValueOrDefault(false))
             {
-                this.stockService.AddStock(vm.StockItem.ToEntity());
+                var entity = vm.StockItem.ToEntity();
+                entity.ProductId = products.First(p => p.Name == vm.StockItem.ProductName).Id;
+                this.stockService.AddStock(entity);
             }
         }
     }

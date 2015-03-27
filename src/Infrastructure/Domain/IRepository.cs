@@ -6,6 +6,10 @@
 
     public interface IRepository<TAggregateRoot>
     {
+        //IQueryable<TAggregateRoot> Table { get; }
+
+        //IQueryable<TAggregateRoot> TableNoTracking { get; }
+
         TAggregateRoot GetByKey(Guid key);
 
         IEnumerable<TAggregateRoot> FindAll(Expression<Func<TAggregateRoot, bool>> expression);

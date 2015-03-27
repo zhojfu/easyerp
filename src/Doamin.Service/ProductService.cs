@@ -8,31 +8,41 @@
 
     public class ProductService
     {
+        private readonly IRepository<Price> priceRepository;
+
         private readonly IRepository<Product> repository;
 
         private readonly IUnitOfWork unitOfWork;
 
-        public ProductService(IRepository<Product> repository, IUnitOfWork unitOfWork)
+        public ProductService(
+            IRepository<Product> repository,
+            IRepository<Price> priceRepository,
+            IUnitOfWork unitOfWork)
         {
             this.repository = repository;
+            this.priceRepository = priceRepository;
             this.unitOfWork = unitOfWork;
         }
 
-        public Product GetProductById(int id)
+        //public Product GetProductById(int id)
+        //{
+        //    var query = from p in this.pricerepository.
+        //}
+
+        public List<Price> GetPricesByProductId(Guid productId)
         {
-            throw new NotImplementedException();
+            return this.priceRepository.FindAll(i => i.ProductId == productId).OrderBy(p => p.UpdataTime).ToList();
         }
 
-        public IList<Product> GetProductsByIds(int[] ids)
+        public IList<Product> GetProductsByIds(Guid[] ids)
         {
-            return null;
-            //return this.repository.FindAll(a => a.Name.Contains("cake")).ToList();
+            return this.repository.FindAll(a => ids.Contains(a.Id)).ToList();
         }
 
         public IList<Product> GetAllProducts()
         {
-           // return null;
-            return this.repository.FindAll(a => a.Name.Contains("cake")).ToList();
+            // return null;
+            return this.repository.FindAll(a => true).ToList();
         }
 
         public void AddNewProduct(Product product)

@@ -1,7 +1,7 @@
-﻿using Infrastructure.Domain.Model;
-
-namespace Infrastructure.Domain
+﻿namespace Infrastructure.Domain
 {
+    using Infrastructure.Domain.Model;
+
     public interface IUnitOfWork
     {
         void RegisterAdd(IAggregateRoot entity, IUnitOfWorkRepository repository);
