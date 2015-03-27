@@ -66,6 +66,8 @@
     <Compile Include="Domain\UnitOfWork.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utility\DateHelper.cs" />
+    <Compile Include="Utility\PagedResult.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
