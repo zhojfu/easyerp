@@ -1,10 +1,10 @@
 ﻿
 
-namespace Doamin.Service.Factory
+namespace Infrastructure.Utility
 {
     using System;
 
-    public static class DateUtils
+    public static class DateHelper
     {
         private const int WeekDays = 7;
 
