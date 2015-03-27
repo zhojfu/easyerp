@@ -40,7 +40,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Factory\AttritionService.cs" />
+    <Compile Include="Factory\DaliyStatisticService.cs" />
+    <Compile Include="Factory\DateUtils.cs" />
     <Compile Include="Factory\IAttritionService.cs" />
+    <Compile Include="Factory\IStatisticService.cs" />
+    <Compile Include="Factory\WorkTimeStatisticService.cs" />
     <Compile Include="Installation\CodeFirstInstallationService.cs" />
     <Compile Include="Installation\IInstallationService.cs" />
     <Compile Include="Installation\SqlFileInstallationService.cs" />

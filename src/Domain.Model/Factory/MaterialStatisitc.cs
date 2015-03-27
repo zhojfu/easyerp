@@ -3,10 +3,8 @@
     using Infrastructure.Domain.Model;
     using System;
 
-    public class MaterialStatisitc : BaseEntity, IAggregateRoot
+    public class MaterialStatisitc : Statistic, IAggregateRoot
     {
-        public DateTime Date { get; set; }
-
         public double ComsumeQuantity { get; set; }
 
         public Guid MaterialId { get; set; }

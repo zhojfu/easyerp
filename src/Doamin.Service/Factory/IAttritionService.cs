@@ -7,7 +7,7 @@ namespace Doamin.Service.Factory
 
     public interface IAttritionService
     {
-        void EidtAttritionCategory(Attrition attrition);
+        void UpdateAttritionCategory(Attrition attrition);
 
         void AddAttritionCategory(Attrition attrition);
 

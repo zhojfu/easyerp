@@ -42,6 +42,7 @@
     <Compile Include="Category.cs" />
     <Compile Include="Factory\Attrition.cs" />
     <Compile Include="Factory\MaterialStatisitc.cs" />
+    <Compile Include="Factory\Statistic.cs" />
     <Compile Include="OrderComposition.cs" />
     <Compile Include="PayInfo.cs" />
     <Compile Include="Price.cs" />

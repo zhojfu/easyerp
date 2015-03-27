@@ -19,7 +19,7 @@ namespace Doamin.Service.Factory
             this.unitOfWork = unitOfWork;
         }
 
-        public void EidtAttritionCategory(Attrition attrition)
+        public void UpdateAttritionCategory(Attrition attrition)
         {
             this.repository.Update(attrition);
             this.unitOfWork.Commit();

@@ -191,6 +191,10 @@
     <Compile Include="DependencyRegistrar.cs" />
     <Compile Include="DomainServicesModule.cs" />
     <Compile Include="Extensions\MappingExtensions.cs" />
+    <Compile Include="Factory\ListAttritionView.xaml.cs">
+      <DependentUpon>ListAttritionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Factory\ListAttritionViewModel.cs" />
     <Compile Include="RibbonViewContainer.xaml.cs">
       <DependentUpon>RibbonViewContainer.xaml</DependentUpon>
     </Compile>
@@ -227,6 +231,10 @@
     <Compile Include="Stock\StockManagerView.xaml.cs">
       <DependentUpon>StockManagerView.xaml</DependentUpon>
     </Compile>
+    <Page Include="Factory\ListAttritionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Resources\Icons.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -348,9 +356,7 @@
   <ItemGroup>
     <Resource Include="Images\paste.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Factory\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Fody.1.26.4\build\Fody.targets" Condition="Exists('..\packages\Fody.1.26.4\build\Fody.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
