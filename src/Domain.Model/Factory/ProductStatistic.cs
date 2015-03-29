@@ -1,9 +1,10 @@
 ﻿namespace Domain.Model.Factory
 {
-    using Infrastructure.Domain.Model;
     using System;
 
-    public class ProductStatistic : BaseEntity, IAggregateRoot
+    using Infrastructure.Domain.Model;
+
+    public class ProductStatistic : Statistic, IAggregateRoot
     {
         public double QualifyQuaitity { get; set; }
 

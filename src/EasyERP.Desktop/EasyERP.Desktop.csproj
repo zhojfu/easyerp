@@ -191,6 +191,10 @@
     <Compile Include="DependencyRegistrar.cs" />
     <Compile Include="DomainServicesModule.cs" />
     <Compile Include="Extensions\MappingExtensions.cs" />
+    <Compile Include="Factory\ListAttritionView.xaml.cs">
+      <DependentUpon>ListAttritionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Factory\ListAttritionViewModel.cs" />
     <Compile Include="Price\PriceModel.cs" />
     <Compile Include="Product\ProductDetailsModel.cs" />
     <Compile Include="Product\ProductModel.cs" />
@@ -229,6 +233,10 @@
     <Compile Include="Stock\StockManagerView.xaml.cs">
       <DependentUpon>StockManagerView.xaml</DependentUpon>
     </Compile>
+    <Page Include="Factory\ListAttritionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Resources\Icons.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

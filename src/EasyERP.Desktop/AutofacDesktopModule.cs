@@ -2,6 +2,7 @@
 {
     using Autofac;
     using EasyERP.Desktop.Contacts;
+    using EasyERP.Desktop.Factory;
     using EasyERP.Desktop.Product;
     using EasyERP.Desktop.Stock;
     using EasyERP.Desktop.ViewModels;
@@ -11,6 +12,7 @@
         protected override void Load(ContainerBuilder builder)
         {
             //builder.RegisterType<ViewModelMetadataAttribute>().AsSelf();
+            builder.RegisterType<ListAttritionViewModel>().As<IViewModel>().WithMetadata("Order", 400);
             builder.RegisterType<ProductListViewModel>().As<IViewModel>().WithMetadata("Order", 100);
             builder.RegisterType<ListOrdersViewModel>().As<IViewModel>().WithMetadata("Order", 200);
             builder.RegisterType<StockManagerViewModel>().As<IViewModel>().WithMetadata("Order", 300);

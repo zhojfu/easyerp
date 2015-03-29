@@ -1,10 +1,11 @@
-﻿namespace Domain.Model.Factory
+﻿
+namespace Domain.Model.Factory
 {
     using System.Collections.Generic;
     using Infrastructure.Domain.Model;
 
     /*water, power...*/
-    public class Attrition: BaseEntity, IAggregateRoot
+    public class Attrition : BaseEntity, IAggregateRoot
     {
         public string Name { get; set; }
 

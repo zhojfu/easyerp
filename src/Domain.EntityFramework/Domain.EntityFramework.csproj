@@ -53,6 +53,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configurations\EmployeeConfiguration.cs" />
     <Compile Include="Configurations\CategoryConfiguration.cs" />
     <Compile Include="Configurations\Factory\AttritionConfiguration.cs" />
     <Compile Include="Configurations\Factory\AttritionStatisticConfiguration.cs" />

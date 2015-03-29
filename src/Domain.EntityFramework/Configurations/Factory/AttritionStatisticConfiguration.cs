@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace Domain.EntityFramework.Configurations.Factory
 {
     using System.Data.Entity.ModelConfiguration;
     using Domain.Model.Factory;
 
-    class AttritionStatisticConfiguration : EntityTypeConfiguration<AttritionStatistic>
+    internal class AttritionStatisticConfiguration : EntityTypeConfiguration<AttritionStatistic>
     {
         public AttritionStatisticConfiguration()
         {

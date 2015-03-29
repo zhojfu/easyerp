@@ -1,10 +1,11 @@
 ﻿namespace Infrastructure.Domain
 {
-    using Infrastructure.Domain.Model;
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
+
+    using Infrastructure.Domain.Model;
+    using Infrastructure.Utility;
 
     public abstract class BaseRepository<TAggregateRoot> : IRepository<TAggregateRoot>, IUnitOfWorkRepository
         where TAggregateRoot : IAggregateRoot
@@ -42,15 +43,12 @@
 
         public abstract bool Exist(TAggregateRoot aggregateRoot);
 
-        //public IQueryable<TAggregateRoot> Table
-        //{
-        //    get { this.unitOfWork.GetEntities(); }
-        //}
-
-        //public IQueryable<TAggregateRoot> TableNoTracking
-        //{
-        //    get { this.unitOfWork.GetEntities(); }
-        //}
+        public abstract PagedResult<TAggregateRoot> FindAll(
+            int pageSize,
+            int pageNumber,
+            Expression<Func<TAggregateRoot, bool>> selectExp,
+            Expression<Func<TAggregateRoot, dynamic>> orderExp,
+            SortOrder sortOrder); 
 
         public abstract void PersistNewItem(IAggregateRoot item);
 

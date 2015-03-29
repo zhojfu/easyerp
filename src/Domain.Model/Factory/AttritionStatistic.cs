@@ -3,10 +3,8 @@
     using System;
     using Infrastructure.Domain.Model;
 
-    public class AttritionStatistic : BaseEntity, IAggregateRoot
+    public class AttritionStatistic : Statistic, IAggregateRoot
     {
-        public DateTime Date { get; set; }
-
         public double Volume { get; set; }
 
         public double PriceOfUnit { get; set; }
