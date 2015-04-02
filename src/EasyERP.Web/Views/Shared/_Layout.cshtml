@@ -4,14 +4,16 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>Layout</title>
-    @Styles.Render("~/Content/css")
+    <!--@Styles.Render("~/bundles/css")-->
+    @Styles.Render("~/bundles/kendo/css")
     @Scripts.Render("~/Scripts/jquery-1.10.2.min.js")
 </head>
 <body>
     <div>
         @RenderBody()
     </div>
-    @Scripts.Render("~/bundles/bootstrap")
+    <!-- @Scripts.Render("~/bundles/bootstrap")-->
+    @Scripts.Render("~/bundles/kendo/js")
     @RenderSection("scripts", required: false)
 </body>
 </html>

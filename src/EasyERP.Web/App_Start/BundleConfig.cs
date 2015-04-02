@@ -12,6 +12,13 @@ namespace EasyERP.Web.App_Start
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                         "~/Scripts/bootstrap.js"));
 
+            bundles.Add(new StyleBundle("~/bundles/kendo/css").Include(
+                       "~/Content/kendo/2014.2.716/kendo.default.min.css",
+                       "~/Content/kendo/2014.2.716/kendo.common.min.css"));
+
+            bundles.Add(new ScriptBundle("~/bundles/kendo/js").Include(
+                        "~/Scripts/kendo/2014.2.716/kendo.all.min.js"));
+
             bundles.Add(new StyleBundle("~/bundles/css").Include(
                         "~/Content/bootstrap.css",
                         "~/Content/site.css"));
