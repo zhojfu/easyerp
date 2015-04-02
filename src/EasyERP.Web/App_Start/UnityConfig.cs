@@ -4,11 +4,13 @@ using Microsoft.Practices.Unity.Configuration;
 
 namespace EasyERP.Web.App_Start
 {
+    using System.Data.Entity;
     using Doamin.Service.Factory;
 
     using Domain.EntityFramework;
-
+    using Domain.Model.Factory;
     using Infrastructure.Domain;
+    using Infrastructure.Domain.EntityFramework;
 
     /// <summary>
     /// Specifies the Unity configuration for the main container.
@@ -42,14 +44,13 @@ namespace EasyERP.Web.App_Start
             // container.LoadConfiguration();
 
             // TODO: Register your types here
-            // container.RegisterType<IProductRepository, ProductRepository>();
-
             const string ConnectionString = "easyerp_db";
-            var dataContext = new EntityFrameworkDbContext(ConnectionString);
-
-            container.RegisterInstance(typeof(IUnitOfWork), new EntityFrameworkUnitOfWork(dataContext));
-            container.RegisterType(typeof(EntityFrameworkRepository<>), typeof(IRepository<>));
-            container.RegisterType(typeof(DaliyStatisticService<>), typeof(IStatisticService<>));
+            var dbContext = new EntityFrameworkDbContext(ConnectionString);
+            // container.RegisterInstance(typeof(DbContext),new EntityFrameworkDbContext(ConnectionString));
+            container.RegisterInstance(typeof(IEntityFrameworkDbContext), dbContext);
+            container.RegisterInstance(typeof(IUnitOfWork),  new EntityFrameworkUnitOfWork(dbContext));
+            container.RegisterType(typeof(IRepository<>), typeof(EntityFrameworkRepository<>));
+            container.RegisterType(typeof(IStatisticService<>), typeof(DaliyStatisticService<>));
 
 
             // container.RegisterType<IUnitOfWork, EntityFrameworkUnitOfWork>();

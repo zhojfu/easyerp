@@ -12,7 +12,7 @@ namespace Domain.EntityFramework.Configurations.Factory
             this.Property(w => w.SalaryOfDay);
             this.Property(w => w.WorkTimeHr);
             this.Property(w => w.Date);
-            this.HasRequired(w => w.Employee).WithMany(wk => wk.WorkTimeRecords).HasForeignKey(w => w.Id);
+            this.HasRequired(w => w.Employee).WithMany(wk => wk.WorkTimeRecords).HasForeignKey(w=>w.EmployeeId);
         }
     }
 }

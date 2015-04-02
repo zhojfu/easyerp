@@ -16,7 +16,7 @@ namespace Doamin.Service.Factory
 
         private readonly IUnitOfWork unitOfWork;
 
-        protected DaliyStatisticService(IRepository<T> repository, IUnitOfWork unitOfWork )
+        public DaliyStatisticService(IRepository<T> repository, IUnitOfWork unitOfWork )
         {
             this.repository = repository;
             this.unitOfWork = unitOfWork;
