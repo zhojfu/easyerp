@@ -11,6 +11,7 @@ namespace EasyERP.Web
     {
         protected void Application_Start()
         {
+            AutoMapperBootstraper.RegisterModelMapper();
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);

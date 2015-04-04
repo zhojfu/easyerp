@@ -51,7 +51,7 @@ namespace EasyERP.Web.App_Start
             container.RegisterInstance(typeof(IUnitOfWork),  new EntityFrameworkUnitOfWork(dbContext));
             container.RegisterType(typeof(IRepository<>), typeof(EntityFrameworkRepository<>));
             container.RegisterType(typeof(IStatisticService<>), typeof(DaliyStatisticService<>));
-
+            container.RegisterType(typeof(IEmployeeService), typeof(EmployeeService));
 
             // container.RegisterType<IUnitOfWork, EntityFrameworkUnitOfWork>();
             // container.RegisterType<IRepository<>>()

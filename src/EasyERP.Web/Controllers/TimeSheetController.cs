@@ -12,11 +12,11 @@ namespace EasyERP.Web.Controllers
 
     using Domain.Model.Factory;
 
-    public class TimeSheetController : Controller
+    public class TimesheetController : Controller
     {
-        private IStatisticService<WorkTimeStatistic> timeSheetService;
+        private readonly IStatisticService<WorkTimeStatistic> timeSheetService;
  
-        public TimeSheetController(IStatisticService<WorkTimeStatistic> timeSheetService)
+        public TimesheetController(IStatisticService<WorkTimeStatistic> timeSheetService)
         {
             this.timeSheetService = timeSheetService;
         }
@@ -28,6 +28,7 @@ namespace EasyERP.Web.Controllers
             return View();
         }
 
+       
         public JsonResult GetTimeSheetByDate(string date)
         {
             DateTime selectDate;
