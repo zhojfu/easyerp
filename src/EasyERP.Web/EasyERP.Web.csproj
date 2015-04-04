@@ -44,6 +44,12 @@
     <Reference Include="Antlr3.Runtime">
       <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
+    <Reference Include="AutoMapper">
+      <HintPath>..\packages\AutoMapper.3.3.1\lib\net40\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="AutoMapper.Net4">
+      <HintPath>..\packages\AutoMapper.3.3.1\lib\net40\AutoMapper.Net4.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -120,6 +126,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\bootstrap-theme.css" />
+    <Content Include="Content\bootstrap-theme.min.css" />
+    <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\kendo\2014.2.716\Black\editor.png" />
     <Content Include="Content\kendo\2014.2.716\Black\imagebrowser.png" />
     <Content Include="Content\kendo\2014.2.716\Black\indeterminate.gif" />
@@ -589,6 +599,7 @@
     <Content Include="Content\kendo\2015.1.318\Uniform\sprite_kpi.png" />
     <Content Include="Content\kendo\2015.1.318\Uniform\sprite_kpi_2x.png" />
     <Content Include="Content\site.css" />
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\kendo\2015.1.318\images\kendoui.woff" />
     <Content Include="Content\kendo\2015.1.318\images\kendoui.ttf" />
@@ -606,7 +617,13 @@
     <Content Include="Content\kendo\2015.1.318\fonts\DejaVu\DejaVuSans.ttf" />
     <Content Include="Content\kendo\2014.2.716\images\kendoui.woff" />
     <Content Include="Content\kendo\2014.2.716\images\kendoui.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\inventory.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -1589,6 +1606,7 @@
     <Content Include="Scripts\kendo\2015.1.318\messages\kendo.messages.zh-CN.min.js" />
     <Content Include="Scripts\kendo\2015.1.318\messages\kendo.messages.zh-HK.min.js" />
     <Content Include="Scripts\kendo\2015.1.318\messages\kendo.messages.zh-TW.min.js" />
+    <Content Include="Scripts\timesheet.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -1596,10 +1614,15 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="App_Start\UnityMvcActivator.cs" />
-    <Compile Include="Controllers\TimeSheetController.cs" />
+    <Compile Include="AutoMapperBootstraper.cs" />
+    <Compile Include="Controllers\EmployeeController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\TimesheetController.cs" />
+    <Compile Include="Extensions\MapperExtensions.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\EmployeeModel.cs" />
     <Compile Include="Models\WorkTime.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -1609,7 +1632,7 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\TimeSheet\Index.cshtml" />
+    <Content Include="Views\Timesheet\Index.cshtml" />
     <Content Include="Scripts\kendo\2015.1.318\kendo.window.min.js.map" />
     <Content Include="Scripts\kendo\2015.1.318\kendo.virtuallist.min.js.map" />
     <Content Include="Scripts\kendo\2015.1.318\kendo.view.min.js.map" />
@@ -1788,6 +1811,11 @@
     <Content Include="Scripts\kendo\2014.2.716\kendo.angular.min.js.map" />
     <Content Include="Scripts\kendo\2014.2.716\kendo.all.min.js.map" />
     <Content Include="Scripts\kendo\2014.2.716\jquery.min.map" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Employee\Index.cshtml" />
+    <Content Include="Views\Employee\Create.cshtml" />
+    <Content Include="Views\Shared\EmployeeLayout.cshtml" />
+    <Content Include="Views\Employee\_ViewStart.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1848,6 +1876,7 @@
     </PropertyGroup>
     <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
   </Target>
+  <Import Project="..\packages\AutoMapper.3.3.1\tools\AutoMapper.targets" Condition="Exists('..\packages\AutoMapper.3.3.1\tools\AutoMapper.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
