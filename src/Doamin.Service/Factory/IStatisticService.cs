@@ -8,7 +8,7 @@ namespace Doamin.Service.Factory
 
     public interface IStatisticService<TModel> where TModel : Statistic
     {
-        IEnumerable<TModel> GetWorkTimeStatisticsByDate(DateTime from);
+        IEnumerable<TModel> GetStatisticsByDate(DateTime from);
 
         void BatchUpdateStatisitcs(IEnumerable<TModel> workTimeItems);
     }

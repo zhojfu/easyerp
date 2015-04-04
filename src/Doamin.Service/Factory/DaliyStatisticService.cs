@@ -16,13 +16,13 @@ namespace Doamin.Service.Factory
 
         private readonly IUnitOfWork unitOfWork;
 
-        protected DaliyStatisticService(IRepository<T> repository, IUnitOfWork unitOfWork )
+        public DaliyStatisticService(IRepository<T> repository, IUnitOfWork unitOfWork )
         {
             this.repository = repository;
             this.unitOfWork = unitOfWork;
         }
 
-        public IEnumerable<T> GetWorkTimeStatisticsByDate(DateTime now)
+        public IEnumerable<T> GetStatisticsByDate(DateTime now)
         {
             var dateRange = DateHelper.GetWeekRangeOfCurrentDate(now);
             return this.repository.FindAll(m => (m.Date >= dateRange.Item1 && m.Date <= dateRange.Item2));
