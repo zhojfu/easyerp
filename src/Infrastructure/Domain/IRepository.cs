@@ -11,14 +11,16 @@ namespace Infrastructure.Domain
     {
         Ascending,
         Descending,
-        Unspecified
+        Unspecified// don't use this parameter if return pageresult, because the skip must after order
     }
 
     public interface IRepository<TAggregateRoot>
     {
         TAggregateRoot GetByKey(Guid key);
 
-        IEnumerable<TAggregateRoot> FindAll(Expression<Func<TAggregateRoot, bool>> expression);
+        IEnumerable<TAggregateRoot> FindAll();
+
+        IEnumerable<TAggregateRoot> FindAll(Expression<Func<TAggregateRoot, bool>> whereExp);
 
         PagedResult<TAggregateRoot> FindAll(
             int pageSize,

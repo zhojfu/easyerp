@@ -623,6 +623,7 @@
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\Employee\timesheet.js" />
     <Content Include="Scripts\inventory.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -1606,7 +1607,7 @@
     <Content Include="Scripts\kendo\2015.1.318\messages\kendo.messages.zh-CN.min.js" />
     <Content Include="Scripts\kendo\2015.1.318\messages\kendo.messages.zh-HK.min.js" />
     <Content Include="Scripts\kendo\2015.1.318\messages\kendo.messages.zh-TW.min.js" />
-    <Content Include="Scripts\timesheet.js" />
+    <Content Include="Scripts\Employee\employee.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -1622,13 +1623,16 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\EmployeeListModel.cs" />
     <Compile Include="Models\EmployeeModel.cs" />
-    <Compile Include="Models\WorkTime.cs" />
+    <Compile Include="Models\WorkTimeModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />
-    <Content Include="packages.config" />
+    <Content Include="packages.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
@@ -1816,6 +1820,9 @@
     <Content Include="Views\Employee\Create.cshtml" />
     <Content Include="Views\Shared\EmployeeLayout.cshtml" />
     <Content Include="Views\Employee\_ViewStart.cshtml" />
+    <Content Include="Views\Timesheet\_ViewStart.cshtml" />
+    <Content Include="Views\Employee\Edit.cshtml" />
+    <Content Include="Views\Employee\EmployeeArea.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

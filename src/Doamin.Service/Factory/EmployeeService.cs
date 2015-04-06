@@ -4,11 +4,10 @@ namespace Doamin.Service.Factory
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Linq.Expressions;
-
     using Domain.Model;
 
     using Infrastructure.Domain;
+    using Infrastructure.Utility;
 
     public class EmployeeService : IEmployeeService
     {
@@ -22,9 +21,10 @@ namespace Doamin.Service.Factory
             this.unitOfWork = unitOfWork;
         }
 
-        public Employee GetEmployeeByName(string idNumbr)
+        public Employee GetEmployeeById(Guid id)
         {
-            return this.repository.FindAll(m => m.IdNumber == idNumbr).FirstOrDefault();
+            return this.repository.GetByKey(id);
+            //return this.repository.FindAll(m => m.Id == id).FirstOrDefault();
         }
 
         public void AddEmployee(Employee employee)
@@ -41,13 +41,18 @@ namespace Doamin.Service.Factory
 
         public void UpdateEmployee(Employee employee)
         {
+            //var origion = this.repository.GetByKey(employee.Id);
+            
             this.repository.Update(employee);
             this.unitOfWork.Commit();
         }
 
-        public IEnumerable<Employee> GetEmployees()
+        public PagedResult<Employee> GetEmployees(int pageNumber, int pageSize)
         {
-            return null;
+           
+           //var a1= this.repository.FindAll(m => true).ToList();
+           //var a2=  this.repository.FindAll().ToList();
+            return this.repository.FindAll(pageSize, pageNumber, e => true, m => m.LastName, SortOrder.Ascending);
         }
     }
 }

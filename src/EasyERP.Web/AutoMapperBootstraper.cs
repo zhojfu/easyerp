@@ -9,6 +9,8 @@
         public static void RegisterModelMapper()
         {
             Mapper.CreateMap<EmployeeModel, Employee>();
+            Mapper.CreateMap<Employee, EmployeeModel>();
+            Mapper.CreateMap<Employee, EmployeeListModel>();
         }
     }
 }

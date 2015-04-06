@@ -188,3 +188,9 @@ UpgradeLog*.htm
 FakesAssemblies/
 
 kendo
+/src/EasyERP.Web/Content/bootstrap-theme.css
+/src/EasyERP.Web/Content/bootstrap-theme.min.css
+/src/EasyERP.Web/Content/bootstrap.css
+/src/EasyERP.Web/Content/bootstrap.min.css
+/src/EasyERP.Web/Scripts/bootstrap.js
+/src/EasyERP.Web/Scripts/bootstrap.min.js

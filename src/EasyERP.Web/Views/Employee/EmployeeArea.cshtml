@@ -1,0 +1,86 @@
+﻿@using System.Web.Optimization
+@model EasyERP.Web.Models.EmployeeModel
+<div>
+    <button type="submit">保存</button>
+</div>
+    @Html.HiddenFor(m => m.Id)
+<div class="form-group">
+    @Html.ValidationMessageFor(m => m.FirstName, "", new { @class = "text-danger" })
+    @Html.LabelFor(m => m.FirstName, new { @class = "" })
+    @Html.TextBoxFor(m => m.FirstName, new { @class = "" })
+</div>
+<div class="form-group">
+    @Html.ValidationMessageFor(m => m.LastName, "", new { @class = "text-danger" })
+    @Html.LabelFor(m => m.LastName, new { @class = "" })
+    @Html.TextBoxFor(m => m.LastName, new { @class = "" })
+</div>
+<div class="form-group">
+    @Html.ValidationMessageFor(m => m.IdNumber, "", new { @class = "text-danger" })
+    @Html.LabelFor(m => m.IdNumber, new { @class = "" })
+    @Html.TextBoxFor(m => m.IdNumber, new { @class = "" })
+</div>
+<div class="form-group">
+    @Html.LabelFor(m => m.Birth, new { @class = "" })
+    @Html.TextBoxFor(m => m.Birth, new { @id = "datepicker", @value = "2014-01-04" })
+</div>
+<div class="form-group">
+    @Html.LabelFor(m => m.Male, new { @class = "" })
+    @Html.RadioButtonFor(m => m.Male, true, new { @checked = "checked" })男
+        @Html.RadioButtonFor(m => m.Male, false)女
+</div>
+<div class="form-group">
+    @Html.LabelFor(m => m.Married, new { @class = "" })
+    @Html.RadioButtonFor(m => m.Married, true, new { @checked = "checked" })已婚
+        @Html.RadioButtonFor(m => m.Married, false)未婚
+</div>
+<div class="form-group">
+    @Html.LabelFor(m => m.Race, new { @class = "" })
+    @Html.TextBoxFor(m => m.Race, new { @class = "" })
+</div>
+<div class="form-group">
+    @Html.LabelFor(m => m.Education, new { @class = "" })
+    @Html.TextBoxFor(m => m.Education, new { @class = "" })
+</div>
+<div class="form-group">
+    @Html.LabelFor(m => m.CellPhone, new { @class = "" })
+    @Html.TextBoxFor(m => m.CellPhone, new { @class = "" })
+</div>
+<div class="form-group">
+    @Html.LabelFor(m => m.NativePlace, new { @class = "" })
+    @Html.TextBoxFor(m => m.NativePlace, new { @class = "" })
+</div>
+<div class="form-group">
+    @Html.LabelFor(m => m.Address, new { @class = "" })
+    @Html.TextBoxFor(m => m.Address, new { @class = "" })
+</div>
+<div class="form-group">
+    @Html.LabelFor(m => m.HomePhone, new { @class = "" })
+    @Html.TextBoxFor(m => m.HomePhone, new { @class = "" })
+</div>
+<div class="form-group">
+    @Html.LabelFor(m => m.EMail, new { @class = "" })
+    @Html.TextBoxFor(m => m.EMail, new { @class = "" })
+</div>
+<div class="form-group">
+    @Html.LabelFor(m => m.Department, new { @class = "" })
+    @Html.TextBoxFor(m => m.Department, new { @class = "" })
+</div>
+<div class="form-group">
+    @Html.ValidationMessageFor(m => m.SalaryOfMonth, "", new { @class = "text-danger" })
+    @Html.LabelFor(m => m.SalaryOfMonth, new { @class = "" })
+    @Html.TextBoxFor(m => m.SalaryOfMonth, new { @class = "" })
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        $("#datepicker").kendoDatePicker({
+            format: "yyyy-MM-dd"
+        });
+    })
+</script>
+
+@section Scripts {
+    @Scripts.Render("~/Scripts/jquery.validate.min.js")
+    @Scripts.Render("~/Scripts/jquery.validate.unobtrusive.min.js")
+}

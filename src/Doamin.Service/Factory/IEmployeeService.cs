@@ -1,13 +1,13 @@
 ﻿
 namespace Doamin.Service.Factory
 {
-    using System.Collections.Generic;
-
+    using System;
     using Domain.Model;
+    using Infrastructure.Utility;
 
     public interface IEmployeeService
     {
-        Employee GetEmployeeByName(string name);
+        Employee GetEmployeeById(Guid id);
         
         void AddEmployee(Employee employee);
 
@@ -15,6 +15,6 @@ namespace Doamin.Service.Factory
 
         void UpdateEmployee(Employee employee);
 
-        IEnumerable<Employee> GetEmployees();
+        PagedResult<Employee> GetEmployees(int pageNumber, int pageSize);
     }
 }
