@@ -3,7 +3,6 @@ namespace Doamin.Service.Factory
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using Domain.Model;
 
     using Infrastructure.Domain;
@@ -24,7 +23,6 @@ namespace Doamin.Service.Factory
         public Employee GetEmployeeById(Guid id)
         {
             return this.repository.GetByKey(id);
-            //return this.repository.FindAll(m => m.Id == id).FirstOrDefault();
         }
 
         public void AddEmployee(Employee employee)
@@ -33,25 +31,25 @@ namespace Doamin.Service.Factory
             this.unitOfWork.Commit();
         }
 
-        public void DeleteEmployee(Employee employee)
+        public void DeleteEmployeeByIds(List<string> ids)
         {
-            this.repository.Remove(employee);
+            foreach (var id in ids)
+            {
+                var e = this.repository.GetByKey(new Guid(id));
+                this.repository.Remove(e);
+            }
+
             this.unitOfWork.Commit();
         }
 
         public void UpdateEmployee(Employee employee)
         {
-            //var origion = this.repository.GetByKey(employee.Id);
-            
             this.repository.Update(employee);
             this.unitOfWork.Commit();
         }
 
         public PagedResult<Employee> GetEmployees(int pageNumber, int pageSize)
         {
-           
-           //var a1= this.repository.FindAll(m => true).ToList();
-           //var a2=  this.repository.FindAll().ToList();
             return this.repository.FindAll(pageSize, pageNumber, e => true, m => m.LastName, SortOrder.Ascending);
         }
     }

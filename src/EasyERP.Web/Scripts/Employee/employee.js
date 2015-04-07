@@ -26,6 +26,8 @@ $(document).ready(function () {
         }
     });
 
+    var selectedItems;
+
     $("#employeesList").kendoGrid({
         dataSource: dataSource,
         height: 400,
@@ -43,5 +45,23 @@ $(document).ready(function () {
             { field: "Department", title: "部门" },
             { field: "Education", title: "学历" }
         ],
+        change: function() {
+            selectedItems = new Array();
+            var selects = this.select();
+            for (var i = 0; i < selects.length; ++i) {
+                selectedItems.push(this.dataItem(selects[i]).Id);
+            }
+        }
     });
+
+    $("#deleteEmployee").click(function() {
+        $.ajax({
+            type: "post",
+            url: "/Employee/Delete",
+            data: JSON.stringify({ ids: selectedItems }),
+            dataType: "json",
+            contentType: 'application/json; charset=utf-8'
+        });
+    });
+       
 });

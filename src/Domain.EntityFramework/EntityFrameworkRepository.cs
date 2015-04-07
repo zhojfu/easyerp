@@ -44,26 +44,29 @@
 
         public override void PersistNewItem(IAggregateRoot entity)
         {
+            if (entity.Id == Guid.Empty)
+            {
+                entity.Id = Guid.NewGuid();
+            }
+
             this.dbContext.Set<TAggregateRoot>().Add((TAggregateRoot)entity);
         }
 
         public override void PersistUpdateItem(IAggregateRoot entity)
         {
             TAggregateRoot origion = this.GetByKey(entity.Id);
+            
             var properties = typeof(TAggregateRoot).GetProperties();
+           
             foreach (var property in properties)
             {
-                if (property.Name != "Id")
+                if (property.GetValue(origion) != property.GetValue(entity))
                 {
                    property.SetValue(origion, property.GetValue(entity));
                 }
             }
 
             ((DbContext)this.dbContext).Entry((TAggregateRoot)origion).State = EntityState.Modified;
-
-           // ((EntityFrameworkDbContext)this.dbContext).Set<TAggregateRoot>().Attach((TAggregateRoot)entity);
-           // var entry = ((DbContext)this.dbContext).Entry((TAggregateRoot)entity);
-           // entry.State = EntityState.Modified;
         }
 
         public override void PersistRemoveItem(IAggregateRoot entity)

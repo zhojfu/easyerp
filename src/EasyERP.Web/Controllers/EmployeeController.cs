@@ -4,8 +4,7 @@ namespace EasyERP.Web.Controllers
 {
     using System;
     using System.Collections.Generic;
-    using System.Web.Helpers;
-    using System.Web.Routing;
+
     using AutoMapper;
     using Doamin.Service.Factory;
     using Domain.Model;
@@ -51,9 +50,17 @@ namespace EasyERP.Web.Controllers
         public ActionResult Create(EmployeeModel employee)
         {
             Employee e = Mapper.Map<EmployeeModel, Employee>(employee);
+
             this.employeeService.AddEmployee(e);
 
             return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public JsonResult Delete(List<string> ids)
+        {
+            this.employeeService.DeleteEmployeeByIds(ids);
+            return Json(null);
         }
 
         [Route("Employee/EmployeeList/{pageNumber:int}")]
@@ -80,7 +87,8 @@ namespace EasyERP.Web.Controllers
                         employees.PageNumber,
                         employees.TotalPages,
                         employeesList
-                    } ,JsonRequestBehavior.AllowGet);
+                    },
+                    JsonRequestBehavior.AllowGet);
             }
             return Json(null);
         }
