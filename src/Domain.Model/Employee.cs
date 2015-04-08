@@ -10,6 +10,11 @@ namespace Domain.Model
 
     public class Employee : BaseEntity, IAggregateRoot
     {
+        public Employee()
+        {
+            Id = Guid.NewGuid();
+        }
+
         public string FirstName { get; set; }
 
         public string LastName { get; set; }
@@ -32,13 +37,13 @@ namespace Domain.Model
 
         public string CellPhone { get; set; }
 
-        public string EduBackground { get; set; }
+        public string Education { get; set; }
 
-        public string Zip { get; set; }
+        public string Email { get; set; }
 
         public string Photo { get; set; }
 
-        public Guid Department { get; set; }
+        public string Department { get; set; }
 
         public double SalaryOfMonth { get; set; }
 

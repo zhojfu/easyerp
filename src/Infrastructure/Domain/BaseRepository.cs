@@ -39,7 +39,9 @@
 
         public abstract TAggregateRoot GetByKey(Guid key);
 
-        public abstract IEnumerable<TAggregateRoot> FindAll(Expression<Func<TAggregateRoot, bool>> expression);
+        public abstract IEnumerable<TAggregateRoot> FindAll();
+
+        public abstract IEnumerable<TAggregateRoot> FindAll(Expression<Func<TAggregateRoot, bool>> selectExp);
 
         public abstract bool Exist(TAggregateRoot aggregateRoot);
 
@@ -49,6 +51,7 @@
             Expression<Func<TAggregateRoot, bool>> selectExp,
             Expression<Func<TAggregateRoot, dynamic>> orderExp,
             SortOrder sortOrder); 
+
 
         public abstract void PersistNewItem(IAggregateRoot item);
 
