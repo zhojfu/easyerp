@@ -4,13 +4,20 @@ $(document).ready(function () {
     var dataSource = new kendo.data.DataSource({
         transport: {
             read: {
-                url: "employee/employeeList/1",
-                type: "get",
-                dataType: "json"
+                url: "employee/employeeList",
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+            },
+            schema: {
+                data: "data",
+                total: "total"
             }
         },
+        serverPaging: true,
+        pageSize: 2,
         schema: {
-            data : "employeesList",
+            data: "data",
+            total: "total",
             model: {
                 fields: {
                     Id: { editable: false, nullable: true },
@@ -54,13 +61,17 @@ $(document).ready(function () {
         }
     });
 
+    /*删除员工*/
     $("#deleteEmployee").click(function() {
         $.ajax({
             type: "post",
             url: "/Employee/Delete",
             data: JSON.stringify({ ids: selectedItems }),
             dataType: "json",
-            contentType: 'application/json; charset=utf-8'
+            contentType: "application/json; charset=utf-8",
+            success : function() {
+                $('#employeesList').data('kendoGrid').dataSource.read();
+            }
         });
     });
        

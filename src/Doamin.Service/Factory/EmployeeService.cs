@@ -36,7 +36,10 @@ namespace Doamin.Service.Factory
             foreach (var id in ids)
             {
                 var e = this.repository.GetByKey(new Guid(id));
-                this.repository.Remove(e);
+                if (e != null)
+                {
+                    this.repository.Remove(e);
+                }
             }
 
             this.unitOfWork.Commit();

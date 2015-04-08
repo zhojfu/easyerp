@@ -34,15 +34,22 @@ namespace EasyERP.Web.Controllers
         public ActionResult Edit(string id)
         {
             Employee e = this.employeeService.GetEmployeeById(new Guid(id));
-            var model = Mapper.Map<Employee, EmployeeModel>(e);
-            return View(model);
+            if (e != null)
+            {
+                var model = Mapper.Map<Employee, EmployeeModel>(e);
+                return View(model);
+            }
+            return View();
         }
 
         [HttpPost]
         public ActionResult Edit(EmployeeModel model)
         {
             var e = Mapper.Map<EmployeeModel, Employee>(model);
-            this.employeeService.UpdateEmployee(e);
+            if (e != null)
+            {
+                this.employeeService.UpdateEmployee(e);
+            }
             return RedirectToAction("Index");
         }
 
@@ -50,8 +57,10 @@ namespace EasyERP.Web.Controllers
         public ActionResult Create(EmployeeModel employee)
         {
             Employee e = Mapper.Map<EmployeeModel, Employee>(employee);
-
-            this.employeeService.AddEmployee(e);
+            if (e != null)
+            {
+                this.employeeService.AddEmployee(e);
+            }
 
             return RedirectToAction("Index");
         }
@@ -59,15 +68,21 @@ namespace EasyERP.Web.Controllers
         [HttpPost]
         public JsonResult Delete(List<string> ids)
         {
-            this.employeeService.DeleteEmployeeByIds(ids);
+            if (ids != null)
+            {
+                this.employeeService.DeleteEmployeeByIds(ids);
+            }
             return Json(null);
         }
 
-        [Route("Employee/EmployeeList/{pageNumber:int}")]
-        public JsonResult EmployeeList(int pageNumber)
+        //[Route("Employee/EmployeeList/{skip:int}/{take:int}/{page:int}/{pageSize:int}")]
+        //[HttpPost]
+        public JsonResult EmployeeList(int skip, int take, int page, int pageSize)
         {
-            const int PageSize = 10;
-            PagedResult<Employee> employees = this.employeeService.GetEmployees(pageNumber, PageSize);
+            //const int pageSize = 10;
+            //int page = 1;
+            //Request["page"];
+            PagedResult<Employee> employees = this.employeeService.GetEmployees(page, pageSize);
             if (employees != null)
             {
                 List<EmployeeListModel> employeesList = new List<EmployeeListModel>();
@@ -83,10 +98,8 @@ namespace EasyERP.Web.Controllers
                 return Json(
                     new
                     {
-                        employees.PageSize,
-                        employees.PageNumber,
-                        employees.TotalPages,
-                        employeesList
+                       total = employees.TotalRecords,
+                       data = employeesList
                     },
                     JsonRequestBehavior.AllowGet);
             }
