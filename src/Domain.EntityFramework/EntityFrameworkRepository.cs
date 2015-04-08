@@ -27,9 +27,14 @@
             return this.dbContext.Set<TAggregateRoot>().FirstOrDefault(p => p.Id == key);
         }
 
-        public override IEnumerable<TAggregateRoot> FindAll(Expression<Func<TAggregateRoot, bool>> expression)
+        public override IEnumerable<TAggregateRoot> FindAll(Expression<Func<TAggregateRoot, bool>> selectExp)
         {
-            return this.GenerateSelectLinq(expression, null);
+            return this.dbContext.Set<TAggregateRoot>().Where(selectExp);
+        }
+
+        public override IEnumerable<TAggregateRoot> FindAll()
+        {
+            return this.dbContext.Set<TAggregateRoot>();
         }
 
         public override bool Exist(TAggregateRoot aggregateRoot)
@@ -39,12 +44,29 @@
 
         public override void PersistNewItem(IAggregateRoot entity)
         {
+            if (entity.Id == Guid.Empty)
+            {
+                entity.Id = Guid.NewGuid();
+            }
+
             this.dbContext.Set<TAggregateRoot>().Add((TAggregateRoot)entity);
         }
 
         public override void PersistUpdateItem(IAggregateRoot entity)
         {
-            ((DbContext)this.dbContext).Entry((TAggregateRoot)entity).State = EntityState.Modified;
+            TAggregateRoot origion = this.GetByKey(entity.Id);
+            
+            var properties = typeof(TAggregateRoot).GetProperties();
+           
+            foreach (var property in properties)
+            {
+                if (property.GetValue(origion) != property.GetValue(entity))
+                {
+                   property.SetValue(origion, property.GetValue(entity));
+                }
+            }
+
+            ((DbContext)this.dbContext).Entry((TAggregateRoot)origion).State = EntityState.Modified;
         }
 
         public override void PersistRemoveItem(IAggregateRoot entity)
@@ -64,7 +86,19 @@
                 throw new IndexOutOfRangeException("page size and page number is less than  zero");
             }
 
-            var query = this.GenerateSelectLinq(selectExp, orderExp, sortOrder); 
+            var query = this.dbContext.Set<TAggregateRoot>().Where(selectExp);
+
+            switch (sortOrder)
+            {
+                case SortOrder.Descending:
+                    query = query.OrderByDescending(orderExp);
+                    break;
+                case SortOrder.Ascending:
+                    query = query.OrderBy(orderExp);
+                    break;
+                case SortOrder.Unspecified:
+                    break;
+            }
 
             int skip = pageSize * (pageNumber - 1);
             int take = pageSize;

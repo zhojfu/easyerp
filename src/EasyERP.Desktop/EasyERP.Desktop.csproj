@@ -288,7 +288,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -320,10 +322,6 @@
     <ProjectReference Include="..\Domain.Model\Domain.Model.csproj">
       <Project>{9A1DEFAC-0977-4B5C-896B-F079B2D26382}</Project>
       <Name>Domain.Model</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EasyERP.Desktop.Style\Nop.Desktop.Style.csproj">
-      <Project>{af28b468-1f6a-4e71-b72d-7d8b6e08c48b}</Project>
-      <Name>Nop.Desktop.Style</Name>
     </ProjectReference>
     <ProjectReference Include="..\Infrastructure.Desktop\Infrastructure.Desktop.csproj">
       <Project>{fd916824-b817-4c83-bae1-05dde888eabd}</Project>

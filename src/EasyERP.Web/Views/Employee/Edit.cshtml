@@ -1,0 +1,19 @@
+﻿@section SectionTitle
+{
+    <div>
+        员工- 信息
+    </div>
+}
+
+@model EasyERP.Web.Models.EmployeeModel
+
+@using (Html.BeginForm("Edit", "Employee", FormMethod.Post, new
+{
+    @class = "",
+    role = "form"
+}))
+{
+   @Html.Partial("EmployeeArea");
+}
+
+
