@@ -1,11 +1,34 @@
-﻿$(document).ready(function () {
-   
+﻿function Timesheet() {
+
+    var currentDate = new Date();
+
+    function generateColumns(selDay) {
+        function getSelectedWeek() {
+            var columns = [{ field: "EmployeeName", title: "姓名" }];
+            var weeks = ["星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期天"];
+            var fields = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+            console.log(selDay);
+            var firstDayOfWeek = selDay.getDate() - (selDay.getDay() + 7 - 1) % 7;
+            for (var i = 0; i < 7; ++i) {
+                var tempDate = new Date(selDay);
+                tempDate.setDate((firstDayOfWeek + i));
+                columns.push({ field: fields[i], title: (weeks[i] + "(" + tempDate.toLocaleDateString()) + ")" });
+            }
+            return columns;
+        }
+
+        return getSelectedWeek(selDay);
+    }
+
     var dataSource = new kendo.data.DataSource({
         transport: {
             read: {
-                //url: "employee/employeeList",
+                url: "timesheet",
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
+                data: {
+                   date: currentDate.toLocaleDateString()
+                }
             },
             schema: {
                 data: "data",
@@ -20,42 +43,21 @@
             model: {
                 fields: {
                     Id: { editable: false, nullable: true },
-                    FullName: { type: "string" },
-                    Sex: { type: "string" },
-                    IdNumber: { type: "string" },
-                    Address: { type: "string" },
-                    CellPhone: { type: "string" },
-                    Education: { type: "string" },
-                    NativePlace: { type: "string" }
+                    EmployeeName: {type: "string"},
+                    Mon: { type: "double" },
+                    Tue: { type: "double" },
+                    Wed: { type: "double" },
+                    Thu: { type: "double" },
+                    Fri: { type: "double" },
+                    Sat: { type: "double" },
+                    Sun: { type: "doubel" }
                 }
             }
         }
     });
 
-    function generateColumns(selDay) {
-        function getSelectedWeek() {
-            var columns = [{field: "EmployeeName", title: "姓名"}];
-            var weeks = ["星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期天"];
-            var fields = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-            console.log(selDay);
-            var firstDayOfWeek = selDay.getDate() - (selDay.getDay() + 7 - 1) % 7;
-            for (var i = 0; i < 7; ++i) {
-                //console.log(firstDayOfWeek);
-                var tempDate = new Date(selDay);
-                tempDate.setDate((firstDayOfWeek + i));
-                columns.push({ field: fields[i], title: (weeks[i] + "(" + tempDate.toLocaleDateString()) + ")" });
-            }
-            return columns;
-        }
-
-        return getSelectedWeek(selDay);
-    }
-
-    var CurrentDate = new Date();
-
-    initialKendoGrid();
-
     function initialKendoGrid() {
+        $("#timesheet").empty();
         $("#timesheet").kendoGrid({
             dataSource: dataSource,
             height: 400,
@@ -64,20 +66,40 @@
             pageable: {
                 refresh: true,
             },
-            columns: generateColumns(CurrentDate)
+            columns: generateColumns(currentDate)
         });
     }
 
-    $("#preWeek").click(function() {
-        CurrentDate.setDate(CurrentDate.getDate() - 7);
-        $("#timesheet").empty();
+    this.setSelectedDate = function (date) {
+        currentDate.setDate(date.getDate());
+    };
+
+    this.moveNextWeek = function () {
+        currentDate.setDate(currentDate.getDate() - 7);
         initialKendoGrid();
+    };
+
+    this.movePrevWeek = function () {
+        currentDate.setDate(currentDate.getDate() + 7);
+        initialKendoGrid();
+    };
+
+    this.InitialCurrentWeek = function () {
+        initialKendoGrid();
+    };
+}
+
+$(document).ready(function () {
+    var timesheet = new Timesheet();
+    timesheet.InitialCurrentWeek();
+
+    $("#preWeek").click(function () {
+        timesheet.movePrevWeek();
     });
 
-    $("#nextWeek").click(function() {
-        CurrentDate.setDate(CurrentDate.getDate() + 7);
-        $("#timesheet").empty();
-        initialKendoGrid();
+    $("#nextWeek").click(function () {
+        timesheet.moveNextWeek();
     });
-
 });
+
+

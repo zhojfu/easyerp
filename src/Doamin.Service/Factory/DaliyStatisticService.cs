@@ -22,9 +22,11 @@ namespace Doamin.Service.Factory
             this.unitOfWork = unitOfWork;
         }
 
-        public IEnumerable<T> GetStatisticsByDate(DateTime now)
+        public PagedResult<T> GetStatisticsByDate(DateTime date, int page, int pageSize)
         {
-            var dateRange = DateHelper.GetWeekRangeOfCurrentDate(now);
+            var dateRange = DateHelper.GetWeekRangeOfCurrentDate(date);
+
+            return this.repository.FindAll()
             return this.repository.FindAll(m => (m.Date >= dateRange.Item1 && m.Date <= dateRange.Item2));
         }
 
