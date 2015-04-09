@@ -1625,6 +1625,7 @@
     </Compile>
     <Compile Include="Models\EmployeeListModel.cs" />
     <Compile Include="Models\EmployeeModel.cs" />
+    <Compile Include="Models\TimesheetModel.cs" />
     <Compile Include="Models\WorkTimeModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

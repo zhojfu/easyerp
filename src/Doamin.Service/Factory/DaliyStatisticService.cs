@@ -26,7 +26,10 @@ namespace Doamin.Service.Factory
         {
             var dateRange = DateHelper.GetWeekRangeOfCurrentDate(date);
 
-            return this.repository.FindAll()
+            return this.repository.FindAll(pageSize, page, 
+                                           m => (m.Date >= dateRange.Item1 && m.Date <= dateRange.Item2),
+                                           m=>m.Id
+                )
             return this.repository.FindAll(m => (m.Date >= dateRange.Item1 && m.Date <= dateRange.Item2));
         }
 
