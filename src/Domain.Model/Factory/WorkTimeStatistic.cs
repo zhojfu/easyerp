@@ -10,7 +10,7 @@ namespace Domain.Model.Factory
 
         public double WorkTimeHr { get; set; }
 
-        public Guid EmployeeId { get; set; }
+        public long EmployeeId { get; set; }
 
         public virtual Employee Employee { get; set; }
     }

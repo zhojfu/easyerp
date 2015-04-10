@@ -1,7 +1,6 @@
 ﻿namespace Domain.Model.Factory
 {
-    using System;
-
+    using Domain.Model.Products;
     using Infrastructure.Domain.Model;
 
     public class ProductStatistic : Statistic, IAggregateRoot
@@ -12,7 +11,7 @@
 
         #region foreign Key
 
-        public Guid ProductId { get; set; }
+        public long ProductId { get; set; }
 
         public virtual Product Product { get; set; }
 

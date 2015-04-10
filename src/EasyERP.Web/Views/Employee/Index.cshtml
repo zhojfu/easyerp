@@ -1,17 +1,43 @@
-﻿@using System.Web.Optimization
+﻿
 
-@section SectionTitle
-{
-    员工信息
-}
-
+<div class="section-title">员工</div>
 @Html.ActionLink("创建员工", "Create")
+<button>删除员工</button>
+<div id="employees-list">
+</div>
+<script>
+    $(document).ready(function() {
+            var dataSource = new kendo.data.DataSource({
+                transport: {
+                    read: {
+                        url: "index",
+                        dataType: "jsonp"
+                    },
+                    update: {
+                        url: "update",
+                        dateType: "jsonp"
+                    }
+                }
+            });
 
-<a href="#" id="deleteEmployee">删除员工</a>
-<div id="employeesList"></div>
-
-
-@section scripts
-{
-    @Scripts.Render("~/Scripts/employee/employee.js");
-}
+            $("#employees-list").kendoGrid({
+                dataSource: dataSource,
+                height: 500,
+                pageable: {
+                    refresh: true,
+                    pageSizes: true,
+                    buttonCount: 5
+                },
+                columns: [
+                    {
+                        title: "a",
+                        field: "d"
+                    }, {
+                        title: "c",
+                        field: "d"
+                    }
+                ]
+            });
+        }
+    );
+</script>

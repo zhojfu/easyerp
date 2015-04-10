@@ -14,12 +14,7 @@
 
         public override void Commit()
         {
-            this.dbContext.Database.Log = s => System.Diagnostics.Debug.WriteLine(s);
-
             base.Commit();
-
-            this.dbContext.Database.Log = s => System.Diagnostics.Debug.WriteLine(s);
-
             this.dbContext.SaveChanges();
         }
     }

@@ -1,11 +1,11 @@
 ﻿namespace Infrastructure.Domain
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq.Expressions;
-
     using Infrastructure.Domain.Model;
     using Infrastructure.Utility;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Linq.Expressions;
 
     public abstract class BaseRepository<TAggregateRoot> : IRepository<TAggregateRoot>, IUnitOfWorkRepository
         where TAggregateRoot : IAggregateRoot
@@ -37,11 +37,9 @@
             this.unitOfWork.Commit();
         }
 
-        public abstract TAggregateRoot GetByKey(Guid key);
+        public abstract TAggregateRoot GetByKey(long key);
 
-        public abstract IEnumerable<TAggregateRoot> FindAll();
-
-        public abstract IEnumerable<TAggregateRoot> FindAll(Expression<Func<TAggregateRoot, bool>> selectExp);
+        public abstract IQueryable<TAggregateRoot> FindAll(Expression<Func<TAggregateRoot, bool>> expression);
 
         public abstract bool Exist(TAggregateRoot aggregateRoot);
 
@@ -50,8 +48,7 @@
             int pageNumber,
             Expression<Func<TAggregateRoot, bool>> selectExp,
             Expression<Func<TAggregateRoot, dynamic>> orderExp,
-            SortOrder sortOrder); 
-
+            SortOrder sortOrder);
 
         public abstract void PersistNewItem(IAggregateRoot item);
 

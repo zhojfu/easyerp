@@ -4,7 +4,6 @@
     using Domain.Model;
     using Infrastructure.Domain;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using System;
 
     /// <summary>
     /// Summary description for DoubleTestCURD
@@ -32,7 +31,6 @@
             var testRepository = new EntityFrameworkRepository<TestDoubles>(dbContext, unitOfWork);
             var testModel = new TestDoubles
             {
-                Id = Guid.NewGuid(),
                 Name = "test description"
             };
             testRepository.Add(testModel);
