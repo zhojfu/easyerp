@@ -93,20 +93,6 @@
             foreach (var c in categories)
                 model.AvailableCategories.Add(new SelectListItem { Text = c.Name, Value = c.Id.ToString() });
 
-            ////manufacturers
-            //model.AvailableManufacturers.Add(new SelectListItem { Text = "All", Value = "0" });
-            //foreach (var m in _manufacturerService.GetAllManufacturers(showHidden: true))
-            //    model.AvailableManufacturers.Add(new SelectListItem { Text = m.Name, Value = m.Id.ToString() });
-
-            ////stores
-            //model.AvailableStores.Add(new SelectListItem { Text = "All", Value = "0" });
-            //foreach (var s in _storeService.GetAllStores())
-            //    model.AvailableStores.Add(new SelectListItem { Text = s.Name, Value = s.Id.ToString() });
-
-            //"published" property
-            //0 - all (according to "ShowHidden" parameter)
-            //1 - published only
-            //2 - unpublished only
             model.AvailablePublishedOptions.Add(new SelectListItem { Text = "All", Value = "0" });
             model.AvailablePublishedOptions.Add(new SelectListItem { Text = "PublishedOnly", Value = "1" });
             model.AvailablePublishedOptions.Add(new SelectListItem { Text = "UnpublishedOnly", Value = "2" });
@@ -123,13 +109,7 @@
             }
 
             var categoryIds = new List<int> { model.SearchCategoryId };
-            ////include subcategories
-            //if (model.SearchIncludeSubCategories && model.SearchCategoryId > 0)
-            //    categoryIds.AddRange(GetChildCategoryIds(model.SearchCategoryId));
 
-            //0 - all (according to "ShowHidden" parameter)
-            //1 - published only
-            //2 - unpublished only
             bool? overridePublished = null;
             if (model.SearchPublishedId == 1)
                 overridePublished = true;
@@ -152,19 +132,9 @@
             gridModel.Data = products.Select(x =>
             {
                 var productModel = x.ToModel();
-                //little hack here:
-                //ensure that product full descriptions are not returned
-                //otherwise, we can get the following error if products have too long descriptions:
-                //"Error during serialization or deserialization using the JSON JavaScriptSerializer. The length of the string exceeds the value set on the maxJsonLength property. "
-                //also it improves performance
+
                 productModel.FullDescription = "";
 
-                //if (_adminAreaSettings.DisplayProductPictures)
-                //{
-                //    var defaultProductPicture = _pictureService.GetPicturesByProductId(x.Id, 1).FirstOrDefault();
-                //    productModel.PictureThumbnailUrl = _pictureService.GetPictureUrl(defaultProductPicture, 75, true);
-                //}
-                //productModel.ProductTypeName = x.ProductType.GetLocalizedEnum(_localizationService, _workContext);
                 return productModel;
             });
             gridModel.Total = products.TotalCount;
@@ -194,8 +164,6 @@
             {
                 return this.AccessDeniedView();
             }
-
-            model.VendorId = 0;
 
             if (this.ModelState.IsValid)
             {
@@ -291,44 +259,6 @@
             return this.View(model);
         }
 
-        //[HttpPost]
-        //public ActionResult ProductCategoryList(DataSourceRequest command, int productId)
-        //{
-        //    if (!_permissionService.Authorize(StandardPermissionProvider.ManageProducts))
-        //        return AccessDeniedView();
-
-        //    //a vendor should have access only to his products
-        //    if (_workContext.CurrentVendor != null)
-        //    {
-        //        var product = _productService.GetProductById(productId);
-        //        if (product != null && product.VendorId != _workContext.CurrentVendor.Id)
-        //        {
-        //            return Content("This is not your product");
-        //        }
-        //    }
-
-        //    var productCategories = _categoryService.GetProductCategoriesByProductId(productId, true);
-        //    var productCategoriesModel = productCategories
-        //        .Select(x => new ProductModel.ProductCategoryModel
-        //        {
-        //            Id = x.Id,
-        //            Category = _categoryService.GetCategoryById(x.CategoryId).GetFormattedBreadCrumb(_categoryService),
-        //            ProductId = x.ProductId,
-        //            CategoryId = x.CategoryId,
-        //            IsFeaturedProduct = x.IsFeaturedProduct,
-        //            DisplayOrder = x.DisplayOrder
-        //        })
-        //        .ToList();
-
-        //    var gridModel = new DataSourceResult
-        //    {
-        //        Data = productCategoriesModel,
-        //        Total = productCategoriesModel.Count
-        //    };
-
-        //    return Json(gridModel);
-        //}
-
         [NonAction]
         protected virtual void PrepareProductModel(
             ProductModel model,
@@ -339,124 +269,28 @@
             if (model == null)
                 throw new ArgumentNullException("model");
 
-            //if (product != null)
-            //{
-            //    var parentGroupedProduct = _productService.GetProductById(product.ParentGroupedProductId);
-            //    if (parentGroupedProduct != null)
-            //    {
-            //        model.AssociatedToProductId = product.ParentGroupedProductId;
-            //        model.AssociatedToProductName = parentGroupedProduct.Name;
-            //    }
-            //}
+            var allCategories = _categoryService.GetAllCategories(showHidden: true);
+            foreach (var category in allCategories)
+            {
+                model.AvailableCategories.Add(new SelectListItem
+                {
+                    Text = category.Name,
+                    Value = category.Id.ToString()
+                });
+            }
 
-            //model.PrimaryStoreCurrencyCode = _currencyService.GetCurrencyById(_currencySettings.PrimaryStoreCurrencyId).CurrencyCode;
-            //model.BaseWeightIn = _measureService.GetMeasureWeightById(_measureSettings.BaseWeightId).Name;
-            //model.BaseDimensionIn = _measureService.GetMeasureDimensionById(_measureSettings.BaseDimensionId).Name;
             if (product != null)
             {
                 model.CreatedOn = _dateTimeHelper.ConvertToUserTime(product.CreatedOnUtc, DateTimeKind.Utc);
                 model.UpdatedOn = _dateTimeHelper.ConvertToUserTime(product.UpdatedOnUtc, DateTimeKind.Utc);
             }
 
-            //little performance hack here
-            //there's no need to load attributes, categories, manufacturers when creating a new product
-            //anyway they're not used (you need to save a product before you map add them)
-            if (product != null)
-            {
-                //foreach (var productAttribute in _productAttributeService.GetAllProductAttributes())
-                //{
-                //    model.AvailableProductAttributes.Add(new SelectListItem
-                //    {
-                //        Text = productAttribute.Name,
-                //        Value = productAttribute.Id.ToString()
-                //    });
-                //}
-                //foreach (var manufacturer in _manufacturerService.GetAllManufacturers(showHidden: true))
-                //{
-                //    model.AvailableManufacturers.Add(new SelectListItem
-                //    {
-                //        Text = manufacturer.Name,
-                //        Value = manufacturer.Id.ToString()
-                //    });
-                //}
-                //var allCategories = _categoryService.GetAllCategories(showHidden: true);
-                //foreach (var category in allCategories)
-                //{
-                //    model.AvailableCategories.Add(new SelectListItem
-                //    {
-                //        Text = category.Name,
-                //        Value = category.Id.ToString()
-                //    });
-                //}
-            }
-
-            //templates
-            //var templates = _productTemplateService.GetAllProductTemplates();
-            //foreach (var template in templates)
-            //{
-            //    model.AvailableProductTemplates.Add(new SelectListItem
-            //    {
-            //        Text = template.Name,
-            //        Value = template.Id.ToString()
-            //    });
-            //}
-
-            //vendors
-            ////model.IsLoggedInAsVendor = _workContext.CurrentVendor != null;
-            //model.AvailableVendors.Add(new SelectListItem
-            //{
-            //    Text = "None",
-            //    Value = "0"
-            //});
-            //var vendors = _vendorService.GetAllVendors(showHidden: true);
-            //foreach (var vendor in vendors)
-            //{
-            //    //model.AvailableVendors.Add(new SelectListItem
-            //    //{
-            //    //    Text = vendor.Name,
-            //    //    Value = vendor.Id.ToString()
-            //    //});
-            //}
-
-            ////specification attributes
-            //var specificationAttributes = _specificationAttributeService.GetSpecificationAttributes();
-            //for (int i = 0; i < specificationAttributes.Count; i++)
-            //{
-            //    var sa = specificationAttributes[i];
-            //    model.AddSpecificationAttributeModel.AvailableAttributes.Add(new SelectListItem { Text = sa.Name, Value = sa.Id.ToString() });
-            //    if (i == 0)
-            //    {
-            //        //attribute options
-            //        foreach (var sao in _specificationAttributeService.GetSpecificationAttributeOptionsBySpecificationAttribute((int)sa.Id))
-            //            model.AddSpecificationAttributeModel.AvailableOptions.Add(new SelectListItem { Text = sao.Name, Value = sao.Id.ToString() });
-            //    }
-            //}
-            ////default specs values
-            //model.AddSpecificationAttributeModel.ShowOnProductPage = true;
-
-            //discounts
-            //model.AvailableDiscounts = _discountService
-            //    .GetAllDiscounts(DiscountType.AssignedToSkus, null, true)
-            //    .Select(d => d.ToModel())
-            //    .ToList();
-            //if (!excludeProperties && product != null)
-            //{
-            //    model.SelectedDiscountIds = product.AppliedDiscounts.Select(d => d.Id).ToArray();
-            //}
-
             //default values
             if (setPredefinedValues)
             {
-                model.MaximumCustomerEnteredPrice = 1000;
-                ;
                 model.StockQuantity = 10000;
-                model.NotifyAdminForQuantityBelow = 1;
-                model.OrderMinimumQuantity = 1;
-                model.OrderMaximumQuantity = 10000;
 
-                model.IsShipEnabled = true;
                 model.Published = true;
-                model.VisibleIndividually = true;
             }
         }
 

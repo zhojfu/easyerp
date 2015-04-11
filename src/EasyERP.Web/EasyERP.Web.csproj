@@ -1864,6 +1864,7 @@
     <Content Include="Views\Product\_CreateOrUpdate.Categories.cshtml" />
     <Content Include="Views\Product\_CreateOrUpdate.Manufacturers.cshtml" />
     <Content Include="sitemap.config" />
+    <Content Include="Views\Shared\Delete.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

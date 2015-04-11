@@ -1,7 +1,5 @@
 ﻿namespace EasyERP.Web.Models.Products
 {
-    using EasyERP.Web.Models.Discounts;
-    using EasyERP.Web.Models.Stores;
     using EasyERP.Web.Validators.Products;
     using FluentValidation.Attributes;
     using Infrastructure.Domain.Model;
@@ -15,37 +13,10 @@
     {
         public ProductModel()
         {
-            this.ProductPictureModels = new List<ProductPictureModel>();
-            this.AvailableProductTemplates = new List<SelectListItem>();
-            this.AvailableVendors = new List<SelectListItem>();
-            this.AvailableDeliveryDates = new List<SelectListItem>();
-            this.AvailableWarehouses = new List<SelectListItem>();
             this.AvailableCategories = new List<SelectListItem>();
-            this.AvailableManufacturers = new List<SelectListItem>();
-            this.AvailableProductAttributes = new List<SelectListItem>();
-            this.AddPictureModel = new ProductPictureModel();
-            this.AddSpecificationAttributeModel = new AddProductSpecificationAttributeModel();
-            this.ProductWarehouseInventoryModels = new List<ProductWarehouseInventoryModel>();
         }
 
         public override int Id { get; set; }
-
-        //picture thumbnail
-        public string PictureThumbnailUrl { get; set; }
-
-        public int ProductTypeId { get; set; }
-
-        public string ProductTypeName { get; set; }
-
-        public int AssociatedToProductId { get; set; }
-
-        public string AssociatedToProductName { get; set; }
-
-        public bool VisibleIndividually { get; set; }
-
-        public int ProductTemplateId { get; set; }
-
-        public IList<SelectListItem> AvailableProductTemplates { get; set; }
 
         [AllowHtml]
         public string Name { get; set; }
@@ -57,103 +28,16 @@
         public string FullDescription { get; set; }
 
         [AllowHtml]
-        public string AdminComment { get; set; }
-
-        public int VendorId { get; set; }
-
-        public IList<SelectListItem> AvailableVendors { get; set; }
-
-        public bool ShowOnHomePage { get; set; }
-
-        [AllowHtml]
         public string Sku { get; set; }
-
-        [AllowHtml]
-        public string ManufacturerPartNumber { get; set; }
 
         [AllowHtml]
         public virtual string Gtin { get; set; }
 
-        public bool IsDownload { get; set; }
-
-        public bool HasUserAgreement { get; set; }
-
-        [AllowHtml]
-        public string UserAgreementText { get; set; }
-
-        public bool IsShipEnabled { get; set; }
-
-        public bool IsFreeShipping { get; set; }
-
-        public bool ShipSeparately { get; set; }
-
-        public decimal AdditionalShippingCharge { get; set; }
-
-        public int DeliveryDateId { get; set; }
-
-        public IList<SelectListItem> AvailableDeliveryDates { get; set; }
-
-        public int ManageInventoryMethodId { get; set; }
-
-        public bool UseMultipleWarehouses { get; set; }
-
-        public int WarehouseId { get; set; }
-
-        public IList<SelectListItem> AvailableWarehouses { get; set; }
-
         public int StockQuantity { get; set; }
-
-        public bool DisplayStockAvailability { get; set; }
-
-        public bool DisplayStockQuantity { get; set; }
-
-        public int MinStockQuantity { get; set; }
-
-        public int LowStockActivityId { get; set; }
-
-        public int NotifyAdminForQuantityBelow { get; set; }
-
-        public bool AllowBackInStockSubscriptions { get; set; }
-
-        public int OrderMinimumQuantity { get; set; }
-
-        public int OrderMaximumQuantity { get; set; }
-
-        public string AllowedQuantities { get; set; }
-
-        public bool AllowAddingOnlyExistingAttributeCombinations { get; set; }
-
-        public bool DisableBuyButton { get; set; }
-
-        public bool DisableWishlistButton { get; set; }
-
-        public bool AvailableForPreOrder { get; set; }
-
-        [UIHint("DateTimeNullable")]
-        public DateTime? PreOrderAvailabilityStartDateTimeUtc { get; set; }
-
-        public bool CallForPrice { get; set; }
 
         public decimal Price { get; set; }
 
-        public decimal OldPrice { get; set; }
-
         public decimal ProductCost { get; set; }
-
-        [UIHint("DecimalNullable")]
-        public decimal? SpecialPrice { get; set; }
-
-        [UIHint("DateTimeNullable")]
-        public DateTime? SpecialPriceStartDateTimeUtc { get; set; }
-
-        [UIHint("DateTimeNullable")]
-        public DateTime? SpecialPriceEndDateTimeUtc { get; set; }
-
-        public bool CustomerEntersPrice { get; set; }
-
-        public decimal MinimumCustomerEnteredPrice { get; set; }
-
-        public decimal MaximumCustomerEnteredPrice { get; set; }
 
         public decimal Weight { get; set; }
 
@@ -163,70 +47,18 @@
 
         public decimal Height { get; set; }
 
-        [UIHint("DateTimeNullable")]
-        public DateTime? AvailableStartDateTimeUtc { get; set; }
-
-        [UIHint("DateTimeNullable")]
-        public DateTime? AvailableEndDateTimeUtc { get; set; }
-
-        public int DisplayOrder { get; set; }
-
         public bool Published { get; set; }
 
         public DateTime? CreatedOn { get; set; }
 
         public DateTime? UpdatedOn { get; set; }
 
-        public string PrimaryStoreCurrencyCode { get; set; }
+        public string CategoryName { get; set; }
 
-        public string BaseDimensionIn { get; set; }
-
-        public string BaseWeightIn { get; set; }
-
-        //ACL (customer roles)
-
-        public bool SubjectToAcl { get; set; }
-
-        //public List<CustomerRoleModel> AvailableCustomerRoles { get; set; }
-
-        public int[] SelectedCustomerRoleIds { get; set; }
-
-        //Store mapping
-
-        public bool LimitedToStores { get; set; }
-
-        public List<StoreModel> AvailableStores { get; set; }
-
-        public int[] SelectedStoreIds { get; set; }
-
-        //vendor
-        public bool IsLoggedInAsVendor { get; set; }
+        public string CategoryId { get; set; }
 
         //categories
         public IList<SelectListItem> AvailableCategories { get; set; }
-
-        //manufacturers
-        public IList<SelectListItem> AvailableManufacturers { get; set; }
-
-        //product attributes
-        public IList<SelectListItem> AvailableProductAttributes { get; set; }
-
-        //pictures
-        public ProductPictureModel AddPictureModel { get; set; }
-
-        public IList<ProductPictureModel> ProductPictureModels { get; set; }
-
-        //discounts
-        public List<DiscountModel> AvailableDiscounts { get; set; }
-
-        public int[] SelectedDiscountIds { get; set; }
-
-        //add specification attribute model
-        public AddProductSpecificationAttributeModel AddSpecificationAttributeModel { get; set; }
-
-        //multiple warehouses
-
-        public IList<ProductWarehouseInventoryModel> ProductWarehouseInventoryModels { get; set; }
 
         #region Nested classes
 

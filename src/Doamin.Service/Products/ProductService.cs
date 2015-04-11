@@ -26,7 +26,10 @@
 
         public Product GetProductById(long productId)
         {
-            throw new NotImplementedException();
+            if (productId == 0)
+                return null;
+            
+            return productRepository.GetByKey(productId);
         }
 
         public IList<Product> GetProductsByIds(int[] productIds)
@@ -46,7 +49,12 @@
 
         public void UpdateProduct(Product product)
         {
-            throw new NotImplementedException();
+            if (product == null)
+                throw new ArgumentNullException("product");
+
+            //update
+            productRepository.Update(product);
+            this.unitOfWork.Commit();
         }
 
         public int GetCategoryProductNumber(IList<int> categoryIds = null, int storeId = 0)

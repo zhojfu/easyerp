@@ -32,6 +32,14 @@
     </tr>
     <tr>
         <td class="adminTitle">
+            @Html.LabelFor(model => model.CategoryId)
+        </td>
+        <td class="adminData">
+            @Html.DropDownList("CategoryId", Model.AvailableCategories)
+        </td>
+    </tr>
+    <tr>
+        <td class="adminTitle">
             @Html.LabelFor(model => model.ShortDescription):
         </td>
         <td class="adminData">

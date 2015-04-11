@@ -98,14 +98,35 @@
                                     width: 300
                                 },
                                 {
-                                    field: "Name",
-                                    title: "产品名",
+                                    field: "CategoryName",
+                                    title: "产品目录",
                                     width: 300
+                                },
+                                {
+                                    filed: "StockQuantity",
+                                    title: "库存",
+                                    width: 100
+                                },
+                                {
+                                    filed: "Price",
+                                    title: "价格",
+                                    width: 100
+                                },
+                                {
+                                    filed: "ProductCost",
+                                    title: "成本",
+                                    width: 100
                                 },
                                 {
                                     field: "Sku",
                                     title: "条码",
                                     width: 100
+                                }, 
+                                {
+                                    field: "Id",
+                                    title: "修改",
+                                    width: 100,
+                                    template: '<a href="Edit/#=Id#">编辑</a>'
                                 }
                             ]
                         });
