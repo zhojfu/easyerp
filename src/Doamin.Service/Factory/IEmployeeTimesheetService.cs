@@ -8,5 +8,6 @@ namespace Doamin.Service.Factory
     public interface IEmployeeTimesheetService
     {
         IEnumerable<WorkTimeStatistic> GetEmployeeTimesheetByDate(Guid employeeId, DateTime from);
+        void UpdateTimesheet(Guid employeeId, Dictionary<DateTime, double> worktimes);
     }
 }

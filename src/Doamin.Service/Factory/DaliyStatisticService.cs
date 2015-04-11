@@ -24,13 +24,7 @@ namespace Doamin.Service.Factory
 
         public PagedResult<T> GetStatisticsByDate(DateTime date, int page, int pageSize)
         {
-            var dateRange = DateHelper.GetWeekRangeOfCurrentDate(date);
-
-            return this.repository.FindAll(pageSize, page, 
-                                           m => (m.Date >= dateRange.Item1 && m.Date <= dateRange.Item2),
-                                           m=>m.Id
-                )
-            return this.repository.FindAll(m => (m.Date >= dateRange.Item1 && m.Date <= dateRange.Item2));
+            return null;
         }
 
         public void BatchUpdateStatisitcs(IEnumerable<T> statisticItems)

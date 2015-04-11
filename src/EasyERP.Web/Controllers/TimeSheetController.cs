@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 namespace EasyERP.Web.Controllers
 {
+    using System.Security.AccessControl;
     using System.Web.Helpers;
     using System.Web.Services.Description;
 
@@ -13,6 +14,7 @@ namespace EasyERP.Web.Controllers
 
     using Domain.Model.Factory;
     using EasyERP.Web.Models;
+    using Infrastructure.Utility;
 
     public class TimesheetController : Controller
     {
@@ -33,8 +35,41 @@ namespace EasyERP.Web.Controllers
             return View();
         }
 
+        /*[HttpPost]
+        public JsonResult UpdateTimesheet(TimesheetModel timesheet)
+        {
+            return null;
+        }*/
 
-        public JsonResult GetTimeSheetByDate(string date, int page, int pageSize)
+
+        [HttpPost]
+        public JsonResult UpdateTimesheet(TimesheetModel timesheet)
+        {
+            DateTime selectDate;
+
+            if (!DateTime.TryParse(timesheet.DateOfWeek, out selectDate))
+            {
+                return null;
+            }
+
+            var dateRange = DateHelper.GetWeekRangeOfCurrentDate(selectDate);
+            
+            Dictionary<DateTime, double> worktimes = new Dictionary<DateTime, double>
+            {
+                { dateRange.Item1, timesheet.Mon },
+                { dateRange.Item1.AddDays(1), timesheet.Thu },
+                { dateRange.Item1.AddDays(2), timesheet.Wed },
+                { dateRange.Item1.AddDays(3), timesheet.Thu },
+                { dateRange.Item1.AddDays(4), timesheet.Fri },
+                { dateRange.Item1.AddDays(5), timesheet.Sat },
+                { dateRange.Item1.AddDays(6), timesheet.Sun }
+            };
+
+            this.timeSheetService.UpdateTimesheet(new Guid(timesheet.Id), worktimes);
+            return Json(timesheet);
+        }
+
+        public JsonResult GetTimeSheetByDate(string date, /*int take, int skip,*/ int page, int pageSize)
         {
             DateTime selectDate;
 
@@ -53,6 +88,7 @@ namespace EasyERP.Web.Controllers
                 var model = new TimesheetModel
                 {
                     Id = employee.Id.ToString(),
+                    DateOfWeek = date,
                     EmployeeName = employee.LastName + employee.FirstName
                 };
                 foreach (var workTime in timeSheets)

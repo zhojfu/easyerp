@@ -11,6 +11,7 @@ namespace EasyERP.Web.App_Start
     using Domain.Model.Factory;
     using Infrastructure.Domain;
     using Infrastructure.Domain.EntityFramework;
+    using Microsoft.Ajax.Utilities;
 
     /// <summary>
     /// Specifies the Unity configuration for the main container.
@@ -50,9 +51,9 @@ namespace EasyERP.Web.App_Start
             container.RegisterInstance(typeof(IEntityFrameworkDbContext), dbContext);
             container.RegisterInstance(typeof(IUnitOfWork),  new EntityFrameworkUnitOfWork(dbContext));
             container.RegisterType(typeof(IRepository<>), typeof(EntityFrameworkRepository<>));
-            container.RegisterType(typeof(IStatisticService<>), typeof(DaliyStatisticService<>));
+            //container.RegisterType(typeof(IStatisticService<>), typeof(DaliyStatisticService<>));
             container.RegisterType(typeof(IEmployeeService), typeof(EmployeeService));
-
+            container.RegisterType(typeof(IEmployeeTimesheetService), typeof(EmployeeTimesheetService));
             // container.RegisterType<IUnitOfWork, EntityFrameworkUnitOfWork>();
             // container.RegisterType<IRepository<>>()
         }
