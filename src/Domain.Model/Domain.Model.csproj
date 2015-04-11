@@ -59,9 +59,11 @@
     <Compile Include="Media\MediaSettings.cs" />
     <Compile Include="Media\Picture.cs" />
     <Compile Include="Media\PictureType.cs" />
+    <Compile Include="Payments\Payment.cs" />
     <Compile Include="Products\AttributeControlType.cs" />
     <Compile Include="Products\AttributeValueType.cs" />
     <Compile Include="Products\CatalogSettings.cs" />
+    <Compile Include="Products\Inventory.cs" />
     <Compile Include="Products\LowStockActivity.cs" />
     <Compile Include="Products\Manufacturer.cs" />
     <Compile Include="Products\Price\ProductPriceListItem.cs" />

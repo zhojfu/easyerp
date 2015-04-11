@@ -7,6 +7,7 @@ namespace EasyERP.Web.Framework
     using Doamin.Service.Directory;
     using Doamin.Service.Discounts;
     using Doamin.Service.Helpers;
+    using Doamin.Service.Payments;
     using Doamin.Service.Products;
     using Doamin.Service.Security;
     using Doamin.Service.Stores;
@@ -74,6 +75,9 @@ namespace EasyERP.Web.Framework
             builder.RegisterType<NullCache>().As<ICacheManager>().Named<ICacheManager>("nop_cache_static").SingleInstance();
             // Services
             builder.RegisterType<CategoryService>().As<ICategoryService>().InstancePerLifetimeScope();
+            builder.RegisterType<InventoryService>().As<IInventoryService>().InstancePerLifetimeScope();
+            builder.RegisterType<PaymentService>().As<IPaymentService>().InstancePerLifetimeScope();
+
             builder.RegisterType<ManufacturerService>().As<IManufacturerService>().InstancePerLifetimeScope();
 
             //builder.RegisterType<ProductAttributeFormatter>().As<IProductAttributeFormatter>().InstancePerLifetimeScope();

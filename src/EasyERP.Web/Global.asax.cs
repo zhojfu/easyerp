@@ -3,6 +3,7 @@ using System.Web.Routing;
 
 namespace EasyERP.Web
 {
+    using System.Web.Optimization;
     using EasyErp.Core;
     using EasyErp.Core.Infrastructure;
     using EasyERP.Web.App_Start;

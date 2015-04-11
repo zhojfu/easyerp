@@ -35,5 +35,15 @@ namespace EasyERP.Web.Extensions
         {
             return model.MapTo(destination);
         }
+
+        public static InventoryModel ToModel(this Inventory entity)
+        {
+            return entity.MapTo<Inventory, InventoryModel>();
+        }
+
+        public static Inventory ToEntity(this  InventoryModel model)
+        {
+            return model.MapTo<InventoryModel, Inventory>();
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿namespace Domain.Model.Products
 {
+    using Domain.Model.Factory;
     using Domain.Model.Security;
     using Domain.Model.Stores;
     using Infrastructure.Domain.Model;
@@ -15,6 +16,10 @@
         private ICollection<ProductAttributeMapping> productAttributeMappings;
 
         private ICollection<ProductAttributeCombination> productAttributeCombinations;
+
+        public ICollection<ProductStatistic> ProduceRecord { get; set; }
+
+        public ICollection<MaterialStatisitc> MaterialComsumptions { get; set; }
 
         public Category Category { get; set; }
 
@@ -32,6 +37,8 @@
         /// Gets or sets the full description
         /// </summary>
         public string FullDescription { get; set; }
+
+        public int StockQuantity { get; set; }
 
         /// <summary>
         /// Gets or sets the SKU

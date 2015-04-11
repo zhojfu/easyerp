@@ -21,6 +21,8 @@
 
         int GetCategoryProductNumber(IList<int> categoryIds = null, int storeId = 0);
 
+        IList<Product> GetAllProducts();
+
         IPagedList<Product> SearchProducts(
              int pageIndex = 0,
              int pageSize = int.MaxValue,

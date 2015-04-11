@@ -14,7 +14,8 @@
             <label>ProductManagement</label>
         </div>
         <div class="options">
-            <a href="@Url.Action("Create")" class="k-button">Create</a>
+            <a href="@Url.Action("Create")" class="k-button">添加产品</a>
+            <a href="@Url.Action("Inventory")" class="k-button">入库</a>
             <input type="button" id="delete-selected" class="k-button" value="Delete" />
         </div>
     </div>
@@ -103,17 +104,17 @@
                                     width: 300
                                 },
                                 {
-                                    filed: "StockQuantity",
+                                    field: "StockQuantity",
                                     title: "库存",
                                     width: 100
                                 },
                                 {
-                                    filed: "Price",
+                                    field: "Price",
                                     title: "价格",
                                     width: 100
                                 },
                                 {
-                                    filed: "ProductCost",
+                                    field: "ProductCost",
                                     title: "成本",
                                     width: 100
                                 },
@@ -121,7 +122,13 @@
                                     field: "Sku",
                                     title: "条码",
                                     width: 100
-                                }, 
+                                },
+{
+                                    field: "Id",
+                                    title: "查看入库记录",
+                                    width: 100,
+                                    template: '<a href="Records/#=Id#">编辑</a>'
+                                },
                                 {
                                     field: "Id",
                                     title: "修改",

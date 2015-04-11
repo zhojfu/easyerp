@@ -64,9 +64,13 @@
     <Compile Include="Installation\CodeFirstInstallationService.cs" />
     <Compile Include="Installation\IInstallationService.cs" />
     <Compile Include="Installation\SqlFileInstallationService.cs" />
+    <Compile Include="Payments\PaymentService.cs" />
+    <Compile Include="Payments\IPaymentService.cs" />
     <Compile Include="Products\ICategoryService.cs" />
     <Compile Include="Products\CategoryService.cs" />
+    <Compile Include="Products\IInventoryService.cs" />
     <Compile Include="Products\IManufacturerService.cs" />
+    <Compile Include="Products\InventoryService.cs" />
     <Compile Include="Products\IProductAttributeService.cs" />
     <Compile Include="Products\IProductService.cs" />
     <Compile Include="Products\IProductTemplateService.cs" />

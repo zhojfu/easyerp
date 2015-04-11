@@ -637,6 +637,7 @@
     <Content Include="Scripts\admin.common.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\Employee\timesheet.js" />
     <Content Include="Scripts\inventory.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -1620,7 +1621,7 @@
     <Content Include="Scripts\kendo\2015.1.318\messages\kendo.messages.zh-CN.min.js" />
     <Content Include="Scripts\kendo\2015.1.318\messages\kendo.messages.zh-HK.min.js" />
     <Content Include="Scripts\kendo\2015.1.318\messages\kendo.messages.zh-TW.min.js" />
-    <Content Include="Scripts\timesheet.js" />
+    <Content Include="Scripts\Employee\employee.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -1643,6 +1644,8 @@
     <Compile Include="Models\Discounts\DiscountListModel.cs" />
     <Compile Include="Models\Discounts\DiscountModel.cs" />
     <Compile Include="Models\EmployeeModel.cs" />
+    <Compile Include="Models\EmployeeListModel.cs" />
+    <Compile Include="Models\Products\InventoryModel.cs" />
     <Compile Include="Models\Products\ProductListModel.cs" />
     <Compile Include="Models\Products\ProductModel.cs" />
     <Compile Include="Models\Stores\StoreModel.cs" />
@@ -1652,6 +1655,7 @@
     <Compile Include="Validators\Products\ProductAttributeValueModelValidator.cs" />
     <Compile Include="Validators\Products\ProductValidator.cs" />
     <Compile Include="Validators\Stores\StoreValidator.cs" />
+    <Compile Include="Models\WorkTimeModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />
@@ -1863,8 +1867,12 @@
     <Content Include="Views\Product\_CreateOrUpdate.Info.cshtml" />
     <Content Include="Views\Product\_CreateOrUpdate.Categories.cshtml" />
     <Content Include="Views\Product\_CreateOrUpdate.Manufacturers.cshtml" />
+    <Content Include="Views\Timesheet\_ViewStart.cshtml" />
+    <Content Include="Views\Employee\Edit.cshtml" />
+    <Content Include="Views\Employee\EmployeeArea.cshtml" />
     <Content Include="sitemap.config" />
     <Content Include="Views\Shared\Delete.cshtml" />
+    <Content Include="Views\Product\Inventory.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

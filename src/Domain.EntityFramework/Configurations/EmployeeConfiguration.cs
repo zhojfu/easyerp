@@ -1,7 +1,8 @@
 ﻿namespace Domain.EntityFramework.Configurations
 {
-    using Domain.Model;
     using System.Data.Entity.ModelConfiguration;
+
+    using Domain.Model;
 
     internal class EmployeeConfiguration : EntityTypeConfiguration<Employee>
     {
@@ -17,11 +18,11 @@
             this.Property(e => e.Department);
             this.Property(e => e.NativePlace);
             this.Property(e => e.CellPhone);
-            this.Property(e => e.Birth).HasColumnType("datetime2");
-            this.Property(e => e.EduBackground);
+            this.Property(e => e.Birth);
+            this.Property(e => e.Education);
             this.Property(e => e.Address);
             this.Property(e => e.Race);
-            this.Property(e => e.Zip);
+            this.Property(e => e.Email);
             this.Property(e => e.SalaryOfMonth);
             this.Property(e => e.Photo);
         }

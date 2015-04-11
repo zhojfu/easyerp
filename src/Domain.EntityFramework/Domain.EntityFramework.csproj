@@ -55,6 +55,12 @@
   <ItemGroup>
     <Compile Include="Configurations\EmployeeConfiguration.cs" />
     <Compile Include="Configurations\Products\CategoryConfiguration.cs" />
+    <Compile Include="Configurations\Factory\AttritionConfiguration.cs" />
+    <Compile Include="Configurations\Factory\AttritionStatisticConfiguration.cs" />
+    <Compile Include="Configurations\Factory\MaterialStatisticConfiguration.cs" />
+    <Compile Include="Configurations\Factory\ProductStatisticConfiguration.cs" />
+    <Compile Include="Configurations\Factory\WorkTimeStatisticConfiguration.cs" />
+    <Compile Include="Configurations\Products\InventoryConfiguration.cs" />
     <Compile Include="Configurations\Products\ProductConfiguration.cs" />
     <Compile Include="Configurations\Test\TestDoublesConfiguration.cs" />
     <Compile Include="EntityFrameworkDbContext.cs" />
@@ -82,7 +88,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Configurations\Base\" />
-    <Folder Include="Configurations\Factory\" />
     <Folder Include="Configurations\Products\Price\" />
     <Folder Include="Configurations\Purchase\" />
   </ItemGroup>

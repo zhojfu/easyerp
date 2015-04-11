@@ -28,13 +28,18 @@
         {
             if (productId == 0)
                 return null;
-            
+
             return productRepository.GetByKey(productId);
         }
 
         public IList<Product> GetProductsByIds(int[] productIds)
         {
             throw new NotImplementedException();
+        }
+
+        public IList<Product> GetAllProducts()
+        {
+            return this.productRepository.FindAll(p => p.Id > 0).ToList();
         }
 
         public void InsertProduct(Product product)

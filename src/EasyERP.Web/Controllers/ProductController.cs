@@ -9,6 +9,7 @@
     using Doamin.Service.Vendors;
     using Domain.Model.Directory;
     using Domain.Model.Discounts;
+    using Domain.Model.Payment;
     using Domain.Model.Products;
     using Domain.Model.Vendors;
     using EasyErp.Core;
@@ -22,7 +23,7 @@
 
     public class ProductController : BaseAdminController
     {
-        private readonly IPermissionService _permissionService;
+        private readonly IPermissionService permissionService;
         private readonly IProductTemplateService _productTemplateService;
 
         //private readonly IWorkContext _workContext;
@@ -42,6 +43,8 @@
         private readonly IProductAttributeService _productAttributeService;
         private readonly IAclService aclService;
 
+        private readonly IInventoryService inventoryService;
+
         public ProductController(
             IPermissionService permissionService,
             ICategoryService categoryService,
@@ -55,17 +58,21 @@
             ISpecificationAttributeService specificationAttributeService,
             IDiscountService discountService,
             IVendorService vendorService,
+            IInventoryService inventoryService,
             IAclService aclService)
         {
             this._categoryService = categoryService;
-            this._permissionService = permissionService;
+            this.permissionService = permissionService;
             this._productTemplateService = productTemplateService;
             this._productService = productService;
             this._manufacturerService = manufacturerService;
             this._discountService = discountService;
             this._storeService = storeService;
+            this.inventoryService = inventoryService;
             this._measureService = measureService;
+
             this._measureSettings = new MeasureSettings();
+
             this._dateTimeHelper = dateTimeHelper;
             this._vendorService = vendorService;
             this._productAttributeService = productAttributeService;
@@ -81,7 +88,7 @@
 
         public ActionResult List()
         {
-            if (!this._permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            if (!this.permissionService.Authorize(StandardPermissionProvider.ManageProducts))
             {
                 return this.AccessDeniedView();
             }
@@ -100,10 +107,73 @@
             return this.View(model);
         }
 
+        public ActionResult Inventory()
+        {
+            if (!this.permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            {
+                return this.AccessDeniedView();
+            }
+
+            var model = new InventoryModel();
+
+            var allCategories = _categoryService.GetAllCategories(showHidden: true);
+            foreach (var category in allCategories)
+            {
+                model.AvailableCategories.Add(new SelectListItem
+                {
+                    Text = category.Name,
+                    Value = category.Id.ToString()
+                });
+            }
+
+            var products = _productService.GetAllProducts();
+
+            if (products == null ||
+                !products.Any())
+            {
+                return this.RedirectToAction("Create");
+            }
+
+            products.ToList().ForEach(
+                p =>
+                {
+                    model.AvailableProducts.Add(new SelectListItem { Text = p.Name, Value = p.Id.ToString() });
+                });
+
+            model.Paid = 0;
+            model.DueDateTime = DateTime.Now + TimeSpan.FromDays(30);
+
+            return this.View(model);
+        }
+
+        [HttpPost]
+        public ActionResult Inventory(InventoryModel model)
+        {
+            if (!this.permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            {
+                return this.AccessDeniedView();
+            }
+            if (this.ModelState.IsValid)
+            {
+                var inventory = model.ToEntity();
+                inventory.InStockTime = DateTime.Now;
+                var payment = new Payment
+                {
+                    DueDateTime = model.DueDateTime,
+                    Paid = model.Paid,
+                    Payables = model.Payables
+                };
+
+                this.inventoryService.InsertInventory(inventory, payment);
+            }
+
+            return this.RedirectToAction("List");
+        }
+
         [HttpPost]
         public ActionResult ProductList(DataSourceRequest command, ProductListModel model)
         {
-            if (!_permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            if (!this.permissionService.Authorize(StandardPermissionProvider.ManageProducts))
             {
                 return AccessDeniedView();
             }
@@ -145,7 +215,7 @@
         //create product
         public ActionResult Create()
         {
-            if (!this._permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            if (!this.permissionService.Authorize(StandardPermissionProvider.ManageProducts))
             {
                 return this.AccessDeniedView();
             }
@@ -160,7 +230,7 @@
         [HttpPost, ParameterBasedOnFormName("save-continue", "continueEditing")]
         public ActionResult Create(ProductModel model, bool continueEditing)
         {
-            if (!this._permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            if (!this.permissionService.Authorize(StandardPermissionProvider.ManageProducts))
             {
                 return this.AccessDeniedView();
             }
@@ -193,7 +263,7 @@
 
         public ActionResult Edit(int id)
         {
-            if (!this._permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            if (!this.permissionService.Authorize(StandardPermissionProvider.ManageProducts))
             {
                 return this.AccessDeniedView();
             }
@@ -217,7 +287,7 @@
         [HttpPost, ParameterBasedOnFormName("save-continue", "continueEditing")]
         public ActionResult Edit(ProductModel model, bool continueEditing)
         {
-            if (!this._permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            if (!this.permissionService.Authorize(StandardPermissionProvider.ManageProducts))
             {
                 return this.AccessDeniedView();
             }
@@ -297,7 +367,7 @@
         [HttpPost]
         public ActionResult Delete(int id)
         {
-            if (!this._permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            if (!this.permissionService.Authorize(StandardPermissionProvider.ManageProducts))
             {
                 return this.AccessDeniedView();
             }
@@ -317,7 +387,7 @@
         [HttpPost]
         public ActionResult DeleteSelected(ICollection<int> selectedIds)
         {
-            if (!this._permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            if (!this.permissionService.Authorize(StandardPermissionProvider.ManageProducts))
             {
                 return this.AccessDeniedView();
             }
