@@ -8,13 +8,10 @@ namespace EasyERP.Web
     using EasyERP.Web.App_Start;
     using EasyERP.Web.Framework;
     using FluentValidation.Mvc;
-    using Microsoft.Ajax.Utilities;
     using System;
     using System.Globalization;
     using System.Threading;
     using System.Web;
-    using System.Web.Optimization;
-
     using System.Web.Optimization;
 
     public class MvcApplication : System.Web.HttpApplication
