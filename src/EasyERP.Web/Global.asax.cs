@@ -3,7 +3,6 @@ using System.Web.Routing;
 
 namespace EasyERP.Web
 {
-    using System.Web.Optimization;
     using EasyErp.Core;
     using EasyErp.Core.Infrastructure;
     using EasyERP.Web.App_Start;
@@ -14,6 +13,8 @@ namespace EasyERP.Web
     using System.Globalization;
     using System.Threading;
     using System.Web;
+    using System.Web.Optimization;
+
     using System.Web.Optimization;
 
     public class MvcApplication : System.Web.HttpApplication

@@ -3,7 +3,7 @@
     using Domain.Model.Orders;
     using System.Data.Entity.ModelConfiguration;
 
-    public class OrderConfiguration : EntityTypeConfiguration<OrderItem>
+    public class OrderConfiguration : EntityTypeConfiguration<Order>
     {
         public OrderConfiguration()
         {
