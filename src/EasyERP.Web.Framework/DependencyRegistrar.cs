@@ -79,7 +79,7 @@ namespace EasyERP.Web.Framework
             builder.RegisterType<InventoryService>().As<IInventoryService>().InstancePerLifetimeScope();
             builder.RegisterType<PaymentService>().As<IPaymentService>().InstancePerLifetimeScope();
             builder.RegisterType<EmployeeService>().As<IEmployeeService>().InstancePerLifetimeScope();
-
+            builder.RegisterType<EmployeeTimesheetService>().As<IEmployeeTimesheetService>().InstancePerLifetimeScope();
             builder.RegisterGeneric(typeof(DaliyStatisticService<>)).As(typeof(IStatisticService<>)).InstancePerLifetimeScope();
             builder.RegisterType<ManufacturerService>().As<IManufacturerService>().InstancePerLifetimeScope();
 

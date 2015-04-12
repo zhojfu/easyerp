@@ -53,8 +53,10 @@
     <Compile Include="Factory\AttritionService.cs" />
     <Compile Include="Factory\DaliyStatisticService.cs" />
     <Compile Include="Factory\EmployeeService.cs" />
+    <Compile Include="Factory\EmployeeTimesheetService.cs" />
     <Compile Include="Factory\IAttritionService.cs" />
     <Compile Include="Factory\IEmployeeService.cs" />
+    <Compile Include="Factory\IEmployeeTimesheetService.cs" />
     <Compile Include="Factory\IStatisticService.cs" />
     <Compile Include="Helpers\DateTimeHelper.cs" />
     <Compile Include="Helpers\DateTimeSettings.cs" />
