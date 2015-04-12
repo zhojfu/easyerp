@@ -6,6 +6,7 @@ namespace EasyERP.Web.Framework
     using Autofac.Integration.Mvc;
     using Doamin.Service.Directory;
     using Doamin.Service.Discounts;
+    using Doamin.Service.Factory;
     using Doamin.Service.Helpers;
     using Doamin.Service.Payments;
     using Doamin.Service.Products;
@@ -77,7 +78,9 @@ namespace EasyERP.Web.Framework
             builder.RegisterType<CategoryService>().As<ICategoryService>().InstancePerLifetimeScope();
             builder.RegisterType<InventoryService>().As<IInventoryService>().InstancePerLifetimeScope();
             builder.RegisterType<PaymentService>().As<IPaymentService>().InstancePerLifetimeScope();
+            builder.RegisterType<EmployeeService>().As<IEmployeeService>().InstancePerLifetimeScope();
 
+            builder.RegisterGeneric(typeof(DaliyStatisticService<>)).As(typeof(IStatisticService<>)).InstancePerLifetimeScope();
             builder.RegisterType<ManufacturerService>().As<IManufacturerService>().InstancePerLifetimeScope();
 
             //builder.RegisterType<ProductAttributeFormatter>().As<IProductAttributeFormatter>().InstancePerLifetimeScope();
