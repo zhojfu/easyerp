@@ -1616,6 +1616,7 @@
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="App_Start\UnityMvcActivator.cs" />
     <Compile Include="AutoMapperBootstraper.cs" />
+    <Compile Include="Controllers\ChargeController.cs" />
     <Compile Include="Controllers\EmployeeController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\TimesheetController.cs" />
@@ -1824,6 +1825,9 @@
     <Content Include="Views\Timesheet\_ViewStart.cshtml" />
     <Content Include="Views\Employee\Edit.cshtml" />
     <Content Include="Views\Employee\EmployeeArea.cshtml" />
+    <Content Include="Views\Charge\Index.cshtml" />
+    <Content Include="Views\Charge\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\ChargeLayout.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
