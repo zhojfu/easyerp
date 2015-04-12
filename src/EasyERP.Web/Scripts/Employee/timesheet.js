@@ -92,12 +92,12 @@
     };
 
     this.moveNextWeek = function () {
-        currentDate.setDate(currentDate.getDate() - 7);
+        currentDate.setDate(currentDate.getDate() + 7);
         initialKendoGrid();
     };
 
     this.movePrevWeek = function () {
-        currentDate.setDate(currentDate.getDate() + 7);
+        currentDate.setDate(currentDate.getDate() - 7);
         initialKendoGrid();
     };
 

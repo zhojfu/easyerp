@@ -56,7 +56,7 @@
 
         public virtual void Commit()
         {
-            //using (var scope = new TransactionScope())
+            using (var scope = new TransactionScope())
             {
                 foreach (var operation in this.operations)
                 {
@@ -76,7 +76,7 @@
                     }
                 }
                 this.operations.Clear();
-                //scope.Complete();
+                scope.Complete();
             }
         }
     }

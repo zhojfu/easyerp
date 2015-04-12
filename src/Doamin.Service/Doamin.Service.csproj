@@ -39,7 +39,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CategoryService.cs" />
+    <Compile Include="Authentication\IAuthenticationService.cs" />
+    <Compile Include="Directory\IMeasureService.cs" />
+    <Compile Include="Directory\MeasureService.cs" />
+    <Compile Include="Discounts\DiscountService.cs" />
+    <Compile Include="Discounts\IDiscountService.cs" />
+    <Compile Include="Events\EventPublisher.cs" />
+    <Compile Include="Events\EventPublisherExtensions.cs" />
+    <Compile Include="Events\IConsumer.cs" />
+    <Compile Include="Events\IEventPublisher.cs" />
+    <Compile Include="Events\ISubscriptionService.cs" />
+    <Compile Include="Events\SubscriptionService.cs" />
     <Compile Include="Factory\AttritionService.cs" />
     <Compile Include="Factory\DaliyStatisticService.cs" />
     <Compile Include="Factory\EmployeeService.cs" />
@@ -48,12 +58,44 @@
     <Compile Include="Factory\IEmployeeService.cs" />
     <Compile Include="Factory\IEmployeeTimesheetService.cs" />
     <Compile Include="Factory\IStatisticService.cs" />
+    <Compile Include="Helpers\DateTimeHelper.cs" />
+    <Compile Include="Helpers\DateTimeSettings.cs" />
+    <Compile Include="Helpers\IDateTimeHelper.cs" />
+    <Compile Include="Helpers\IUserAgentHelper.cs" />
+    <Compile Include="Helpers\UserAgentHelper.cs" />
     <Compile Include="Installation\CodeFirstInstallationService.cs" />
     <Compile Include="Installation\IInstallationService.cs" />
     <Compile Include="Installation\SqlFileInstallationService.cs" />
-    <Compile Include="ProductService.cs" />
+    <Compile Include="Payments\PaymentService.cs" />
+    <Compile Include="Payments\IPaymentService.cs" />
+    <Compile Include="Products\ICategoryService.cs" />
+    <Compile Include="Products\CategoryService.cs" />
+    <Compile Include="Products\IInventoryService.cs" />
+    <Compile Include="Products\IManufacturerService.cs" />
+    <Compile Include="Products\InventoryService.cs" />
+    <Compile Include="Products\IProductAttributeService.cs" />
+    <Compile Include="Products\IProductService.cs" />
+    <Compile Include="Products\IProductTemplateService.cs" />
+    <Compile Include="Products\ISpecificationAttributeService.cs" />
+    <Compile Include="Products\ManufacturerExtensions.cs" />
+    <Compile Include="Products\ManufacturerService.cs" />
+    <Compile Include="Products\ProductAttributeService.cs" />
+    <Compile Include="Products\ProductService.cs" />
+    <Compile Include="Products\ProductTemplateService.cs" />
+    <Compile Include="Products\SpecificationAttributeService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StockService.cs" />
+    <Compile Include="Security\AclService.cs" />
+    <Compile Include="Security\IAclService.cs" />
+    <Compile Include="Security\IPermissionProvider.cs" />
+    <Compile Include="Security\IPermissionService.cs" />
+    <Compile Include="Security\PermissionService.cs" />
+    <Compile Include="Security\StandardPermissionProvider.cs" />
+    <Compile Include="Stores\IStoreMappingService.cs" />
+    <Compile Include="Stores\IStoreService.cs" />
+    <Compile Include="Stores\StoreMappingService.cs" />
+    <Compile Include="Stores\StoreService.cs" />
+    <Compile Include="Vendors\IVendorService.cs" />
+    <Compile Include="Vendors\VendorService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Domain.EntityFramework\Domain.EntityFramework.csproj">
@@ -64,12 +106,18 @@
       <Project>{9A1DEFAC-0977-4B5C-896B-F079B2D26382}</Project>
       <Name>Domain.Model</Name>
     </ProjectReference>
+    <ProjectReference Include="..\EasyErp.Core\EasyErp.Core.csproj">
+      <Project>{122D143E-0FD6-42D4-B18A-5F48B00959AD}</Project>
+      <Name>EasyErp.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj">
       <Project>{35B3A042-0187-4530-A9F5-2063E2EEBDAD}</Project>
       <Name>Infrastructure %28Infrastructure\Infrastructure%29</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="app.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

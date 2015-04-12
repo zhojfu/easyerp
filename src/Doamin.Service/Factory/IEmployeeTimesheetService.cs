@@ -7,7 +7,7 @@ namespace Doamin.Service.Factory
 
     public interface IEmployeeTimesheetService
     {
-        IEnumerable<WorkTimeStatistic> GetEmployeeTimesheetByDate(Guid employeeId, DateTime from);
-        void UpdateTimesheet(Guid employeeId, Dictionary<DateTime, double> worktimes);
+        IEnumerable<WorkTimeStatistic> GetEmployeeTimesheetByDate(int employeeId, DateTime from);
+        void UpdateTimesheet(int employeeId, Dictionary<DateTime, double> worktimes);
     }
 }

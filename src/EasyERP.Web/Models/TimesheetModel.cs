@@ -7,7 +7,7 @@ namespace EasyERP.Web.Models
 {
     public class TimesheetModel
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
         public string DateOfWeek { get; set; }
         public string EmployeeName { get; set; }
         public double Mon { get; set; }

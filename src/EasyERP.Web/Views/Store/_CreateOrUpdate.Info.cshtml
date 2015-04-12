@@ -1,0 +1,89 @@
+﻿@using EasyERP.Web.Framework
+@using EasyERP.Web.Framework.UI
+@model EasyERP.Web.Models.Stores.StoreModel
+@{
+    //resources for product tags input
+    Html.AppendCssFileParts("~/Content/tagit/jquery.tagit.css");
+    Html.AppendScriptParts("~/Scripts/tag-it.min.js");
+}
+<table class="adminContent">
+    <tr>
+        <td class="adminTitle">
+            @Html.LabelFor(model => model.Name):
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(model => model.Name)
+            @Html.ValidationMessageFor(model => model.Name)
+        </td>
+    </tr>
+    <tr>
+        <td class="adminTitle">
+            @Html.LabelFor(model => model.ShortDescription):
+        </td>
+        <td class="adminData">
+            @Html.TextAreaFor(x => x.ShortDescription, new
+            {
+                style = "Width: 250px; Height: 150px;"
+            })
+            @Html.ValidationMessageFor(model => model.ShortDescription)
+        </td>
+    </tr>
+    <tr>
+        <td class="adminTitle">
+            @Html.LabelFor(model => model.FullDescription):
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(x => x.FullDescription, "RichEditor")
+            @Html.ValidationMessageFor(model => model.FullDescription)
+        </td>
+    </tr>
+</table>
+<table class="adminContent">
+    <tr>
+        <td class="adminTitle">
+            @Html.LabelFor(model => model):
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(model => model.CompanyAddress)
+            @Html.ValidationMessageFor(model => model.CompanyAddress)
+        </td>
+    </tr>
+    <tr>
+        <td class="adminTitle">
+            @Html.LabelFor(model => model.CompanyPhoneNumber):
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(model => model.CompanyPhoneNumber)
+            @Html.ValidationMessageFor(model => model.CompanyPhoneNumber)
+        </td>
+    </tr>
+</table>
+<table class="adminContent">
+    <tr class="adminSeparator">
+        <td colspan="2">
+            <hr />
+        </td>
+    </tr>
+    @if (Model.CreatedOn.HasValue)
+    {
+        <tr>
+            <td class="adminTitle">
+                @Html.LabelFor(model => model.CreatedOn):
+            </td>
+            <td class="adminData">
+                @Model.CreatedOn.Value.ToString("F")
+            </td>
+        </tr>
+    }
+    @if (Model.UpdatedOn.HasValue)
+    {
+        <tr>
+            <td class="adminTitle">
+                @Html.LabelFor(model => model.UpdatedOn):
+            </td>
+            <td class="adminData">
+                @Model.UpdatedOn.Value.ToString("F")
+            </td>
+        </tr>
+    }
+</table>

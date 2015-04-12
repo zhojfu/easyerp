@@ -1,0 +1,82 @@
+﻿using EasyERP.Web.Framework
+@model EasyERP.Web.Models.Products.InventoryModel
+@{
+    ViewBag.Title = "入库";
+    Layout = "~/Views/Shared/ProductLayout.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="section-header">
+        <div class="title">
+            <label>入库</label>
+        </div>
+        <div class="section-header">
+            <div class="title">
+                "EditProductDetails"
+            </div>
+            <div class="options">
+                <input type="submit" name="save" class="k-button" value="保存" />
+                <span id="product-delete" class="k-button">取消</span>
+            </div>
+        </div>
+    </div>
+    <table width="100%">
+        <tr>
+            <td class="adminTitle">
+                产品目录:
+            </td>
+            <td class="adminData">
+                @Html.DropDownList("SearchCategoryId", Model.AvailableCategories)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                产品名称:
+            </td>
+            <td class="adminData">
+                @Html.DropDownList("ProductId", Model.AvailableProducts)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                产品数量:
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(m => m.Quantity)
+                @Html.ValidationMessageFor(model => model.Quantity))
+            </td>
+        </tr>
+    </table>
+    <table class="adminContent" id="payment">
+        <tr>
+            <td class="admintTitle">
+                应付款：
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(m => m.Payables)
+                @Html.ValidationMessageFor(model => model.Payables))
+            </td>
+        </tr>
+        <tr>
+            <td class="admintTitle">
+                已付款：
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(m => m.Paid)
+                @Html.ValidationMessageFor(model => model.Paid))
+            </td>
+        </tr>
+
+        <tr>
+            <td class="admintTitle">
+                付款截止日期：
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(m => m.DueDateTime)
+                @Html.ValidationMessageFor(model => model.DueDateTime))
+            </td>
+        </tr>
+    </table>
+}

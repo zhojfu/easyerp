@@ -65,7 +65,7 @@ namespace EasyERP.Web.Controllers
                 { dateRange.Item1.AddDays(6), timesheet.Sun }
             };
 
-            this.timeSheetService.UpdateTimesheet(new Guid(timesheet.Id), worktimes);
+            this.timeSheetService.UpdateTimesheet(timesheet.Id, worktimes);
             return Json(timesheet);
         }
 
@@ -73,13 +73,13 @@ namespace EasyERP.Web.Controllers
         {
             DateTime selectDate;
 
-            if (!DateTime.TryParse(date, out selectDate))
+            var employees = this.employeeService.GetEmployees(page, pageSize);
+
+            if (!DateTime.TryParse(date, out selectDate) || employees == null )
             {
                 return null;
             }
-
-            var employees = this.employeeService.GetEmployees(page, pageSize);
-
+            
             List<TimesheetModel> timesheetModels = new List<TimesheetModel>();
 
             foreach (var employee in employees)
@@ -87,7 +87,7 @@ namespace EasyERP.Web.Controllers
                 var timeSheets = this.timeSheetService.GetEmployeeTimesheetByDate(employee.Id, selectDate);
                 var model = new TimesheetModel
                 {
-                    Id = employee.Id.ToString(),
+                    Id = employee.Id,
                     DateOfWeek = date,
                     EmployeeName = employee.LastName + employee.FirstName
                 };

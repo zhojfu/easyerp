@@ -4,7 +4,7 @@
 	<s:Boolean x:Key="/Default/CodeInspection/ExcludedFiles/FileMasksToSkip/=_002A_002Emin_002Ejs/@EntryIndexedValue">True</s:Boolean>
 	
 	
-	<s:String x:Key="/Default/CodeStyle/CodeCleanup/RecentlyUsedProfile/@EntryValue">Default: Full Cleanup</s:String>
+	
 	
 	<s:String x:Key="/Default/CodeStyle/CodeFormatting/CSharpCodeStyle/ThisQualifier/INSTANCE_MEMBERS_QUALIFY_MEMBERS/@EntryValue">Field, Property, Event, Method</s:String>
 	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/ALIGN_LINQ_QUERY/@EntryValue">True</s:Boolean>
@@ -236,6 +236,8 @@
 	<s:String x:Key="/Default/Environment/AssemblyExplorer/XmlDocument/@EntryValue">&lt;AssemblyExplorer&gt;&#xD;
   &lt;Assembly Path="c:\Program Files (x86)\Microsoft SQL Server Compact Edition\v3.5\Desktop\System.Data.SqlServerCe.dll" /&gt;&#xD;
   &lt;Assembly Path="W:\easyerp\src\packages\Microsoft.SqlServer.Compact.4.0.8876.1\lib\net40\System.Data.SqlServerCe.dll" /&gt;&#xD;
+  &lt;Assembly Path="C:\Users\Ben\Documents\easyerp\src\EasyERP.Web\Bin\FluentValidation.dll" /&gt;&#xD;
+  &lt;Assembly Path="C:\Users\Administrator\Desktop\myeasyerp\easyerp\easyerp\src\packages\Autofac.3.5.2\lib\net40\Autofac.dll" /&gt;&#xD;
 &lt;/AssemblyExplorer&gt;</s:String>
 	<s:Boolean x:Key="/Default/Environment/ExternalSources/FirstTimeFormShown/@EntryValue">True</s:Boolean>
 	<s:String x:Key="/Default/Environment/ExternalSources/NavigationMode/@EntryValue">ObjectBrowser</s:String>
@@ -250,6 +252,7 @@
 	<s:String x:Key="/Default/Housekeeping/Layout/DialogWindows/OptionsDialog/Position/@EntryValue">[53,-62](1024,768)</s:String>
 	
 	<s:Boolean x:Key="/Default/Housekeeping/UnitTestingMru/UnitTestSessionPersistentData/=A77DC208AD8E4BD8B47F2D8C04273F44/@KeyIndexDefined">True</s:Boolean>
+	<s:Int64 x:Key="/Default/Housekeeping/UnitTestingMru/UnitTestSessionPersistentData/=A77DC208AD8E4BD8B47F2D8C04273F44/GroupingIndex/@EntryValue">3</s:Int64>
 	<s:String x:Key="/Default/Housekeeping/UnitTestingMru/UnitTestSessionPersistentData/=A77DC208AD8E4BD8B47F2D8C04273F44/Name/@EntryValue">Test_GetWeekRangeOfCurrentDate</s:String>
 	<s:String x:Key="/Default/Housekeeping/UnitTestingMru/UnitTestSessionPersistentData/=A77DC208AD8E4BD8B47F2D8C04273F44/XmlSerializedElements/@EntryValue">&lt;Session&gt;&lt;Elements&gt;&lt;UnitTestElement Provider="MSTest" Id="MsTest:Application.Test.TestDateUtils" type="MsTestTestClassElement" TypeName="Application.Test.TestDateUtils" Project="BFBE0D1F-5B89-41B8-A585-E088B6EAA008" /&gt;&lt;UnitTestElement Provider="MSTest" Id="MsTest:Application.Test.TestDateUtils.Test_GetWeekRangeOfCurrentDate" ParentId="MsTest:Application.Test.TestDateUtils" type="MsTestTestMethodElement" MethodName="Test_GetWeekRangeOfCurrentDate" TypeName="Application.Test.TestDateUtils" Project="BFBE0D1F-5B89-41B8-A585-E088B6EAA008" /&gt;&lt;/Elements&gt;&lt;/Session&gt;</s:String>
 	

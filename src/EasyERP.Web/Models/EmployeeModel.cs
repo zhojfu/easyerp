@@ -7,7 +7,7 @@ namespace EasyERP.Web.Models
 
     public class EmployeeModel
     {
-        public  Guid Id { get; set; }
+        public  int Id { get; set; }
         [DisplayName("名")]
         [StringLength(10, ErrorMessage = "不能超过10个字符")]
         [Required]

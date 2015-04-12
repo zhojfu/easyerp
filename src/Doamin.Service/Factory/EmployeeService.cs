@@ -1,12 +1,10 @@
-﻿
-namespace Doamin.Service.Factory
+﻿namespace Doamin.Service.Factory
 {
-    using System;
-    using System.Collections.Generic;
     using Domain.Model;
-
     using Infrastructure.Domain;
     using Infrastructure.Utility;
+    using System;
+    using System.Collections.Generic;
 
     public class EmployeeService : IEmployeeService
     {
@@ -20,7 +18,7 @@ namespace Doamin.Service.Factory
             this.unitOfWork = unitOfWork;
         }
 
-        public Employee GetEmployeeById(Guid id)
+        public Employee GetEmployeeById(int id)
         {
             return this.repository.GetByKey(id);
         }
@@ -31,11 +29,11 @@ namespace Doamin.Service.Factory
             this.unitOfWork.Commit();
         }
 
-        public void DeleteEmployeeByIds(List<string> ids)
+        public void DeleteEmployeeByIds(List<int> ids)
         {
             foreach (var id in ids)
             {
-                var e = this.repository.GetByKey(new Guid(id));
+                var e = this.repository.GetByKey(id);
                 if (e != null)
                 {
                     this.repository.Remove(e);

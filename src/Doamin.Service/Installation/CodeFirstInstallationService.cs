@@ -1,6 +1,7 @@
 ﻿namespace Doamin.Service.Installation
 {
-    using Domain.Model;
+    using Domain.Model.Products;
+    using Domain.Model.Purchase;
     using Infrastructure.Domain;
     using System.Collections.Generic;
 
@@ -41,18 +42,21 @@
             {
                 new Category
                 {
-                    Name = "Rice",
-                    Descriiption = "Rice category"
+                    Name = "Rice"
+
+                    //Descriiption = "Rice category"
                 },
                 new Category
                 {
-                    Name = "Food Oil",
-                    Descriiption = "Food Oil category"
+                    Name = "Food Oil"
+
+                    //Descriiption = "Food Oil category"
                 },
                 new Category
                 {
-                    Name = "Other",
-                    Descriiption = "Other category"
+                    Name = "Other"
+
+                    //Descriiption = "Other category"
                 }
             };
 

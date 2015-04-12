@@ -20,7 +20,7 @@ namespace Doamin.Service.Factory
             this.unitOfWork = unitOfWork;
         }
 
-        public IEnumerable<WorkTimeStatistic> GetEmployeeTimesheetByDate(Guid employeeId, DateTime date)
+        public IEnumerable<WorkTimeStatistic> GetEmployeeTimesheetByDate(int employeeId, DateTime date)
         {
             var dateRange = DateHelper.GetWeekRangeOfCurrentDate(date);
 
@@ -28,7 +28,7 @@ namespace Doamin.Service.Factory
                 m => m.EmployeeId == employeeId && m.Date >= dateRange.Item1 && m.Date <= dateRange.Item2);
         }
 
-        public void UpdateTimesheet(Guid employeeId, Dictionary<DateTime, double> worktimes)
+        public void UpdateTimesheet(int employeeId, Dictionary<DateTime, double> worktimes)
         {
             const double Tolerance = 0.001;
 
@@ -52,7 +52,6 @@ namespace Doamin.Service.Factory
                 {
                     WorkTimeStatistic w = new WorkTimeStatistic
                     {
-                        Id = Guid.NewGuid(),
                         EmployeeId = employeeId,
                         WorkTimeHr = hour,
                         Date = date,

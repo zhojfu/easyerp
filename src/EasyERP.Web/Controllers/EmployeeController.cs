@@ -2,14 +2,13 @@
 
 namespace EasyERP.Web.Controllers
 {
-    using System;
-    using System.Collections.Generic;
-
     using AutoMapper;
     using Doamin.Service.Factory;
     using Domain.Model;
     using EasyERP.Web.Models;
     using Infrastructure.Utility;
+    using System;
+    using System.Collections.Generic;
 
     public class EmployeeController : Controller
     {
@@ -31,9 +30,9 @@ namespace EasyERP.Web.Controllers
             return View();
         }
 
-        public ActionResult Edit(string id)
+        public ActionResult Edit(int id)
         {
-            Employee e = this.employeeService.GetEmployeeById(new Guid(id));
+            Employee e = this.employeeService.GetEmployeeById(id);
             if (e != null)
             {
                 var model = Mapper.Map<Employee, EmployeeModel>(e);
@@ -66,7 +65,7 @@ namespace EasyERP.Web.Controllers
         }
 
         [HttpPost]
-        public JsonResult Delete(List<string> ids)
+        public JsonResult Delete(List<int> ids)
         {
             if (ids != null)
             {
@@ -98,12 +97,12 @@ namespace EasyERP.Web.Controllers
                 return Json(
                     new
                     {
-                       total = employees.TotalRecords,
-                       data = employeesList
+                        total = employees.TotalRecords,
+                        data = employeesList
                     },
                     JsonRequestBehavior.AllowGet);
             }
             return Json(null);
         }
-	}
+    }
 }

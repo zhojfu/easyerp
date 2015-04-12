@@ -1,20 +1,15 @@
-﻿
-namespace Domain.Model
+﻿namespace Domain.Model
 {
     using System;
     using System.Collections.Generic;
 
     using Domain.Model.Factory;
-
     using Infrastructure.Domain.Model;
+    using System;
+    using System.Collections.Generic;
 
     public class Employee : BaseEntity, IAggregateRoot
     {
-        public Employee()
-        {
-            Id = Guid.NewGuid();
-        }
-
         public string FirstName { get; set; }
 
         public string LastName { get; set; }

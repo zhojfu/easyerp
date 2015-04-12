@@ -1,5 +1,4 @@
-﻿
-namespace Domain.EntityFramework.Configurations
+﻿namespace Domain.EntityFramework.Configurations
 {
     using System.Data.Entity.ModelConfiguration;
 

@@ -1,6 +1,6 @@
 ﻿namespace Domain.EntityFramework
 {
-    using Domain.Model;
+    using Domain.Model.Products;
     using System;
     using System.Data.Entity;
 
@@ -10,21 +10,29 @@
         {
             var c1 = new Category
             {
-                Id = Guid.NewGuid(),
                 Name = "Rice",
-                Descriiption = "Rice category"
+                Description = "Rice",
+                UpdatedOnUtc = DateTime.Now,
+                CreatedOnUtc = DateTime.Now
+
+                //Descriiption = "Rice category"
             };
             var c2 = new Category
             {
-                Id = Guid.NewGuid(),
                 Name = "Food Oil",
-                Descriiption = "Food Oil category"
+                Description = "Food Oil",
+                UpdatedOnUtc = DateTime.Now,
+                CreatedOnUtc = DateTime.Now
+
+                //Descriiption = "Food Oil category"
             };
             var c3 = new Category
             {
-                Id = Guid.NewGuid(),
                 Name = "Other",
-                Descriiption = "Other category"
+                UpdatedOnUtc = DateTime.Now,
+                CreatedOnUtc = DateTime.Now
+
+                //Descriiption = "Other category"
             };
             context.Entry(c1).State = EntityState.Added;
             context.Entry(c2).State = EntityState.Added;
