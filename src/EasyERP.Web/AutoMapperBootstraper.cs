@@ -3,8 +3,10 @@
     using AutoMapper;
     using Domain.Model;
     using Domain.Model.Products;
+    using Domain.Model.Stores;
     using EasyERP.Web.Models;
     using EasyERP.Web.Models.Products;
+    using EasyERP.Web.Models.Stores;
 
     public class AutoMapperBootstraper
     {
@@ -17,6 +19,8 @@
             Mapper.CreateMap<InventoryModel, Inventory>();
             Mapper.CreateMap<Employee, EmployeeModel>();
             Mapper.CreateMap<Employee, EmployeeListModel>();
+            Mapper.CreateMap<Store, StoreModel>();
+            Mapper.CreateMap<StoreModel, Store>();
         }
     }
 }

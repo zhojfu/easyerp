@@ -9,7 +9,6 @@
         public StoreValidator()
         {
             RuleFor(x => x.Name).NotEmpty().WithMessage("Name.Required");
-            RuleFor(x => x.Url).NotEmpty().WithMessage("Url.Required");
         }
     }
 }

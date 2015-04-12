@@ -7,7 +7,7 @@
     {
         public double ComsumeQuantity { get; set; }
 
-        public long MaterialId { get; set; }
+        public int MaterialId { get; set; }
 
         public virtual Product Material { get; set; }
     }

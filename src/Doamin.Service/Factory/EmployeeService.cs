@@ -1,14 +1,10 @@
-﻿
-namespace Doamin.Service.Factory
+﻿namespace Doamin.Service.Factory
 {
+    using Domain.Model;
+    using Infrastructure.Domain;
+    using Infrastructure.Utility;
     using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Linq.Expressions;
-
-    using Domain.Model;
-
-    using Infrastructure.Domain;
 
     public class EmployeeService : IEmployeeService
     {
@@ -22,9 +18,9 @@ namespace Doamin.Service.Factory
             this.unitOfWork = unitOfWork;
         }
 
-        public Employee GetEmployeeByName(string idNumbr)
+        public Employee GetEmployeeById(int id)
         {
-            return this.repository.FindAll(m => m.IdNumber == idNumbr).FirstOrDefault();
+            return this.repository.GetByKey(id);
         }
 
         public void AddEmployee(Employee employee)
@@ -33,9 +29,17 @@ namespace Doamin.Service.Factory
             this.unitOfWork.Commit();
         }
 
-        public void DeleteEmployee(Employee employee)
+        public void DeleteEmployeeByIds(List<int> ids)
         {
-            this.repository.Remove(employee);
+            foreach (var id in ids)
+            {
+                var e = this.repository.GetByKey(id);
+                if (e != null)
+                {
+                    this.repository.Remove(e);
+                }
+            }
+
             this.unitOfWork.Commit();
         }
 
@@ -45,9 +49,9 @@ namespace Doamin.Service.Factory
             this.unitOfWork.Commit();
         }
 
-        public IEnumerable<Employee> GetEmployees()
+        public PagedResult<Employee> GetEmployees(int pageNumber, int pageSize)
         {
-            return null;
+            return this.repository.FindAll(pageSize, pageNumber, e => true, m => m.LastName, SortOrder.Ascending);
         }
     }
 }

@@ -9,7 +9,7 @@
 
         public double PriceOfUnit { get; set; }
 
-        public long AttritionId { get; set; }
+        public int AttritionId { get; set; }
 
         public virtual Attrition Attrition { get; set; }
     }

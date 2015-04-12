@@ -7,7 +7,9 @@ namespace EasyERP.Web.Extensions
 {
     using AutoMapper;
     using Domain.Model.Products;
+    using Domain.Model.Stores;
     using EasyERP.Web.Models.Products;
+    using EasyERP.Web.Models.Stores;
 
     public static class MapperExtensions
     {
@@ -44,6 +46,16 @@ namespace EasyERP.Web.Extensions
         public static Inventory ToEntity(this  InventoryModel model)
         {
             return model.MapTo<InventoryModel, Inventory>();
+        }
+
+        public static Store ToEntity(this  StoreModel model)
+        {
+            return model.MapTo<StoreModel, Store>();
+        }
+
+        public static StoreModel ToModel(this Store entity)
+        {
+            return entity.MapTo<Store, StoreModel>();
         }
     }
 }

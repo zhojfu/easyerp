@@ -3,6 +3,7 @@
     using EasyERP.Web.Validators.Stores;
     using FluentValidation.Attributes;
     using Infrastructure.Domain.Model;
+    using System;
     using System.Collections.Generic;
     using System.Web.Mvc;
 
@@ -13,15 +14,10 @@
         public string Name { get; set; }
 
         [AllowHtml]
-        public string Url { get; set; }
-
-        public virtual bool SslEnabled { get; set; }
+        public string ShortDescription { get; set; }
 
         [AllowHtml]
-        public virtual string SecureUrl { get; set; }
-
-        [AllowHtml]
-        public string Hosts { get; set; }
+        public string FullDescription { get; set; }
 
         public int DisplayOrder { get; set; }
 
@@ -34,7 +30,8 @@
         [AllowHtml]
         public string CompanyPhoneNumber { get; set; }
 
-        [AllowHtml]
-        public string CompanyVat { get; set; }
+        public DateTime? CreatedOn { get; set; }
+
+        public DateTime? UpdatedOn { get; set; }
     }
 }

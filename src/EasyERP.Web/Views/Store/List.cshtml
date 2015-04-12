@@ -1,59 +1,34 @@
 ﻿@using EasyERP.Web.Framework
-@model EasyERP.Web.Models.Products.ProductListModel
 
 @{
-    ViewBag.Title = "产品管理";
+    ViewBag.Title = "门店管理";
     var defaultGridPageSize = 10;
     var gridPageSizes = 10;
-}
-@using (Html.BeginForm())
+}@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
     <div class="section-header">
+
         <div class="title">
-            <label>产品管理</label>
+            <label>门店管理</label>
         </div>
         <div class="options">
-            <a href="@Url.Action("Create")" class="k-button">添加产品</a>
-            <a href="@Url.Action("Inventory")" class="k-button">入库</a>
+            <a href="@Url.Action("Create")" class="k-button">添加门店</a>
             <input type="button" id="delete-selected" class="k-button" value="Delete" />
         </div>
     </div>
-    <table width="100%">
-        <tr>
-            <td class="adminTitle">
-                SearchProductName:
-            </td>
-            <td class="adminData">
-                @Html.EditorFor(model => model.SearchProductName)
-            </td>
-        </tr>
-        <tr>
-            <td class="adminTitle">
-                SearchCategory:
-            </td>
-            <td class="adminData">
-                @Html.DropDownList("SearchCategoryId", Model.AvailableCategories)
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2">
-                <input type="button" id="search-products" class="k-button" value="Search" />
-            </td>
-        </tr>
-    </table>
     <table class="content">
         <tr>
             <td>
-                <div id="products-grid"></div>
+                <div id="stores-grid"></div>
                 <script>
                     $(document).ready(function() {
-                        $("#products-grid").kendoGrid({
+                        $("#stores-grid").kendoGrid({
                             dataSource: {
                                 type: "json",
                                 transport: {
                                     read: {
-                                        url: "@Html.Raw(Url.Action("ProductList", "Product"))",
+                                        url: "@Html.Raw(Url.Action("StoreList", "Store"))",
                                         type: "POST",
                                         dataType: "json",
                                         data: additionalData
@@ -95,39 +70,24 @@
                                 },
                                 {
                                     field: "Name",
-                                    title: "产品名",
+                                    title: "店名",
                                     width: 300
                                 },
                                 {
-                                    field: "CategoryName",
-                                    title: "产品目录",
-                                    width: 300
-                                },
-                                {
-                                    field: "StockQuantity",
-                                    title: "库存",
+                                    field: "CompanyAddress",
+                                    title: "地址",
                                     width: 100
                                 },
                                 {
-                                    field: "Price",
-                                    title: "价格",
+                                    field: "CompanyPhoneNumber",
+                                    title: "电话",
                                     width: 100
                                 },
                                 {
-                                    field: "ProductCost",
-                                    title: "成本",
-                                    width: 100
-                                },
-                                {
-                                    field: "Sku",
-                                    title: "条码",
-                                    width: 100
-                                },
-{
                                     field: "Id",
-                                    title: "查看入库记录",
+                                    title: "员工",
                                     width: 100,
-                                    template: '<a href="Records/#=Id#">编辑</a>'
+                                    template: '<a href="Records/#=Id#">查看员工</a>'
                                 },
                                 {
                                     field: "Id",
@@ -148,25 +108,6 @@
 
         $(document).ready(function() {
 
-            //search button
-            $("#search-products").click(function() {
-                //search
-                var grid = $("#products-grid").data("kendoGrid");
-                grid.dataSource.page(1); //new search. Set page size to 1
-                //grid.dataSource.read(); we already loaded the grid above using "page" function
-                //clear selected checkboxes
-                $(".checkboxGroups").attr("checked", false).change();
-                selectedIds = [];
-                return false;
-            });
-
-            $("#@Html.FieldIdFor(model => model.SearchProductName)").keydown(function(event) {
-                if (event.keyCode == 13) {
-                    $("#search-products").click();
-                    return false;
-                }
-            });
-
             //delete selected
             $("#delete-selected").click(function(e) {
 
@@ -180,11 +121,12 @@
                 $.ajax({
                     cache: false,
                     type: "POST",
-                    url: "@(Url.Action("DeleteSelected", "Product"))",
+                    url: "@(Url.Action("DeleteSelected", "Store" +
+                                                         "e"))",
                     data: postData,
                     complete: function(data) {
                         //reload grid
-                        var grid = $("#products-grid").data("kendoGrid");
+                        var grid = $("#stores-grid").data("kendoGrid");
                         grid.dataSource.read();
                     },
                     error: function(xhr, ajaxOptions, thrownError) {
@@ -200,7 +142,7 @@
             });
 
             //wire up checkboxes.
-            $("#products-grid").on("change", "input[type=checkbox][id!=mastercheckbox]", function(e) {
+            $("#stores-grid").on("change", "input[type=checkbox][id!=mastercheckbox]", function(e) {
                 var $check = $(this);
                 if ($check.is(":checked") == true) {
                     var checked = jQuery.inArray($check.val(), selectedIds);
@@ -223,14 +165,13 @@
 
         function additionalData() {
             var data = {
-                SearchProductName: $("#@Html.FieldIdFor(model => model.SearchProductName)").val(),
             };
             addAntiForgeryToken(data);
             return data;
         }
 
         function onDataBound(e) {
-            $("#products-grid input[type=checkbox][id!=mastercheckbox]").each(function() {
+            $("#stores-grid input[type=checkbox][id!=mastercheckbox]").each(function() {
                 var currentId = $(this).val();
                 var checked = jQuery.inArray(currentId, selectedIds);
                 //set checked based on if current checkbox's value is in selectedIds.
@@ -241,8 +182,8 @@
         }
 
         function updateMasterCheckbox() {
-            var numChkBoxes = $("#products-grid input[type=checkbox][id!=mastercheckbox]").length;
-            var numChkBoxesChecked = $("#products-grid input[type=checkbox][id!=mastercheckbox]:checked").length;
+            var numChkBoxes = $("#stores-grid input[type=checkbox][id!=mastercheckbox]").length;
+            var numChkBoxesChecked = $("#pstore-grid input[type=checkbox][id!=mastercheckbox]:checked").length;
             $("#mastercheckbox").attr("checked", numChkBoxes == numChkBoxesChecked && numChkBoxes > 0);
         }
     </script>

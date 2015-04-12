@@ -13,6 +13,13 @@
             Category = "Catalog"
         };
 
+        public static readonly PermissionRecord ManageStores = new PermissionRecord
+        {
+            Name = "Admin area. Manage Stores",
+            SystemName = "ManageStores",
+            Category = "Catalog"
+        };
+
         public IEnumerable<PermissionRecord> GetPermissions()
         {
             throw new NotImplementedException();

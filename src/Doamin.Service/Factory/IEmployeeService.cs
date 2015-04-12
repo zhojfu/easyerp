@@ -1,20 +1,22 @@
-﻿
-namespace Doamin.Service.Factory
+﻿namespace Doamin.Service.Factory
 {
-    using System.Collections.Generic;
-
     using Domain.Model;
+    using Infrastructure.Utility;
+    using System;
+    using System.Collections.Generic;
 
     public interface IEmployeeService
     {
-        Employee GetEmployeeByName(string name);
-        
+        Employee GetEmployeeById(int id);
+
         void AddEmployee(Employee employee);
 
-        void DeleteEmployee(Employee employee);
+        // void DeleteEmployee(Employee employee);
+
+        void DeleteEmployeeByIds(List<int> ids);
 
         void UpdateEmployee(Employee employee);
 
-        IEnumerable<Employee> GetEmployees();
+        PagedResult<Employee> GetEmployees(int pageNumber, int pageSize);
     }
 }

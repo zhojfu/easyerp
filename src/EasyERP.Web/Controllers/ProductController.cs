@@ -86,6 +86,48 @@
             return this.RedirectToAction("List");
         }
 
+        [HttpPost]
+        public ActionResult ProductList(DataSourceRequest command, ProductListModel model)
+        {
+            if (!this.permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            {
+                return AccessDeniedView();
+            }
+
+            var categoryIds = new List<int> { model.SearchCategoryId };
+
+            bool? overridePublished = null;
+            if (model.SearchPublishedId == 1)
+                overridePublished = true;
+            else if (model.SearchPublishedId == 2)
+                overridePublished = false;
+
+            var products = _productService.SearchProducts(
+                categoryIds: categoryIds,
+                manufacturerId: model.SearchManufacturerId,
+                storeId: model.SearchStoreId,
+                vendorId: model.SearchVendorId,
+                warehouseId: model.SearchWarehouseId,
+                keywords: model.SearchProductName,
+                pageIndex: command.Page - 1,
+                pageSize: command.PageSize,
+                showHidden: true,
+                overridePublished: overridePublished
+            );
+            var gridModel = new DataSourceResult();
+            gridModel.Data = products.Select(x =>
+            {
+                var productModel = x.ToModel();
+
+                productModel.FullDescription = "";
+
+                return productModel;
+            });
+            gridModel.Total = products.TotalCount;
+
+            return Json(gridModel);
+        }
+
         public ActionResult List()
         {
             if (!this.permissionService.Authorize(StandardPermissionProvider.ManageProducts))
@@ -168,48 +210,6 @@
             }
 
             return this.RedirectToAction("List");
-        }
-
-        [HttpPost]
-        public ActionResult ProductList(DataSourceRequest command, ProductListModel model)
-        {
-            if (!this.permissionService.Authorize(StandardPermissionProvider.ManageProducts))
-            {
-                return AccessDeniedView();
-            }
-
-            var categoryIds = new List<int> { model.SearchCategoryId };
-
-            bool? overridePublished = null;
-            if (model.SearchPublishedId == 1)
-                overridePublished = true;
-            else if (model.SearchPublishedId == 2)
-                overridePublished = false;
-
-            var products = _productService.SearchProducts(
-                categoryIds: categoryIds,
-                manufacturerId: model.SearchManufacturerId,
-                storeId: model.SearchStoreId,
-                vendorId: model.SearchVendorId,
-                warehouseId: model.SearchWarehouseId,
-                keywords: model.SearchProductName,
-                pageIndex: command.Page - 1,
-                pageSize: command.PageSize,
-                showHidden: true,
-                overridePublished: overridePublished
-            );
-            var gridModel = new DataSourceResult();
-            gridModel.Data = products.Select(x =>
-            {
-                var productModel = x.ToModel();
-
-                productModel.FullDescription = "";
-
-                return productModel;
-            });
-            gridModel.Total = products.TotalCount;
-
-            return Json(gridModel);
         }
 
         //create product
@@ -304,10 +304,6 @@
             {
                 //product
                 product = model.ToEntity(product);
-                this._productService.UpdateProduct(product);
-
-                //discounts
-
                 this._productService.UpdateProduct(product);
 
                 if (continueEditing)

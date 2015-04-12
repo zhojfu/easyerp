@@ -59,6 +59,8 @@
     <Compile Include="Media\MediaSettings.cs" />
     <Compile Include="Media\Picture.cs" />
     <Compile Include="Media\PictureType.cs" />
+    <Compile Include="Orders\Order.cs" />
+    <Compile Include="Orders\OrderItem.cs" />
     <Compile Include="Payments\Payment.cs" />
     <Compile Include="Products\AttributeControlType.cs" />
     <Compile Include="Products\AttributeValueType.cs" />
@@ -100,7 +102,6 @@
     <Compile Include="Security\PermissionRecord.cs" />
     <Compile Include="Stores\IStoreMappingSupported.cs" />
     <Compile Include="Stores\Store.cs" />
-    <Compile Include="Stores\StoreExtensions.cs" />
     <Compile Include="Stores\StoreMapping.cs" />
     <Compile Include="Test\TestDoubles.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

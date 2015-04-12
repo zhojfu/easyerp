@@ -1633,6 +1633,7 @@
     <Compile Include="Controllers\EmployeeController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ParameterBasedOnFormNameAttribute.cs" />
+    <Compile Include="Controllers\StoreController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\TimesheetController.cs" />
     <Compile Include="Extensions\MapperExtensions.cs" />
@@ -1848,7 +1849,7 @@
     <Content Include="Views\Shared\EmployeeLayout.cshtml" />
     <Content Include="Views\Employee\_ViewStart.cshtml" />
     <Content Include="Views\Shared\ProductLayout.cshtml" />
-    <Content Include="Views\Product\_ViewStart.cshtml" />
+    <Content Include="Views\Store\_ViewStart.cshtml" />
     <Content Include="Views\Product\Create.cshtml" />
     <Content Include="Views\Shared\Menu.cshtml" />
     <Content Include="Views\Product\List.cshtml" />
@@ -1873,6 +1874,12 @@
     <Content Include="sitemap.config" />
     <Content Include="Views\Shared\Delete.cshtml" />
     <Content Include="Views\Product\Inventory.cshtml" />
+    <Content Include="Views\Store\List.cshtml" />
+    <Content Include="Views\Store\Create.cshtml" />
+    <Content Include="Views\Store\_CreateOrUpdate.cshtml" />
+    <Content Include="Views\Store\_CreateOrUpdate.Info.cshtml" />
+    <Content Include="Views\Product\_ViewStart.cshtml" />
+    <Content Include="Views\Store\Edit.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
