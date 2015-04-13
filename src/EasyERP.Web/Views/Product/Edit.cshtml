@@ -2,12 +2,10 @@
 @using EasyErp.Core.Infrastructure
 @using EasyERP.Web.Framework
 @model EasyERP.Web.Models.Products.ProductModel
-
 @{
     ViewBag.Title = "Edit";
     Layout = "~/Views/Shared/ProductLayout.cshtml";
 }
-
 @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "product-form" }))
 {
     @Html.AntiForgeryToken()

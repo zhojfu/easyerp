@@ -1,6 +1,6 @@
 namespace Doamin.Service.Authentication
 {
-    using Domain.Model.Base;
+    using Domain.Model.Users;
 
     /// <summary>
     /// Authentication service interface

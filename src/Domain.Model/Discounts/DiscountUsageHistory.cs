@@ -1,6 +1,6 @@
 namespace Domain.Model.Discounts
 {
-    using global::Domain.Model.Purchase;
+    using Domain.Model.Orders;
     using global::Infrastructure.Domain.Model;
     using System;
 

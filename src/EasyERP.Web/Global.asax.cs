@@ -7,6 +7,7 @@ namespace EasyERP.Web
     using EasyErp.Core.Infrastructure;
     using EasyERP.Web.App_Start;
     using EasyERP.Web.Framework;
+    using EasyERP.Web.Framework.Themes;
     using FluentValidation.Mvc;
     using System;
     using System.Globalization;
@@ -21,9 +22,15 @@ namespace EasyERP.Web
             //initialize engine context
             EngineContext.Initialize(false);
 
+            //remove all view engines
+            ViewEngines.Engines.Clear();
+            //except the themeable razor view engine we use
+            ViewEngines.Engines.Add(new ThemeableRazorViewEngine());
+
             AutoMapperBootstraper.RegisterModelMapper();
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
+
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
             //fluent validation

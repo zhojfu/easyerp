@@ -5,10 +5,8 @@
 
     public interface IPermissionProvider
     {
-        /// <summary>
-        /// Get permissions
-        /// </summary>
-        /// <returns>Permissions</returns>
         IEnumerable<PermissionRecord> GetPermissions();
+
+        IEnumerable<DefaultPermissionRecord> GetDefaultPermissions();
     }
 }

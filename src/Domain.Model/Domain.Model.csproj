@@ -40,11 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Base\AccessGroups.cs" />
-    <Compile Include="Base\User.cs" />
     <Compile Include="Company\Company.cs" />
     <Compile Include="Directory\MeasureDimension.cs" />
-    <Compile Include="Directory\MeasureSettings.cs" />
     <Compile Include="Directory\MeasureWeight.cs" />
     <Compile Include="Discounts\Discount.cs" />
     <Compile Include="Discounts\DiscountLimitationType.cs" />
@@ -56,15 +53,14 @@
     <Compile Include="Factory\Statistic.cs" />
     <Compile Include="Factory\ProductStatistic.cs" />
     <Compile Include="Media\Download.cs" />
-    <Compile Include="Media\MediaSettings.cs" />
     <Compile Include="Media\Picture.cs" />
     <Compile Include="Media\PictureType.cs" />
     <Compile Include="Orders\Order.cs" />
     <Compile Include="Orders\OrderItem.cs" />
+    <Compile Include="Orders\ShoppingCartItem.cs" />
     <Compile Include="Payments\Payment.cs" />
     <Compile Include="Products\AttributeControlType.cs" />
     <Compile Include="Products\AttributeValueType.cs" />
-    <Compile Include="Products\CatalogSettings.cs" />
     <Compile Include="Products\Inventory.cs" />
     <Compile Include="Products\LowStockActivity.cs" />
     <Compile Include="Products\Manufacturer.cs" />
@@ -94,12 +90,13 @@
     <Compile Include="Products\SpecificationAttributeType.cs" />
     <Compile Include="Products\Supplierinfo.cs" />
     <Compile Include="Products\ProductTemplate.cs" />
-    <Compile Include="Purchase\Order.cs" />
-    <Compile Include="Purchase\OrderLine.cs" />
     <Compile Include="Factory\AttritionStatistic.cs" />
     <Compile Include="Security\AclRecord.cs" />
+    <Compile Include="Security\DefaultPermissionRecord.cs" />
     <Compile Include="Security\IAclSupported.cs" />
     <Compile Include="Security\PermissionRecord.cs" />
+    <Compile Include="Shipment\Shipment.cs" />
+    <Compile Include="Shipment\ShipmentItem.cs" />
     <Compile Include="Stores\IStoreMappingSupported.cs" />
     <Compile Include="Stores\Store.cs" />
     <Compile Include="Stores\StoreMapping.cs" />
@@ -107,23 +104,20 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Factory\WorkTimeStatistic.cs" />
     <Compile Include="Employee.cs" />
+    <Compile Include="Users\User.cs" />
     <Compile Include="Users\UserRole.cs" />
     <Compile Include="Vendors\Vendor.cs" />
-    <Compile Include="Vendors\VendorSettings.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\EasyErp.Core\EasyErp.Core.csproj">
-      <Project>{122D143E-0FD6-42D4-B18A-5F48B00959AD}</Project>
-      <Name>EasyErp.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj">
       <Project>{35B3A042-0187-4530-A9F5-2063E2EEBDAD}</Project>
-      <Name>Infrastructure %28Infrastructure\Infrastructure%29</Name>
+      <Name>Infrastructure</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -8,6 +8,7 @@
         public OrderConfiguration()
         {
             this.HasKey(o => o.Id);
+            this.HasRequired(o => o.Customer).WithMany().HasForeignKey(o => o.CustomerId).WillCascadeOnDelete();
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿namespace Doamin.Service.Discounts
 {
-    using Domain.Model.Base;
     using Domain.Model.Discounts;
+    using Domain.Model.Users;
     using EasyErp.Core;
     using System.Collections.Generic;
 

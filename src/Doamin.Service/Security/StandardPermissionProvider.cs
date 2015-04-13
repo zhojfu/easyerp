@@ -1,5 +1,6 @@
 ﻿namespace Doamin.Service.Security
 {
+    using Doamin.Service.Users;
     using Domain.Model.Security;
     using System;
     using System.Collections.Generic;
@@ -20,9 +21,51 @@
             Category = "Catalog"
         };
 
+        public static readonly PermissionRecord ManageOrders = new PermissionRecord
+        {
+            Name = "Admin area. Manage Orders",
+            SystemName = "ManageOrders",
+            Category = "Catalog"
+        };
+
+        public static readonly PermissionRecord EnableShoppingCart = new PermissionRecord
+        {
+            Name = "Public store. Enable shopping cart",
+            SystemName = "EnableShoppingCart",
+            Category = "PublicStore"
+        };
+
+        public static readonly PermissionRecord ViewProductList = new PermissionRecord
+        {
+            Name = "View product list",
+            SystemName = "ViewProductList",
+            Category = "StoreAdmin"
+        };
+
         public IEnumerable<PermissionRecord> GetPermissions()
         {
-            throw new NotImplementedException();
+            return new[] { ManageProducts, ManageStores, ManageOrders };
+        }
+
+        public IEnumerable<DefaultPermissionRecord> GetDefaultPermissions()
+        {
+            return new[]
+            {
+                new DefaultPermissionRecord
+                {
+                    UserRoleSystemName = SystemUserRoleNames.Administrators,
+                    PermissionRecords = new[] { ManageProducts, ManageStores, ManageOrders }
+                },
+                new DefaultPermissionRecord
+                {
+                    UserRoleSystemName = SystemUserRoleNames.StoreAdmin,
+                    PermissionRecords = new []{ManageStores}
+                },
+                new DefaultPermissionRecord
+                {
+                    UserRoleSystemName = SystemUserRoleNames.FactoryAdmin
+                }
+            };
         }
     }
 }

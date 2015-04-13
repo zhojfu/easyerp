@@ -1,6 +1,6 @@
 namespace Doamin.Service.Helpers
 {
-    using Domain.Model.Base;
+    using Domain.Model.Users;
     using System;
     using System.Collections.ObjectModel;
 

@@ -13,6 +13,7 @@
         public EntityFrameworkDbContext(string connectionString)
             : base(connectionString)
         {
+            this.Configuration.LazyLoadingEnabled = true;
             Database.SetInitializer(new DatabaseInitializer());
         }
 

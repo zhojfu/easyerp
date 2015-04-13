@@ -13,6 +13,7 @@
     using Domain.Model.Products;
     using Domain.Model.Vendors;
     using EasyErp.Core;
+    using EasyErp.Core.Configuration.Settings;
     using EasyERP.Web.Extensions;
     using EasyERP.Web.Kendoui;
     using EasyERP.Web.Models.Products;

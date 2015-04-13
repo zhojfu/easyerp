@@ -66,20 +66,9 @@
     <Reference Include="Microsoft.Practices.ServiceLocation">
       <HintPath>..\packages\CommonServiceLocator.1.2\lib\portable-windows8+net40+sl5+windowsphone8\Microsoft.Practices.ServiceLocation.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Practices.Unity">
-      <HintPath>..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Practices.Unity.Configuration">
-      <HintPath>..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.Configuration.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Practices.Unity.Mvc">
-      <HintPath>..\packages\Unity.Mvc.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.Mvc.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Practices.Unity.RegistrationByConvention">
-      <HintPath>..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.5.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
@@ -630,10 +619,16 @@
     <Content Include="Content\kendo\2015.1.318\fonts\DejaVu\DejaVuSans.ttf" />
     <Content Include="Content\kendo\2014.2.716\images\kendoui.woff" />
     <Content Include="Content\kendo\2014.2.716\images\kendoui.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="Content\bootstrap.css.map" />
+    <Content Include="Areas\Factory\Views\web.config" />
+    <Content Include="Areas\Factory\Views\Product\List.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Icon.png" />
     <Content Include="Scripts\admin.common.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -1622,38 +1617,55 @@
     <Content Include="Scripts\kendo\2015.1.318\messages\kendo.messages.zh-HK.min.js" />
     <Content Include="Scripts\kendo\2015.1.318\messages\kendo.messages.zh-TW.min.js" />
     <Content Include="Scripts\Employee\employee.js" />
+    <Content Include="Scripts\npm.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Areas\Factory\Controllers\ProductController.cs" />
+    <Compile Include="Areas\Factory\FactoryAreaRegistration.cs" />
     <Compile Include="AutoMapperBootstraper.cs" />
     <Compile Include="Controllers\AdminAuthorizeAttribute.cs" />
     <Compile Include="Controllers\BaseAdminController.cs" />
+    <Compile Include="Controllers\BasePublicController.cs" />
     <Compile Include="Controllers\ChargeController.cs" />
+    <Compile Include="Controllers\CommonController.cs" />
     <Compile Include="Controllers\EmployeeController.cs" />
+    <Compile Include="Controllers\ShoppingCartController.cs" />
+    <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ParameterBasedOnFormNameAttribute.cs" />
     <Compile Include="Controllers\StoreController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\TimesheetController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Extensions\MapperExtensions.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Kendoui\DataSourceRequest.cs" />
     <Compile Include="Kendoui\DataSourceResult.cs" />
+    <Compile Include="Models\Common\AdminHeaderLinksModel.cs" />
+    <Compile Include="Models\Common\FaviconModel.cs" />
+    <Compile Include="Models\Common\FooterModel.cs" />
+    <Compile Include="Models\Common\HeaderLinksModel.cs" />
     <Compile Include="Models\Discounts\DiscountListModel.cs" />
     <Compile Include="Models\Discounts\DiscountModel.cs" />
     <Compile Include="Models\EmployeeModel.cs" />
     <Compile Include="Models\EmployeeListModel.cs" />
+    <Compile Include="Models\Orders\OrderModel.cs" />
+    <Compile Include="Models\Orders\OrderListModel.cs" />
+    <Compile Include="Models\Orders\ShoppingCartItemModel.cs" />
     <Compile Include="Models\Products\InventoryModel.cs" />
     <Compile Include="Models\Products\ProductListModel.cs" />
     <Compile Include="Models\Products\ProductModel.cs" />
     <Compile Include="Models\Stores\StoreModel.cs" />
+    <Compile Include="Models\Users\LoginModel.cs" />
     <Compile Include="Models\WorkTime.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Validators\Discounts\DiscountValidator.cs" />
+    <Compile Include="Validators\Orders\OrderValidator.cs" />
     <Compile Include="Validators\Products\ProductAttributeValueModelValidator.cs" />
     <Compile Include="Validators\Products\ProductValidator.cs" />
     <Compile Include="Validators\Stores\StoreValidator.cs" />
@@ -1869,7 +1881,6 @@
     <Content Include="Views\Shared\EditorTemplates\RichEditor.cshtml" />
     <Content Include="Views\Product\_CreateOrUpdate.Info.cshtml" />
     <Content Include="Views\Product\_CreateOrUpdate.Categories.cshtml" />
-    <Content Include="Views\Product\_CreateOrUpdate.Manufacturers.cshtml" />
     <Content Include="Views\Timesheet\_ViewStart.cshtml" />
     <Content Include="Views\Employee\Edit.cshtml" />
     <Content Include="Views\Employee\EmployeeArea.cshtml" />
@@ -1888,6 +1899,9 @@
     <Content Include="Views\Shared\Delete.cshtml" />
     <Content Include="Views\Store\List.cshtml" />
     <Content Include="Views\Store\Create.cshtml" />
+    <Content Include="Views\Order\List.cshtml" />
+    <Content Include="Views\Order\_ViewStart.cshtml" />
+    <Content Include="Views\User\Login.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1897,6 +1911,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Areas\Factory\Models\" />
+    <Folder Include="Areas\Factory\Views\Shared\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Doamin.Service\Doamin.Service.csproj">
@@ -1921,7 +1937,7 @@
     </ProjectReference>
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj">
       <Project>{35B3A042-0187-4530-A9F5-2063E2EEBDAD}</Project>
-      <Name>Infrastructure %28Infrastructure\Infrastructure%29</Name>
+      <Name>Infrastructure</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

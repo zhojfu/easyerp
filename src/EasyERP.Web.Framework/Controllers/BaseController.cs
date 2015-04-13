@@ -121,5 +121,15 @@
                 ((List<string>)this.ViewData[dataKey]).Add(message);
             }
         }
+
+        /// <summary>
+        /// Access denied view
+        /// </summary>
+        /// <returns>Access denied view</returns>
+        protected ActionResult AccessDeniedView()
+        {
+            //return new HttpUnauthorizedResult();
+            return RedirectToAction("AccessDenied", "Security", new { pageUrl = this.Request.RawUrl });
+        }
     }
 }

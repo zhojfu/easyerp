@@ -3,12 +3,12 @@
     using Doamin.Service.Events;
     using Doamin.Service.Security;
     using Doamin.Service.Stores;
-    using Domain.EntityFramework;
     using Domain.Model.Products;
     using Domain.Model.Security;
     using Domain.Model.Stores;
     using EasyErp.Core;
     using EasyErp.Core.Caching;
+    using EasyErp.Core.Configuration.Settings;
     using Infrastructure.Domain;
     using System;
     using System.Collections.Generic;

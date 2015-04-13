@@ -34,16 +34,6 @@
         }
 
         /// <summary>
-        /// Access denied view
-        /// </summary>
-        /// <returns>Access denied view</returns>
-        protected ActionResult AccessDeniedView()
-        {
-            //return new HttpUnauthorizedResult();
-            return RedirectToAction("AccessDenied", "Security", new { pageUrl = this.Request.RawUrl });
-        }
-
-        /// <summary>
         /// Save selected TAB index
         /// </summary>
         /// <param name="index">Idnex to save; null to automatically detect it</param>

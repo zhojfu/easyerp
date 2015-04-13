@@ -1,7 +1,7 @@
 ﻿namespace Doamin.Service.Installation
 {
+    using Domain.Model.Orders;
     using Domain.Model.Products;
-    using Domain.Model.Purchase;
     using Infrastructure.Domain;
     using System.Collections.Generic;
 

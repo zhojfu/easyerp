@@ -29,7 +29,8 @@
                         <li class="active">@Html.ActionLink("员工管理", "Index", "Employee")<span class="sr-only">(current)</span></li>
                         <li class="active">@Html.ActionLink("产品管理", "Index", "Product")<span class="sr-only">(current)</span></li>
                         <li class="active">@Html.ActionLink("门店管理", "Index", "Store")<span class="sr-only">(current)</span></li>
-                       
+                        <li class="active">@Html.ActionLink("购物车", "Index", "ShoppingCart")<span class="sr-only">(current)</span></li>
+
                         <li class="active">@Html.ActionLink("费用管理", "Index", "Charge")<span class="sr-only">(current)</span></li>
                         <li><a href="#">Link</a></li>
                         <li class="dropdown">
@@ -67,7 +68,6 @@
     </div>
     @RenderSection("SiderBar", required: false)
     <div id="main">
-
         @RenderBody()
     </div>
     @Scripts.Render("~/bundles/bootstrap/js")

@@ -30,15 +30,12 @@
 
         public decimal DiscountAmount { get; set; }
 
-        [UIHint("DecimalNullable")]
         public decimal? MaximumDiscountAmount { get; set; }
 
         public string PrimaryStoreCurrencyCode { get; set; }
 
-        [UIHint("DateTimeNullable")]
         public DateTime? StartDateUtc { get; set; }
 
-        [UIHint("DateTimeNullable")]
         public DateTime? EndDateUtc { get; set; }
 
         public bool RequiresCouponCode { get; set; }
@@ -50,7 +47,6 @@
 
         public int LimitationTimes { get; set; }
 
-        [UIHint("Int32Nullable")]
         public int? MaximumDiscountedQuantity { get; set; }
 
         public IList<AppliedToCategoryModel> AppliedToCategoryModels { get; set; }

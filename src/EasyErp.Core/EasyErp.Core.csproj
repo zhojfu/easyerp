@@ -84,8 +84,15 @@
     <Compile Include="Caching\NullCache.cs" />
     <Compile Include="Caching\PerRequestCacheManager.cs" />
     <Compile Include="CommonHelper.cs" />
-    <Compile Include="Configuration\ISettings.cs" />
+    <Compile Include="Configuration\Settings\CatalogSettings.cs" />
+    <Compile Include="Configuration\Settings\CommonSettings.cs" />
+    <Compile Include="Configuration\Settings\DateTimeSettings.cs" />
+    <Compile Include="Configuration\Settings\ISettings.cs" />
     <Compile Include="Configuration\EasyErpConfig.cs" />
+    <Compile Include="Configuration\Settings\MeasureSettings.cs" />
+    <Compile Include="Configuration\Settings\MediaSettings.cs" />
+    <Compile Include="Configuration\Settings\SecuritySettings.cs" />
+    <Compile Include="Configuration\Settings\VendorSettings.cs" />
     <Compile Include="EasyErpVersion.cs" />
     <Compile Include="Infrastructure\AppDomainTypeFinder.cs" />
     <Compile Include="Infrastructure\DependencyManagement\ContainerManager.cs" />
@@ -107,6 +114,16 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Domain.Model\Domain.Model.csproj">
+      <Project>{9a1defac-0977-4b5c-896b-f079b2d26382}</Project>
+      <Name>Domain.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Infrastructure\Infrastructure.csproj">
+      <Project>{35B3A042-0187-4530-A9F5-2063E2EEBDAD}</Project>
+      <Name>Infrastructure</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

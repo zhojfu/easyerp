@@ -132,7 +132,6 @@
         {
             public int ProductId { get; set; }
 
-            [UIHint("Picture")]
             public int PictureId { get; set; }
 
             public string PictureUrl { get; set; }
@@ -374,15 +373,12 @@
 
             public bool ValidationRulesAllowed { get; set; }
 
-            [UIHint("Int32Nullable")]
             public int? ValidationMinLength { get; set; }
 
-            [UIHint("Int32Nullable")]
             public int? ValidationMaxLength { get; set; }
 
             public string ValidationFileAllowedExtensions { get; set; }
 
-            [UIHint("Int32Nullable")]
             public int? ValidationFileMaximumSize { get; set; }
 
             public string DefaultValue { get; set; }
@@ -514,7 +510,6 @@
 
             public string Gtin { get; set; }
 
-            [UIHint("DecimalNullable")]
             public decimal? OverriddenPrice { get; set; }
 
             public int NotifyAdminForQuantityBelow { get; set; }

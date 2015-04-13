@@ -1,9 +1,8 @@
 ﻿@{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
 @section SiderBar{
-        <div id="nav-wrapper">
+    <div id="nav-wrapper">
         <div id="nav" class="root">
             <div id="root-nav">
                 <ul class="root-nav-categories">
@@ -20,11 +19,6 @@
         </div>
     </div>
 }
-
 <div id="section-title">@RenderSection("SectionTitle", required: false)</div>
-
 @RenderBody()
-
 @RenderSection("scripts", required: false)
-
-

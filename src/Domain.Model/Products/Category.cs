@@ -40,13 +40,11 @@
         /// <summary>
         /// Gets or sets the date and time of instance creation
         /// </summary>
-        [Column(TypeName = "DateTime2")]
         public DateTime CreatedOnUtc { get; set; }
 
         /// <summary>
         /// Gets or sets the date and time of instance update
         /// </summary>
-        [Column(TypeName = "DateTime2")]
         public DateTime UpdatedOnUtc { get; set; }
     }
 }

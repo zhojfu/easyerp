@@ -1,7 +1,7 @@
 ﻿namespace Doamin.Service.Security
 {
-    using Domain.Model.Base;
     using Domain.Model.Security;
+    using Domain.Model.Users;
     using System.Collections.Generic;
 
     public interface IPermissionService
@@ -13,6 +13,8 @@
         PermissionRecord GetPermissionRecordBySystemName(string systemName);
 
         IList<PermissionRecord> GetAllPermissionRecords();
+
+        void InstallPermissions(IPermissionProvider permissionProvider);
 
         void InsertPermissionRecord(PermissionRecord permission);
 

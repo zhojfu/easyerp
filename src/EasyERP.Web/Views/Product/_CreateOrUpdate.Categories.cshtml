@@ -1,5 +1,4 @@
 ﻿@model EasyERP.Web.Models.Products.ProductModel
-
 @if (Model.Id > 0)
 {
     if (Model.AvailableCategories.Count > 0)
@@ -97,7 +96,7 @@
                         editor: categoryDropDownEditor,
                         template: "#:Category#"
                     },
-                        
+
                     {
                         field: "DisplayOrder",
                         title: "DisplayOrder",

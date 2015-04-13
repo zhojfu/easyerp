@@ -1,8 +1,5 @@
 ﻿namespace Domain.Model
 {
-    using System;
-    using System.Collections.Generic;
-
     using Domain.Model.Factory;
     using Infrastructure.Domain.Model;
     using System;
@@ -42,6 +39,6 @@
 
         public double SalaryOfMonth { get; set; }
 
-        public virtual ICollection<WorkTimeStatistic> WorkTimeRecords { get; set; } 
+        public virtual ICollection<WorkTimeStatistic> WorkTimeRecords { get; set; }
     }
 }

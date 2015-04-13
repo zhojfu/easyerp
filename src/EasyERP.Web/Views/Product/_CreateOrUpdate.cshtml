@@ -5,7 +5,6 @@
 @model EasyERP.Web.Models.Products.ProductModel
 @Html.ValidationSummary(false)
 @Html.HiddenFor(model => model.Id)
-
 <script>
     $(document).ready(function () {
         $("#product-edit").kendoTabStrip({
@@ -30,12 +29,10 @@
     <div>
         @TabInfo()
     </div>
-
     <div>
         @TabCategories()
     </div>
 </div>
-
 @{
     //custom tabs
     var eventMessage = new AdminTabStripCreated(this.Html, "product-edit");
@@ -45,15 +42,12 @@
         @eventBlock
     }
 }
-
 @*save selected tab index*@
 <input type="hidden" id="selected-tab-index" name="selected-tab-index" value="1">
-
 @helper TabInfo()
 {
     @Html.Partial("_CreateOrUpdate.Info", Model)
 }
-
 @helper TabCategories()
 {
     @Html.Partial("_CreateOrUpdate.Categories", Model)

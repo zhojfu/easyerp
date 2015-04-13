@@ -4,20 +4,24 @@ namespace EasyERP.Web.Framework
     using Autofac.Builder;
     using Autofac.Core;
     using Autofac.Integration.Mvc;
+    using Doamin.Service.Authentication;
     using Doamin.Service.Directory;
     using Doamin.Service.Discounts;
     using Doamin.Service.Factory;
     using Doamin.Service.Helpers;
+    using Doamin.Service.Order;
     using Doamin.Service.Payments;
     using Doamin.Service.Products;
     using Doamin.Service.Security;
     using Doamin.Service.Stores;
+    using Doamin.Service.Users;
     using Doamin.Service.Vendors;
     using Domain.EntityFramework;
     using Domain.Model.Products;
     using EasyErp.Core;
     using EasyErp.Core.Caching;
     using EasyErp.Core.Configuration;
+    using EasyErp.Core.Configuration.Settings;
     using EasyErp.Core.Infrastructure.DependencyManagement;
     using EasyERP.Web.Framework.UI;
     using Infrastructure.Domain;
@@ -82,6 +86,10 @@ namespace EasyERP.Web.Framework
             builder.RegisterType<EmployeeTimesheetService>().As<IEmployeeTimesheetService>().InstancePerLifetimeScope();
             builder.RegisterGeneric(typeof(DaliyStatisticService<>)).As(typeof(IStatisticService<>)).InstancePerLifetimeScope();
             builder.RegisterType<ManufacturerService>().As<IManufacturerService>().InstancePerLifetimeScope();
+            builder.RegisterType<OrderService>().As<IOrderService>().InstancePerLifetimeScope();
+            builder.RegisterType<UserService>().As<IUserService>().InstancePerLifetimeScope();
+            builder.RegisterType<EncryptionService>().As<IEncryptionService>().InstancePerLifetimeScope();
+            builder.RegisterType<StandardPermissionProvider>().As<IPermissionProvider>().InstancePerLifetimeScope();
 
             //builder.RegisterType<ProductAttributeFormatter>().As<IProductAttributeFormatter>().InstancePerLifetimeScope();
             //builder.RegisterType<ProductAttributeParser>().As<IProductAttributeParser>().InstancePerLifetimeScope();
@@ -129,7 +137,7 @@ namespace EasyERP.Web.Framework
             //builder.RegisterType<OrderProcessingService>().As<IOrderProcessingService>().InstancePerLifetimeScope();
             //builder.RegisterType<OrderTotalCalculationService>().As<IOrderTotalCalculationService>().InstancePerLifetimeScope();
 
-            //builder.RegisterType<FormsAuthenticationService>().As<IAuthenticationService>().InstancePerLifetimeScope();
+            builder.RegisterType<FormsAuthenticationService>().As<IAuthenticationService>().InstancePerLifetimeScope();
 
             //builder.RegisterType<DefaultLogger>().As<ILogger>().InstancePerLifetimeScope();
 

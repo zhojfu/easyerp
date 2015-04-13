@@ -2,6 +2,7 @@
 {
     using Doamin.Service.Events;
     using Domain.Model.Discounts;
+    using Domain.Model.Users;
     using EasyErp.Core;
     using EasyErp.Core.Caching;
     using Infrastructure.Domain;
@@ -50,12 +51,12 @@
             throw new NotImplementedException();
         }
 
-        public bool IsDiscountValid(Discount discount, Domain.Model.Base.User user)
+        public bool IsDiscountValid(Discount discount, User user)
         {
             throw new NotImplementedException();
         }
 
-        public bool IsDiscountValid(Discount discount, Domain.Model.Base.User user, string couponCodeToValidate)
+        public bool IsDiscountValid(Discount discount, User user, string couponCodeToValidate)
         {
             throw new NotImplementedException();
         }

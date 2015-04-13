@@ -4,7 +4,7 @@
     using Infrastructure.Domain.Model;
     using System.Collections.Generic;
 
-    public class PermissionRecord : BaseEntity
+    public class PermissionRecord : BaseEntity, IAggregateRoot
     {
         private ICollection<UserRole> customerRoles;
 

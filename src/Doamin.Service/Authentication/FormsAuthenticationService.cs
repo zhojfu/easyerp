@@ -1,56 +1,41 @@
-using System;
-using System.Web;
-using System.Web.Security;
-using Nop.Core.Domain.Customers;
-using Nop.Services.Customers;
-
-namespace Nop.Services.Authentication
+namespace Doamin.Service.Authentication
 {
+    using Doamin.Service.Users;
+    using Domain.Model.Users;
+    using System;
+    using System.Web;
+    using System.Web.Security;
+
     /// <summary>
     /// Authentication service
     /// </summary>
     public partial class FormsAuthenticationService : IAuthenticationService
     {
         private readonly HttpContextBase _httpContext;
-        private readonly ICustomerService _customerService;
-        private readonly CustomerSettings _customerSettings;
+        private readonly IUserService _customerService;
         private readonly TimeSpan _expirationTimeSpan;
 
-        private Customer _cachedCustomer;
+        private User cachedUser;
 
-        /// <summary>
-        /// Ctor
-        /// </summary>
-        /// <param name="httpContext">HTTP context</param>
-        /// <param name="customerService">Customer service</param>
-        /// <param name="customerSettings">Customer settings</param>
-        public FormsAuthenticationService(HttpContextBase httpContext,
-            ICustomerService customerService, CustomerSettings customerSettings)
+        public FormsAuthenticationService(HttpContextBase httpContext, IUserService customerService)
         {
             this._httpContext = httpContext;
             this._customerService = customerService;
-            this._customerSettings = customerSettings;
             this._expirationTimeSpan = FormsAuthentication.Timeout;
         }
 
-
-        public virtual void SignIn(Customer customer, bool createPersistentCookie)
+        public virtual void SignIn(User user, bool createPersistentCookie)
         {
             var now = DateTime.UtcNow.ToLocalTime();
 
-            var ticket = new FormsAuthenticationTicket(
-                1 /*version*/,
-                _customerSettings.UsernamesEnabled ? customer.Username : customer.Email,
-                now,
-                now.Add(_expirationTimeSpan),
-                createPersistentCookie,
-                _customerSettings.UsernamesEnabled ? customer.Username : customer.Email,
-                FormsAuthentication.FormsCookiePath);
+            var ticket = new FormsAuthenticationTicket(1, user.Name, now, now.Add(this._expirationTimeSpan), createPersistentCookie, user.Name, FormsAuthentication.FormsCookiePath);
 
             var encryptedTicket = FormsAuthentication.Encrypt(ticket);
 
-            var cookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);
-            cookie.HttpOnly = true;
+            var cookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket)
+            {
+                HttpOnly = true
+            };
             if (ticket.IsPersistent)
             {
                 cookie.Expires = ticket.Expiration;
@@ -62,49 +47,56 @@ namespace Nop.Services.Authentication
                 cookie.Domain = FormsAuthentication.CookieDomain;
             }
 
-            _httpContext.Response.Cookies.Add(cookie);
-            _cachedCustomer = customer;
+            this._httpContext.Response.Cookies.Add(cookie);
+            this.cachedUser = user;
         }
 
         public virtual void SignOut()
         {
-            _cachedCustomer = null;
+            this.cachedUser = null;
             FormsAuthentication.SignOut();
         }
 
-        public virtual Customer GetAuthenticatedCustomer()
+        public virtual User GetAuthenticatedUser()
         {
-            if (_cachedCustomer != null)
-                return _cachedCustomer;
+            if (this.cachedUser != null)
+            {
+                return this.cachedUser;
+            }
 
-            if (_httpContext == null ||
-                _httpContext.Request == null ||
-                !_httpContext.Request.IsAuthenticated ||
-                !(_httpContext.User.Identity is FormsIdentity))
+            if (this._httpContext == null ||
+                this._httpContext.Request == null ||
+                !this._httpContext.Request.IsAuthenticated ||
+                !(this._httpContext.User.Identity is FormsIdentity))
             {
                 return null;
             }
 
-            var formsIdentity = (FormsIdentity)_httpContext.User.Identity;
-            var customer = GetAuthenticatedCustomerFromTicket(formsIdentity.Ticket);
-            if (customer != null && customer.Active && !customer.Deleted && customer.IsRegistered())
-                _cachedCustomer = customer;
-            return _cachedCustomer;
+            var formsIdentity = (FormsIdentity)this._httpContext.User.Identity;
+            var user = this.GetAuthenticatedUserFromTicket(formsIdentity.Ticket);
+            if (user != null &&
+                user.Active &&
+                !user.Deleted)
+            {
+                this.cachedUser = user;
+            }
+
+            return this.cachedUser;
         }
 
-        public virtual Customer GetAuthenticatedCustomerFromTicket(FormsAuthenticationTicket ticket)
+        public virtual User GetAuthenticatedUserFromTicket(FormsAuthenticationTicket ticket)
         {
             if (ticket == null)
                 throw new ArgumentNullException("ticket");
 
-            var usernameOrEmail = ticket.UserData;
+            var username = ticket.UserData;
 
-            if (String.IsNullOrWhiteSpace(usernameOrEmail))
+            if (String.IsNullOrWhiteSpace(username))
+            {
                 return null;
-            var customer = _customerSettings.UsernamesEnabled
-                ? _customerService.GetCustomerByUsername(usernameOrEmail)
-                : _customerService.GetCustomerByEmail(usernameOrEmail);
-            return customer;
+            }
+
+            return this._customerService.GetUserByName(username);
         }
     }
 }
