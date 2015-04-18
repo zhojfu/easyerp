@@ -3,13 +3,11 @@ using System.Web.Routing;
 
 namespace EasyERP.Web
 {
-    using System.Web.Optimization;
     using EasyErp.Core;
     using EasyErp.Core.Infrastructure;
     using EasyERP.Web.App_Start;
     using EasyERP.Web.Framework;
     using FluentValidation.Mvc;
-    using Microsoft.Ajax.Utilities;
     using System;
     using System.Globalization;
     using System.Threading;

@@ -54,6 +54,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configurations\EmployeeConfiguration.cs" />
+    <Compile Include="Configurations\Orders\OrderConfiguration.cs" />
+    <Compile Include="Configurations\Orders\OrderItemConfiguration.cs" />
     <Compile Include="Configurations\Products\CategoryConfiguration.cs" />
     <Compile Include="Configurations\Factory\AttritionConfiguration.cs" />
     <Compile Include="Configurations\Factory\AttritionStatisticConfiguration.cs" />

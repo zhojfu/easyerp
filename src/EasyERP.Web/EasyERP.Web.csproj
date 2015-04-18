@@ -1885,6 +1885,9 @@
     <Content Include="Views\Charge\Index.cshtml" />
     <Content Include="Views\Charge\_ViewStart.cshtml" />
     <Content Include="Views\Shared\ChargeLayout.cshtml" />
+    <Content Include="Views\Shared\Delete.cshtml" />
+    <Content Include="Views\Store\List.cshtml" />
+    <Content Include="Views\Store\Create.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
