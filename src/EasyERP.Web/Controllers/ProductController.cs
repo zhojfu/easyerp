@@ -15,7 +15,7 @@
     using EasyErp.Core;
     using EasyErp.Core.Configuration.Settings;
     using EasyERP.Web.Extensions;
-    using EasyERP.Web.Kendoui;
+    using EasyERP.Web.Framework.Kendoui;
     using EasyERP.Web.Models.Products;
     using System;
     using System.Collections.Generic;

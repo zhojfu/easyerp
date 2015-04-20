@@ -14,7 +14,7 @@
     using Domain.Model.Vendors;
     using EasyErp.Core;
     using EasyERP.Web.Extensions;
-    using EasyERP.Web.Kendoui;
+    using EasyERP.Web.Framework.Kendoui;
     using EasyERP.Web.Models.Products;
     using EasyERP.Web.Models.Stores;
     using System;

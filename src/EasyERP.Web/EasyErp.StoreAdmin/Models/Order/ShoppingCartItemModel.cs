@@ -1,8 +1,7 @@
-namespace Domain.Model.Orders
+namespace EasyErp.StoreAdmin.Models.Order
 {
+    using Domain.Model.Products;
     using Domain.Model.Stores;
-    using global::Domain.Model.Products;
-    using global::Infrastructure.Domain.Model;
     using System;
 
     /// <summary>

@@ -12,7 +12,7 @@ namespace EasyERP.Web.Controllers
     using Doamin.Service.Stores;
     using Domain.Model.Orders;
     using EasyERP.Web.Framework;
-    using EasyERP.Web.Kendoui;
+    using EasyERP.Web.Framework.Kendoui;
     using EasyERP.Web.Models.Orders;
 
     public class OrderController : BaseAdminController

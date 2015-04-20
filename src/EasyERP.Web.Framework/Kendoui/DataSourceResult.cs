@@ -1,4 +1,4 @@
-﻿namespace EasyERP.Web.Kendoui
+﻿namespace EasyERP.Web.Framework.Kendoui
 {
     using System.Collections;
 

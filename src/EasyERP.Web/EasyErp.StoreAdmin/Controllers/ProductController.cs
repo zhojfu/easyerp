@@ -2,8 +2,13 @@
 {
     using Doamin.Service.Products;
     using Doamin.Service.Security;
+    using Domain.Model.Products;
+    using EasyErp.StoreAdmin.Extensions;
     using EasyErp.StoreAdmin.Models.Products;
     using EasyERP.Web.Framework.Controllers;
+    using EasyERP.Web.Framework.Kendoui;
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Web.Mvc;
 
     public class ProductController : BaseController
@@ -26,7 +31,7 @@
         // GET: Home
         public ActionResult Index()
         {
-            return this.View();
+            return this.RedirectToAction("List");
         }
 
         // List products in the store
@@ -40,15 +45,46 @@
 
             //categories
             model.AvailableCategories.Add(new SelectListItem { Text = "All", Value = "0" });
-            var categories = categoryService.GetAllCategories(showHidden: true);
+            var categories = this.categoryService.GetAllCategories(showHidden: true);
             foreach (var c in categories)
                 model.AvailableCategories.Add(new SelectListItem { Text = c.Name, Value = c.Id.ToString() });
 
-            model.AvailablePublishedOptions.Add(new SelectListItem { Text = "All", Value = "0" });
-            model.AvailablePublishedOptions.Add(new SelectListItem { Text = "PublishedOnly", Value = "1" });
-            model.AvailablePublishedOptions.Add(new SelectListItem { Text = "UnpublishedOnly", Value = "2" });
+            return this.View(model);
+        }
 
-            return this.View();
+        [HttpPost]
+        public ActionResult ProductList(DataSourceRequest command, ProductListModel model)
+        {
+            if (!this.permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            {
+                return AccessDeniedView();
+            }
+
+            var categoryIds = new List<int> { model.SearchCategoryId };
+
+            bool? overridePublished = null;
+
+            var products = this.productService.SearchProducts(
+                categoryIds: categoryIds,
+                keywords: model.SearchProductName,
+                pageIndex: command.Page - 1,
+                pageSize: command.PageSize,
+                showHidden: true,
+                overridePublished: overridePublished
+            );
+
+            var gridModel = new DataSourceResult();
+            gridModel.Data = products.Select(x =>
+            {
+                ProductModel productModel = x.ToModel();
+
+                productModel.FullDescription = "";
+
+                return productModel;
+            });
+            gridModel.Total = products.TotalCount;
+
+            return Json(gridModel);
         }
     }
 }
