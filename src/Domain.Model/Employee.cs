@@ -5,14 +5,17 @@
 
     using Domain.Model.Factory;
     using Infrastructure.Domain.Model;
-    using System;
-    using System.Collections.Generic;
 
     public class Employee : BaseEntity, IAggregateRoot
     {
         public string FirstName { get; set; }
 
         public string LastName { get; set; }
+
+        public override string DisplayName
+        {
+            get { return LastName + FirstName; }
+        }
 
         public string IdNumber { get; set; }
 

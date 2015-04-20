@@ -2,21 +2,26 @@
 
 namespace EasyERP.Web.Controllers
 {
+    using System;
+    using System.Linq;
     using AutoMapper;
     using Doamin.Service.Factory;
     using Domain.Model;
-    using EasyERP.Web.Models;
+    using Domain.Model.Factory;
+    using EasyERP.Web.Models.Employee;
     using Infrastructure.Utility;
-    using System;
     using System.Collections.Generic;
 
     public class EmployeeController : Controller
     {
         private readonly IEmployeeService employeeService;
 
-        public EmployeeController(IEmployeeService employeeService)
+        private readonly ITimesheetService timesheetService;
+
+        public EmployeeController(IEmployeeService employeeService, ITimesheetService timesheetService)
         {
             this.employeeService = employeeService;
+            this.timesheetService = timesheetService;
         }
 
         // GET: /Employee/
@@ -26,6 +31,11 @@ namespace EasyERP.Web.Controllers
         }
 
         public ActionResult Create()
+        {
+            return View();
+        }
+
+        public ActionResult Timesheet()
         {
             return View();
         }
@@ -74,13 +84,8 @@ namespace EasyERP.Web.Controllers
             return Json(null);
         }
 
-        //[Route("Employee/EmployeeList/{skip:int}/{take:int}/{page:int}/{pageSize:int}")]
-        //[HttpPost]
         public JsonResult EmployeeList(int skip, int take, int page, int pageSize)
         {
-            //const int pageSize = 10;
-            //int page = 1;
-            //Request["page"];
             PagedResult<Employee> employees = this.employeeService.GetEmployees(page, pageSize);
             if (employees != null)
             {
@@ -103,6 +108,36 @@ namespace EasyERP.Web.Controllers
                     JsonRequestBehavior.AllowGet);
             }
             return Json(null);
+        }
+                          
+        public JsonResult GeTimeSheetByDate(string date, int page, int pageSize)
+        {
+            DateTime selectedDate;
+
+            if (!DateTime.TryParse(date, out selectedDate))
+            {
+                return null;
+            }
+
+            IEnumerable<Timesheet> timesheet = this.timesheetService.GetTimesheetByDate(page, pageSize, selectedDate);
+
+            List<TimesheetModel> result = timesheet.Select(Mapper.Map<Timesheet, TimesheetModel>).Where(model => model != null).ToList();
+
+            return Json(new { data = result, total = result.Count }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult UpdateTimesheet(TimesheetModel model)
+        {
+            DateTime selectedDate;
+
+            if (!DateTime.TryParse(model.DateOfWeek, out selectedDate))
+            {
+                return null;
+            }
+            Timesheet timesheet = Mapper.Map<TimesheetModel, Timesheet>(model);
+            this.timesheetService.UpdateTimesheet(selectedDate, timesheet);
+            return Json(model);
         }
     }
 }

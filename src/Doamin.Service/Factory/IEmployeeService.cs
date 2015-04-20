@@ -11,8 +11,6 @@
 
         void AddEmployee(Employee employee);
 
-        // void DeleteEmployee(Employee employee);
-
         void DeleteEmployeeByIds(List<int> ids);
 
         void UpdateEmployee(Employee employee);

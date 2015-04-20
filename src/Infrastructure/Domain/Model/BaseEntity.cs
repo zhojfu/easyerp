@@ -1,10 +1,10 @@
 ﻿namespace Infrastructure.Domain.Model
 {
-    using System;
-
     public abstract class BaseEntity : IEntity
     {
         public virtual int Id { get; set; }
+
+        public virtual string DisplayName { get; set; }
 
         #region Equality
 

@@ -37,7 +37,6 @@ $(document).ready(function () {
 
     $("#employeesList").kendoGrid({
         dataSource: dataSource,
-        height: 400,
         selectable: "multiple",
         pageable: {
             refresh: true,
@@ -74,5 +73,8 @@ $(document).ready(function () {
             }
         });
     });
-       
+    
+   
+    var timesheet = new Timesheet("/Employee/GetTimeSheetByDate", "/Employee/UpdateTimesheet");
+    timesheet.InitialTimesheetGrid();
 });

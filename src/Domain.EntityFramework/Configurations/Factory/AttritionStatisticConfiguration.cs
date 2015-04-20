@@ -4,7 +4,7 @@ namespace Domain.EntityFramework.Configurations.Factory
     using System.Data.Entity.ModelConfiguration;
     using Domain.Model.Factory;
 
-    internal class AttritionStatisticConfiguration : EntityTypeConfiguration<AttritionStatistic>
+    internal class AttritionStatisticConfiguration : EntityTypeConfiguration<ConsumptionStatistic>
     {
         public AttritionStatisticConfiguration()
         {
@@ -12,7 +12,7 @@ namespace Domain.EntityFramework.Configurations.Factory
             this.Property(o => o.Date);
             this.Property(o => o.Volume);
             this.Property(o => o.PriceOfUnit);
-            this.HasRequired(o => o.Attrition).WithMany(a => a.AttritionRecords).HasForeignKey(o => o.AttritionId);
+            this.HasRequired(o => o.Consumption).WithMany(a => a.ConsumptionRecords).HasForeignKey(o => o.ConsumptionId);
         }
     }
 }

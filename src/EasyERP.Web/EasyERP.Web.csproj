@@ -638,6 +638,7 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\Employee\timesheet.js" />
+    <Content Include="Scripts\Factory\consumption.js" />
     <Content Include="Scripts\inventory.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -1622,6 +1623,7 @@
     <Content Include="Scripts\kendo\2015.1.318\messages\kendo.messages.zh-HK.min.js" />
     <Content Include="Scripts\kendo\2015.1.318\messages\kendo.messages.zh-TW.min.js" />
     <Content Include="Scripts\Employee\employee.js" />
+    <Content Include="Scripts\timesheet.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -1630,7 +1632,7 @@
     <Compile Include="AutoMapperBootstraper.cs" />
     <Compile Include="Controllers\AdminAuthorizeAttribute.cs" />
     <Compile Include="Controllers\BaseAdminController.cs" />
-    <Compile Include="Controllers\ChargeController.cs" />
+    <Compile Include="Controllers\ConsumptionController.cs" />
     <Compile Include="Controllers\EmployeeController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ParameterBasedOnFormNameAttribute.cs" />
@@ -1645,20 +1647,19 @@
     <Compile Include="Kendoui\DataSourceResult.cs" />
     <Compile Include="Models\Discounts\DiscountListModel.cs" />
     <Compile Include="Models\Discounts\DiscountModel.cs" />
-    <Compile Include="Models\EmployeeModel.cs" />
-    <Compile Include="Models\EmployeeListModel.cs" />
+    <Compile Include="Models\Employee\EmployeeModel.cs" />
+    <Compile Include="Models\Employee\EmployeeListModel.cs" />
+    <Compile Include="Models\Factory\ConsumptionModel.cs" />
     <Compile Include="Models\Products\InventoryModel.cs" />
     <Compile Include="Models\Products\ProductListModel.cs" />
     <Compile Include="Models\Products\ProductModel.cs" />
     <Compile Include="Models\Stores\StoreModel.cs" />
-    <Compile Include="Models\WorkTime.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Validators\Discounts\DiscountValidator.cs" />
     <Compile Include="Validators\Products\ProductAttributeValueModelValidator.cs" />
     <Compile Include="Validators\Products\ProductValidator.cs" />
     <Compile Include="Validators\Stores\StoreValidator.cs" />
-    <Compile Include="Models\WorkTimeModel.cs" />
-    <Compile Include="Models\TimesheetModel.cs" />
+    <Compile Include="Models\Employee\TimesheetModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />
@@ -1874,20 +1875,19 @@
     <Content Include="Views\Employee\Edit.cshtml" />
     <Content Include="Views\Employee\EmployeeArea.cshtml" />
     <Content Include="sitemap.config" />
-    <Content Include="Views\Charge\Index.cshtml" />
     <Content Include="Views\Product\Inventory.cshtml" />
-    <Content Include="Views\Charge\_ViewStart.cshtml" />
-    <Content Include="Views\Shared\ChargeLayout.cshtml" />
+    <Content Include="Views\Shared\FactoryLayout.cshtml" />
     <Content Include="Views\Store\_CreateOrUpdate.cshtml" />
     <Content Include="Views\Store\_CreateOrUpdate.Info.cshtml" />
     <Content Include="Views\Product\_ViewStart.cshtml" />
     <Content Include="Views\Store\Edit.cshtml" />
-    <Content Include="Views\Charge\Index.cshtml" />
-    <Content Include="Views\Charge\_ViewStart.cshtml" />
-    <Content Include="Views\Shared\ChargeLayout.cshtml" />
     <Content Include="Views\Shared\Delete.cshtml" />
     <Content Include="Views\Store\List.cshtml" />
     <Content Include="Views\Store\Create.cshtml" />
+    <Content Include="Views\Consumption\Index.cshtml" />
+    <Content Include="Views\Consumption\_ViewStart.cshtml" />
+    <Content Include="Views\Consumption\Statistic.cshtml" />
+    <Content Include="Views\Employee\Timesheet.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

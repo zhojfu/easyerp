@@ -1,15 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
-namespace EasyERP.Web.Models
+namespace Domain.Model.Factory
 {
-    public class TimesheetModel
+    public class Timesheet
     {
         public int Id { get; set; }
-        public string DateOfWeek { get; set; }
-        public string EmployeeName { get; set; }
+        public DateTime DateOfWeek { get; set; }
+        public string Title { get; set; }
         public double Mon { get; set; }
         public double Tue { get; set; }
         public double Wed { get; set; }

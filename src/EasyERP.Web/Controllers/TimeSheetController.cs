@@ -14,6 +14,7 @@ namespace EasyERP.Web.Controllers
 
     using Domain.Model.Factory;
     using EasyERP.Web.Models;
+    using EasyERP.Web.Models.Employee;
     using Infrastructure.Utility;
 
     public class TimesheetController : Controller
@@ -57,7 +58,7 @@ namespace EasyERP.Web.Controllers
             Dictionary<DateTime, double> worktimes = new Dictionary<DateTime, double>
             {
                 { dateRange.Item1, timesheet.Mon },
-                { dateRange.Item1.AddDays(1), timesheet.Thu },
+                { dateRange.Item1.AddDays(1), timesheet.Tue },
                 { dateRange.Item1.AddDays(2), timesheet.Wed },
                 { dateRange.Item1.AddDays(3), timesheet.Thu },
                 { dateRange.Item1.AddDays(4), timesheet.Fri },
@@ -89,7 +90,7 @@ namespace EasyERP.Web.Controllers
                 {
                     Id = employee.Id,
                     DateOfWeek = date,
-                    EmployeeName = employee.LastName + employee.FirstName
+                    Title = employee.LastName + employee.FirstName
                 };
                 foreach (var workTime in timeSheets)
                 {

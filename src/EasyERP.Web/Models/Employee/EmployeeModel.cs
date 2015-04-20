@@ -1,7 +1,6 @@
-﻿using System;
-
-namespace EasyERP.Web.Models
+﻿namespace EasyERP.Web.Models.Employee
 {
+    using System;
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
 

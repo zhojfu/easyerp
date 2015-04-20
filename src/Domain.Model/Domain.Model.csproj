@@ -51,10 +51,11 @@
     <Compile Include="Discounts\DiscountRequirement.cs" />
     <Compile Include="Discounts\DiscountType.cs" />
     <Compile Include="Discounts\DiscountUsageHistory.cs" />
-    <Compile Include="Factory\Attrition.cs" />
+    <Compile Include="Factory\Consumption.cs" />
     <Compile Include="Factory\MaterialStatisitc.cs" />
     <Compile Include="Factory\Statistic.cs" />
     <Compile Include="Factory\ProductStatistic.cs" />
+    <Compile Include="Factory\Timesheet.cs" />
     <Compile Include="Media\Download.cs" />
     <Compile Include="Media\MediaSettings.cs" />
     <Compile Include="Media\Picture.cs" />
@@ -96,7 +97,7 @@
     <Compile Include="Products\ProductTemplate.cs" />
     <Compile Include="Purchase\Order.cs" />
     <Compile Include="Purchase\OrderLine.cs" />
-    <Compile Include="Factory\AttritionStatistic.cs" />
+    <Compile Include="Factory\ConsumptionStatistic.cs" />
     <Compile Include="Security\AclRecord.cs" />
     <Compile Include="Security\IAclSupported.cs" />
     <Compile Include="Security\PermissionRecord.cs" />

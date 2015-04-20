@@ -1,4 +1,4 @@
-﻿function Timesheet() {
+﻿/*function Timesheet() {
 
     var currentDate = new Date();
 
@@ -19,8 +19,8 @@
 
         return getSelectedWeek(selDay);
     }
-
-    var dataSource = new kendo.data.DataSource({
+   
+    /*var dataSource = new kendo.data.DataSource({
         transport: {
             read: {
                 url: "Timesheet/GetTimeSheetByDate",
@@ -70,13 +70,61 @@
                 }, 
             }
         }
-    });
+    });*/
+
+   /* function generateDataSource(selectedDate, readUrl, updateUrl) {
+        
+        return new kendo.data.DataSource({
+            transport: {
+                read: {
+                    url: "Timesheet/GetTimeSheetByDate",
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    data: {
+                        date: selectedDate.toLocaleDateString()
+                    }
+                },
+                update: {
+                    url: "Timesheet/UpdateTimesheet",
+                    dataType: "json",
+                    type: "post",
+
+                },
+                batch: true,
+                schema: {
+                    data: "data",
+                    total: "total"
+                }
+            },
+            serverPaging: true,
+            pageSize: 2,
+            schema: {
+                data: "data",
+                total: "total",
+                model: {
+                    id: "Id",
+                    fields: {
+                        Id: { type: "string", editable: false },
+                        DateOfWeek: { type: "string", editable: false, },
+                        EmployeeName: { type: "string", editable: false },
+                        Mon: { type: "number", validation: { min: 0, max: 24 } },
+                        Tue: { type: "number", validation: { min: 0, max: 24 } },
+                        Wed: { type: "number", validation: { min: 0, max: 24 } },
+                        Thu: { type: "number", validation: { min: 0, max: 24 } },
+                        Fri: { type: "number", validation: { min: 0, max: 24 } },
+                        Sat: { type: "number", validation: { min: 0, max: 24 } },
+                        Sun: { type: "number", validation: { min: 0, max: 24 } }
+                    },
+                }
+            }
+        });
+
+    }
 
     function initialKendoGrid() {
         $("#timesheet").empty();
         $("#timesheet").kendoGrid({
-            dataSource: dataSource,
-            height: 400,
+            dataSource: generateDataSource(currentDate),
             selectable: "single",
             resizable: true,
             pageable: {
@@ -104,19 +152,12 @@
     this.InitialCurrentWeek = function () {
         initialKendoGrid();
     };
-}
+}*/
 
-$(document).ready(function () {
-    var timesheet = new Timesheet();
-    timesheet.InitialCurrentWeek();
+/*$(document).ready(function () {
+    var timesheet = new Timesheet("Timesheet/GetTimeSheetByDate", "Timesheet/UpdateTimesheet");
+    timesheet.InitialTimesheetGrid();
 
-    $("#preWeek").click(function () {
-        timesheet.movePrevWeek();
-    });
-
-    $("#nextWeek").click(function () {
-        timesheet.moveNextWeek();
-    });
-});
+});*/
 
 

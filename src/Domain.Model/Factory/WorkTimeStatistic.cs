@@ -1,7 +1,6 @@
 ﻿namespace Domain.Model.Factory
 {
     using Infrastructure.Domain.Model;
-    using System;
 
     public class WorkTimeStatistic : Statistic, IAggregateRoot
     {

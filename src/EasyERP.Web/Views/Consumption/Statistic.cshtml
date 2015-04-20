@@ -1,15 +1,15 @@
 ﻿@using System.Web.Optimization
-
-
 @section SectionTitle
 {
-    员工考勤
-} 
+    <div>
+        费用录入
+    </div>
+}
 
 <div id="timesheet"></div>
 
-@section Scripts
+@section scripts
 {
-    @Scripts.Render("~/Scripts/Employee/employee.js")
     @Scripts.Render("~/Scripts/timesheet.js")
+    @Scripts.Render("~/Scripts/Factory/consumption.js")
 }
