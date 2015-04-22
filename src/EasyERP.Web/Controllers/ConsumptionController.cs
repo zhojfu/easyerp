@@ -17,9 +17,9 @@ namespace EasyERP.Web.Controllers
     {
         private readonly IConsumptionService consumptionService;
 
-        private readonly ITimesheetService timesheetService;
+        private readonly ITimesheetService<ConsumptionStatistic> timesheetService;
 
-        public ConsumptionController(IConsumptionService consumptionService, ITimesheetService timesheetService)
+        public ConsumptionController(IConsumptionService consumptionService, ITimesheetService<ConsumptionStatistic> timesheetService)
         {
             this.consumptionService = consumptionService;
             this.timesheetService = timesheetService;

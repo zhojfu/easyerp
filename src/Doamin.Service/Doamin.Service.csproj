@@ -52,13 +52,10 @@
     <Compile Include="Events\SubscriptionService.cs" />
     <Compile Include="Factory\ConsumptionService.cs" />
     <Compile Include="Factory\ConsumptionTimesheetService.cs" />
-    <Compile Include="Factory\DaliyStatisticService.cs" />
     <Compile Include="Factory\EmployeeService.cs" />
     <Compile Include="Factory\EmployeeTimesheetService.cs" />
     <Compile Include="Factory\IConsumptionService.cs" />
     <Compile Include="Factory\IEmployeeService.cs" />
-    <Compile Include="Factory\IEmployeeTimesheetService.cs" />
-    <Compile Include="Factory\IStatisticService.cs" />
     <Compile Include="Factory\ITimesheetService.cs" />
     <Compile Include="Factory\TimesheetService.cs" />
     <Compile Include="Helpers\DateTimeHelper.cs" />

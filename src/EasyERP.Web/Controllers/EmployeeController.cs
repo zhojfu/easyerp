@@ -16,9 +16,9 @@ namespace EasyERP.Web.Controllers
     {
         private readonly IEmployeeService employeeService;
 
-        private readonly ITimesheetService timesheetService;
+        private readonly ITimesheetService<WorkTimeStatistic> timesheetService;
 
-        public EmployeeController(IEmployeeService employeeService, ITimesheetService timesheetService)
+        public EmployeeController(IEmployeeService employeeService, ITimesheetService<WorkTimeStatistic> timesheetService)
         {
             this.employeeService = employeeService;
             this.timesheetService = timesheetService;
@@ -110,7 +110,7 @@ namespace EasyERP.Web.Controllers
             return Json(null);
         }
                           
-        public JsonResult GeTimeSheetByDate(string date, int page, int pageSize)
+        public JsonResult GetTimeSheetByDate(string date, int page, int pageSize)
         {
             DateTime selectedDate;
 

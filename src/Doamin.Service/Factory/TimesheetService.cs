@@ -7,7 +7,7 @@
     using Infrastructure.Domain.Model;
     using Infrastructure.Utility;
 
-    public abstract class TimesheetService<T, TS> : ITimesheetService where T : BaseEntity where TS : Statistic
+    public abstract class TimesheetService<T, TS> : ITimesheetService<TS> where T : BaseEntity where TS : Statistic
     {
         protected IUnitOfWork unitOfWork;
 

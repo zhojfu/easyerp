@@ -14,6 +14,7 @@ namespace EasyERP.Web.Framework
     using Doamin.Service.Stores;
     using Doamin.Service.Vendors;
     using Domain.EntityFramework;
+    using Domain.Model.Factory;
     using Domain.Model.Products;
     using EasyErp.Core;
     using EasyErp.Core.Caching;
@@ -80,9 +81,8 @@ namespace EasyERP.Web.Framework
             builder.RegisterType<PaymentService>().As<IPaymentService>().InstancePerLifetimeScope();
             builder.RegisterType<EmployeeService>().As<IEmployeeService>().InstancePerLifetimeScope();
             builder.RegisterType<ConsumptionService>().As<IConsumptionService>().InstancePerLifetimeScope();
-            builder.RegisterType<EmployeeTimesheetService>().As<ITimesheetService>().InstancePerLifetimeScope();
-            builder.RegisterType<ConsumptionTimesheetService>().As<ITimesheetService>().InstancePerLifetimeScope();
-            builder.RegisterGeneric(typeof(DaliyStatisticService<>)).As(typeof(IStatisticService<>)).InstancePerLifetimeScope();
+            builder.RegisterType<EmployeeTimesheetService>().As<ITimesheetService<WorkTimeStatistic>>().InstancePerLifetimeScope();
+            builder.RegisterType<ConsumptionTimesheetService>().As<ITimesheetService<ConsumptionStatistic>>().InstancePerLifetimeScope();
             builder.RegisterType<ManufacturerService>().As<IManufacturerService>().InstancePerLifetimeScope();
 
             //builder.RegisterType<ProductAttributeFormatter>().As<IProductAttributeFormatter>().InstancePerLifetimeScope();

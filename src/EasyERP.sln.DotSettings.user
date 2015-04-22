@@ -254,6 +254,7 @@
 	<s:Boolean x:Key="/Default/Housekeeping/UnitTestingMru/UnitTestSessionPersistentData/=A77DC208AD8E4BD8B47F2D8C04273F44/@KeyIndexDefined">True</s:Boolean>
 	<s:Int64 x:Key="/Default/Housekeeping/UnitTestingMru/UnitTestSessionPersistentData/=A77DC208AD8E4BD8B47F2D8C04273F44/GroupingIndex/@EntryValue">3</s:Int64>
 	
+	
 	<s:String x:Key="/Default/Housekeeping/UnitTestingMru/UnitTestSessionPersistentData/=A77DC208AD8E4BD8B47F2D8C04273F44/Name/@EntryValue">Test_GetWeekRangeOfCurrentDate</s:String>
 	<s:String x:Key="/Default/Housekeeping/UnitTestingMru/UnitTestSessionPersistentData/=A77DC208AD8E4BD8B47F2D8C04273F44/XmlSerializedElements/@EntryValue">&lt;Session&gt;&lt;Elements&gt;&lt;UnitTestElement Provider="MSTest" Id="MsTest:Application.Test.TestDateUtils" type="MsTestTestClassElement" TypeName="Application.Test.TestDateUtils" Project="BFBE0D1F-5B89-41B8-A585-E088B6EAA008" /&gt;&lt;UnitTestElement Provider="MSTest" Id="MsTest:Application.Test.TestDateUtils.Test_GetWeekRangeOfCurrentDate" ParentId="MsTest:Application.Test.TestDateUtils" type="MsTestTestMethodElement" MethodName="Test_GetWeekRangeOfCurrentDate" TypeName="Application.Test.TestDateUtils" Project="BFBE0D1F-5B89-41B8-A585-E088B6EAA008" /&gt;&lt;/Elements&gt;&lt;/Session&gt;</s:String>
 	
