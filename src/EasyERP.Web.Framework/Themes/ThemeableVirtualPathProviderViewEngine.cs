@@ -1,6 +1,5 @@
 ﻿namespace EasyERP.Web.Framework.Themes
 {
-    using EasyErp.Core.Infrastructure;
     using System;
     using System.Collections.Generic;
     using System.Globalization;
@@ -11,6 +10,15 @@
 
     public abstract class ThemeableVirtualPathProviderViewEngine : VirtualPathProviderViewEngine
     {
+        #region Ctor
+
+        protected ThemeableVirtualPathProviderViewEngine()
+        {
+            GetExtensionThunk = VirtualPathUtility.GetExtension;
+        }
+
+        #endregion Ctor
+
         #region Fields
 
         internal Func<string, string> GetExtensionThunk;
@@ -19,28 +27,30 @@
 
         #endregion Fields
 
-        #region Ctor
-
-        protected ThemeableVirtualPathProviderViewEngine()
-        {
-            this.GetExtensionThunk = new Func<string, string>(VirtualPathUtility.GetExtension);
-        }
-
-        #endregion Ctor
-
         #region Utilities
 
-        protected virtual string GetPath(ControllerContext controllerContext, string[] locations, string[] areaLocations, string locationsPropertyName, string name, string controllerName, string theme, string cacheKeyPrefix, bool useCache, out string[] searchedLocations)
+        protected virtual string GetPath(
+            ControllerContext controllerContext,
+            string[] locations,
+            string[] areaLocations,
+            string locationsPropertyName,
+            string name,
+            string controllerName,
+            string theme,
+            string cacheKeyPrefix,
+            bool useCache,
+            out string[] searchedLocations)
         {
-            searchedLocations = this._emptyLocations;
+            searchedLocations = _emptyLocations;
             if (string.IsNullOrEmpty(name))
             {
                 return string.Empty;
             }
-            string areaName = this.GetAreaName(controllerContext.RouteData);
+            var areaName = GetAreaName(controllerContext.RouteData);
 
             //little hack to get nop's admin area to be in /Administration/ instead of /Nop/Admin/ or Areas/Admin/
-            if (!string.IsNullOrEmpty(areaName) && areaName.Equals("storeadmin", StringComparison.InvariantCultureIgnoreCase))
+            if (!string.IsNullOrEmpty(areaName) &&
+                areaName.Equals("storeadmin", StringComparison.InvariantCultureIgnoreCase))
             {
                 var newLocations = areaLocations.ToList();
                 newLocations.Insert(0, "~/EasyERP.StoreAdmin/Views/{1}/{0}.cshtml");
@@ -48,17 +58,21 @@
                 areaLocations = newLocations.ToArray();
             }
 
-            bool flag = !string.IsNullOrEmpty(areaName);
-            List<ViewLocation> viewLocations = this.GetViewLocations(locations, flag ? areaLocations : null);
+            var flag = !string.IsNullOrEmpty(areaName);
+            var viewLocations = GetViewLocations(locations, flag ? areaLocations : null);
             if (viewLocations.Count == 0)
             {
-                throw new InvalidOperationException(string.Format(CultureInfo.CurrentCulture, "Properties cannot be null or empty.", new object[] { locationsPropertyName }));
+                throw new InvalidOperationException(
+                    string.Format(
+                        CultureInfo.CurrentCulture,
+                        "Properties cannot be null or empty.",
+                        locationsPropertyName));
             }
-            bool flag2 = this.IsSpecificPath(name);
-            string key = this.CreateCacheKey(cacheKeyPrefix, name, flag2 ? string.Empty : controllerName, areaName, theme);
+            var flag2 = IsSpecificPath(name);
+            var key = CreateCacheKey(cacheKeyPrefix, name, flag2 ? string.Empty : controllerName, areaName, theme);
             if (useCache)
             {
-                var cached = this.ViewLocationCache.GetViewLocation(controllerContext.HttpContext, key);
+                var cached = ViewLocationCache.GetViewLocation(controllerContext.HttpContext, key);
                 if (cached != null)
                 {
                     return cached;
@@ -66,45 +80,66 @@
             }
             if (!flag2)
             {
-                return this.GetPathFromGeneralName(controllerContext, viewLocations, name, controllerName, areaName, theme, key, ref searchedLocations);
+                return GetPathFromGeneralName(
+                    controllerContext,
+                    viewLocations,
+                    name,
+                    controllerName,
+                    areaName,
+                    theme,
+                    key,
+                    ref searchedLocations);
             }
-            return this.GetPathFromSpecificName(controllerContext, name, key, ref searchedLocations);
+            return GetPathFromSpecificName(controllerContext, name, key, ref searchedLocations);
         }
 
         protected virtual bool FilePathIsSupported(string virtualPath)
         {
-            if (this.FileExtensions == null)
+            if (FileExtensions == null)
             {
                 return true;
             }
-            string str = this.GetExtensionThunk(virtualPath).TrimStart(new[] { '.' });
-            return this.FileExtensions.Contains(str, StringComparer.OrdinalIgnoreCase);
+            var str = GetExtensionThunk(virtualPath).TrimStart('.');
+            return FileExtensions.Contains(str, StringComparer.OrdinalIgnoreCase);
         }
 
-        protected virtual string GetPathFromSpecificName(ControllerContext controllerContext, string name, string cacheKey, ref string[] searchedLocations)
+        protected virtual string GetPathFromSpecificName(
+            ControllerContext controllerContext,
+            string name,
+            string cacheKey,
+            ref string[] searchedLocations)
         {
-            string virtualPath = name;
-            if (!this.FilePathIsSupported(name) || !this.FileExists(controllerContext, name))
+            var virtualPath = name;
+            if (!FilePathIsSupported(name) ||
+                !FileExists(controllerContext, name))
             {
                 virtualPath = string.Empty;
                 searchedLocations = new[] { name };
             }
-            this.ViewLocationCache.InsertViewLocation(controllerContext.HttpContext, cacheKey, virtualPath);
+            ViewLocationCache.InsertViewLocation(controllerContext.HttpContext, cacheKey, virtualPath);
             return virtualPath;
         }
 
-        protected virtual string GetPathFromGeneralName(ControllerContext controllerContext, List<ViewLocation> locations, string name, string controllerName, string areaName, string theme, string cacheKey, ref string[] searchedLocations)
+        protected virtual string GetPathFromGeneralName(
+            ControllerContext controllerContext,
+            List<ViewLocation> locations,
+            string name,
+            string controllerName,
+            string areaName,
+            string theme,
+            string cacheKey,
+            ref string[] searchedLocations)
         {
-            string virtualPath = string.Empty;
+            var virtualPath = string.Empty;
             searchedLocations = new string[locations.Count];
-            for (int i = 0; i < locations.Count; i++)
+            for (var i = 0; i < locations.Count; i++)
             {
-                string str2 = locations[i].Format(name, controllerName, areaName, theme);
-                if (this.FileExists(controllerContext, str2))
+                var str2 = locations[i].Format(name, controllerName, areaName, theme);
+                if (FileExists(controllerContext, str2))
                 {
-                    searchedLocations = this._emptyLocations;
+                    searchedLocations = _emptyLocations;
                     virtualPath = str2;
-                    this.ViewLocationCache.InsertViewLocation(controllerContext.HttpContext, cacheKey, virtualPath);
+                    ViewLocationCache.InsertViewLocation(controllerContext.HttpContext, cacheKey, virtualPath);
                     return virtualPath;
                 }
                 searchedLocations[i] = str2;
@@ -112,17 +147,33 @@
             return virtualPath;
         }
 
-        protected virtual string CreateCacheKey(string prefix, string name, string controllerName, string areaName, string theme)
+        protected virtual string CreateCacheKey(
+            string prefix,
+            string name,
+            string controllerName,
+            string areaName,
+            string theme)
         {
-            return string.Format(CultureInfo.InvariantCulture, ":ViewCacheEntry:{0}:{1}:{2}:{3}:{4}:{5}", new object[] { base.GetType().AssemblyQualifiedName, prefix, name, controllerName, areaName, theme });
+            return string.Format(
+                CultureInfo.InvariantCulture,
+                ":ViewCacheEntry:{0}:{1}:{2}:{3}:{4}:{5}",
+                GetType().AssemblyQualifiedName,
+                prefix,
+                name,
+                controllerName,
+                areaName,
+                theme);
         }
 
-        protected virtual List<ViewLocation> GetViewLocations(string[] viewLocationFormats, string[] areaViewLocationFormats)
+        protected virtual List<ViewLocation> GetViewLocations(
+            string[] viewLocationFormats,
+            string[] areaViewLocationFormats)
         {
             var list = new List<ViewLocation>();
             if (areaViewLocationFormats != null)
             {
-                list.AddRange(areaViewLocationFormats.Select(str => new AreaAwareViewLocation(str)).Cast<ViewLocation>());
+                list.AddRange(
+                    areaViewLocationFormats.Select(str => new AreaAwareViewLocation(str)).Cast<ViewLocation>());
             }
             if (viewLocationFormats != null)
             {
@@ -133,7 +184,7 @@
 
         protected virtual bool IsSpecificPath(string name)
         {
-            char ch = name[0];
+            var ch = name[0];
             if (ch != '~')
             {
                 return (ch == '/');
@@ -148,7 +199,7 @@
             {
                 return (obj2 as string);
             }
-            return this.GetAreaName(routeData.Route);
+            return GetAreaName(routeData.Route);
         }
 
         protected virtual string GetAreaName(RouteBase route)
@@ -159,14 +210,19 @@
                 return area.Area;
             }
             var route2 = route as Route;
-            if ((route2 != null) && (route2.DataTokens != null))
+            if ((route2 != null) &&
+                (route2.DataTokens != null))
             {
                 return (route2.DataTokens["area"] as string);
             }
             return null;
         }
 
-        protected virtual ViewEngineResult FindThemeableView(ControllerContext controllerContext, string viewName, string masterName, bool useCache)
+        protected virtual ViewEngineResult FindThemeableView(
+            ControllerContext controllerContext,
+            string viewName,
+            string masterName,
+            bool useCache)
         {
             string[] strArray;
             string[] strArray2;
@@ -179,12 +235,33 @@
                 throw new ArgumentException("View name cannot be null or empty.", "viewName");
             }
             var theme = string.Empty;
-            string requiredString = controllerContext.RouteData.GetRequiredString("controller");
-            string str2 = this.GetPath(controllerContext, this.ViewLocationFormats, this.AreaViewLocationFormats, "ViewLocationFormats", viewName, requiredString, theme, "View", useCache, out strArray);
-            string str3 = this.GetPath(controllerContext, this.MasterLocationFormats, this.AreaMasterLocationFormats, "MasterLocationFormats", masterName, requiredString, theme, "Master", useCache, out strArray2);
-            if (!string.IsNullOrEmpty(str2) && (!string.IsNullOrEmpty(str3) || string.IsNullOrEmpty(masterName)))
+            var requiredString = controllerContext.RouteData.GetRequiredString("controller");
+            var str2 = GetPath(
+                controllerContext,
+                ViewLocationFormats,
+                AreaViewLocationFormats,
+                "ViewLocationFormats",
+                viewName,
+                requiredString,
+                theme,
+                "View",
+                useCache,
+                out strArray);
+            var str3 = GetPath(
+                controllerContext,
+                MasterLocationFormats,
+                AreaMasterLocationFormats,
+                "MasterLocationFormats",
+                masterName,
+                requiredString,
+                theme,
+                "Master",
+                useCache,
+                out strArray2);
+            if (!string.IsNullOrEmpty(str2) &&
+                (!string.IsNullOrEmpty(str3) || string.IsNullOrEmpty(masterName)))
             {
-                return new ViewEngineResult(this.CreateView(controllerContext, str2, str3), this);
+                return new ViewEngineResult(CreateView(controllerContext, str2, str3), this);
             }
             if (strArray2 == null)
             {
@@ -193,7 +270,10 @@
             return new ViewEngineResult(strArray.Union(strArray2));
         }
 
-        protected virtual ViewEngineResult FindThemeablePartialView(ControllerContext controllerContext, string partialViewName, bool useCache)
+        protected virtual ViewEngineResult FindThemeablePartialView(
+            ControllerContext controllerContext,
+            string partialViewName,
+            bool useCache)
         {
             string[] strArray;
             if (controllerContext == null)
@@ -205,13 +285,23 @@
                 throw new ArgumentException("Partial view name cannot be null or empty.", "partialViewName");
             }
             var theme = string.Empty;
-            string requiredString = controllerContext.RouteData.GetRequiredString("controller");
-            string str2 = this.GetPath(controllerContext, this.PartialViewLocationFormats, this.AreaPartialViewLocationFormats, "PartialViewLocationFormats", partialViewName, requiredString, theme, "Partial", useCache, out strArray);
+            var requiredString = controllerContext.RouteData.GetRequiredString("controller");
+            var str2 = GetPath(
+                controllerContext,
+                PartialViewLocationFormats,
+                AreaPartialViewLocationFormats,
+                "PartialViewLocationFormats",
+                partialViewName,
+                requiredString,
+                theme,
+                "Partial",
+                useCache,
+                out strArray);
             if (string.IsNullOrEmpty(str2))
             {
                 return new ViewEngineResult(strArray);
             }
-            return new ViewEngineResult(this.CreatePartialView(controllerContext, str2), this);
+            return new ViewEngineResult(CreatePartialView(controllerContext, str2), this);
         }
 
         //protected override bool FileExists(ControllerContext controllerContext, string virtualPath)
@@ -223,15 +313,22 @@
 
         #region Methods
 
-        public override ViewEngineResult FindView(ControllerContext controllerContext, string viewName, string masterName, bool useCache)
+        public override ViewEngineResult FindView(
+            ControllerContext controllerContext,
+            string viewName,
+            string masterName,
+            bool useCache)
         {
-            ViewEngineResult result = this.FindThemeableView(controllerContext, viewName, masterName, useCache);
+            var result = FindThemeableView(controllerContext, viewName, masterName, useCache);
             return result;
         }
 
-        public override ViewEngineResult FindPartialView(ControllerContext controllerContext, string partialViewName, bool useCache)
+        public override ViewEngineResult FindPartialView(
+            ControllerContext controllerContext,
+            string partialViewName,
+            bool useCache)
         {
-            ViewEngineResult result = this.FindThemeablePartialView(controllerContext, partialViewName, useCache);
+            var result = FindThemeablePartialView(controllerContext, partialViewName, useCache);
             return result;
         }
 
@@ -247,7 +344,13 @@
 
         public override string Format(string viewName, string controllerName, string areaName, string theme)
         {
-            return string.Format(CultureInfo.InvariantCulture, this._virtualPathFormatString, viewName, controllerName, areaName, theme);
+            return string.Format(
+                CultureInfo.InvariantCulture,
+                _virtualPathFormatString,
+                viewName,
+                controllerName,
+                areaName,
+                theme);
         }
     }
 
@@ -257,12 +360,17 @@
 
         public ViewLocation(string virtualPathFormatString)
         {
-            this._virtualPathFormatString = virtualPathFormatString;
+            _virtualPathFormatString = virtualPathFormatString;
         }
 
         public virtual string Format(string viewName, string controllerName, string areaName, string theme)
         {
-            return string.Format(CultureInfo.InvariantCulture, this._virtualPathFormatString, viewName, controllerName, theme);
+            return string.Format(
+                CultureInfo.InvariantCulture,
+                _virtualPathFormatString,
+                viewName,
+                controllerName,
+                theme);
         }
     }
 }

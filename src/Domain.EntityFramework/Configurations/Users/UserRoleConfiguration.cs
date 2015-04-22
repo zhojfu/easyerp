@@ -7,9 +7,9 @@
     {
         public UserRoleConfiguration()
         {
-            this.ToTable("UserRole");
-            this.HasKey(u => u.Id);
-            this.Property(u => u.Name).IsRequired();
+            ToTable("UserRole");
+            HasKey(u => u.Id);
+            Property(u => u.Name).IsRequired();
         }
     }
 }

@@ -1,12 +1,12 @@
 namespace Domain.Model.Media
 {
-    using Infrastructure.Domain.Model;
     using System;
+    using Infrastructure.Domain.Model;
 
     /// <summary>
     /// Represents a download
     /// </summary>
-    public partial class Download : BaseEntity
+    public class Download : BaseEntity
     {
         /// <summary>
         /// Gets a sets a GUID

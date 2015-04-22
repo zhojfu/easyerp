@@ -1,7 +1,6 @@
 ﻿namespace Domain.EntityFramework
 {
     using Doamin.Service.Security;
-    using Doamin.Service.Users;
     using Domain.Model.Company;
     using Domain.Model.Products;
     using Domain.Model.Stores;
@@ -62,6 +61,21 @@
                 UpdatedOn = DateTime.Now
             };
             context.Entry(s1).State = EntityState.Added;
+
+            var p1 = new Product
+            {
+                CategoryId = 1,
+                CreatedOnUtc = DateTime.Now,
+                UpdatedOnUtc = DateTime.Now,
+                FullDescription = "Rice",
+                ShortDescription = "rice",
+                Name = "rice",
+                Price = 15,
+                ProductCost = 10,
+                Gtin = "690000121"
+            };
+
+            context.Entry(p1).State = EntityState.Added;
 
             var enryptionService = EngineContext.Current.Resolve<IEncryptionService>();
             var saltKey = enryptionService.CreateSaltKey(5);

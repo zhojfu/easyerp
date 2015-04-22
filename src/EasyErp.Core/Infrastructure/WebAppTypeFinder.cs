@@ -1,11 +1,11 @@
 ﻿namespace EasyErp.Core.Infrastructure
 {
-    using EasyErp.Core.Configuration;
     using System;
     using System.Collections.Generic;
     using System.Reflection;
     using System.Web;
     using System.Web.Hosting;
+    using EasyErp.Core.Configuration;
 
     /// <summary>
     /// Provides information about types in the current web application.
@@ -13,18 +13,11 @@
     /// </summary>
     public class WebAppTypeFinder : AppDomainTypeFinder
     {
-        #region Fields
-
-        private bool ensureBinFolderAssembliesLoaded = true;
-        private bool binFolderAssembliesLoaded;
-
-        #endregion Fields
-
         #region Ctor
 
         public WebAppTypeFinder(EasyErpConfig config)
         {
-            this.ensureBinFolderAssembliesLoaded = config.DynamicDiscovery;
+            ensureBinFolderAssembliesLoaded = config.DynamicDiscovery;
         }
 
         #endregion Ctor
@@ -32,15 +25,25 @@
         #region Properties
 
         /// <summary>
-        /// Gets or sets wether assemblies in the bin folder of the web application should be specificly checked for beeing loaded on application load. This is need in situations where plugins need to be loaded in the AppDomain after the application been reloaded.
+        /// Gets or sets wether assemblies in the bin folder of the web application should be specificly checked for beeing loaded
+        /// on application load. This is need in situations where plugins need to be loaded in the AppDomain after the application
+        /// been reloaded.
         /// </summary>
         public bool EnsureBinFolderAssembliesLoaded
         {
-            get { return this.ensureBinFolderAssembliesLoaded; }
-            set { this.ensureBinFolderAssembliesLoaded = value; }
+            get { return ensureBinFolderAssembliesLoaded; }
+            set { ensureBinFolderAssembliesLoaded = value; }
         }
 
         #endregion Properties
+
+        #region Fields
+
+        private bool ensureBinFolderAssembliesLoaded = true;
+
+        private bool binFolderAssembliesLoaded;
+
+        #endregion Fields
 
         #region Methods
 
@@ -62,12 +65,13 @@
 
         public override IList<Assembly> GetAssemblies()
         {
-            if (this.EnsureBinFolderAssembliesLoaded && !this.binFolderAssembliesLoaded)
+            if (EnsureBinFolderAssembliesLoaded && !binFolderAssembliesLoaded)
             {
-                this.binFolderAssembliesLoaded = true;
-                string binPath = this.GetBinDirectory();
+                binFolderAssembliesLoaded = true;
+                var binPath = GetBinDirectory();
+
                 //binPath = _webHelper.MapPath("~/bin");
-                this.LoadMatchingAssemblies(binPath);
+                LoadMatchingAssemblies(binPath);
             }
 
             return base.GetAssemblies();

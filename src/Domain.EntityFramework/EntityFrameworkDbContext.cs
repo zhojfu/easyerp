@@ -1,19 +1,19 @@
 ﻿namespace Domain.EntityFramework
 {
-    using Infrastructure.Domain.EntityFramework;
-    using Infrastructure.Domain.Model;
     using System;
     using System.Data.Entity;
     using System.Data.Entity.ModelConfiguration;
     using System.Linq;
     using System.Reflection;
+    using Infrastructure.Domain.EntityFramework;
+    using Infrastructure.Domain.Model;
 
     public class EntityFrameworkDbContext : DbContext, IEntityFrameworkDbContext
     {
         public EntityFrameworkDbContext(string connectionString)
             : base(connectionString)
         {
-            this.Configuration.LazyLoadingEnabled = true;
+            Configuration.LazyLoadingEnabled = true;
             Database.SetInitializer(new DatabaseInitializer());
         }
 

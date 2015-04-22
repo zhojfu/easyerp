@@ -1,12 +1,12 @@
 ﻿namespace EasyErp.Core.Infrastructure.DependencyManagement
 {
-    using Autofac;
-    using Autofac.Core.Lifetime;
-    using Autofac.Integration.Mvc;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Web;
+    using Autofac;
+    using Autofac.Core.Lifetime;
+    using Autofac.Integration.Mvc;
 
     public class ContainerManager
     {
@@ -19,7 +19,7 @@
 
         public IContainer Container
         {
-            get { return this.container; }
+            get { return container; }
         }
 
         public T Resolve<T>(string key = "", ILifetimeScope scope = null) where T : class
@@ -27,7 +27,7 @@
             if (scope == null)
             {
                 //no scope specified
-                scope = this.Scope();
+                scope = Scope();
             }
             if (string.IsNullOrEmpty(key))
             {
@@ -41,7 +41,7 @@
             if (scope == null)
             {
                 //no scope specified
-                scope = this.Scope();
+                scope = Scope();
             }
             return scope.Resolve(type);
         }
@@ -51,7 +51,7 @@
             if (scope == null)
             {
                 //no scope specified
-                scope = this.Scope();
+                scope = Scope();
             }
             if (string.IsNullOrEmpty(key))
             {
@@ -62,7 +62,7 @@
 
         public T ResolveUnregistered<T>(ILifetimeScope scope = null) where T : class
         {
-            return this.ResolveUnregistered(typeof(T), scope) as T;
+            return ResolveUnregistered(typeof(T), scope) as T;
         }
 
         public object ResolveUnregistered(Type type, ILifetimeScope scope = null)
@@ -70,7 +70,7 @@
             if (scope == null)
             {
                 //no scope specified
-                scope = this.Scope();
+                scope = Scope();
             }
             var constructors = type.GetConstructors();
             foreach (var constructor in constructors)
@@ -81,7 +81,7 @@
                     var parameterInstances = new List<object>();
                     foreach (var parameter in parameters)
                     {
-                        var service = this.Resolve(parameter.ParameterType, scope);
+                        var service = Resolve(parameter.ParameterType, scope);
                         if (service == null)
                         {
                             throw new Exception("Unkown dependency");
@@ -103,7 +103,7 @@
             if (scope == null)
             {
                 //no scope specified
-                scope = this.Scope();
+                scope = Scope();
             }
             return scope.TryResolve(serviceType, out instance);
         }
@@ -113,7 +113,7 @@
             if (scope == null)
             {
                 //no scope specified
-                scope = this.Scope();
+                scope = Scope();
             }
             return scope.IsRegistered(serviceType);
         }
@@ -123,7 +123,7 @@
             if (scope == null)
             {
                 //no scope specified
-                scope = this.Scope();
+                scope = Scope();
             }
             return scope.ResolveOptional(serviceType);
         }
@@ -138,7 +138,7 @@
                 }
 
                 //when such lifetime scope is returned, you should be sure that it'll be disposed once used (e.g. in schedule tasks)
-                return this.Container.BeginLifetimeScope(MatchingScopeLifetimeTags.RequestLifetimeScopeTag);
+                return Container.BeginLifetimeScope(MatchingScopeLifetimeTags.RequestLifetimeScopeTag);
             }
             catch (Exception)
             {
@@ -147,7 +147,7 @@
                 //but note that usually it should never happen
 
                 //when such lifetime scope is returned, you should be sure that it'll be disposed once used (e.g. in schedule tasks)
-                return this.Container.BeginLifetimeScope(MatchingScopeLifetimeTags.RequestLifetimeScopeTag);
+                return Container.BeginLifetimeScope(MatchingScopeLifetimeTags.RequestLifetimeScopeTag);
             }
         }
     }

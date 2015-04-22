@@ -1,32 +1,20 @@
 ﻿namespace EasyERP.Web.Controllers
 {
-    using Doamin.Service.Directory;
-    using Doamin.Service.Discounts;
-    using Doamin.Service.Helpers;
-    using Doamin.Service.Products;
     using Doamin.Service.Security;
     using Doamin.Service.Stores;
-    using Doamin.Service.Vendors;
-    using Domain.Model.Directory;
-    using Domain.Model.Discounts;
-    using Domain.Model.Payment;
-    using Domain.Model.Products;
-    using Domain.Model.Vendors;
-    using EasyErp.Core;
     using EasyERP.Web.Extensions;
     using EasyERP.Web.Framework.Kendoui;
     using EasyERP.Web.Models.Products;
     using EasyERP.Web.Models.Stores;
     using System;
-    using System.Collections.Generic;
     using System.Linq;
     using System.Web.Mvc;
 
     public class StoreController : BaseAdminController
     {
-        private readonly IStoreService storeService;
-
         private readonly IPermissionService permissionService;
+
+        private readonly IStoreService storeService;
 
         public StoreController(
             IPermissionService permissionService,
@@ -38,64 +26,66 @@
 
         public ActionResult Index()
         {
-            if (!this.permissionService.Authorize(StandardPermissionProvider.ManageStores))
+            if (!permissionService.Authorize(StandardPermissionProvider.ManageStores))
             {
-                return this.AccessDeniedView();
+                return AccessDeniedView();
             }
-            return this.RedirectToAction("List");
+            return RedirectToAction("List");
         }
 
         public ActionResult List()
         {
-            if (!this.permissionService.Authorize(StandardPermissionProvider.ManageStores))
+            if (!permissionService.Authorize(StandardPermissionProvider.ManageStores))
             {
-                return this.AccessDeniedView();
+                return AccessDeniedView();
             }
-            this.storeService.GetAllStores();
-            return this.View();
+            storeService.GetAllStores();
+            return View();
         }
 
         [HttpPost]
         public ActionResult StoreList(DataSourceRequest command, ProductListModel model)
         {
-            if (!this.permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            if (!permissionService.Authorize(StandardPermissionProvider.ManageProducts))
             {
                 return AccessDeniedView();
             }
 
-            var stores = this.storeService.GetAllStores();
+            var stores = storeService.GetAllStores();
 
-            var gridModel = new DataSourceResult();
-            gridModel.Data = stores.Select(x => x.ToModel());
-            gridModel.Total = stores.Count;
+            var gridModel = new DataSourceResult
+            {
+                Data = stores.Select(x => x.ToModel()),
+                Total = stores.Count
+            };
 
             return Json(gridModel);
         }
 
         public ActionResult Create()
         {
-            if (!this.permissionService.Authorize(StandardPermissionProvider.ManageStores))
+            if (!permissionService.Authorize(StandardPermissionProvider.ManageStores))
             {
-                return this.AccessDeniedView();
+                return AccessDeniedView();
             }
             var model = new StoreModel();
-            return this.View(model);
+            return View(model);
         }
 
         [HttpPost]
         public ActionResult Create(StoreModel model)
         {
-            if (!this.permissionService.Authorize(StandardPermissionProvider.ManageStores))
+            if (!permissionService.Authorize(StandardPermissionProvider.ManageStores))
             {
-                return this.AccessDeniedView();
+                return AccessDeniedView();
             }
 
-            if (this.ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 var store = model.ToEntity();
                 store.CreatedOn = DateTime.Now;
                 store.UpdatedOn = DateTime.Now;
-                this.storeService.InsertStore(store);
+                storeService.InsertStore(store);
             }
 
             return RedirectToAction("List");
@@ -103,43 +93,43 @@
 
         public ActionResult Edit(int id)
         {
-            if (!this.permissionService.Authorize(StandardPermissionProvider.ManageStores))
+            if (!permissionService.Authorize(StandardPermissionProvider.ManageStores))
             {
-                return this.AccessDeniedView();
+                return AccessDeniedView();
             }
-            var store = this.storeService.GetStoreById(id);
+            var store = storeService.GetStoreById(id);
 
             if (store == null)
             {
-                return this.RedirectToAction("List");
+                return RedirectToAction("List");
             }
             var model = store.ToModel();
-            return this.View(model);
+            return View(model);
         }
 
         [HttpPost]
         public ActionResult Edit(StoreModel model)
         {
-            if (!this.permissionService.Authorize(StandardPermissionProvider.ManageStores))
+            if (!permissionService.Authorize(StandardPermissionProvider.ManageStores))
             {
-                return this.AccessDeniedView();
+                return AccessDeniedView();
             }
 
-            var store = this.storeService.GetStoreById(model.Id);
+            var store = storeService.GetStoreById(model.Id);
 
             if (store == null)
             {
-                return this.RedirectToAction("List");
+                return RedirectToAction("List");
             }
 
-            if (this.ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 store = model.ToEntity();
                 store.UpdatedOn = DateTime.Now;
-                this.storeService.UpdateStore(store);
-                return this.RedirectToAction("List");
+                storeService.UpdateStore(store);
+                return RedirectToAction("List");
             }
-            return this.View(model);
+            return View(model);
         }
     }
 }

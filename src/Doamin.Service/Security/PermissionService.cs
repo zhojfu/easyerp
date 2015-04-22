@@ -15,14 +15,18 @@ namespace Doamin.Service.Security
     public class PermissionService : IPermissionService
     {
         private readonly IRepository<PermissionRecord> permissionRecordRepository;
-        private readonly IWorkContext workContext;
 
         private readonly IUnitOfWork unitOfWork;
+
         private readonly IUserService userService;
 
-        public PermissionService(IRepository<PermissionRecord> permissionRecordRepository,
+        private readonly IWorkContext workContext;
+
+        public PermissionService(
+            IRepository<PermissionRecord> permissionRecordRepository,
             IUnitOfWork unitOfWork,
-            IWorkContext workContext, IUserService userService)
+            IWorkContext workContext,
+            IUserService userService)
         {
             this.permissionRecordRepository = permissionRecordRepository;
             this.unitOfWork = unitOfWork;
@@ -36,8 +40,8 @@ namespace Doamin.Service.Security
             {
                 throw new ArgumentNullException("permission");
             }
-            this.permissionRecordRepository.Remove(permission);
-            this.unitOfWork.Commit();
+            permissionRecordRepository.Remove(permission);
+            unitOfWork.Commit();
         }
 
         public PermissionRecord GetPermissionRecordById(int permissionId)
@@ -47,7 +51,7 @@ namespace Doamin.Service.Security
                 return null;
             }
 
-            return this.permissionRecordRepository.GetByKey(permissionId);
+            return permissionRecordRepository.GetByKey(permissionId);
         }
 
         public PermissionRecord GetPermissionRecordBySystemName(string systemName)
@@ -57,13 +61,13 @@ namespace Doamin.Service.Security
                 return null;
             }
 
-            var records = this.permissionRecordRepository.FindAll(r => r.SystemName == systemName);
+            var records = permissionRecordRepository.FindAll(r => r.SystemName == systemName);
             return records.FirstOrDefault();
         }
 
         public IList<PermissionRecord> GetAllPermissionRecords()
         {
-            return this.permissionRecordRepository.FindAll(r => r.Id > 0).ToList();
+            return permissionRecordRepository.FindAll(r => r.Id > 0).ToList();
         }
 
         public void InsertPermissionRecord(PermissionRecord permission)
@@ -73,8 +77,8 @@ namespace Doamin.Service.Security
                 throw new ArgumentNullException("permission");
             }
 
-            this.permissionRecordRepository.Add(permission);
-            this.unitOfWork.Commit();
+            permissionRecordRepository.Add(permission);
+            unitOfWork.Commit();
         }
 
         public void UpdatePermissionRecord(PermissionRecord permission)
@@ -84,8 +88,8 @@ namespace Doamin.Service.Security
                 throw new ArgumentNullException("permission");
             }
 
-            this.permissionRecordRepository.Update(permission);
-            this.unitOfWork.Commit();
+            permissionRecordRepository.Update(permission);
+            unitOfWork.Commit();
         }
 
         public virtual void InstallPermissions(IPermissionProvider permissionProvider)
@@ -94,7 +98,7 @@ namespace Doamin.Service.Security
             var permissions = permissionProvider.GetPermissions();
             foreach (var permission in permissions)
             {
-                var permission1 = this.GetPermissionRecordBySystemName(permission.SystemName);
+                var permission1 = GetPermissionRecordBySystemName(permission.SystemName);
                 if (permission1 != null)
                 {
                     continue;
@@ -105,7 +109,7 @@ namespace Doamin.Service.Security
                 {
                     Name = permission.Name,
                     SystemName = permission.SystemName,
-                    Category = permission.Category,
+                    Category = permission.Category
                 };
 
                 //default customer role mappings
@@ -138,24 +142,8 @@ namespace Doamin.Service.Security
                 }
 
                 //save new permission
-                this.InsertPermissionRecord(permission1);
+                InsertPermissionRecord(permission1);
             }
-        }
-
-        protected virtual bool Authorize(string permissionRecordSystemName, UserRole userRole)
-        {
-            if (String.IsNullOrEmpty(permissionRecordSystemName))
-                return false;
-
-            foreach (var permission1 in userRole.PermissionRecords)
-            {
-                if (permission1.SystemName.Equals(
-                    permissionRecordSystemName,
-                    StringComparison.InvariantCultureIgnoreCase))
-                    return true;
-            }
-
-            return false;
         }
 
         public bool Authorize(PermissionRecord permission)
@@ -175,7 +163,7 @@ namespace Doamin.Service.Security
                 return false;
             }
 
-            return this.Authorize(permission.SystemName, user);
+            return Authorize(permission.SystemName, user);
         }
 
         public bool Authorize(string permissionRecordSystemName)
@@ -186,7 +174,14 @@ namespace Doamin.Service.Security
         public bool Authorize(string permissionRecordSystemName, User user)
         {
             if (String.IsNullOrEmpty(permissionRecordSystemName))
+            {
                 return false;
+            }
+
+            if (user == null)
+            {
+                return false;
+            }
 
             var customerRoles = user.UserRoles.Where(cr => cr.Active);
             foreach (var role in customerRoles)
@@ -198,6 +193,26 @@ namespace Doamin.Service.Security
             }
 
             //no permission found
+            return false;
+        }
+
+        protected virtual bool Authorize(string permissionRecordSystemName, UserRole userRole)
+        {
+            if (String.IsNullOrEmpty(permissionRecordSystemName))
+            {
+                return false;
+            }
+
+            foreach (var permission1 in userRole.PermissionRecords)
+            {
+                if (permission1.SystemName.Equals(
+                    permissionRecordSystemName,
+                    StringComparison.InvariantCultureIgnoreCase))
+                {
+                    return true;
+                }
+            }
+
             return false;
         }
     }

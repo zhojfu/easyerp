@@ -126,14 +126,13 @@
     <Compile Include="Models\Products\ProductListModel.cs" />
     <Compile Include="Models\Products\ProductModel.cs" />
     <Compile Include="Models\Products\ProductOverviewModel.cs" />
+    <Compile Include="Models\RenderWidgetModel.cs" />
+    <Compile Include="RouteProvider.cs" />
     <Compile Include="StoreAreaRegistration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Icon.png" />
-    <Content Include="Scripts\admin.common.js" />
-    <Content Include="Scripts\public.ajaxcart.js" />
-    <Content Include="Scripts\public.common.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -177,6 +176,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\_ProductBox.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Product\Shopping.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Widget\WidgetsByZone.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

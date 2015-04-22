@@ -1,9 +1,9 @@
 ﻿namespace EasyERP.Web.Framework
 {
+    using System;
     using EasyErp.Core.Infrastructure;
     using FluentValidation;
     using FluentValidation.Attributes;
-    using System;
 
     public class ValidatorFactory : AttributedValidatorFactory
     {
@@ -13,7 +13,8 @@
             if (type != null)
             {
                 var attribute = (ValidatorAttribute)Attribute.GetCustomAttribute(type, typeof(ValidatorAttribute));
-                if ((attribute != null) && (attribute.ValidatorType != null))
+                if ((attribute != null) &&
+                    (attribute.ValidatorType != null))
                 {
                     //validators can depend on some customer specific settings (such as working language)
                     //that's why we do not cache validators

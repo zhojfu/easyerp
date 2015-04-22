@@ -2,11 +2,12 @@ namespace Domain.Model.Stores
 {
     using Domain.Model.Company;
     using Domain.Model.Orders;
+    using Domain.Model.Products;
     using Infrastructure.Domain.Model;
     using System;
     using System.Collections.Generic;
 
-    public partial class Store : BaseEntity, IAggregateRoot
+    public class Store : BaseEntity, IAggregateRoot
     {
         public string Name { get; set; }
 
@@ -30,6 +31,12 @@ namespace Domain.Model.Stores
 
         public DateTime UpdatedOn { get; set; }
 
-        public ICollection<Order> Orders { get; set; }
+        public virtual ICollection<Order> Orders { get; set; }
+
+        public virtual ICollection<ShoppingCartItem> ShoppingCartItems { get; set; }
+
+        public virtual ICollection<Product> Products { get; set; }
+
+        public virtual ICollection<Employee> Employees { get; set; }
     }
 }

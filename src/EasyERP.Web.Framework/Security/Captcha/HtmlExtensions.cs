@@ -1,9 +1,6 @@
 ﻿namespace EasyERP.Web.Framework.Security.Captcha
 {
-    using EasyErp.Core.Infrastructure;
-    using System.IO;
     using System.Web.Mvc;
-    using System.Web.UI;
 
     public static class HtmlExtensions
     {

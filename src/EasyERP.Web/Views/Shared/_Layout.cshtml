@@ -1,13 +1,11 @@
-﻿@using System.Web.Optimization
-@using Doamin.Service.Helpers
+﻿@using Doamin.Service.Helpers
 @using EasyErp.Core
 @using EasyErp.Core.Infrastructure
-@using EasyERP.Web.Framework
 @using EasyERP.Web.Framework.UI
 @{
     var currentVersion = EasyErpVersion.CurrentVersion;
     const string KendoVersion = "2014.2.716";
-    var currentUser = this.WorkContext.CurrentUser;
+    var currentUser = WorkContext.CurrentUser;
 
     //CSS resources
     Html.AppendCssFileParts(string.Format("~/Content/kendo/{0}/kendo.default.min.css", KendoVersion));
@@ -22,7 +20,9 @@
     Html.AppendScriptParts("~/Scripts/jquery-ui-1.10.3.custom.min.js");
     Html.AppendScriptParts("~/Scripts/jquery.validate.unobtrusive.min.js");
     Html.AppendScriptParts("~/Scripts/jquery.validate.min.js");
-    Html.AppendScriptParts("~/Scripts/jquery-1.10.2.min.js");
+    Html.AppendScriptParts("~/Scripts/jquery-1.10.2.js");
+    Html.AppendScriptParts("~/Scripts/public.ajaxcart.js");
+    Html.AppendScriptParts("~/Scripts/public.common.js");
 
     //page title
     var adminPageTitle = "";
@@ -31,7 +31,6 @@
         adminPageTitle = ViewBag.Title + " / ";
     }
     adminPageTitle += "EasyErp 管理";
-
 }
 <!DOCTYPE html>
 <html>
@@ -39,8 +38,8 @@
     <title>@adminPageTitle</title>
     <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
     @Html.NopHeadCustom()
-    @Html.NopCssFiles(this.Url, ResourceLocation.Head)
-    @Html.NopScripts(this.Url, ResourceLocation.Head)
+    @Html.NopCssFiles(Url, ResourceLocation.Head)
+    @Html.NopScripts(Url, ResourceLocation.Head)
 </head>
 <body>
     <div id="ajaxBusy">
@@ -58,8 +57,8 @@
                 <div class="login-info">
                     @if (currentUser != null)
                     {
-                        @String.Format("登陆用户: {0}", currentUser.Name)
-                        <text>, </text> @Html.ActionLink("Logout", "Logout", "User")
+                        @String.Format("登陆用户: {0}, ", currentUser.Name)
+                        @Html.ActionLink("Logout", "Logout", "User")
                     }
                 </div>
                 <div class="version">
@@ -104,7 +103,7 @@
             </div>
         </div>
     </div>
-    @Html.NopCssFiles(this.Url, ResourceLocation.Foot)
-    @Html.NopScripts(this.Url, ResourceLocation.Foot)
+    @Html.NopCssFiles(Url, ResourceLocation.Foot)
+    @Html.NopScripts(Url, ResourceLocation.Foot)
 </body>
 </html>

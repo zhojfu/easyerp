@@ -1,11 +1,8 @@
-﻿
-namespace Doamin.Service.Factory
+﻿namespace Doamin.Service.Factory
 {
     using System;
     using System.Collections.Generic;
-
     using Domain.Model.Factory;
-
     using Infrastructure.Domain;
     using Infrastructure.Utility;
 
@@ -16,7 +13,7 @@ namespace Doamin.Service.Factory
 
         private readonly IUnitOfWork unitOfWork;
 
-        public DaliyStatisticService(IRepository<T> repository, IUnitOfWork unitOfWork )
+        public DaliyStatisticService(IRepository<T> repository, IUnitOfWork unitOfWork)
         {
             this.repository = repository;
             this.unitOfWork = unitOfWork;
@@ -31,21 +28,21 @@ namespace Doamin.Service.Factory
         {
             foreach (var statisticItem in statisticItems)
             {
-                this.UpdateStatistics(statisticItem);
+                UpdateStatistics(statisticItem);
             }
 
-            this.unitOfWork.Commit();
+            unitOfWork.Commit();
         }
 
         private void UpdateStatistics(T statisticItem)
         {
-            if (this.repository.Exist(statisticItem))
+            if (repository.Exist(statisticItem))
             {
-                this.repository.Update(statisticItem);
+                repository.Update(statisticItem);
             }
             else
             {
-                this.repository.Add(statisticItem);
+                repository.Add(statisticItem);
             }
         }
     }

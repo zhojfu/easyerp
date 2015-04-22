@@ -18,8 +18,8 @@
 
         public virtual ICollection<PermissionRecord> PermissionRecords
         {
-            get { return this.permissionRecords ?? (this.permissionRecords = new List<PermissionRecord>()); }
-            set { this.permissionRecords = value; }
+            get { return permissionRecords ?? (permissionRecords = new List<PermissionRecord>()); }
+            set { permissionRecords = value; }
         }
     }
 }

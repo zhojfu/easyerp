@@ -9,7 +9,7 @@ namespace EasyErp.Core.Caching
     /// <summary>
     /// Represents a manager for caching during an HTTP request (short term caching)
     /// </summary>
-    public partial class PerRequestCacheManager : ICacheManager
+    public class PerRequestCacheManager : ICacheManager
     {
         private readonly HttpContextBase _context;
 
@@ -19,18 +19,7 @@ namespace EasyErp.Core.Caching
         /// <param name="context">Context</param>
         public PerRequestCacheManager(HttpContextBase context)
         {
-            this._context = context;
-        }
-
-        /// <summary>
-        /// Creates a new instance of the NopRequestCache class
-        /// </summary>
-        protected virtual IDictionary GetItems()
-        {
-            if (this._context != null)
-                return this._context.Items;
-
-            return null;
+            _context = context;
         }
 
         /// <summary>
@@ -41,9 +30,11 @@ namespace EasyErp.Core.Caching
         /// <returns>The value associated with the specified key.</returns>
         public virtual T Get<T>(string key)
         {
-            var items = this.GetItems();
+            var items = GetItems();
             if (items == null)
+            {
                 return default(T);
+            }
 
             return (T)items[key];
         }
@@ -56,16 +47,22 @@ namespace EasyErp.Core.Caching
         /// <param name="cacheTime">Cache time</param>
         public virtual void Set(string key, object data, int cacheTime)
         {
-            var items = this.GetItems();
+            var items = GetItems();
             if (items == null)
+            {
                 return;
+            }
 
             if (data != null)
             {
                 if (items.Contains(key))
+                {
                     items[key] = data;
+                }
                 else
+                {
                     items.Add(key, data);
+                }
             }
         }
 
@@ -76,9 +73,11 @@ namespace EasyErp.Core.Caching
         /// <returns>Result</returns>
         public virtual bool IsSet(string key)
         {
-            var items = this.GetItems();
+            var items = GetItems();
             if (items == null)
+            {
                 return false;
+            }
 
             return (items[key] != null);
         }
@@ -89,9 +88,11 @@ namespace EasyErp.Core.Caching
         /// <param name="key">/key</param>
         public virtual void Remove(string key)
         {
-            var items = this.GetItems();
+            var items = GetItems();
             if (items == null)
+            {
                 return;
+            }
 
             items.Remove(key);
         }
@@ -102,9 +103,11 @@ namespace EasyErp.Core.Caching
         /// <param name="pattern">pattern</param>
         public virtual void RemoveByPattern(string pattern)
         {
-            var items = this.GetItems();
+            var items = GetItems();
             if (items == null)
+            {
                 return;
+            }
 
             var enumerator = items.GetEnumerator();
             var regex = new Regex(pattern, RegexOptions.Singleline | RegexOptions.Compiled | RegexOptions.IgnoreCase);
@@ -117,7 +120,7 @@ namespace EasyErp.Core.Caching
                 }
             }
 
-            foreach (string key in keysToRemove)
+            foreach (var key in keysToRemove)
             {
                 items.Remove(key);
             }
@@ -128,9 +131,11 @@ namespace EasyErp.Core.Caching
         /// </summary>
         public virtual void Clear()
         {
-            var items = this.GetItems();
+            var items = GetItems();
             if (items == null)
+            {
                 return;
+            }
 
             var enumerator = items.GetEnumerator();
             var keysToRemove = new List<String>();
@@ -139,10 +144,23 @@ namespace EasyErp.Core.Caching
                 keysToRemove.Add(enumerator.Key.ToString());
             }
 
-            foreach (string key in keysToRemove)
+            foreach (var key in keysToRemove)
             {
                 items.Remove(key);
             }
+        }
+
+        /// <summary>
+        /// Creates a new instance of the NopRequestCache class
+        /// </summary>
+        protected virtual IDictionary GetItems()
+        {
+            if (_context != null)
+            {
+                return _context.Items;
+            }
+
+            return null;
         }
     }
 }

@@ -9,16 +9,6 @@
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    <div class="section-header">
-        <div class="title">
-            <label>产品管理</label>
-        </div>
-        <div class="options">
-            <a href="@Url.Action("Create")" class="k-button">添加产品</a>
-            <a href="@Url.Action("Inventory")" class="k-button">入库</a>
-            <input type="button" id="delete-selected" class="k-button" value="Delete" />
-        </div>
-    </div>
     <table width="100%">
         <tr>
             <td class="adminTitle">
@@ -86,14 +76,6 @@
                             dataBound: onDataBound,
                             columns: [
                                 {
-                                    field: "Id",
-                                    headerTemplate: "购买",
-                                    headerAttributes: { style: "text-align:center" },
-                                    attributes: { style: "text-align:center" },
-                                    template: "<input type='button' value='#=Id#' class='checkboxGroups' />",
-                                    width: 50
-                                },
-                                {
                                     field: "Name",
                                     title: "产品名",
                                     width: 300
@@ -108,7 +90,7 @@
                                     title: "价格",
                                     width: 100
                                 },
-                                {command: { text: "加入购物车", click: addToCart }, title: " ", width: "180px" },
+                                { command: { text: "加入购物车", click: addToCart }, title: " ", width: "180px" },
                             ]
                         });
                     });
@@ -121,10 +103,11 @@
         function addToCart(e) {
             e.preventDefault();
             var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
-            @*var   link= @Url.RouteUrl("AddProductToCart", new { productId = Model.Id, quantity = Quantity, });
-
-            AjaxCart.addproducttocart_catalog('@addtocartlink    ');return false;*@
+            var link = "/StoreAdmin/ShoppingCart/AddProductToCart/".concat(dataItem.Id).concat("/").concat(@Quantity);
+            AjaxCart.addproducttocart_catalog(link);
+            return false;
         }
+
         var selectedIds = [];
 
         $(document).ready(function() {
@@ -133,16 +116,14 @@
             $("#search-products").click(function() {
                 //search
                 var grid = $("#products-grid").data("kendoGrid");
-                grid.dataSource.page(1); //new search. Set page size to 1
-                //grid.dataSource.read(); we already loaded the grid above using "page" function
-                //clear selected checkboxes
+                grid.dataSource.page(1);
                 $(".checkboxGroups").attr("checked", false).change();
                 selectedIds = [];
                 return false;
             });
 
             $("#@Html.FieldIdFor(model => model.SearchProductName)").keydown(function(event) {
-                if (event.keyCode == 13) {
+                if (event.keyCode === 13) {
                     $("#search-products").click();
                     return false;
                 }

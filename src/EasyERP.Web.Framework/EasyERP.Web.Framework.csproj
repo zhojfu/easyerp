@@ -104,6 +104,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\AdminAuthorizeAttribute.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="DependencyRegistrar.cs" />
     <Compile Include="Events\AdminTabStripCreated.cs" />
@@ -116,6 +117,10 @@
     <Compile Include="Menu\SiteMapNode.cs" />
     <Compile Include="Menu\XmlSiteMap.cs" />
     <Compile Include="Mvc\DeleteConfirmationModel.cs" />
+    <Compile Include="Mvc\Routes\GuidConstraint.cs" />
+    <Compile Include="Mvc\Routes\IRouteProvider.cs" />
+    <Compile Include="Mvc\Routes\IRoutePublisher.cs" />
+    <Compile Include="Mvc\Routes\RoutePublisher.cs" />
     <Compile Include="Security\Captcha\CaptchaSettings.cs" />
     <Compile Include="Security\Captcha\CaptchaValidatorAttribute.cs" />
     <Compile Include="Security\Captcha\HtmlExtensions.cs" />

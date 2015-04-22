@@ -1,14 +1,24 @@
 namespace Doamin.Service.Helpers
 {
-    using Domain.Model.Users;
     using System;
     using System.Collections.ObjectModel;
+    using Domain.Model.Users;
 
     /// <summary>
     /// Represents a datetime helper
     /// </summary>
-    public partial interface IDateTimeHelper
+    public interface IDateTimeHelper
     {
+        /// <summary>
+        /// Gets or sets a default store time zone
+        /// </summary>
+        TimeZoneInfo DefaultStoreTimeZone { get; set; }
+
+        /// <summary>
+        /// Gets or sets the current user time zone
+        /// </summary>
+        TimeZoneInfo CurrentTimeZone { get; set; }
+
         /// <summary>
         /// Retrieves a System.TimeZoneInfo object from the registry based on its identifier.
         /// </summary>
@@ -58,7 +68,10 @@ namespace Doamin.Service.Helpers
         /// Converts the date and time to Coordinated Universal Time (UTC)
         /// </summary>
         /// <param name="dt">The date and time (respesents local system time or UTC time) to convert.</param>
-        /// <returns>A DateTime value that represents the Coordinated Universal Time (UTC) that corresponds to the dateTime parameter. The DateTime value's Kind property is always set to DateTimeKind.Utc.</returns>
+        /// <returns>
+        /// A DateTime value that represents the Coordinated Universal Time (UTC) that corresponds to the dateTime
+        /// parameter. The DateTime value's Kind property is always set to DateTimeKind.Utc.
+        /// </returns>
         DateTime ConvertToUtcTime(DateTime dt);
 
         /// <summary>
@@ -66,7 +79,10 @@ namespace Doamin.Service.Helpers
         /// </summary>
         /// <param name="dt">The date and time (respesents local system time or UTC time) to convert.</param>
         /// <param name="sourceDateTimeKind">The source datetimekind</param>
-        /// <returns>A DateTime value that represents the Coordinated Universal Time (UTC) that corresponds to the dateTime parameter. The DateTime value's Kind property is always set to DateTimeKind.Utc.</returns>
+        /// <returns>
+        /// A DateTime value that represents the Coordinated Universal Time (UTC) that corresponds to the dateTime
+        /// parameter. The DateTime value's Kind property is always set to DateTimeKind.Utc.
+        /// </returns>
         DateTime ConvertToUtcTime(DateTime dt, DateTimeKind sourceDateTimeKind);
 
         /// <summary>
@@ -74,7 +90,10 @@ namespace Doamin.Service.Helpers
         /// </summary>
         /// <param name="dt">The date and time to convert.</param>
         /// <param name="sourceTimeZone">The time zone of dateTime.</param>
-        /// <returns>A DateTime value that represents the Coordinated Universal Time (UTC) that corresponds to the dateTime parameter. The DateTime value's Kind property is always set to DateTimeKind.Utc.</returns>
+        /// <returns>
+        /// A DateTime value that represents the Coordinated Universal Time (UTC) that corresponds to the dateTime
+        /// parameter. The DateTime value's Kind property is always set to DateTimeKind.Utc.
+        /// </returns>
         DateTime ConvertToUtcTime(DateTime dt, TimeZoneInfo sourceTimeZone);
 
         /// <summary>
@@ -83,15 +102,5 @@ namespace Doamin.Service.Helpers
         /// <param name="customer">Customer</param>
         /// <returns>Customer time zone; if customer is null, then default store time zone</returns>
         TimeZoneInfo GetCustomerTimeZone(User user);
-
-        /// <summary>
-        /// Gets or sets a default store time zone
-        /// </summary>
-        TimeZoneInfo DefaultStoreTimeZone { get; set; }
-
-        /// <summary>
-        /// Gets or sets the current user time zone
-        /// </summary>
-        TimeZoneInfo CurrentTimeZone { get; set; }
     }
 }

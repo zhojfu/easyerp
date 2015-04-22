@@ -1,17 +1,14 @@
 namespace Doamin.Service.Products
 {
-    using Doamin.Service.Events;
-    using Domain.Model.Products;
-    using Domain.Model.Security;
-    using EasyErp.Core;
-    using Infrastructure.Domain;
     using System;
     using System.Collections.Generic;
+    using Domain.Model.Products;
+    using EasyErp.Core;
 
     /// <summary>
     /// Manufacturer service
     /// </summary>
-    public partial class ManufacturerService : IManufacturerService
+    public class ManufacturerService : IManufacturerService
     {
         public void DeleteManufacturer(Manufacturer manufacturer)
         {

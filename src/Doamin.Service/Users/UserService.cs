@@ -8,17 +8,19 @@
 
     public class UserService : IUserService
     {
-        private readonly IRepository<User> userRepository;
-
-        private readonly IRepository<UserRole> userRoleRepository;
-
         private readonly IEncryptionService encryptionService;
 
         private readonly IUnitOfWork unitOfWork;
 
-        public UserService(IRepository<User> userRepository,
+        private readonly IRepository<User> userRepository;
+
+        private readonly IRepository<UserRole> userRoleRepository;
+
+        public UserService(
+            IRepository<User> userRepository,
             IRepository<UserRole> userRoleRepository,
-            IEncryptionService encryptionService, IUnitOfWork unitOfWork)
+            IEncryptionService encryptionService,
+            IUnitOfWork unitOfWork)
         {
             this.userRepository = userRepository;
             this.userRoleRepository = userRoleRepository;
@@ -28,25 +30,14 @@
 
         public User GetUserByName(string userName)
         {
-            var users = this.userRepository.FindAll(u => u.Name == userName);
+            var users = userRepository.FindAll(u => u.Name == userName);
 
             return users.SingleOrDefault();
         }
 
-        public void UpdateUser(User user)
-        {
-            if (user == null)
-            {
-                throw new ArgumentNullException("user");
-            }
-
-            this.userRepository.Update(user);
-            this.unitOfWork.Commit();
-        }
-
         public UserLoginResults ValidateUser(string userName, string password)
         {
-            var user = this.GetUserByName(userName);
+            var user = GetUserByName(userName);
 
             if (user == null)
             {
@@ -62,14 +53,14 @@
                 return UserLoginResults.NotActive;
             }
 
-            var pwd = this.encryptionService.CreatePasswordHash(password, user.PasswordSalt, "SHA1");
+            var pwd = encryptionService.CreatePasswordHash(password, user.PasswordSalt, "SHA1");
 
             if (pwd != user.Password)
             {
                 return UserLoginResults.WrongPassword;
             }
             user.LastLoginDate = DateTime.Now;
-            this.UpdateUser(user);
+            UpdateUser(user);
             return UserLoginResults.Successful;
         }
 
@@ -80,13 +71,13 @@
                 return null;
             }
 
-            var query = this.userRoleRepository.FindAll(ur => ur.SystemName == systemName).OrderBy(cr => cr.Id);
+            var query = userRoleRepository.FindAll(ur => ur.SystemName == systemName).OrderBy(cr => cr.Id);
             return query.FirstOrDefault();
         }
 
         public UserRole GetUserRoleById(int roleId)
         {
-            return roleId <= 0 ? null : this.userRoleRepository.GetByKey(roleId);
+            return roleId <= 0 ? null : userRoleRepository.GetByKey(roleId);
         }
 
         public void InsertUserRole(UserRole role)
@@ -96,8 +87,29 @@
                 throw new ArgumentNullException("role");
             }
 
-            this.userRoleRepository.Add(role);
-            this.unitOfWork.Commit();
+            userRoleRepository.Add(role);
+            unitOfWork.Commit();
+        }
+
+        public void ResetCheckoutData(User user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            UpdateUser(user);
+        }
+
+        public void UpdateUser(User user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException("user");
+            }
+
+            userRepository.Update(user);
+            unitOfWork.Commit();
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿namespace Domain.EntityFramework
 {
-    using Infrastructure.Domain;
     using System.Data.Entity;
+    using Infrastructure.Domain;
 
     public class EntityFrameworkUnitOfWork : UnitOfWork
     {
@@ -15,7 +15,7 @@
         public override void Commit()
         {
             base.Commit();
-            this.dbContext.SaveChanges();
+            dbContext.SaveChanges();
         }
     }
 }

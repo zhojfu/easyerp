@@ -8,14 +8,11 @@ namespace EasyErp.Core.Caching
     /// <summary>
     /// Represents a manager for caching between HTTP requests (long term caching)
     /// </summary>
-    public partial class MemoryCacheManager : ICacheManager
+    public class MemoryCacheManager : ICacheManager
     {
         protected ObjectCache Cache
         {
-            get
-            {
-                return MemoryCache.Default;
-            }
+            get { return MemoryCache.Default; }
         }
 
         /// <summary>
@@ -26,7 +23,7 @@ namespace EasyErp.Core.Caching
         /// <returns>The value associated with the specified key.</returns>
         public virtual T Get<T>(string key)
         {
-            return (T)this.Cache[key];
+            return (T)Cache[key];
         }
 
         /// <summary>
@@ -38,11 +35,13 @@ namespace EasyErp.Core.Caching
         public virtual void Set(string key, object data, int cacheTime)
         {
             if (data == null)
+            {
                 return;
+            }
 
             var policy = new CacheItemPolicy();
             policy.AbsoluteExpiration = DateTime.Now + TimeSpan.FromMinutes(cacheTime);
-            this.Cache.Add(new CacheItem(key, data), policy);
+            Cache.Add(new CacheItem(key, data), policy);
         }
 
         /// <summary>
@@ -52,7 +51,7 @@ namespace EasyErp.Core.Caching
         /// <returns>Result</returns>
         public virtual bool IsSet(string key)
         {
-            return (this.Cache.Contains(key));
+            return (Cache.Contains(key));
         }
 
         /// <summary>
@@ -61,7 +60,7 @@ namespace EasyErp.Core.Caching
         /// <param name="key">/key</param>
         public virtual void Remove(string key)
         {
-            this.Cache.Remove(key);
+            Cache.Remove(key);
         }
 
         /// <summary>
@@ -73,13 +72,17 @@ namespace EasyErp.Core.Caching
             var regex = new Regex(pattern, RegexOptions.Singleline | RegexOptions.Compiled | RegexOptions.IgnoreCase);
             var keysToRemove = new List<String>();
 
-            foreach (var item in this.Cache)
-                if (regex.IsMatch(item.Key))
-                    keysToRemove.Add(item.Key);
-
-            foreach (string key in keysToRemove)
+            foreach (var item in Cache)
             {
-                this.Remove(key);
+                if (regex.IsMatch(item.Key))
+                {
+                    keysToRemove.Add(item.Key);
+                }
+            }
+
+            foreach (var key in keysToRemove)
+            {
+                Remove(key);
             }
         }
 
@@ -88,8 +91,10 @@ namespace EasyErp.Core.Caching
         /// </summary>
         public virtual void Clear()
         {
-            foreach (var item in this.Cache)
-                this.Remove(item.Key);
+            foreach (var item in Cache)
+            {
+                Remove(item.Key);
+            }
         }
     }
 }

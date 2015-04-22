@@ -1,14 +1,13 @@
 ﻿namespace EasyERP.Web.Models.Stores
 {
+    using System;
+    using System.Web.Mvc;
     using EasyERP.Web.Validators.Stores;
     using FluentValidation.Attributes;
     using Infrastructure.Domain.Model;
-    using System;
-    using System.Collections.Generic;
-    using System.Web.Mvc;
 
     [Validator(typeof(StoreValidator))]
-    public partial class StoreModel : BaseEntity
+    public class StoreModel : BaseEntity
     {
         [AllowHtml]
         public string Name { get; set; }
@@ -31,7 +30,6 @@
         public string CompanyPhoneNumber { get; set; }
 
         public DateTime? CreatedOn { get; set; }
-
         public DateTime? UpdatedOn { get; set; }
     }
 }

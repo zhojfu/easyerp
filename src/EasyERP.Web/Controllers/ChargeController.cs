@@ -1,7 +1,7 @@
-﻿using System.Web.Mvc;
-
-namespace EasyERP.Web.Controllers
+﻿namespace EasyERP.Web.Controllers
 {
+    using System.Web.Mvc;
+
     public class ChargeController : Controller
     {
         //
@@ -10,5 +10,5 @@ namespace EasyERP.Web.Controllers
         {
             return View();
         }
-	}
+    }
 }

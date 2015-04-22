@@ -188,7 +188,8 @@
         public bool EnableDynamicPriceUpdate { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether we should load new price using AJAX when changing product attributes. This option works only with "EnableDynamicPriceUpdate" enabled
+        /// Gets or sets a value indicating whether we should load new price using AJAX when changing product attributes. This
+        /// option works only with "EnableDynamicPriceUpdate" enabled
         /// </summary>
         public bool DynamicPriceUpdateAjax { get; set; }
 
@@ -233,22 +234,26 @@
         public bool DisplayTierPricesWithDiscounts { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether to ignore discounts (side-wide). It can significantly improve performance when enabled.
+        /// Gets or sets a value indicating whether to ignore discounts (side-wide). It can significantly improve performance when
+        /// enabled.
         /// </summary>
         public bool IgnoreDiscounts { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether to ignore featured products (side-wide). It can significantly improve performance when enabled.
+        /// Gets or sets a value indicating whether to ignore featured products (side-wide). It can significantly improve
+        /// performance when enabled.
         /// </summary>
         public bool IgnoreFeaturedProducts { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether to ignore ACL rules (side-wide). It can significantly improve performance when enabled.
+        /// Gets or sets a value indicating whether to ignore ACL rules (side-wide). It can significantly improve performance when
+        /// enabled.
         /// </summary>
         public bool IgnoreAcl { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether to ignore "limit per store" rules (side-wide). It can significantly improve performance when enabled.
+        /// Gets or sets a value indicating whether to ignore "limit per store" rules (side-wide). It can significantly improve
+        /// performance when enabled.
         /// </summary>
         public bool IgnoreStoreLimitations { get; set; }
 
@@ -289,22 +294,26 @@
         public bool DisplayTaxShippingInfoFooter { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether to display information about shipping and tax on product details pages (used in Germany)
+        /// Gets or sets a value indicating whether to display information about shipping and tax on product details pages (used in
+        /// Germany)
         /// </summary>
         public bool DisplayTaxShippingInfoProductDetailsPage { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether to display information about shipping and tax in product boxes (used in Germany)
+        /// Gets or sets a value indicating whether to display information about shipping and tax in product boxes (used in
+        /// Germany)
         /// </summary>
         public bool DisplayTaxShippingInfoProductBoxes { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether to display information about shipping and tax on wishlist page (used in Germany)
+        /// Gets or sets a value indicating whether to display information about shipping and tax on wishlist page (used in
+        /// Germany)
         /// </summary>
         public bool DisplayTaxShippingInfoWishlist { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether to display information about shipping and tax on order details page (used in Germany)
+        /// Gets or sets a value indicating whether to display information about shipping and tax on order details page (used in
+        /// Germany)
         /// </summary>
         public bool DisplayTaxShippingInfoOrderDetailsPage { get; set; }
     }

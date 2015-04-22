@@ -33,7 +33,10 @@
                 SearchCategory:
             </td>
             <td class="adminData">
-                @Html.DropDownList("SearchCategoryId", Model.AvailableCategories)
+                @Html.DropDownList("SearchCategoryId", Model.AvailableCategories, new
+                {
+                    id = "select-category"
+                })
             </td>
         </tr>
         <tr>
@@ -123,17 +126,17 @@
                                     title: "条码",
                                     width: 100
                                 },
-{
+                                {
                                     field: "Id",
                                     title: "查看入库记录",
                                     width: 100,
-                                    template: '<a href="Records/#=Id#">编辑</a>'
+                                    template: "<a href=\"Records/#=Id#\">编辑</a>"
                                 },
                                 {
                                     field: "Id",
                                     title: "修改",
                                     width: 100,
-                                    template: '<a href="Edit/#=Id#">编辑</a>'
+                                    template: "<a href=\"Edit/#=Id#\">编辑</a>"
                                 }
                             ]
                         });
@@ -166,6 +169,10 @@
                     return false;
                 }
             });
+
+            //$("#select-category").onchange(function(event) {
+            //    $("#search-products").click();
+            //});
 
             //delete selected
             $("#delete-selected").click(function(e) {

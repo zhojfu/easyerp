@@ -1,10 +1,9 @@
 ﻿namespace EasyERP.Web.Models.Users
 {
-    using FluentValidation.Attributes;
     using System.ComponentModel.DataAnnotations;
     using System.Web.Mvc;
 
-    public partial class LoginModel
+    public class LoginModel
     {
         public bool CheckoutAsGuest { get; set; }
 

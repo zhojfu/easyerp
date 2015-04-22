@@ -1,27 +1,32 @@
 ﻿namespace EasyErp.Core.Infrastructure
 {
-    using Nop.Core.Infrastructure;
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.IO;
     using System.Reflection;
     using System.Text.RegularExpressions;
+    using Nop.Core.Infrastructure;
 
     /// <summary>
     /// A class that finds types needed by Nop by looping assemblies in the
     /// currently executing AppDomain. Only assemblies whose names matches
     /// certain patterns are investigated and an optional list of assemblies
-    /// referenced by <see cref="AssemblyNames"/> are always investigated.
+    /// referenced by <see cref="AssemblyNames" /> are always investigated.
     /// </summary>
     public class AppDomainTypeFinder : ITypeFinder
     {
         #region Fields
 
-        private bool ignoreReflectionErrors = true;
+        private readonly bool ignoreReflectionErrors = true;
+
         private bool loadAppDomainAssemblies = true;
-        private string assemblySkipLoadingPattern = "^System|^mscorlib|^Microsoft|^AjaxControlToolkit|^Antlr3|^Autofac|^AutoMapper|^Castle|^ComponentArt|^CppCodeProvider|^DotNetOpenAuth|^EntityFramework|^EPPlus|^FluentValidation|^ImageResizer|^itextsharp|^log4net|^MaxMind|^MbUnit|^MiniProfiler|^Mono.Math|^MvcContrib|^Newtonsoft|^NHibernate|^nunit|^Org.Mentalis|^PerlRegex|^QuickGraph|^Recaptcha|^Remotion|^RestSharp|^Rhino|^Telerik|^Iesi|^TestDriven|^TestFu|^UserAgentStringLibrary|^VJSharpCodeProvider|^WebActivator|^WebDev|^WebGrease";
+
+        private string assemblySkipLoadingPattern =
+            "^System|^mscorlib|^Microsoft|^AjaxControlToolkit|^Antlr3|^Autofac|^AutoMapper|^Castle|^ComponentArt|^CppCodeProvider|^DotNetOpenAuth|^EntityFramework|^EPPlus|^FluentValidation|^ImageResizer|^itextsharp|^log4net|^MaxMind|^MbUnit|^MiniProfiler|^Mono.Math|^MvcContrib|^Newtonsoft|^NHibernate|^nunit|^Org.Mentalis|^PerlRegex|^QuickGraph|^Recaptcha|^Remotion|^RestSharp|^Rhino|^Telerik|^Iesi|^TestDriven|^TestFu|^UserAgentStringLibrary|^VJSharpCodeProvider|^WebActivator|^WebDev|^WebGrease";
+
         private string assemblyRestrictToLoadingPattern = ".*";
+
         private IList<string> assemblyNames = new List<string>();
 
         #endregion Fields
@@ -34,33 +39,42 @@
             get { return AppDomain.CurrentDomain; }
         }
 
-        /// <summary>Gets or sets wether Nop should iterate assemblies in the app domain when loading Nop types. Loading patterns are applied when loading these assemblies.</summary>
+        /// <summary>
+        /// Gets or sets wether Nop should iterate assemblies in the app domain when loading Nop types. Loading patterns
+        /// are applied when loading these assemblies.
+        /// </summary>
         public bool LoadAppDomainAssemblies
         {
-            get { return this.loadAppDomainAssemblies; }
-            set { this.loadAppDomainAssemblies = value; }
+            get { return loadAppDomainAssemblies; }
+            set { loadAppDomainAssemblies = value; }
         }
 
         /// <summary>Gets or sets assemblies loaded a startup in addition to those loaded in the AppDomain.</summary>
         public IList<string> AssemblyNames
         {
-            get { return this.assemblyNames; }
-            set { this.assemblyNames = value; }
+            get { return assemblyNames; }
+            set { assemblyNames = value; }
         }
 
         /// <summary>Gets the pattern for dlls that we know don't need to be investigated.</summary>
         public string AssemblySkipLoadingPattern
         {
-            get { return this.assemblySkipLoadingPattern; }
-            set { this.assemblySkipLoadingPattern = value; }
+            get { return assemblySkipLoadingPattern; }
+            set { assemblySkipLoadingPattern = value; }
         }
 
-        /// <summary>Gets or sets the pattern for dll that will be investigated. For ease of use this defaults to match all but to increase performance you might want to configure a pattern that includes assemblies and your own.</summary>
-        /// <remarks>If you change this so that Nop assemblies arn't investigated (e.g. by not including something like "^Nop|..." you may break core functionality.</remarks>
+        /// <summary>
+        /// Gets or sets the pattern for dll that will be investigated. For ease of use this defaults to match all but to
+        /// increase performance you might want to configure a pattern that includes assemblies and your own.
+        /// </summary>
+        /// <remarks>
+        /// If you change this so that Nop assemblies arn't investigated (e.g. by not including something like "^Nop|..."
+        /// you may break core functionality.
+        /// </remarks>
         public string AssemblyRestrictToLoadingPattern
         {
-            get { return this.assemblyRestrictToLoadingPattern; }
-            set { this.assemblyRestrictToLoadingPattern = value; }
+            get { return assemblyRestrictToLoadingPattern; }
+            set { assemblyRestrictToLoadingPattern = value; }
         }
 
         #endregion Properties
@@ -69,20 +83,23 @@
 
         public IEnumerable<Type> FindClassesOfType<T>(bool onlyConcreteClasses = true)
         {
-            return this.FindClassesOfType(typeof(T), onlyConcreteClasses);
+            return FindClassesOfType(typeof(T), onlyConcreteClasses);
         }
 
         public IEnumerable<Type> FindClassesOfType(Type assignTypeFrom, bool onlyConcreteClasses = true)
         {
-            return this.FindClassesOfType(assignTypeFrom, this.GetAssemblies(), onlyConcreteClasses);
+            return FindClassesOfType(assignTypeFrom, GetAssemblies(), onlyConcreteClasses);
         }
 
         public IEnumerable<Type> FindClassesOfType<T>(IEnumerable<Assembly> assemblies, bool onlyConcreteClasses = true)
         {
-            return this.FindClassesOfType(typeof(T), assemblies, onlyConcreteClasses);
+            return FindClassesOfType(typeof(T), assemblies, onlyConcreteClasses);
         }
 
-        public IEnumerable<Type> FindClassesOfType(Type assignTypeFrom, IEnumerable<Assembly> assemblies, bool onlyConcreteClasses = true)
+        public IEnumerable<Type> FindClassesOfType(
+            Type assignTypeFrom,
+            IEnumerable<Assembly> assemblies,
+            bool onlyConcreteClasses = true)
         {
             var result = new List<Type>();
             try
@@ -97,7 +114,7 @@
                     catch
                     {
                         //Entity Framework 6 doesn't allow getting types (throws an exception)
-                        if (!this.ignoreReflectionErrors)
+                        if (!ignoreReflectionErrors)
                         {
                             throw;
                         }
@@ -106,13 +123,16 @@
                     {
                         foreach (var t in types)
                         {
-                            if (assignTypeFrom.IsAssignableFrom(t) || (assignTypeFrom.IsGenericTypeDefinition && this.DoesTypeImplementOpenGeneric(t, assignTypeFrom)))
+                            if (assignTypeFrom.IsAssignableFrom(t) ||
+                                (assignTypeFrom.IsGenericTypeDefinition &&
+                                 DoesTypeImplementOpenGeneric(t, assignTypeFrom)))
                             {
                                 if (!t.IsInterface)
                                 {
                                     if (onlyConcreteClasses)
                                     {
-                                        if (t.IsClass && !t.IsAbstract)
+                                        if (t.IsClass &&
+                                            !t.IsAbstract)
                                         {
                                             result.Add(t);
                                         }
@@ -131,7 +151,9 @@
             {
                 var msg = string.Empty;
                 foreach (var e in ex.LoaderExceptions)
+                {
                     msg += e.Message + Environment.NewLine;
+                }
 
                 var fail = new Exception(msg, ex);
                 Debug.WriteLine(fail.Message, fail);
@@ -148,9 +170,11 @@
             var addedAssemblyNames = new List<string>();
             var assemblies = new List<Assembly>();
 
-            if (this.LoadAppDomainAssemblies)
-                this.AddAssembliesInAppDomain(addedAssemblyNames, assemblies);
-            this.AddConfiguredAssemblies(addedAssemblyNames, assemblies);
+            if (LoadAppDomainAssemblies)
+            {
+                AddAssembliesInAppDomain(addedAssemblyNames, assemblies);
+            }
+            AddConfiguredAssemblies(addedAssemblyNames, assemblies);
 
             return assemblies;
         }
@@ -166,9 +190,9 @@
         /// <param name="assemblies"></param>
         private void AddAssembliesInAppDomain(List<string> addedAssemblyNames, List<Assembly> assemblies)
         {
-            foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
+            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
-                if (this.Matches(assembly.FullName))
+                if (Matches(assembly.FullName))
                 {
                     if (!addedAssemblyNames.Contains(assembly.FullName))
                     {
@@ -186,9 +210,9 @@
         /// <param name="assemblies"></param>
         protected virtual void AddConfiguredAssemblies(List<string> addedAssemblyNames, List<Assembly> assemblies)
         {
-            foreach (string assemblyName in this.AssemblyNames)
+            foreach (var assemblyName in AssemblyNames)
             {
-                Assembly assembly = Assembly.Load(assemblyName);
+                var assembly = Assembly.Load(assemblyName);
                 if (!addedAssemblyNames.Contains(assembly.FullName))
                 {
                     assemblies.Add(assembly);
@@ -208,8 +232,8 @@
         /// </returns>
         public virtual bool Matches(string assemblyFullName)
         {
-            return !this.Matches(assemblyFullName, this.AssemblySkipLoadingPattern)
-                   && this.Matches(assemblyFullName, this.AssemblyRestrictToLoadingPattern);
+            return !Matches(assemblyFullName, AssemblySkipLoadingPattern)
+                   && Matches(assemblyFullName, AssemblyRestrictToLoadingPattern);
         }
 
         /// <summary>
@@ -238,7 +262,7 @@
         protected virtual void LoadMatchingAssemblies(string directoryPath)
         {
             var loadedAssemblyNames = new List<string>();
-            foreach (Assembly a in this.GetAssemblies())
+            foreach (var a in GetAssemblies())
             {
                 loadedAssemblyNames.Add(a.FullName);
             }
@@ -248,14 +272,15 @@
                 return;
             }
 
-            foreach (string dllPath in Directory.GetFiles(directoryPath, "*.dll"))
+            foreach (var dllPath in Directory.GetFiles(directoryPath, "*.dll"))
             {
                 try
                 {
                     var an = AssemblyName.GetAssemblyName(dllPath);
-                    if (this.Matches(an.FullName) && !loadedAssemblyNames.Contains(an.FullName))
+                    if (Matches(an.FullName) &&
+                        !loadedAssemblyNames.Contains(an.FullName))
                     {
-                        this.App.Load(an);
+                        App.Load(an);
                     }
 
                     //old loading stuff
@@ -286,9 +311,12 @@
                 foreach (var implementedInterface in type.FindInterfaces((objType, objCriteria) => true, null))
                 {
                     if (!implementedInterface.IsGenericType)
+                    {
                         continue;
+                    }
 
-                    var isMatch = genericTypeDefinition.IsAssignableFrom(implementedInterface.GetGenericTypeDefinition());
+                    var isMatch = genericTypeDefinition.IsAssignableFrom(
+                        implementedInterface.GetGenericTypeDefinition());
                     return isMatch;
                 }
                 return false;

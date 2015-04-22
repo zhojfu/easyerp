@@ -7,7 +7,6 @@
     public interface ITypeFinder
     {
         IList<Assembly> GetAssemblies();
-
         IEnumerable<Type> FindClassesOfType(Type assignTypeFrom, bool onlyConcreteClasses = true);
 
         IEnumerable<Type> FindClassesOfType(
@@ -16,7 +15,6 @@
             bool onlyConcreteClasses = true);
 
         IEnumerable<Type> FindClassesOfType<T>(bool onlyConcreteClasses = true);
-
         IEnumerable<Type> FindClassesOfType<T>(IEnumerable<Assembly> assemblies, bool onlyConcreteClasses = true);
     }
 }

@@ -6,21 +6,15 @@
     {
         public CommonSettings()
         {
-            this.IgnoreLogWordlist = new List<string>();
+            IgnoreLogWordlist = new List<string>();
         }
 
         public bool UseSystemEmailForContactUsForm { get; set; }
-
         public bool UseStoredProceduresIfSupported { get; set; }
-
         public bool HideAdvertisementsOnAdminArea { get; set; }
-
         public bool SitemapEnabled { get; set; }
-
         public bool SitemapIncludeCategories { get; set; }
-
         public bool SitemapIncludeManufacturers { get; set; }
-
         public bool SitemapIncludeProducts { get; set; }
 
         /// <summary>
@@ -44,7 +38,7 @@
         public string BreadcrumbDelimiter { get; set; }
 
         /// <summary>
-        /// Gets a sets a value indicating whether we should render <meta http-equiv="X-UA-Compatible" content="IE=edge"/> tag
+        /// Gets a sets a value indicating whether we should render <meta http-equiv="X-UA-Compatible" content="IE=edge" /> tag
         /// </summary>
         public bool RenderXuaCompatible { get; set; }
 

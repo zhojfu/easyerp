@@ -1,13 +1,13 @@
 namespace Doamin.Service.Directory
 {
+    using System.Collections.Generic;
     using Domain.Model.Directory;
     using Nop.Core.Domain.Directory;
-    using System.Collections.Generic;
 
     /// <summary>
     /// Measure dimension service interface
     /// </summary>
-    public partial interface IMeasureService
+    public interface IMeasureService
     {
         /// <summary>
         /// Deletes measure dimension
@@ -55,8 +55,11 @@ namespace Doamin.Service.Directory
         /// <param name="targetMeasureDimension">Target dimension</param>
         /// <param name="round">A value indicating whether a result should be rounded</param>
         /// <returns>Converted value</returns>
-        decimal ConvertDimension(decimal value,
-            MeasureDimension sourceMeasureDimension, MeasureDimension targetMeasureDimension, bool round = true);
+        decimal ConvertDimension(
+            decimal value,
+            MeasureDimension sourceMeasureDimension,
+            MeasureDimension targetMeasureDimension,
+            bool round = true);
 
         /// <summary>
         /// Converts to primary measure dimension
@@ -64,7 +67,8 @@ namespace Doamin.Service.Directory
         /// <param name="value">Value to convert</param>
         /// <param name="sourceMeasureDimension">Source dimension</param>
         /// <returns>Converted value</returns>
-        decimal ConvertToPrimaryMeasureDimension(decimal value,
+        decimal ConvertToPrimaryMeasureDimension(
+            decimal value,
             MeasureDimension sourceMeasureDimension);
 
         /// <summary>
@@ -73,7 +77,8 @@ namespace Doamin.Service.Directory
         /// <param name="value">Value to convert</param>
         /// <param name="targetMeasureDimension">Target dimension</param>
         /// <returns>Converted value</returns>
-        decimal ConvertFromPrimaryMeasureDimension(decimal value,
+        decimal ConvertFromPrimaryMeasureDimension(
+            decimal value,
             MeasureDimension targetMeasureDimension);
 
         /// <summary>
@@ -122,8 +127,11 @@ namespace Doamin.Service.Directory
         /// <param name="targetMeasureWeight">Target weight</param>
         /// <param name="round">A value indicating whether a result should be rounded</param>
         /// <returns>Converted value</returns>
-        decimal ConvertWeight(decimal value,
-            MeasureWeight sourceMeasureWeight, MeasureWeight targetMeasureWeight, bool round = true);
+        decimal ConvertWeight(
+            decimal value,
+            MeasureWeight sourceMeasureWeight,
+            MeasureWeight targetMeasureWeight,
+            bool round = true);
 
         /// <summary>
         /// Converts to primary measure weight
@@ -139,7 +147,8 @@ namespace Doamin.Service.Directory
         /// <param name="value">Value to convert</param>
         /// <param name="targetMeasureWeight">Target weight</param>
         /// <returns>Converted value</returns>
-        decimal ConvertFromPrimaryMeasureWeight(decimal value,
+        decimal ConvertFromPrimaryMeasureWeight(
+            decimal value,
             MeasureWeight targetMeasureWeight);
     }
 }

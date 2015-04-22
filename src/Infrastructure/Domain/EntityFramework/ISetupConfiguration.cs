@@ -1,7 +1,7 @@
-﻿using System.Data.Entity;
-
-namespace Infrastructure.Domain.EntityFramework
+﻿namespace Infrastructure.Domain.EntityFramework
 {
+    using System.Data.Entity;
+
     public interface ISetupConfiguration
     {
         void SetupEntityConfiguration(DbModelBuilder modelBuilder);

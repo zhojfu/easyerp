@@ -1,9 +1,9 @@
 ﻿namespace Doamin.Service.Installation
 {
+    using System.Collections.Generic;
     using Domain.Model.Orders;
     using Domain.Model.Products;
     using Infrastructure.Domain;
-    using System.Collections.Generic;
 
     public class CodeFirstInstallationService : IInstallationService
     {
@@ -18,22 +18,22 @@
             IRepository<Order> orderRepository,
             IRepository<Category> categoryRepository)
         {
-            this.producrRepository = productRepository;
+            producrRepository = productRepository;
             this.orderRepository = orderRepository;
             this.categoryRepository = categoryRepository;
         }
 
         public void InstallData()
         {
-            this.InstallProducts();
+            InstallProducts();
         }
 
         private void InstallProducts()
         {
             var products = new List<Product>();
 
-            products.ForEach(p => this.producrRepository.Add(p));
-            this.producrRepository.Update();
+            products.ForEach(p => producrRepository.Add(p));
+            producrRepository.Update();
         }
 
         protected virtual void InstallCategories()
@@ -60,8 +60,8 @@
                 }
             };
 
-            allCategories.ForEach(c => this.categoryRepository.Add(c));
-            this.categoryRepository.Update();
+            allCategories.ForEach(c => categoryRepository.Add(c));
+            categoryRepository.Update();
         }
 
         private void InstallOrder()

@@ -34,7 +34,7 @@
                 url: "Timesheet/UpdateTimesheet",
                 dataType: "json",
                 type: "post",
-               
+
                 parameterMap: function(options, operation) {
                     if (operation !== "read" && options.models) {
                         options.models.date = currentDate;
@@ -67,7 +67,7 @@
                     Fri: { type: "number", validation: { min: 0, max: 24 } },
                     Sat: { type: "number", validation: { min: 0, max: 24 } },
                     Sun: { type: "number", validation: { min: 0, max: 24 } }
-                }, 
+                },
             }
         }
     });
@@ -84,39 +84,37 @@
             },
             columns: generateColumns(currentDate),
             editable: "inline"
-    });
+        });
     }
 
-    this.setSelectedDate = function (date) {
+    this.setSelectedDate = function(date) {
         currentDate.setDate(date.getDate());
     };
 
-    this.moveNextWeek = function () {
+    this.moveNextWeek = function() {
         currentDate.setDate(currentDate.getDate() + 7);
         initialKendoGrid();
     };
 
-    this.movePrevWeek = function () {
+    this.movePrevWeek = function() {
         currentDate.setDate(currentDate.getDate() - 7);
         initialKendoGrid();
     };
 
-    this.InitialCurrentWeek = function () {
+    this.InitialCurrentWeek = function() {
         initialKendoGrid();
     };
 }
 
-$(document).ready(function () {
+$(document).ready(function() {
     var timesheet = new Timesheet();
     timesheet.InitialCurrentWeek();
 
-    $("#preWeek").click(function () {
+    $("#preWeek").click(function() {
         timesheet.movePrevWeek();
     });
 
-    $("#nextWeek").click(function () {
+    $("#nextWeek").click(function() {
         timesheet.moveNextWeek();
     });
 });
-
-

@@ -1,28 +1,31 @@
 ﻿namespace EasyERP.Web
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Web;
     using System.Web.Mvc;
     using System.Web.Routing;
+    using EasyErp.Core.Infrastructure;
+    using EasyERP.Web.Framework.Mvc.Routes;
 
     public class RouteConfig
     {
         public static void RegisterRoutes(RouteCollection routes)
         {
+            routes.IgnoreRoute("favicon.ico");
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
-            routes.MapRoute("HomePage",
-                            "",
-                            new { controller = "User", action = "Login" },
-                            new[] { "EasyERP.Web.Controllers" });
+            var routePublisher = EngineContext.Current.Resolve<IRoutePublisher>();
+            routePublisher.RegisterRoutes(routes);
+
             routes.MapRoute(
-                 "Default",
+                "Default",
                 "{controller}/{action}/{id}",
-                new { controller = "Home", action = "Index", id = UrlParameter.Optional },
+                new
+                {
+                    controller = "Home",
+                    action = "Index",
+                    id = UrlParameter.Optional
+                },
                 new[] { "EasyERP.Web.Controllers" }
-            );
+                );
         }
     }
 }

@@ -1,8 +1,8 @@
 ﻿namespace Domain.EntityFramework
 {
+    using System.Data.Entity;
     using Domain.EntityFramework.Configurations;
     using Infrastructure.Domain.EntityFramework;
-    using System.Data.Entity;
 
     public class EntitySetupConfiguration : ISetupConfiguration
     {

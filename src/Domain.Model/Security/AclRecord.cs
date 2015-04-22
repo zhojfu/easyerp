@@ -11,9 +11,6 @@
 
         public int UserRoleId { get; set; }
 
-        /// <summary>
-        /// Gets or sets the customer role
-        /// </summary>
         public virtual UserRole CustomerRole { get; set; }
     }
 }

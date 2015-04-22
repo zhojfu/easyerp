@@ -50,7 +50,7 @@ namespace EasyErp.Core
             {
                 // In medium trust, "UnloadAppDomain" is not supported. Touch web.config
                 // to force an AppDomain restart.
-                File.SetLastWriteTimeUtc(this.MapPath("~/web.config"), DateTime.UtcNow);
+                File.SetLastWriteTimeUtc(MapPath("~/web.config"), DateTime.UtcNow);
                 return true;
             }
             catch
@@ -71,7 +71,7 @@ namespace EasyErp.Core
                 //i.e "Controller does not implement IController".
                 //The issue is described here: http://www.nopcommerce.com/boards/t/10969/nop-20-plugin.aspx?p=4#51318
                 //The solution is to touch global.asax file
-                File.SetLastWriteTimeUtc(this.MapPath("~/global.asax"), DateTime.UtcNow);
+                File.SetLastWriteTimeUtc(MapPath("~/global.asax"), DateTime.UtcNow);
                 return true;
             }
             catch
@@ -102,10 +102,10 @@ namespace EasyErp.Core
             var referrerUrl = string.Empty;
 
             //URL referrer is null in some case (for example, in IE 8)
-            if (this.IsRequestAvailable(this.httpContext) &&
-                this.httpContext.Request.UrlReferrer != null)
+            if (IsRequestAvailable(httpContext) &&
+                httpContext.Request.UrlReferrer != null)
             {
-                referrerUrl = this.httpContext.Request.UrlReferrer.PathAndQuery;
+                referrerUrl = httpContext.Request.UrlReferrer.PathAndQuery;
             }
 
             return referrerUrl;
@@ -117,13 +117,13 @@ namespace EasyErp.Core
         /// <returns>URL referrer</returns>
         public virtual string GetCurrentIpAddress()
         {
-            if (!this.IsRequestAvailable(this.httpContext))
+            if (!IsRequestAvailable(httpContext))
             {
                 return string.Empty;
             }
 
             var result = "";
-            if (this.httpContext.Request.Headers != null)
+            if (httpContext.Request.Headers != null)
             {
                 //The X-Forwarded-For (XFF) HTTP header field is a de facto standard
                 //for identifying the originating IP address of a client
@@ -138,10 +138,11 @@ namespace EasyErp.Core
 
                 //it's used for identifying the originating IP address of a client connecting to a web server
                 //through an HTTP proxy or load balancer.
-                var xff = this.httpContext.Request.Headers.AllKeys
-                              .Where(x => forwardedHttpHeader.Equals(x, StringComparison.InvariantCultureIgnoreCase))
-                              .Select(k => this.httpContext.Request.Headers[k])
-                              .FirstOrDefault();
+                var xff = httpContext.Request.Headers.AllKeys
+                                     .Where(
+                                         x => forwardedHttpHeader.Equals(x, StringComparison.InvariantCultureIgnoreCase))
+                                     .Select(k => httpContext.Request.Headers[k])
+                                     .FirstOrDefault();
 
                 //if you want to exclude private IP addresses, then see http://stackoverflow.com/questions/2577496/how-can-i-get-the-clients-ip-address-in-asp-net-mvc
                 if (!String.IsNullOrEmpty(xff))
@@ -152,9 +153,9 @@ namespace EasyErp.Core
             }
 
             if (String.IsNullOrEmpty(result) &&
-                this.httpContext.Request.UserHostAddress != null)
+                httpContext.Request.UserHostAddress != null)
             {
-                result = this.httpContext.Request.UserHostAddress;
+                result = httpContext.Request.UserHostAddress;
             }
 
             //some validation
@@ -182,8 +183,8 @@ namespace EasyErp.Core
         /// <returns>Page name</returns>
         public virtual string GetThisPageUrl(bool includeQueryString)
         {
-            var useSsl = this.IsCurrentConnectionSecured();
-            return this.GetThisPageUrl(includeQueryString, useSsl);
+            var useSsl = IsCurrentConnectionSecured();
+            return GetThisPageUrl(includeQueryString, useSsl);
         }
 
         /// <summary>
@@ -195,25 +196,25 @@ namespace EasyErp.Core
         public virtual string GetThisPageUrl(bool includeQueryString, bool useSsl)
         {
             var url = string.Empty;
-            if (!this.IsRequestAvailable(this.httpContext))
+            if (!IsRequestAvailable(httpContext))
             {
                 return url;
             }
 
             if (includeQueryString)
             {
-                var storeHost = this.GetStoreHost(useSsl);
+                var storeHost = GetStoreHost(useSsl);
                 if (storeHost.EndsWith("/"))
                 {
                     storeHost = storeHost.Substring(0, storeHost.Length - 1);
                 }
-                url = storeHost + this.httpContext.Request.RawUrl;
+                url = storeHost + httpContext.Request.RawUrl;
             }
             else
             {
-                if (this.httpContext.Request.Url != null)
+                if (httpContext.Request.Url != null)
                 {
-                    url = this.httpContext.Request.Url.GetLeftPart(UriPartial.Path);
+                    url = httpContext.Request.Url.GetLeftPart(UriPartial.Path);
                 }
             }
             url = url.ToLowerInvariant();
@@ -227,9 +228,9 @@ namespace EasyErp.Core
         public virtual bool IsCurrentConnectionSecured()
         {
             var useSsl = false;
-            if (this.IsRequestAvailable(this.httpContext))
+            if (IsRequestAvailable(httpContext))
             {
-                useSsl = this.httpContext.Request.IsSecureConnection;
+                useSsl = httpContext.Request.IsSecureConnection;
 
                 //when your hosting uses a load balancer on their server then the Request.IsSecureConnection is never got set to true, use the statement below
                 //just uncomment it
@@ -250,16 +251,16 @@ namespace EasyErp.Core
 
             try
             {
-                if (!this.IsRequestAvailable(this.httpContext))
+                if (!IsRequestAvailable(httpContext))
                 {
                     return result;
                 }
 
                 //put this method is try-catch
                 //as described here http://www.nopcommerce.com/boards/t/21356/multi-store-roadmap-lets-discuss-update-done.aspx?p=6#90196
-                if (this.httpContext.Request.ServerVariables[name] != null)
+                if (httpContext.Request.ServerVariables[name] != null)
                 {
-                    result = this.httpContext.Request.ServerVariables[name];
+                    result = httpContext.Request.ServerVariables[name];
                 }
             }
             catch
@@ -285,8 +286,8 @@ namespace EasyErp.Core
         /// <returns>Store location</returns>
         public virtual string GetStoreLocation()
         {
-            var useSsl = this.IsCurrentConnectionSecured();
-            return this.GetStoreLocation(useSsl);
+            var useSsl = IsCurrentConnectionSecured();
+            return GetStoreLocation(useSsl);
         }
 
         /// <summary>
@@ -298,14 +299,14 @@ namespace EasyErp.Core
         {
             //return HostingEnvironment.ApplicationVirtualPath;
 
-            var result = this.GetStoreHost(useSsl);
+            var result = GetStoreHost(useSsl);
             if (result.EndsWith("/"))
             {
                 result = result.Substring(0, result.Length - 1);
             }
-            if (this.IsRequestAvailable(this.httpContext))
+            if (IsRequestAvailable(httpContext))
             {
-                result = result + this.httpContext.Request.ApplicationPath;
+                result = result + httpContext.Request.ApplicationPath;
             }
             if (!result.EndsWith("/"))
             {
@@ -576,10 +577,10 @@ namespace EasyErp.Core
         public virtual T QueryString<T>(string name)
         {
             string queryParam = null;
-            if (this.IsRequestAvailable(this.httpContext) &&
-                this.httpContext.Request.QueryString[name] != null)
+            if (IsRequestAvailable(httpContext) &&
+                httpContext.Request.QueryString[name] != null)
             {
-                queryParam = this.httpContext.Request.QueryString[name];
+                queryParam = httpContext.Request.QueryString[name];
             }
 
             if (!String.IsNullOrEmpty(queryParam))
@@ -602,12 +603,12 @@ namespace EasyErp.Core
                 //full trust
                 HttpRuntime.UnloadAppDomain();
 
-                this.TryWriteGlobalAsax();
+                TryWriteGlobalAsax();
             }
             else
             {
                 //medium trust
-                var success = this.TryWriteWebConfig();
+                var success = TryWriteWebConfig();
                 if (!success)
                 {
                     throw new Exception(
@@ -619,7 +620,7 @@ namespace EasyErp.Core
                         "- give the application write access to the 'web.config' file.");
                 }
 
-                success = this.TryWriteGlobalAsax();
+                success = TryWriteGlobalAsax();
                 if (!success)
                 {
                     throw new Exception(
@@ -635,13 +636,13 @@ namespace EasyErp.Core
             // If setting up extensions/modules requires an AppDomain restart, it's very unlikely the
             // current request can be processed correctly.  So, we redirect to the same URL, so that the
             // new request will come to the newly started AppDomain.
-            if (this.httpContext != null && makeRedirect)
+            if (httpContext != null && makeRedirect)
             {
                 if (String.IsNullOrEmpty(redirectUrl))
                 {
-                    redirectUrl = this.GetThisPageUrl(true);
+                    redirectUrl = GetThisPageUrl(true);
                 }
-                this.httpContext.Response.Redirect(redirectUrl, true /*endResponse*/);
+                httpContext.Response.Redirect(redirectUrl, true /*endResponse*/);
             }
         }
 
@@ -652,7 +653,7 @@ namespace EasyErp.Core
         {
             get
             {
-                var response = this.httpContext.Response;
+                var response = httpContext.Response;
                 return response.IsRequestBeingRedirected;
             }
         }
@@ -664,13 +665,13 @@ namespace EasyErp.Core
         {
             get
             {
-                if (this.httpContext.Items["nop.IsPOSTBeingDone"] == null)
+                if (httpContext.Items["nop.IsPOSTBeingDone"] == null)
                 {
                     return false;
                 }
-                return Convert.ToBoolean(this.httpContext.Items["nop.IsPOSTBeingDone"]);
+                return Convert.ToBoolean(httpContext.Items["nop.IsPOSTBeingDone"]);
             }
-            set { this.httpContext.Items["nop.IsPOSTBeingDone"] = value; }
+            set { httpContext.Items["nop.IsPOSTBeingDone"] = value; }
         }
 
         #endregion Methods

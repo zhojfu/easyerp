@@ -1,14 +1,13 @@
 ﻿namespace Domain.EntityFramework
 {
+    using System;
+    using System.Data.Entity;
+    using System.Linq;
+    using System.Linq.Expressions;
     using Infrastructure.Domain;
     using Infrastructure.Domain.EntityFramework;
     using Infrastructure.Domain.Model;
     using Infrastructure.Utility;
-    using System;
-    using System.Collections.Generic;
-    using System.Data.Entity;
-    using System.Linq;
-    using System.Linq.Expressions;
 
     public class EntityFrameworkRepository<TAggregateRoot> : BaseRepository<TAggregateRoot>
         where TAggregateRoot : class, IAggregateRoot
@@ -18,37 +17,37 @@
         public EntityFrameworkRepository(IEntityFrameworkDbContext dbcontext, IUnitOfWork unitOfWork)
             : base(unitOfWork)
         {
-            this.dbContext = dbcontext;
+            dbContext = dbcontext;
         }
 
         public override TAggregateRoot GetByKey(long key)
         {
-            return this.dbContext.Set<TAggregateRoot>().FirstOrDefault(p => p.Id == key);
+            return dbContext.Set<TAggregateRoot>().FirstOrDefault(p => p.Id == key);
         }
 
         public override IQueryable<TAggregateRoot> FindAll(Expression<Func<TAggregateRoot, bool>> expression)
         {
-            return this.GenerateSelectLinq(expression, null);
+            return GenerateSelectLinq(expression, null);
         }
 
         public override bool Exist(TAggregateRoot aggregateRoot)
         {
-            return this.dbContext.Set<TAggregateRoot>().Any(p => p.Id == aggregateRoot.Id);
+            return dbContext.Set<TAggregateRoot>().Any(p => p.Id == aggregateRoot.Id);
         }
 
         public override void PersistNewItem(IAggregateRoot entity)
         {
-            this.dbContext.Set<TAggregateRoot>().Add((TAggregateRoot)entity);
+            dbContext.Set<TAggregateRoot>().Add((TAggregateRoot)entity);
         }
 
         public override void PersistUpdateItem(IAggregateRoot entity)
         {
-            ((DbContext)this.dbContext).Entry((TAggregateRoot)entity).State = EntityState.Modified;
+            ((DbContext)dbContext).Entry((TAggregateRoot)entity).State = EntityState.Modified;
         }
 
         public override void PersistRemoveItem(IAggregateRoot entity)
         {
-            this.dbContext.Set<TAggregateRoot>().Remove((TAggregateRoot)entity);
+            dbContext.Set<TAggregateRoot>().Remove((TAggregateRoot)entity);
         }
 
         public override PagedResult<TAggregateRoot> FindAll(
@@ -58,17 +57,21 @@
             Expression<Func<TAggregateRoot, dynamic>> orderExp,
             SortOrder sortOrder)
         {
-            if (pageNumber <= 0 || pageSize <= 0)
+            if (pageNumber <= 0 ||
+                pageSize <= 0)
             {
                 throw new IndexOutOfRangeException("page size and page number is less than  zero");
             }
 
-            var query = this.GenerateSelectLinq(selectExp, orderExp, sortOrder);
+            var query = GenerateSelectLinq(selectExp, orderExp, sortOrder);
 
-            int skip = pageSize * (pageNumber - 1);
-            int take = pageSize;
+            var skip = pageSize * (pageNumber - 1);
+            var take = pageSize;
             var result = query.Skip(skip).Take(take).GroupBy(
-                         p => new { Total = query.Count() }).FirstOrDefault();
+                p => new
+                {
+                    Total = query.Count()
+                }).FirstOrDefault();
 
             if (result != null)
             {
@@ -88,7 +91,7 @@
             Expression<Func<TAggregateRoot, dynamic>> orderExp,
             SortOrder sortOrder = SortOrder.Unspecified)
         {
-            var query = this.dbContext.Set<TAggregateRoot>().Where(selectExp);
+            var query = dbContext.Set<TAggregateRoot>().Where(selectExp);
 
             switch (sortOrder)
             {

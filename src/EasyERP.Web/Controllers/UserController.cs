@@ -1,23 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-
-namespace EasyERP.Web.Controllers
+﻿namespace EasyERP.Web.Controllers
 {
     using Doamin.Service.Authentication;
     using Doamin.Service.Users;
     using EasyERP.Web.Framework.Security.Captcha;
     using EasyERP.Web.Models.Users;
-    using System.Web.UI;
+    using System.Web.Mvc;
 
     public class UserController : BasePublicController
     {
+        private readonly IAuthenticationService authenticationService;
+
         private readonly CaptchaSettings captchaSettings = new CaptchaSettings();
 
         private readonly IUserService userService;
-        private readonly IAuthenticationService authenticationService;
 
         public UserController(IUserService userService, IAuthenticationService authenticationService)
         {
@@ -27,7 +22,7 @@ namespace EasyERP.Web.Controllers
 
         public ActionResult Index()
         {
-            return this.RedirectToAction("Login");
+            return RedirectToAction("Login");
         }
 
         public ActionResult Login()
@@ -47,13 +42,13 @@ namespace EasyERP.Web.Controllers
 
             if (ModelState.IsValid)
             {
-                var loginResult = this.userService.ValidateUser(model.Username.Trim(), model.Password);
+                var loginResult = userService.ValidateUser(model.Username.Trim(), model.Password);
                 switch (loginResult)
                 {
                     case UserLoginResults.Successful:
                         {
-                            var user = this.userService.GetUserByName(model.Username);
-                            this.authenticationService.SignIn(user, false);
+                            var user = userService.GetUserByName(model.Username);
+                            authenticationService.SignIn(user, false);
 
                             // TODO:redirection to page according user type
                             return RedirectToAction("List", "Product");
@@ -83,8 +78,8 @@ namespace EasyERP.Web.Controllers
 
         public ActionResult Logout()
         {
-            this.authenticationService.SignOut();
-            return this.RedirectToRoute("Home");
+            authenticationService.SignOut();
+            return RedirectToRoute("Home");
         }
     }
 }

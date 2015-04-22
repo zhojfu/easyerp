@@ -1,15 +1,16 @@
 ﻿namespace Doamin.Service.Order
 {
-    using Domain.Model.Orders;
-    using EasyErp.Core;
-    using Infrastructure.Domain;
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Domain.Model.Orders;
+    using EasyErp.Core;
+    using Infrastructure.Domain;
 
     public class OrderService : IOrderService
     {
         private readonly IRepository<Order> orderRepository;
+
         private readonly IUnitOfWork unitOfWork;
 
         public OrderService(IRepository<Order> orderRepository, IUnitOfWork unitOfWork)
@@ -29,17 +30,23 @@
         {
             int? orderStatusId = null;
             if (os.HasValue)
+            {
                 orderStatusId = (int)os.Value;
+            }
 
             int? paymentStatusId = null;
             if (ps.HasValue)
+            {
                 paymentStatusId = (int)ps.Value;
+            }
 
             int? shippingStatusId = null;
             if (ss.HasValue)
+            {
                 shippingStatusId = (int)ss.Value;
+            }
 
-            var orders = this.orderRepository.FindAll(x => x.Id > 0);
+            var orders = orderRepository.FindAll(x => x.Id > 0);
             if (customerId > 0)
             {
                 orders = orders.Where(o => o.CustomerId == customerId);
@@ -71,15 +78,20 @@
         public Order GetOrderById(int orderId)
         {
             if (orderId == 0)
+            {
                 return null;
+            }
 
             return orderRepository.GetByKey(orderId);
         }
 
         public virtual IList<Order> GetOrdersByIds(int[] orderIds)
         {
-            if (orderIds == null || orderIds.Length == 0)
+            if (orderIds == null ||
+                orderIds.Length == 0)
+            {
                 return new List<Order>();
+            }
 
             var query = orderRepository.FindAll(o => orderIds.Contains(o.Id));
             var orders = query.ToList();

@@ -1,12 +1,12 @@
 namespace Doamin.Service.Stores
 {
-    using Domain.Model.Stores;
     using System.Collections.Generic;
+    using Domain.Model.Stores;
 
     /// <summary>
     /// Store service interface
     /// </summary>
-    public partial interface IStoreService
+    public interface IStoreService
     {
         /// <summary>
         /// Deletes a store

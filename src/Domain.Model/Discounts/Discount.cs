@@ -1,19 +1,21 @@
 ﻿namespace Domain.Model.Discounts
 {
-    using global::Domain.Model.Products;
-    using global::Infrastructure.Domain.Model;
-    using Nop.Core.Domain.Discounts;
     using System;
     using System.Collections.Generic;
+    using Domain.Model.Products;
+    using Infrastructure.Domain.Model;
+    using Nop.Core.Domain.Discounts;
 
     /// <summary>
     /// Represents a discount
     /// </summary>
-    public partial class Discount : BaseEntity
+    public class Discount : BaseEntity
     {
-        private ICollection<DiscountRequirement> _discountRequirements;
         private ICollection<Category> _appliedToCategories;
+
         private ICollection<Product> _appliedToProducts;
+
+        private ICollection<DiscountRequirement> _discountRequirements;
 
         /// <summary>
         /// Gets or sets the name
@@ -86,14 +88,8 @@
         /// </summary>
         public DiscountType DiscountType
         {
-            get
-            {
-                return (DiscountType)this.DiscountTypeId;
-            }
-            set
-            {
-                this.DiscountTypeId = (int)value;
-            }
+            get { return (DiscountType)DiscountTypeId; }
+            set { DiscountTypeId = (int)value; }
         }
 
         /// <summary>
@@ -101,14 +97,8 @@
         /// </summary>
         public DiscountLimitationType DiscountLimitation
         {
-            get
-            {
-                return (DiscountLimitationType)this.DiscountLimitationId;
-            }
-            set
-            {
-                this.DiscountLimitationId = (int)value;
-            }
+            get { return (DiscountLimitationType)DiscountLimitationId; }
+            set { DiscountLimitationId = (int)value; }
         }
 
         /// <summary>
@@ -116,8 +106,8 @@
         /// </summary>
         public virtual ICollection<DiscountRequirement> DiscountRequirements
         {
-            get { return this._discountRequirements ?? (this._discountRequirements = new List<DiscountRequirement>()); }
-            protected set { this._discountRequirements = value; }
+            get { return _discountRequirements ?? (_discountRequirements = new List<DiscountRequirement>()); }
+            protected set { _discountRequirements = value; }
         }
 
         /// <summary>
@@ -125,8 +115,8 @@
         /// </summary>
         public virtual ICollection<Category> AppliedToCategories
         {
-            get { return this._appliedToCategories ?? (this._appliedToCategories = new List<Category>()); }
-            protected set { this._appliedToCategories = value; }
+            get { return _appliedToCategories ?? (_appliedToCategories = new List<Category>()); }
+            protected set { _appliedToCategories = value; }
         }
 
         /// <summary>
@@ -134,8 +124,8 @@
         /// </summary>
         public virtual ICollection<Product> AppliedToProducts
         {
-            get { return this._appliedToProducts ?? (this._appliedToProducts = new List<Product>()); }
-            protected set { this._appliedToProducts = value; }
+            get { return _appliedToProducts ?? (_appliedToProducts = new List<Product>()); }
+            protected set { _appliedToProducts = value; }
         }
     }
 }

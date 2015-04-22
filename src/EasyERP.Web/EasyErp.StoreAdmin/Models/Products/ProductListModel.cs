@@ -3,18 +3,17 @@
     using System.Collections.Generic;
     using System.Web.Mvc;
 
-    public partial class ProductListModel
+    public class ProductListModel
     {
         public ProductListModel()
         {
-            this.AvailableCategories = new List<SelectListItem>();
+            AvailableCategories = new List<SelectListItem>();
         }
 
         [AllowHtml]
         public string SearchProductName { get; set; }
 
         public int SearchCategoryId { get; set; }
-
         public IList<SelectListItem> AvailableCategories { get; set; }
     }
 }

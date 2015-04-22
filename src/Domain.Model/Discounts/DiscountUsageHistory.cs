@@ -1,13 +1,13 @@
 namespace Domain.Model.Discounts
 {
-    using Domain.Model.Orders;
-    using global::Infrastructure.Domain.Model;
     using System;
+    using Domain.Model.Orders;
+    using Infrastructure.Domain.Model;
 
     /// <summary>
     /// Represents a discount usage history entry
     /// </summary>
-    public partial class DiscountUsageHistory : BaseEntity
+    public class DiscountUsageHistory : BaseEntity
     {
         /// <summary>
         /// Gets or sets the discount identifier

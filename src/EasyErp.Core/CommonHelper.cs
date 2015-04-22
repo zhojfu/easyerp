@@ -4,7 +4,7 @@ namespace EasyErp.Core
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Globalization;
-    using System.Reflection;
+    using System.Security;
     using System.Security.Cryptography;
     using System.Text;
     using System.Text.RegularExpressions;
@@ -14,8 +14,10 @@ namespace EasyErp.Core
     /// <summary>
     /// Represents a common helper
     /// </summary>
-    public partial class CommonHelper
+    public class CommonHelper
     {
+        private static AspNetHostingPermissionLevel? _trustLevel;
+
         /// <summary>
         /// Ensures the subscriber email or throw.
         /// </summary>
@@ -23,7 +25,7 @@ namespace EasyErp.Core
         /// <returns></returns>
         public static string EnsureSubscriberEmailOrThrow(string email)
         {
-            string output = EnsureNotNull(email);
+            var output = EnsureNotNull(email);
             output = output.Trim();
             output = EnsureMaximumLength(output, 255);
 
@@ -43,10 +45,15 @@ namespace EasyErp.Core
         public static bool IsValidEmail(string email)
         {
             if (String.IsNullOrEmpty(email))
+            {
                 return false;
+            }
 
             email = email.Trim();
-            var result = Regex.IsMatch(email, "^(?:[\\w\\!\\#\\$\\%\\&\\'\\*\\+\\-\\/\\=\\?\\^\\`\\{\\|\\}\\~]+\\.)*[\\w\\!\\#\\$\\%\\&\\'\\*\\+\\-\\/\\=\\?\\^\\`\\{\\|\\}\\~]+@(?:(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9\\-](?!\\.)){0,61}[a-zA-Z0-9]?\\.)+[a-zA-Z0-9](?:[a-zA-Z0-9\\-](?!$)){0,61}[a-zA-Z0-9]?)|(?:\\[(?:(?:[01]?\\d{1,2}|2[0-4]\\d|25[0-5])\\.){3}(?:[01]?\\d{1,2}|2[0-4]\\d|25[0-5])\\]))$", RegexOptions.IgnoreCase);
+            var result = Regex.IsMatch(
+                email,
+                "^(?:[\\w\\!\\#\\$\\%\\&\\'\\*\\+\\-\\/\\=\\?\\^\\`\\{\\|\\}\\~]+\\.)*[\\w\\!\\#\\$\\%\\&\\'\\*\\+\\-\\/\\=\\?\\^\\`\\{\\|\\}\\~]+@(?:(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9\\-](?!\\.)){0,61}[a-zA-Z0-9]?\\.)+[a-zA-Z0-9](?:[a-zA-Z0-9\\-](?!$)){0,61}[a-zA-Z0-9]?)|(?:\\[(?:(?:[01]?\\d{1,2}|2[0-4]\\d|25[0-5])\\.){3}(?:[01]?\\d{1,2}|2[0-4]\\d|25[0-5])\\]))$",
+                RegexOptions.IgnoreCase);
             return result;
         }
 
@@ -58,9 +65,11 @@ namespace EasyErp.Core
         public static string GenerateRandomDigitCode(int length)
         {
             var random = new Random();
-            string str = string.Empty;
-            for (int i = 0; i < length; i++)
+            var str = string.Empty;
+            for (var i = 0; i < length; i++)
+            {
                 str = String.Concat(str, random.Next(10).ToString());
+            }
             return str;
         }
 
@@ -87,7 +96,9 @@ namespace EasyErp.Core
         public static string EnsureMaximumLength(string str, int maxLength, string postfix = null)
         {
             if (String.IsNullOrEmpty(str))
+            {
                 return str;
+            }
 
             if (str.Length > maxLength)
             {
@@ -110,13 +121,17 @@ namespace EasyErp.Core
         public static string EnsureNumericOnly(string str)
         {
             if (String.IsNullOrEmpty(str))
+            {
                 return string.Empty;
+            }
 
             var result = new StringBuilder();
-            foreach (char c in str)
+            foreach (var c in str)
             {
                 if (Char.IsDigit(c))
+                {
                     result.Append(c);
+                }
             }
             return result.ToString();
         }
@@ -129,7 +144,9 @@ namespace EasyErp.Core
         public static string EnsureNotNull(string str)
         {
             if (str == null)
+            {
                 return string.Empty;
+            }
 
             return str;
         }
@@ -141,11 +158,16 @@ namespace EasyErp.Core
         /// <returns>Boolean</returns>
         public static bool AreNullOrEmpty(params string[] stringsToValidate)
         {
-            bool result = false;
-            Array.ForEach(stringsToValidate, str =>
-            {
-                if (string.IsNullOrEmpty(str)) result = true;
-            });
+            var result = false;
+            Array.ForEach(
+                stringsToValidate,
+                str =>
+                {
+                    if (string.IsNullOrEmpty(str))
+                    {
+                        result = true;
+                    }
+                });
             return result;
         }
 
@@ -160,26 +182,35 @@ namespace EasyErp.Core
         {
             //also see Enumerable.SequenceEqual(a1, a2);
             if (ReferenceEquals(a1, a2))
+            {
                 return true;
+            }
 
-            if (a1 == null || a2 == null)
+            if (a1 == null ||
+                a2 == null)
+            {
                 return false;
+            }
 
             if (a1.Length != a2.Length)
+            {
                 return false;
+            }
 
             var comparer = EqualityComparer<T>.Default;
-            for (int i = 0; i < a1.Length; i++)
+            for (var i = 0; i < a1.Length; i++)
             {
-                if (!comparer.Equals(a1[i], a2[i])) return false;
+                if (!comparer.Equals(a1[i], a2[i]))
+                {
+                    return false;
+                }
             }
             return true;
         }
 
-        private static AspNetHostingPermissionLevel? _trustLevel;
-
         /// <summary>
-        /// Finds the trust level of the running application (http://blogs.msdn.com/dmitryr/archive/2007/01/23/finding-out-the-current-trust-level-in-asp-net.aspx)
+        /// Finds the trust level of the running application
+        /// (http://blogs.msdn.com/dmitryr/archive/2007/01/23/finding-out-the-current-trust-level-in-asp-net.aspx)
         /// </summary>
         /// <returns>The current trust level.</returns>
         public static AspNetHostingPermissionLevel GetTrustLevel()
@@ -190,13 +221,14 @@ namespace EasyErp.Core
                 _trustLevel = AspNetHostingPermissionLevel.None;
 
                 //determine maximum
-                foreach (AspNetHostingPermissionLevel trustLevel in new[] {
-                                AspNetHostingPermissionLevel.Unrestricted,
-                                AspNetHostingPermissionLevel.High,
-                                AspNetHostingPermissionLevel.Medium,
-                                AspNetHostingPermissionLevel.Low,
-                                AspNetHostingPermissionLevel.Minimal
-                            })
+                foreach (var trustLevel in new[]
+                {
+                    AspNetHostingPermissionLevel.Unrestricted,
+                    AspNetHostingPermissionLevel.High,
+                    AspNetHostingPermissionLevel.Medium,
+                    AspNetHostingPermissionLevel.Low,
+                    AspNetHostingPermissionLevel.Minimal
+                })
                 {
                     try
                     {
@@ -204,9 +236,8 @@ namespace EasyErp.Core
                         _trustLevel = trustLevel;
                         break; //we've set the highest permission we can
                     }
-                    catch (System.Security.SecurityException)
+                    catch (SecurityException)
                     {
-                        continue;
                     }
                 }
             }
@@ -221,17 +252,35 @@ namespace EasyErp.Core
         /// <param name="value">The value to set the property to.</param>
         public static void SetProperty(object instance, string propertyName, object value)
         {
-            if (instance == null) throw new ArgumentNullException("instance");
-            if (propertyName == null) throw new ArgumentNullException("propertyName");
+            if (instance == null)
+            {
+                throw new ArgumentNullException("instance");
+            }
+            if (propertyName == null)
+            {
+                throw new ArgumentNullException("propertyName");
+            }
 
-            Type instanceType = instance.GetType();
-            PropertyInfo pi = instanceType.GetProperty(propertyName);
+            var instanceType = instance.GetType();
+            var pi = instanceType.GetProperty(propertyName);
             if (pi == null)
-                throw new Exception(string.Format("No property '{0}' found on the instance of type '{1}'.", propertyName, instanceType));
+            {
+                throw new Exception(
+                    string.Format("No property '{0}' found on the instance of type '{1}'.", propertyName, instanceType));
+            }
             if (!pi.CanWrite)
-                throw new Exception(string.Format("The property '{0}' on the instance of type '{1}' does not have a setter.", propertyName, instanceType));
-            if (value != null && !value.GetType().IsAssignableFrom(pi.PropertyType))
+            {
+                throw new Exception(
+                    string.Format(
+                        "The property '{0}' on the instance of type '{1}' does not have a setter.",
+                        propertyName,
+                        instanceType));
+            }
+            if (value != null &&
+                !value.GetType().IsAssignableFrom(pi.PropertyType))
+            {
                 value = To(value, pi.PropertyType);
+            }
             pi.SetValue(instance, value, new object[0]);
         }
 
@@ -279,16 +328,27 @@ namespace EasyErp.Core
             {
                 var sourceType = value.GetType();
 
-                TypeConverter destinationConverter = GetNopCustomTypeConverter(destinationType);
-                TypeConverter sourceConverter = GetNopCustomTypeConverter(sourceType);
-                if (destinationConverter != null && destinationConverter.CanConvertFrom(value.GetType()))
+                var destinationConverter = GetNopCustomTypeConverter(destinationType);
+                var sourceConverter = GetNopCustomTypeConverter(sourceType);
+                if (destinationConverter != null &&
+                    destinationConverter.CanConvertFrom(value.GetType()))
+                {
                     return destinationConverter.ConvertFrom(null, culture, value);
-                if (sourceConverter != null && sourceConverter.CanConvertTo(destinationType))
+                }
+                if (sourceConverter != null &&
+                    sourceConverter.CanConvertTo(destinationType))
+                {
                     return sourceConverter.ConvertTo(null, culture, value, destinationType);
-                if (destinationType.IsEnum && value is int)
+                }
+                if (destinationType.IsEnum &&
+                    value is int)
+                {
                     return Enum.ToObject(destinationType, (int)value);
+                }
                 if (!destinationType.IsInstanceOfType(value))
+                {
                     return Convert.ChangeType(value, destinationType, culture);
+                }
             }
             return value;
         }
@@ -312,13 +372,19 @@ namespace EasyErp.Core
         /// <returns>Converted string</returns>
         public static string ConvertEnum(string str)
         {
-            string result = string.Empty;
-            char[] letters = str.ToCharArray();
-            foreach (char c in letters)
+            var result = string.Empty;
+            var letters = str.ToCharArray();
+            foreach (var c in letters)
+            {
                 if (c.ToString() != c.ToString().ToLower())
-                    result += " " + c.ToString();
+                {
+                    result += " " + c;
+                }
                 else
+                {
                     result += c.ToString();
+                }
+            }
             return result;
         }
 

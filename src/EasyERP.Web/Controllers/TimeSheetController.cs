@@ -1,26 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-
-namespace EasyERP.Web.Controllers
+﻿namespace EasyERP.Web.Controllers
 {
-    using System.Security.AccessControl;
-    using System.Web.Helpers;
-    using System.Web.Services.Description;
-
+    using System;
+    using System.Collections.Generic;
+    using System.Web.Mvc;
     using Doamin.Service.Factory;
-
-    using Domain.Model.Factory;
     using EasyERP.Web.Models;
     using Infrastructure.Utility;
 
     public class TimesheetController : Controller
     {
-        private readonly IEmployeeTimesheetService timeSheetService;
-
         private readonly IEmployeeService employeeService;
+
+        private readonly IEmployeeTimesheetService timeSheetService;
 
         public TimesheetController(IEmployeeTimesheetService timeSheetService, IEmployeeService employeeService)
         {
@@ -41,7 +32,6 @@ namespace EasyERP.Web.Controllers
             return null;
         }*/
 
-
         [HttpPost]
         public JsonResult UpdateTimesheet(TimesheetModel timesheet)
         {
@@ -53,8 +43,8 @@ namespace EasyERP.Web.Controllers
             }
 
             var dateRange = DateHelper.GetWeekRangeOfCurrentDate(selectDate);
-            
-            Dictionary<DateTime, double> worktimes = new Dictionary<DateTime, double>
+
+            var worktimes = new Dictionary<DateTime, double>
             {
                 { dateRange.Item1, timesheet.Mon },
                 { dateRange.Item1.AddDays(1), timesheet.Thu },
@@ -65,7 +55,7 @@ namespace EasyERP.Web.Controllers
                 { dateRange.Item1.AddDays(6), timesheet.Sun }
             };
 
-            this.timeSheetService.UpdateTimesheet(timesheet.Id, worktimes);
+            timeSheetService.UpdateTimesheet(timesheet.Id, worktimes);
             return Json(timesheet);
         }
 
@@ -73,18 +63,19 @@ namespace EasyERP.Web.Controllers
         {
             DateTime selectDate;
 
-            var employees = this.employeeService.GetEmployees(page, pageSize);
+            var employees = employeeService.GetEmployees(page, pageSize);
 
-            if (!DateTime.TryParse(date, out selectDate) || employees == null )
+            if (!DateTime.TryParse(date, out selectDate) ||
+                employees == null)
             {
                 return null;
             }
-            
-            List<TimesheetModel> timesheetModels = new List<TimesheetModel>();
+
+            var timesheetModels = new List<TimesheetModel>();
 
             foreach (var employee in employees)
             {
-                var timeSheets = this.timeSheetService.GetEmployeeTimesheetByDate(employee.Id, selectDate);
+                var timeSheets = timeSheetService.GetEmployeeTimesheetByDate(employee.Id, selectDate);
                 var model = new TimesheetModel
                 {
                     Id = employee.Id,
@@ -93,7 +84,6 @@ namespace EasyERP.Web.Controllers
                 };
                 foreach (var workTime in timeSheets)
                 {
-                    
                     switch (workTime.Date.DayOfWeek)
                     {
                         case DayOfWeek.Monday:
@@ -122,11 +112,13 @@ namespace EasyERP.Web.Controllers
                 timesheetModels.Add(model);
             }
 
-            return Json(new 
-            {
-                total = employees.TotalRecords,
-                data = timesheetModels
-            }, JsonRequestBehavior.AllowGet);
+            return Json(
+                new
+                {
+                    total = employees.TotalRecords,
+                    data = timesheetModels
+                },
+                JsonRequestBehavior.AllowGet);
         }
     }
 }

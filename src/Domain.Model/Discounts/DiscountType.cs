@@ -28,6 +28,6 @@ namespace Domain.Model.Discounts
         /// <summary>
         /// Assigned to order subtotal
         /// </summary>
-        AssignedToOrderSubTotal = 20,
+        AssignedToOrderSubTotal = 20
     }
 }

@@ -1,7 +1,6 @@
-﻿using System;
-
-namespace Domain.Model.Factory
+﻿namespace Domain.Model.Factory
 {
+    using System;
     using Infrastructure.Domain.Model;
 
     public class Statistic : BaseEntity

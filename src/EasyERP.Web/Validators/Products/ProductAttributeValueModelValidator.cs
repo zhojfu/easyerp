@@ -9,14 +9,9 @@
     {
         public ProductAttributeValueModelValidator()
         {
-            this.RuleFor(x => x.Name)
+            RuleFor(x => x.Name)
                 .NotEmpty()
                 .WithMessage("Name.Required");
-
-            this.RuleFor(x => x.Quantity)
-                .GreaterThanOrEqualTo(1)
-                .WithMessage("Quantity.GreaterThanOrEqualTo1")
-                .When(x => x.AttributeValueTypeId == (int)AttributeValueType.AssociatedToProduct);
         }
     }
 }

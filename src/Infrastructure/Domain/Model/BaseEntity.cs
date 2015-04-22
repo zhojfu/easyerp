@@ -1,7 +1,5 @@
 ﻿namespace Infrastructure.Domain.Model
 {
-    using System;
-
     public abstract class BaseEntity : IEntity
     {
         public virtual int Id { get; set; }
@@ -20,7 +18,7 @@
             }
 
             var entity = obj as BaseEntity;
-            return entity != null && this.Id.Equals(entity.Id);
+            return entity != null && Id.Equals(entity.Id);
         }
 
         public static bool operator ==(BaseEntity left, BaseEntity right)
@@ -40,7 +38,7 @@
 
         public override int GetHashCode()
         {
-            return this.Id.GetHashCode();
+            return Id.GetHashCode();
         }
 
         #endregion Equality

@@ -1,5 +1,4 @@
-﻿
-namespace Doamin.Service.Factory
+﻿namespace Doamin.Service.Factory
 {
     using System;
     using System.Collections.Generic;

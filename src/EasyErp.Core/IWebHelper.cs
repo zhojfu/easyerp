@@ -5,8 +5,18 @@ namespace EasyErp.Core
     /// <summary>
     /// Represents a common helper
     /// </summary>
-    public partial interface IWebHelper
+    public interface IWebHelper
     {
+        /// <summary>
+        /// Gets a value that indicates whether the client is being redirected to a new location
+        /// </summary>
+        bool IsRequestBeingRedirected { get; }
+
+        /// <summary>
+        /// Gets or sets a value that indicates whether the client is being redirected to a new location using POST
+        /// </summary>
+        bool IsPostBeingDone { get; set; }
+
         /// <summary>
         /// Get URL referrer
         /// </summary>
@@ -75,7 +85,7 @@ namespace EasyErp.Core
         /// <remarks>
         /// These are the file extensions considered to be static resources:
         /// .css
-        ///	.gif
+        /// .gif
         /// .png
         /// .jpg
         /// .jpeg
@@ -123,15 +133,5 @@ namespace EasyErp.Core
         /// <param name="makeRedirect">A value indicating whether we should made redirection after restart</param>
         /// <param name="redirectUrl">Redirect URL; empty string if you want to redirect to the current page URL</param>
         void RestartAppDomain(bool makeRedirect = false, string redirectUrl = "");
-
-        /// <summary>
-        /// Gets a value that indicates whether the client is being redirected to a new location
-        /// </summary>
-        bool IsRequestBeingRedirected { get; }
-
-        /// <summary>
-        /// Gets or sets a value that indicates whether the client is being redirected to a new location using POST
-        /// </summary>
-        bool IsPostBeingDone { get; set; }
     }
 }

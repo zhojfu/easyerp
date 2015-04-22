@@ -10,15 +10,13 @@
     {
         public AdminTabStripCreated(HtmlHelper helper, string tabStripName)
         {
-            this.Helper = helper;
-            this.TabStripName = tabStripName;
-            this.BlocksToRender = new List<MvcHtmlString>();
+            Helper = helper;
+            TabStripName = tabStripName;
+            BlocksToRender = new List<MvcHtmlString>();
         }
 
         public HtmlHelper Helper { get; private set; }
-
         public string TabStripName { get; private set; }
-
         public IList<MvcHtmlString> BlocksToRender { get; set; }
     }
 }

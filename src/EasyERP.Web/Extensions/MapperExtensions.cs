@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace EasyERP.Web.Extensions
+﻿namespace EasyERP.Web.Extensions
 {
     using AutoMapper;
     using Domain.Model.Products;
@@ -43,12 +38,12 @@ namespace EasyERP.Web.Extensions
             return entity.MapTo<Inventory, InventoryModel>();
         }
 
-        public static Inventory ToEntity(this  InventoryModel model)
+        public static Inventory ToEntity(this InventoryModel model)
         {
             return model.MapTo<InventoryModel, Inventory>();
         }
 
-        public static Store ToEntity(this  StoreModel model)
+        public static Store ToEntity(this StoreModel model)
         {
             return model.MapTo<StoreModel, Store>();
         }
