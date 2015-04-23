@@ -3,7 +3,6 @@
     using Domain.Model.Products;
     using Domain.Model.Security;
     using EasyErp.Core;
-    using EasyErp.Core.Configuration.Settings;
     using Infrastructure.Domain;
     using System;
     using System.Linq;
@@ -11,8 +10,6 @@
     public class CategoryService : ICategoryService
     {
         private readonly IRepository<AclRecord> aclRepository;
-
-        private readonly CatalogSettings catalogSettings;
 
         private readonly IRepository<Category> categoryRepository;
 
@@ -34,8 +31,6 @@
             this.aclRepository = aclRepository;
             this.workContext = workContext;
             this.unitOfWork = unitOfWork;
-
-            catalogSettings = new CatalogSettings();
         }
 
         public virtual void DeleteCategory(Category category)

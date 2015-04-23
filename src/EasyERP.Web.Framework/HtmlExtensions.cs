@@ -1,5 +1,6 @@
 ﻿namespace EasyERP.Web.Framework
 {
+    using Antlr.Runtime.Tree;
     using EasyERP.Web.Framework.Mvc;
     using Infrastructure.Domain.Model;
     using System;
@@ -34,7 +35,7 @@
         }
 
         public static MvcHtmlString DeleteConfirmation<T>(this HtmlHelper<T> helper, string buttonsSelector)
-            where T : BaseEntity
+            where T : BaseEntityModel
         {
             return DeleteConfirmation(helper, "", buttonsSelector);
         }
@@ -42,7 +43,7 @@
         public static MvcHtmlString DeleteConfirmation<T>(
             this HtmlHelper<T> helper,
             string actionName,
-            string buttonsSelector) where T : BaseEntity
+            string buttonsSelector) where T : BaseEntityModel
         {
             if (String.IsNullOrEmpty(actionName))
             {

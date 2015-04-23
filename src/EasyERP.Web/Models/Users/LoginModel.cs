@@ -1,9 +1,10 @@
 ﻿namespace EasyERP.Web.Models.Users
 {
+    using EasyERP.Web.Framework.Mvc;
     using System.ComponentModel.DataAnnotations;
     using System.Web.Mvc;
 
-    public class LoginModel
+    public class LoginModel : BaseModel
     {
         public bool CheckoutAsGuest { get; set; }
 

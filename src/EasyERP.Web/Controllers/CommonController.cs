@@ -1,32 +1,22 @@
 ﻿namespace EasyERP.Web.Controllers
 {
+    using EasyErp.Core;
+    using EasyERP.Web.Models.Common;
+    using System;
     using System.Collections.Generic;
     using System.Text;
     using System.Web.Mvc;
-    using EasyErp.Core;
-    using EasyErp.Core.Configuration.Settings;
-    using EasyERP.Web.Models.Common;
 
     public class CommonController : BasePublicController
     {
-        #region Constructors
-
-        private readonly CommonSettings _commonSettings;
-
-        private readonly IWorkContext _workContext;
+        private readonly IWorkContext workContext;
 
         public CommonController(
-            CommonSettings commonSettings,
             IWorkContext workContext
             )
         {
-            _commonSettings = commonSettings;
-            _workContext = workContext;
+            this.workContext = workContext;
         }
-
-        #endregion Constructors
-
-        #region Methods
 
         //page not found
         public ActionResult PageNotFound()
@@ -41,11 +31,6 @@
         [ChildActionOnly]
         public ActionResult JavaScriptDisabledWarning()
         {
-            if (!_commonSettings.DisplayJavaScriptDisabledWarning)
-            {
-                return Content("");
-            }
-
             return PartialView();
         }
 
@@ -53,7 +38,7 @@
         [ChildActionOnly]
         public ActionResult HeaderLinks()
         {
-            var user = _workContext.CurrentUser;
+            var user = workContext.CurrentUser;
 
             var model = new HeaderLinksModel
             {
@@ -66,7 +51,7 @@
         [ChildActionOnly]
         public ActionResult AdminHeaderLinks()
         {
-            var user = _workContext.CurrentUser;
+            var user = workContext.CurrentUser;
 
             var model = new AdminHeaderLinksModel();
 
@@ -94,87 +79,19 @@
         {
             var disallowPaths = new List<string>
             {
-                "/bin/",
-                "/content/files/",
-                "/content/files/exportimport/",
-                "/country/getstatesbycountryid",
-                "/install",
-                "/setproductreviewhelpfulness"
-            };
-            var localizableDisallowPaths = new List<string>
-            {
-                "/addproducttocart/catalog/",
-                "/addproducttocart/details/",
-                "/backinstocksubscriptions/manage",
-                "/boards/forumsubscriptions",
-                "/boards/forumwatch",
-                "/boards/postedit",
-                "/boards/postdelete",
-                "/boards/postcreate",
-                "/boards/topicedit",
-                "/boards/topicdelete",
-                "/boards/topiccreate",
-                "/boards/topicmove",
-                "/boards/topicwatch",
-                "/cart",
-                "/checkout",
-                "/checkout/billingaddress",
-                "/checkout/completed",
-                "/checkout/confirm",
-                "/checkout/shippingaddress",
-                "/checkout/shippingmethod",
-                "/checkout/paymentinfo",
-                "/checkout/paymentmethod",
-                "/clearcomparelist",
-                "/compareproducts",
-                "/customer/avatar",
-                "/customer/activation",
-                "/customer/addresses",
-                "/customer/changepassword",
-                "/customer/checkusernameavailability",
-                "/customer/downloadableproducts",
-                "/customer/info",
-                "/deletepm",
-                "/emailwishlist",
-                "/inboxupdate",
-                "/newsletter/subscriptionactivation",
-                "/onepagecheckout",
-                "/order/history",
-                "/orderdetails",
-                "/passwordrecovery/confirm",
-                "/poll/vote",
-                "/privatemessages",
-                "/returnrequest",
-                "/returnrequest/history",
-                "/rewardpoints/history",
-                "/sendpm",
-                "/sentupdate",
-                "/shoppingcart/*",
-                "/subscribenewsletter",
-                "/topic/authenticate",
-                "/viewpm",
-                "/uploadfileproductattribute",
-                "/uploadfilecheckoutattribute",
-                "/wishlist"
+                "/",
+                "/bin/"
             };
 
-            const string newLine = "\r\n"; //Environment.NewLine
             var sb = new StringBuilder();
             sb.Append("User-agent: *");
-            sb.Append(newLine);
+            sb.Append(Environment.NewLine);
 
             //usual paths
             foreach (var path in disallowPaths)
             {
                 sb.AppendFormat("Disallow: {0}", path);
-                sb.Append(newLine);
-            }
-
-            //localizable paths (without SEO code)
-            foreach (var path in localizableDisallowPaths)
-            {
-                sb.AppendFormat("Disallow: {0}", path);
-                sb.Append(newLine);
+                sb.Append(Environment.NewLine);
             }
 
             Response.ContentType = "text/plain";
@@ -193,7 +110,5 @@
         {
             return View();
         }
-
-        #endregion Methods
     }
 }

@@ -15,9 +15,10 @@ namespace EasyERP.Web.Framework
     using Domain.EntityFramework;
     using EasyErp.Core;
     using EasyErp.Core.Configuration.Settings;
+    using EasyErp.Core.Infrastructure;
+    using EasyErp.Core.Infrastructure.DependencyManagement;
     using EasyERP.Web.Framework.Mvc.Routes;
     using EasyERP.Web.Framework.UI;
-    using Infrastructure.DependencyManagement;
     using Infrastructure.Domain;
     using Infrastructure.Domain.EntityFramework;
     using System;

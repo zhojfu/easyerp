@@ -1,7 +1,6 @@
 ﻿namespace EasyERP.Web.Framework.Mvc.Routes
 {
     using EasyErp.Core.Infrastructure;
-    using Nop.Core.Infrastructure;
     using System;
     using System.Collections.Generic;
     using System.Linq;

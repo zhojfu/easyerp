@@ -1,21 +1,26 @@
 ﻿namespace EasyERP.Web.Models.Stores
 {
-    using System;
-    using System.Web.Mvc;
+    using EasyERP.Web.Framework.Mvc;
     using EasyERP.Web.Validators.Stores;
     using FluentValidation.Attributes;
     using Infrastructure.Domain.Model;
+    using System;
+    using System.ComponentModel;
+    using System.Web.Mvc;
 
     [Validator(typeof(StoreValidator))]
-    public class StoreModel : BaseEntity
+    public class StoreModel : BaseEntityModel
     {
         [AllowHtml]
+        [DisplayName("店名：")]
         public string Name { get; set; }
 
         [AllowHtml]
+        [DisplayName("描述：")]
         public string ShortDescription { get; set; }
 
         [AllowHtml]
+        [DisplayName("详细信息：")]
         public string FullDescription { get; set; }
 
         public int DisplayOrder { get; set; }
@@ -24,12 +29,14 @@
         public string CompanyName { get; set; }
 
         [AllowHtml]
-        public string CompanyAddress { get; set; }
+        [DisplayName("地址：")]
+        public string StoreAddress { get; set; }
 
         [AllowHtml]
-        public string CompanyPhoneNumber { get; set; }
+        public string StorePhoneNumber { get; set; }
 
         public DateTime? CreatedOn { get; set; }
+
         public DateTime? UpdatedOn { get; set; }
     }
 }

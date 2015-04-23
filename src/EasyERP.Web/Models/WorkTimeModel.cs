@@ -1,8 +1,11 @@
 ﻿namespace EasyERP.Web.Models
 {
-    public class WorkTimeModel
+    using EasyERP.Web.Framework.Mvc;
+
+    public class WorkTimeModel : BaseModel
     {
         public string employeeId { get; set; }
+
         public string employeeName { get; set; }
     }
 }

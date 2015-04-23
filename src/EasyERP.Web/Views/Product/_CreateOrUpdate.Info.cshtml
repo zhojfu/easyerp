@@ -5,254 +5,102 @@
     Html.AppendCssFileParts("~/Content/tagit/jquery.tagit.css");
     Html.AppendScriptParts("~/Scripts/tag-it.min.js");
 }
-<table class="adminContent">
+@Html.HiddenFor(m => m.Id)
 
-    @if (Model.Id > 0)
+<div class="form-group">
+    @Html.LabelFor(model => model.Name):
+    @Html.EditorFor(model => model.Name)
+    @Html.ValidationMessageFor(model => model.Name)
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.CategoryId)
+    @Html.DropDownList("CategoryId", Model.AvailableCategories)
+</div>
+
+<div class="form-group">
+
+    @Html.LabelFor(model => model.ShortDescription):
+    @Html.TextAreaFor(x => x.ShortDescription, new
     {
-        <tr>
-
-            <td class="adminTitle">
-
-                @Html.LabelFor(model => model.Id):
-            </td>
-
-            <td class="adminData">
-
-                @Model.Id.ToString()
-                @Html.ValidationMessageFor(model => model.Id)
-            </td>
-        </tr>
-    }
-</table>
-
-<table class="adminContent">
-
-    <tr>
-
-        <td class="adminTitle">
-
-            @Html.LabelFor(model => model.Name):
-        </td>
-
-        <td class="adminData">
-
-            @Html.EditorFor(model => model.Name)
-            @Html.ValidationMessageFor(model => model.Name)
-        </td>
-    </tr>
-
-    <tr>
-
-        <td class="adminTitle">
-
-            @Html.LabelFor(model => model.CategoryId)
-        </td>
-
-        <td class="adminData">
-
-            @Html.DropDownList("CategoryId", Model.AvailableCategories)
-        </td>
-    </tr>
-
-    <tr>
-
-        <td class="adminTitle">
-
-            @Html.LabelFor(model => model.ShortDescription):
-        </td>
-
-        <td class="adminData">
-
-            @Html.TextAreaFor(x => x.ShortDescription, new
-            {
-                style = "Width: 250px; Height: 150px;"
-            })
-            @Html.ValidationMessageFor(model => model.ShortDescription)
-        </td>
-    </tr>
-
-    <tr>
-
-        <td class="adminTitle">
-
-            @Html.LabelFor(model => model.FullDescription):
-        </td>
-
-        <td class="adminData">
-
-            @Html.EditorFor(x => x.FullDescription, "RichEditor")
-            @Html.ValidationMessageFor(model => model.FullDescription)
-        </td>
-    </tr>
-</table>
-
-<table class="adminContent">
-
-    <tr>
-
-        <td class="adminTitle">
-
-            @Html.LabelFor(model => model.Sku):
-        </td>
-
-        <td class="adminData">
-
-            @Html.EditorFor(model => model.Sku)
-            @Html.ValidationMessageFor(model => model.Sku)
-        </td>
-    </tr>
-
-    <tr>
-
-        <td class="adminTitle">
-
-            @Html.LabelFor(model => model.Gtin):
-        </td>
-
-        <td class="adminData">
-
-            @Html.EditorFor(model => model.Gtin)
-            @Html.ValidationMessageFor(model => model.Gtin)
-        </td>
-    </tr>
-</table>
-
-<table class="adminContent" id="group-prices">
-
-    <tr class="adminSeparator">
-
-        <td colspan="2">
-
-            <hr />
-        </td>
-    </tr>
-
-    <tr>
-
-        <td class="adminTitle">
-
-            @Html.LabelFor(model => model.Price):
-        </td>
-
-        <td class="adminData">
-
-            @Html.EditorFor(model => model.Price)
-            @Html.ValidationMessageFor(model => model.Price)
-        </td>
-    </tr>
-
-    <tr>
-
-        <td class="adminTitle">
-
-            @Html.LabelFor(model => model.ProductCost):
-        </td>
-
-        <td class="adminData">
-
-            @Html.EditorFor(model => model.ProductCost)
-            @Html.ValidationMessageFor(model => model.ProductCost)
-        </td>
-    </tr>
-</table>
-
-<table class="adminContent" id="group-shipping">
-
-    <tr id="pnlWeight">
-
-        <td class="adminTitle">
-
-            @Html.LabelFor(model => model.Weight):
-        </td>
-
-        <td class="adminData">
-
-            @Html.EditorFor(model => model.Weight)
-            @Html.ValidationMessageFor(model => model.Weight)
-        </td>
-    </tr>
-
-    <tr id="pnlLength">
-
-        <td class="adminTitle">
-
-            @Html.LabelFor(model => model.Length):
-        </td>
-
-        <td class="adminData">
-
-            @Html.EditorFor(model => model.Length)
-            @Html.ValidationMessageFor(model => model.Length)
-        </td>
-    </tr>
-
-    <tr id="pnlWidth">
-
-        <td class="adminTitle">
-
-            @Html.LabelFor(model => model.Width):
-        </td>
-
-        <td class="adminData">
-
-            @Html.EditorFor(model => model.Width)
-            @Html.ValidationMessageFor(model => model.Width)
-        </td>
-    </tr>
-
-    <tr id="pnlHeight">
-
-        <td class="adminTitle">
-
-            @Html.LabelFor(model => model.Height):
-        </td>
-
-        <td class="adminData">
-
-            @Html.EditorFor(model => model.Height)
-            @Html.ValidationMessageFor(model => model.Height)
-        </td>
-    </tr>
-</table>
-
-<table class="adminContent">
-
-    <tr class="adminSeparator">
-
-        <td colspan="2">
-
-            <hr />
-        </td>
-    </tr>
-
-    @if (Model.CreatedOn.HasValue)
-    {
-        <tr>
-
-            <td class="adminTitle">
-
-                @Html.LabelFor(model => model.CreatedOn):
-            </td>
-
-            <td class="adminData">
-
-                @Model.CreatedOn.Value.ToString("F")
-            </td>
-        </tr>
-    }
-    @if (Model.UpdatedOn.HasValue)
-    {
-        <tr>
-
-            <td class="adminTitle">
-
-                @Html.LabelFor(model => model.UpdatedOn):
-            </td>
-
-            <td class="adminData">
-
-                @Model.UpdatedOn.Value.ToString("F")
-            </td>
-        </tr>
-    }
-</table>
+        style = "Width: 250px; Height: 150px;"
+    })
+    @Html.ValidationMessageFor(model => model.ShortDescription)
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.FullDescription):
+    @Html.EditorFor(x => x.FullDescription, "RichEditor")
+    @Html.ValidationMessageFor(model => model.FullDescription)
+</div>
+
+<div class="form-group">
+
+    @Html.LabelFor(model => model.Sku):
+
+    @Html.EditorFor(model => model.Sku)
+    @Html.ValidationMessageFor(model => model.Sku)
+</div>
+
+<div class="form-group">
+
+    @Html.LabelFor(model => model.Gtin):
+
+    @Html.EditorFor(model => model.Gtin)
+    @Html.ValidationMessageFor(model => model.Gtin)
+</div>
+
+<div class="form-group">
+
+    @Html.LabelFor(model => model.Price):
+
+    @Html.EditorFor(model => model.Price)
+    @Html.ValidationMessageFor(model => model.Price)
+</div>
+
+<div class="form-group">
+
+    @Html.LabelFor(model => model.ProductCost):
+
+    @Html.EditorFor(model => model.ProductCost)
+    @Html.ValidationMessageFor(model => model.ProductCost)
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Weight):
+    @Html.EditorFor(model => model.Weight)
+    @Html.ValidationMessageFor(model => model.Weight)
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Length):
+    @Html.EditorFor(model => model.Length)
+    @Html.ValidationMessageFor(model => model.Length)
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Width):
+    @Html.EditorFor(model => model.Width)
+    @Html.ValidationMessageFor(model => model.Width)
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Height):
+    @Html.EditorFor(model => model.Height)
+    @Html.ValidationMessageFor(model => model.Height)
+</div>
+
+@if (Model.CreatedOn.HasValue)
+{
+    <div class="form-group">
+        @Html.LabelFor(model => model.CreatedOn):
+        @Model.CreatedOn.Value.ToString("F")
+    </div>
+}
+@if (Model.UpdatedOn.HasValue)
+{
+    <div class="form-group">
+        @Html.LabelFor(model => model.UpdatedOn):
+        @Model.UpdatedOn.Value.ToString("F")
+    </div>
+}

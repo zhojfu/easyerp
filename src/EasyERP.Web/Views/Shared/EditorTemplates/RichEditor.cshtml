@@ -7,19 +7,16 @@
     //we do not bundle this script file (does not work for some reasons in bundle)
     Html.AddScriptParts("~/Scripts/tinymce/tinymce.min.js", true);
 
-    var allowJbimages = false;
-    var allowRoxyFileman = true;
-    //TinyMCE picture browser does not work in a virtual category
-    //so if you're running in a virtual directory, then uncomment the code below:
-    //allowJbimages = true;
-    //allowRoxyFileman =false;
+    const bool AllowJbimages = false;
+    const bool AllowRoxyFileman = true;
 
     var random = CommonHelper.GenerateRandomInteger();
 
     //extend editor with additional settings
     var additionalEditorSettings = string.Empty;
+
     //is java-script supported?
-    var allowJavaScript = false;
+    const bool AllowJavaScript = false;
 
     //allow HTML body? Full page? - http://www.tinymce.com/wiki.php/Plugin:fullpage
     //false by default
@@ -58,17 +55,17 @@
             plugins: [
                 "advlist autolink lists link image charmap print preview anchor",
                 "searchreplace visualblocks code fullscreen",
-                "insertdatetime media table contextmenu paste@(allowJbimages ? " jbimages" : null)@(enableFullPage ? " fullpage" : null)"
+                "insertdatetime media table contextmenu paste@(AllowJbimages ? " jbimages" : null)@(enableFullPage ? " fullpage" : null)"
             ],
-            toolbar: "insertfile undo redo | styleselect | fontselect | fontsizeselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image@(allowJbimages ? " jbimages" : null)",
+            toolbar: "insertfile undo redo | styleselect | fontselect | fontsizeselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image@(AllowJbimages ? " jbimages" : null)",
             //"relative_urls" required by jbimages plugin to be set to "false"
             relative_urls: false,
-            @if (allowJavaScript){
+            @if (AllowJavaScript){
                 <text>
             valid_elements: "*[*]",
             </text>
             }
-            @if (allowRoxyFileman){
+            @if (AllowRoxyFileman){
                 <text>
             //picture manager
             file_browser_callback: RoxyFileBrowser@(random),

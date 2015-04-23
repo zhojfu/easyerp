@@ -107,7 +107,6 @@
     <Compile Include="Controllers\AdminAuthorizeAttribute.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="DependencyRegistrar.cs" />
-    <Compile Include="Events\AdminTabStripCreated.cs" />
     <Compile Include="Events\ProductSearchEvent.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="HtmlExtensions.cs" />
@@ -116,7 +115,9 @@
     <Compile Include="Menu\IAdminMenuPlugin.cs" />
     <Compile Include="Menu\SiteMapNode.cs" />
     <Compile Include="Menu\XmlSiteMap.cs" />
+    <Compile Include="Mvc\BaseModel.cs" />
     <Compile Include="Mvc\DeleteConfirmationModel.cs" />
+    <Compile Include="Mvc\BaseModelBinder.cs" />
     <Compile Include="Mvc\Routes\GuidConstraint.cs" />
     <Compile Include="Mvc\Routes\IRouteProvider.cs" />
     <Compile Include="Mvc\Routes\IRoutePublisher.cs" />
@@ -138,7 +139,6 @@
     <Compile Include="UI\PageHeadBuilder.cs" />
     <Compile Include="UI\ResourceLocation.cs" />
     <Compile Include="Validators\BaseValidator.cs" />
-    <Compile Include="Validators\ValidatorExtensions .cs" />
     <Compile Include="ViewEngines\Razor\WebViewPage.cs" />
     <Compile Include="WebWorkContext.cs" />
   </ItemGroup>

@@ -84,15 +84,11 @@
     <Compile Include="Caching\NullCache.cs" />
     <Compile Include="Caching\PerRequestCacheManager.cs" />
     <Compile Include="CommonHelper.cs" />
-    <Compile Include="Configuration\Settings\CatalogSettings.cs" />
-    <Compile Include="Configuration\Settings\CommonSettings.cs" />
-    <Compile Include="Configuration\Settings\DateTimeSettings.cs" />
+    <Compile Include="Configuration\Settings\AreaSettings.cs" />
     <Compile Include="Configuration\Settings\ISettings.cs" />
     <Compile Include="Configuration\EasyErpConfig.cs" />
     <Compile Include="Configuration\Settings\MeasureSettings.cs" />
-    <Compile Include="Configuration\Settings\MediaSettings.cs" />
     <Compile Include="Configuration\Settings\SecuritySettings.cs" />
-    <Compile Include="Configuration\Settings\VendorSettings.cs" />
     <Compile Include="EasyErpVersion.cs" />
     <Compile Include="Infrastructure\AppDomainTypeFinder.cs" />
     <Compile Include="Infrastructure\DependencyManagement\ContainerManager.cs" />
