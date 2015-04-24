@@ -1,12 +1,9 @@
 namespace EasyERP.Web.Framework
 {
     using Autofac;
-    using Autofac.Builder;
     using Autofac.Core;
     using Autofac.Integration.Mvc;
     using Doamin.Service.Authentication;
-    using Doamin.Service.Directory;
-    using Doamin.Service.Discounts;
     using Doamin.Service.Factory;
     using Doamin.Service.Helpers;
     using Doamin.Service.Order;
@@ -15,18 +12,15 @@ namespace EasyERP.Web.Framework
     using Doamin.Service.Security;
     using Doamin.Service.Stores;
     using Doamin.Service.Users;
-    using Doamin.Service.Vendors;
     using Domain.EntityFramework;
-    using Domain.Model.Products;
     using EasyErp.Core;
-    using EasyErp.Core.Caching;
-    using EasyErp.Core.Configuration;
     using EasyErp.Core.Configuration.Settings;
+    using EasyErp.Core.Infrastructure;
     using EasyErp.Core.Infrastructure.DependencyManagement;
+    using EasyERP.Web.Framework.Mvc.Routes;
     using EasyERP.Web.Framework.UI;
     using Infrastructure.Domain;
     using Infrastructure.Domain.EntityFramework;
-    using Nop.Core.Infrastructure;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -54,6 +48,8 @@ namespace EasyERP.Web.Framework
                    .As<HttpSessionStateBase>()
                    .InstancePerLifetimeScope();
 
+            builder.RegisterInstance(new AreaSettings()).AsSelf();
+
             //web helper
             builder.RegisterType<WebHelper>().As<IWebHelper>().InstancePerLifetimeScope();
 
@@ -72,81 +68,38 @@ namespace EasyERP.Web.Framework
             builder.Register<IUnitOfWork>(i => new EntityFrameworkUnitOfWork(dataContext))
                    .InstancePerLifetimeScope();
 
-            builder.RegisterGeneric(typeof(EntityFrameworkRepository<>)).As(typeof(IRepository<>)).InstancePerLifetimeScope();
+            builder.RegisterGeneric(typeof(EntityFrameworkRepository<>))
+                   .As(typeof(IRepository<>))
+                   .InstancePerLifetimeScope();
 
             //work context
             builder.RegisterType<WebWorkContext>().As<IWorkContext>().InstancePerLifetimeScope();
 
-            builder.RegisterType<NullCache>().As<ICacheManager>().Named<ICacheManager>("nop_cache_static").SingleInstance();
             // Services
             builder.RegisterType<CategoryService>().As<ICategoryService>().InstancePerLifetimeScope();
             builder.RegisterType<InventoryService>().As<IInventoryService>().InstancePerLifetimeScope();
             builder.RegisterType<PaymentService>().As<IPaymentService>().InstancePerLifetimeScope();
             builder.RegisterType<EmployeeService>().As<IEmployeeService>().InstancePerLifetimeScope();
             builder.RegisterType<EmployeeTimesheetService>().As<IEmployeeTimesheetService>().InstancePerLifetimeScope();
-            builder.RegisterGeneric(typeof(DaliyStatisticService<>)).As(typeof(IStatisticService<>)).InstancePerLifetimeScope();
-            builder.RegisterType<ManufacturerService>().As<IManufacturerService>().InstancePerLifetimeScope();
+            builder.RegisterGeneric(typeof(DaliyStatisticService<>))
+                   .As(typeof(IStatisticService<>))
+                   .InstancePerLifetimeScope();
             builder.RegisterType<OrderService>().As<IOrderService>().InstancePerLifetimeScope();
             builder.RegisterType<UserService>().As<IUserService>().InstancePerLifetimeScope();
             builder.RegisterType<EncryptionService>().As<IEncryptionService>().InstancePerLifetimeScope();
             builder.RegisterType<StandardPermissionProvider>().As<IPermissionProvider>().InstancePerLifetimeScope();
-
-            //builder.RegisterType<ProductAttributeFormatter>().As<IProductAttributeFormatter>().InstancePerLifetimeScope();
-            //builder.RegisterType<ProductAttributeParser>().As<IProductAttributeParser>().InstancePerLifetimeScope();
-            builder.RegisterType<ProductAttributeService>().As<IProductAttributeService>().InstancePerLifetimeScope();
             builder.RegisterType<ProductService>().As<IProductService>().InstancePerLifetimeScope();
-            builder.RegisterType<SpecificationAttributeService>()
-                   .As<ISpecificationAttributeService>()
-                   .InstancePerLifetimeScope();
-            builder.RegisterType<ProductTemplateService>().As<IProductTemplateService>().InstancePerLifetimeScope();
 
-            //builder.RegisterType<CategoryTemplateService>().As<ICategoryTemplateService>().InstancePerLifetimeScope();
-            //builder.RegisterType<ManufacturerTemplateService>().As<IManufacturerTemplateService>().InstancePerLifetimeScope();
-
-            //builder.RegisterType<AffiliateService>().As<IAffiliateService>().InstancePerLifetimeScope();
-            builder.RegisterType<VendorService>().As<IVendorService>().InstancePerLifetimeScope();
-
-            //builder.RegisterType<GenericAttributeService>().As<IGenericAttributeService>().InstancePerLifetimeScope();
-            //builder.RegisterType<FulltextService>().As<IFulltextService>().InstancePerLifetimeScope();
-
-            //pass MemoryCacheManager as cacheManager (cache settings between requests)
-            builder.RegisterType<PermissionService>().As<IPermissionService>()
-                   .WithParameter(ResolvedParameter.ForNamed<ICacheManager>("nop_cache_static"))
-                   .InstancePerLifetimeScope();
-            ////pass MemoryCacheManager as cacheManager (cache settings between requests)
-            builder.RegisterType<AclService>().As<IAclService>()
-                   .WithParameter(ResolvedParameter.ForNamed<ICacheManager>("nop_cache_static"))
-                   .InstancePerLifetimeScope();
-            ////pass MemoryCacheManager as cacheManager (cache settings between requests)
-
-            builder.RegisterType<MeasureService>().As<IMeasureService>().InstancePerLifetimeScope();
+            builder.RegisterType<PermissionService>().As<IPermissionService>().InstancePerLifetimeScope();
+            builder.RegisterType<AclService>().As<IAclService>().InstancePerLifetimeScope();
 
             builder.RegisterType<StoreService>().As<IStoreService>().InstancePerLifetimeScope();
-            ////pass MemoryCacheManager as cacheManager (cache settings between requests)
-            //builder.RegisterType<StoreMappingService>().As<IStoreMappingService>()
-            //    .WithParameter(ResolvedParameter.ForNamed<ICacheManager>("nop_cache_static"))
-            //    .InstancePerLifetimeScope();
-
-            builder.RegisterType<DiscountService>().As<IDiscountService>().InstancePerLifetimeScope();
-
-            //builder.RegisterType<DownloadService>().As<IDownloadService>().InstancePerLifetimeScope();
-            //builder.RegisterType<PictureService>().As<IPictureService>().InstancePerLifetimeScope();
-
-            //builder.RegisterType<OrderService>().As<IOrderService>().InstancePerLifetimeScope();
-            //builder.RegisterType<OrderReportService>().As<IOrderReportService>().InstancePerLifetimeScope();
-            //builder.RegisterType<OrderProcessingService>().As<IOrderProcessingService>().InstancePerLifetimeScope();
-            //builder.RegisterType<OrderTotalCalculationService>().As<IOrderTotalCalculationService>().InstancePerLifetimeScope();
 
             builder.RegisterType<FormsAuthenticationService>().As<IAuthenticationService>().InstancePerLifetimeScope();
 
-            //builder.RegisterType<DefaultLogger>().As<ILogger>().InstancePerLifetimeScope();
-
-            //builder.RegisterType<SqlFileInstallationService>().As<IInstallationService>().InstancePerLifetimeScope();
-
             builder.RegisterType<DateTimeHelper>().As<IDateTimeHelper>().InstancePerLifetimeScope();
             builder.RegisterType<PageHeadBuilder>().As<IPageHeadBuilder>().InstancePerLifetimeScope();
-
-            //builder.RegisterType<RoutePublisher>().As<IRoutePublisher>().SingleInstance();
+            builder.RegisterType<RoutePublisher>().As<IRoutePublisher>().SingleInstance();
         }
 
         public int Order

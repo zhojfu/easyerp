@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace EasyERP.Web.Models
+﻿namespace EasyERP.Web.Models
 {
-    public class WorkTime
+    using EasyERP.Web.Framework.Mvc;
+
+    public class WorkTime : BaseModel
     {
         public string employeeId { get; set; }
+
         public string employeeName { get; set; }
     }
 }

@@ -1,9 +1,9 @@
-﻿using System.Data.Entity.ModelConfiguration;
-using Domain.Model;
-
-namespace Domain.EntityFramework.Configurations
+﻿namespace Domain.EntityFramework.Configurations
 {
-    class TestDoublesConfiguration : EntityTypeConfiguration<TestDoubles>
+    using System.Data.Entity.ModelConfiguration;
+    using Domain.Model;
+
+    internal class TestDoublesConfiguration : EntityTypeConfiguration<TestDoubles>
     {
         public TestDoublesConfiguration()
         {

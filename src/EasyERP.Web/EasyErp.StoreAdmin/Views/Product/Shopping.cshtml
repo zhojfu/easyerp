@@ -1,0 +1,19 @@
+﻿@model IList<EasyErp.StoreAdmin.Models.Products.ProductOverviewModel>
+@{
+    ViewBag.Title = "购进产品";
+}
+
+@if (Model.Any())
+{
+    <div class="product-grid home-page-product-grid">
+        <div class="title">
+            <strong>购进产品</strong>
+        </div>
+        @foreach (var item in Model)
+        {
+            <div class="item-box">
+                @Html.Partial("_ProductBox", item)
+            </div>
+        }
+    </div>
+}

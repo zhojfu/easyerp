@@ -1,7 +1,4 @@
-﻿@using Doamin.Service.Events
-@using EasyErp.Core.Infrastructure
-@using EasyERP.Web.Framework
-@using EasyERP.Web.Framework.Events
+﻿@using EasyERP.Web.Framework
 @model EasyERP.Web.Models.Stores.StoreModel
 @Html.ValidationSummary(false)
 @Html.HiddenFor(model => model.Id)
@@ -33,21 +30,10 @@
         @*@TabEmployees()*@
     </div>
 </div>
-@{
-    //custom tabs
-    var eventMessage = new AdminTabStripCreated(this.Html, "store-edit");
-    //EngineContext.Current.Resolve<IEventPublisher>().Publish(eventMessage);
-    foreach (var eventBlock in eventMessage.BlocksToRender)
-    {
-        @eventBlock
-    }
-}
 @*save selected tab index*@
 <input type="hidden" id="selected-tab-index" name="selected-tab-index" value="1">
 @helper TabInfo()
-{
-    @Html.Partial("_CreateOrUpdate.Info", Model)
-}
+{ @Html.Partial("_CreateOrUpdate.Info", Model)}
 @helper TabEmployees()
 {
     @*@Html.Partial("_CreateOrUpdate.Emloyees", Model)*@

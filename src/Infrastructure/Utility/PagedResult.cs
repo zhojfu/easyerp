@@ -1,85 +1,68 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Infrastructure.Utility
+﻿namespace Infrastructure.Utility
 {
     using System.Collections;
+    using System.Collections.Generic;
 
-    using Infrastructure.Domain.Model;
-
-    public class PagedResult<T> : ICollection<T> 
+    public class PagedResult<T> : ICollection<T>
     {
         public PagedResult(int pageSize, int pageNumber, int totalPages, int totalRecords, List<T> data)
         {
-            this.PageNumber = pageNumber;
-            this.PageSize = pageSize;
-            this.TotalRecords = totalRecords;
-            this.TotalPages = totalPages;
-            this.Data = data;
+            PageNumber = pageNumber;
+            PageSize = pageSize;
+            TotalRecords = totalRecords;
+            TotalPages = totalPages;
+            Data = data;
         }
 
-        public int Count 
+        public int PageSize { get; set; }
+        public int PageNumber { get; set; }
+        public int TotalPages { get; set; }
+        public int TotalRecords { get; set; }
+        public List<T> Data { get; set; }
+
+        public int Count
         {
-            get
-            {
-                return this.Data.Count;
-            }
+            get { return Data.Count; }
         }
 
         public bool IsReadOnly
         {
-            get
-            {
-                return false;
-            }
+            get { return false; }
         }
-
-        public int PageSize { get; set; }
-
-        public int PageNumber { get; set; }
-
-        public int TotalPages { get; set; }
-
-        public int TotalRecords { get; set; }
-
-        public List<T> Data { get; set; }
 
         public IEnumerator<T> GetEnumerator()
         {
-            return this.Data.GetEnumerator();
+            return Data.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return this.GetEnumerator();
+            return GetEnumerator();
         }
 
         public void Add(T item)
         {
-            this.Data.Add(item); 
+            Data.Add(item);
         }
 
         public void Clear()
         {
-            this.Data.Clear(); 
+            Data.Clear();
         }
 
         public bool Contains(T item)
         {
-            return this.Data.Contains(item);
+            return Data.Contains(item);
         }
 
         public void CopyTo(T[] array, int arrayIndex)
         {
-            this.Data.CopyTo(array, arrayIndex); 
+            Data.CopyTo(array, arrayIndex);
         }
 
         public bool Remove(T item)
         {
-            return this.Data.Remove(item);
+            return Data.Remove(item);
         }
     }
 }

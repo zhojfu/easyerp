@@ -1,11 +1,11 @@
 ﻿namespace EasyERP.Web.Controllers
 {
-    using EasyErp.Core.Infrastructure;
-    using EasyERP.Web.Framework.Controllers;
     using System.Web.Mvc;
     using System.Web.Routing;
+    using EasyErp.Core.Infrastructure;
+    using EasyERP.Web.Framework.Controllers;
 
-    public abstract partial class BasePublicController : BaseController
+    public abstract class BasePublicController : BaseController
     {
         protected virtual ActionResult InvokeHttp404()
         {
@@ -16,7 +16,7 @@
             routeData.Values.Add("controller", "Common");
             routeData.Values.Add("action", "PageNotFound");
 
-            errorController.Execute(new RequestContext(this.HttpContext, routeData));
+            errorController.Execute(new RequestContext(HttpContext, routeData));
 
             return new EmptyResult();
         }

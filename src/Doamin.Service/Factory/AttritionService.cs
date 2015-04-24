@@ -1,10 +1,7 @@
-﻿
-namespace Doamin.Service.Factory
+﻿namespace Doamin.Service.Factory
 {
     using System.Collections.Generic;
-
     using Domain.Model.Factory;
-
     using Infrastructure.Domain;
 
     public class AttritionService : IAttritionService
@@ -21,19 +18,19 @@ namespace Doamin.Service.Factory
 
         public void UpdateAttritionCategory(Attrition attrition)
         {
-            this.repository.Update(attrition);
-            this.unitOfWork.Commit();
+            repository.Update(attrition);
+            unitOfWork.Commit();
         }
 
         public void AddAttritionCategory(Attrition attrition)
         {
-            this.repository.Add(attrition);
-            this.unitOfWork.Commit();
+            repository.Add(attrition);
+            unitOfWork.Commit();
         }
 
         public IEnumerable<Attrition> GetAttritionCategories()
         {
-            return this.repository.FindAll(a => true);
+            return repository.FindAll(a => true);
         }
     }
 }

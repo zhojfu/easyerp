@@ -2,7 +2,6 @@
 {
     using Doamin.Service.Users;
     using Domain.Model.Security;
-    using System;
     using System.Collections.Generic;
 
     public class StandardPermissionProvider : IPermissionProvider
@@ -11,6 +10,13 @@
         {
             Name = "Admin area. Manage Products",
             SystemName = "ManageProducts",
+            Category = "Catalog"
+        };
+
+        public static readonly PermissionRecord AccessAdminPanel = new PermissionRecord
+        {
+            Name = "AccessAdminPanel",
+            SystemName = "Admin",
             Category = "Catalog"
         };
 
@@ -54,12 +60,12 @@
                 new DefaultPermissionRecord
                 {
                     UserRoleSystemName = SystemUserRoleNames.Administrators,
-                    PermissionRecords = new[] { ManageProducts, ManageStores, ManageOrders }
+                    PermissionRecords = new[] { ManageProducts, ManageStores, ManageOrders, AccessAdminPanel }
                 },
                 new DefaultPermissionRecord
                 {
                     UserRoleSystemName = SystemUserRoleNames.StoreAdmin,
-                    PermissionRecords = new []{ManageStores}
+                    PermissionRecords = new[] { ManageStores }
                 },
                 new DefaultPermissionRecord
                 {

@@ -1,28 +1,22 @@
 ﻿namespace EasyERP.Web.Models.Orders
 {
+    using EasyERP.Web.Framework.Mvc;
     using EasyERP.Web.Validators.Products;
     using FluentValidation.Attributes;
     using Infrastructure.Domain.Model;
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
     using System.Web.Mvc;
 
     [Validator(typeof(ProductValidator))]
-    public partial class OrderModel : BaseEntity
+    public class OrderModel : BaseEntityModel
     {
         public OrderModel()
         {
             Items = new List<OrderItemModel>();
         }
 
-        //identifiers
-
-        public override int Id { get; set; }
-
         public Guid OrderGuid { get; set; }
-
-        //store
 
         public string StoreName { get; set; }
 
@@ -63,7 +57,7 @@
 
         public bool CanVoidOffline { get; set; }
 
-        public partial class OrderItemModel : BaseEntity
+        public class OrderItemModel : BaseEntity
         {
             public int ProductId { get; set; }
 
@@ -76,7 +70,7 @@
             public string SubTotal { get; set; }
         }
 
-        public partial class AddOrderProductModel : BaseEntity
+        public class AddOrderProductModel : BaseEntityModel
         {
             public AddOrderProductModel()
             {
@@ -102,7 +96,7 @@
 
             public int OrderId { get; set; }
 
-            public partial class ProductModel : BaseEntity
+            public class ProductModel : BaseEntity
             {
                 [AllowHtml]
                 public string Name { get; set; }

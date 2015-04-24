@@ -120,8 +120,14 @@
   <ItemGroup>
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ShoppingCartController.cs" />
+    <Compile Include="Extensions\MappingExtensions.cs" />
+    <Compile Include="Models\Order\ShoppingCartItemModel.cs" />
     <Compile Include="Models\Products\ProductListModel.cs" />
     <Compile Include="Models\Products\ProductModel.cs" />
+    <Compile Include="Models\Products\ProductOverviewModel.cs" />
+    <Compile Include="Models\RenderWidgetModel.cs" />
+    <Compile Include="RouteProvider.cs" />
     <Compile Include="StoreAreaRegistration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -136,7 +142,6 @@
     </Content>
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -168,6 +173,15 @@
       <Project>{35B3A042-0187-4530-A9F5-2063E2EEBDAD}</Project>
       <Name>Infrastructure</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\_ProductBox.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Product\Shopping.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Widget\WidgetsByZone.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

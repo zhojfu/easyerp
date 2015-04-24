@@ -9,13 +9,14 @@
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
     public class ParameterBasedOnFormNameAttribute : FilterAttribute, IActionFilter
     {
-        private readonly string _name;
-        private readonly string _actionParameterName;
+        private readonly string actionParameterName;
+
+        private readonly string name;
 
         public ParameterBasedOnFormNameAttribute(string name, string actionParameterName)
         {
-            this._name = name;
-            this._actionParameterName = actionParameterName;
+            this.name = name;
+            this.actionParameterName = actionParameterName;
         }
 
         public void OnActionExecuted(ActionExecutedContext filterContext)
@@ -24,8 +25,8 @@
 
         public void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            var formValue = filterContext.RequestContext.HttpContext.Request.Form[this._name];
-            filterContext.ActionParameters[this._actionParameterName] = !string.IsNullOrEmpty(formValue);
+            var formValue = filterContext.RequestContext.HttpContext.Request.Form[name];
+            filterContext.ActionParameters[actionParameterName] = !string.IsNullOrEmpty(formValue);
         }
     }
 }

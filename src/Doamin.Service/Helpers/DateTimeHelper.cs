@@ -1,13 +1,13 @@
 namespace Doamin.Service.Helpers
 {
-    using Domain.Model.Users;
     using System;
     using System.Collections.ObjectModel;
+    using Domain.Model.Users;
 
     /// <summary>
     /// Represents a datetime helper
     /// </summary>
-    public partial class DateTimeHelper : IDateTimeHelper
+    public class DateTimeHelper : IDateTimeHelper
     {
         public TimeZoneInfo FindTimeZoneById(string id)
         {
@@ -27,13 +27,13 @@ namespace Doamin.Service.Helpers
         public DateTime ConvertToUserTime(DateTime dt, DateTimeKind sourceDateTimeKind)
         {
             dt = DateTime.SpecifyKind(dt, sourceDateTimeKind);
-            var currentUserTimeZoneInfo = this.CurrentTimeZone;
+            var currentUserTimeZoneInfo = CurrentTimeZone;
             return TimeZoneInfo.ConvertTime(dt, currentUserTimeZoneInfo);
         }
 
         public DateTime ConvertToUserTime(DateTime dt, TimeZoneInfo sourceTimeZone)
         {
-            var currentUserTimeZoneInfo = this.CurrentTimeZone;
+            var currentUserTimeZoneInfo = CurrentTimeZone;
             return ConvertToUserTime(dt, sourceTimeZone, currentUserTimeZoneInfo);
         }
 

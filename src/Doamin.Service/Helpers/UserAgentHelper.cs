@@ -5,7 +5,7 @@ namespace Doamin.Service.Helpers
     /// <summary>
     /// User agent helper
     /// </summary>
-    public partial class UserAgentHelper : IUserAgentHelper
+    public class UserAgentHelper : IUserAgentHelper
     {
         public bool IsSearchEngine()
         {

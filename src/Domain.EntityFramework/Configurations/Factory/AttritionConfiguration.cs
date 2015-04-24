@@ -1,5 +1,4 @@
-﻿
-namespace Domain.EntityFramework.Configurations.Factory
+﻿namespace Domain.EntityFramework.Configurations.Factory
 {
     using System.Data.Entity.ModelConfiguration;
     using Domain.Model.Factory;
@@ -8,10 +7,10 @@ namespace Domain.EntityFramework.Configurations.Factory
     {
         public AttritionConfiguration()
         {
-            this.HasKey(a => a.Id);
-            this.Property(a => a.Name);
-            this.Property(a => a.Unit);
-            this.Property(a => a.Cost);
+            HasKey(a => a.Id);
+            Property(a => a.Name);
+            Property(a => a.Unit);
+            Property(a => a.Cost);
         }
     }
 }

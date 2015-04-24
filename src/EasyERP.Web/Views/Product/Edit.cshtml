@@ -1,21 +1,24 @@
-﻿@using Doamin.Service.Events
-@using EasyErp.Core.Infrastructure
-@using EasyERP.Web.Framework
+﻿@using EasyERP.Web.Framework
 @model EasyERP.Web.Models.Products.ProductModel
 @{
     ViewBag.Title = "Edit";
     Layout = "~/Views/Shared/ProductLayout.cshtml";
 }
-@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "product-form" }))
+@using (Html.BeginForm(null, null, FormMethod.Post, new
+{
+    id = "product-form"
+}))
 {
     @Html.AntiForgeryToken()
     <div class="section-header">
         <div class="title">
-            <img src="@Url.Content("~/Administration/Content/images/ico-catalog.png")" alt="" />
-            "EditProductDetails" - @Model.Name @Html.ActionLink("BackToList", "List")
+            "编辑产品信息" - @Model.Name @Html.ActionLink("BackToList", "List")
         </div>
+
         <div class="options">
+
             <input type="submit" name="save" class="k-button" value="保存" />
+
             <span id="product-delete" class="k-button">删除</span>
         </div>
     </div>

@@ -1,6 +1,5 @@
 ﻿namespace Domain.Model.Orders
 {
-    using Domain.Model.Discounts;
     using Domain.Model.Stores;
     using Infrastructure.Domain.Model;
     using System;
@@ -42,8 +41,8 @@
 
         public virtual ICollection<OrderItem> OrderItems
         {
-            get { return this.orderItems ?? (this.orderItems = new List<OrderItem>()); }
-            protected set { this.orderItems = value; }
+            get { return orderItems ?? (orderItems = new List<OrderItem>()); }
+            protected set { orderItems = value; }
         }
 
         #endregion Navigation properties
@@ -52,44 +51,20 @@
 
         public ShippingStatus ShippingStatus
         {
-            get
-            {
-                return (ShippingStatus)this.ShippingStatusId;
-            }
-            set
-            {
-                this.ShippingStatusId = (int)value;
-            }
+            get { return (ShippingStatus)ShippingStatusId; }
+            set { ShippingStatusId = (int)value; }
         }
 
-        /// <summary>
-        /// Gets or sets the order status
-        /// </summary>
         public OrderStatus OrderStatus
         {
-            get
-            {
-                return (OrderStatus)this.OrderStatusId;
-            }
-            set
-            {
-                this.OrderStatusId = (int)value;
-            }
+            get { return (OrderStatus)OrderStatusId; }
+            set { OrderStatusId = (int)value; }
         }
 
-        /// <summary>
-        /// Gets or sets the payment status
-        /// </summary>
         public PaymentStatus PaymentStatus
         {
-            get
-            {
-                return (PaymentStatus)this.PaymentStatusId;
-            }
-            set
-            {
-                this.PaymentStatusId = (int)value;
-            }
+            get { return (PaymentStatus)PaymentStatusId; }
+            set { PaymentStatusId = (int)value; }
         }
 
         #endregion Custom properties
@@ -98,43 +73,33 @@
     public enum OrderStatus
     {
         Pending = 10,
+
         Processing = 20,
+
         Complete = 30,
+
         Cancelled = 40
     }
 
     public enum PaymentStatus
     {
         Pending = 10,
+
         Paid = 20,
-        PartiallyPaid = 30,
+
+        PartiallyPaid = 30
     }
 
     public enum ShippingStatus
     {
-        /// <summary>
-        /// Shipping not required
-        /// </summary>
         ShippingNotRequired = 10,
 
-        /// <summary>
-        /// Not yet shipped
-        /// </summary>
         NotYetShipped = 20,
 
-        /// <summary>
-        /// Partially shipped
-        /// </summary>
         PartiallyShipped = 25,
 
-        /// <summary>
-        /// Shipped
-        /// </summary>
         Shipped = 30,
 
-        /// <summary>
-        /// Delivered
-        /// </summary>
-        Delivered = 40,
+        Delivered = 40
     }
 }

@@ -1,5 +1,4 @@
-﻿
-namespace Doamin.Service.Factory
+﻿namespace Doamin.Service.Factory
 {
     using System;
     using System.Collections.Generic;
@@ -24,7 +23,7 @@ namespace Doamin.Service.Factory
         {
             var dateRange = DateHelper.GetWeekRangeOfCurrentDate(date);
 
-            return this.repository.FindAll(
+            return repository.FindAll(
                 m => m.EmployeeId == employeeId && m.Date >= dateRange.Item1 && m.Date <= dateRange.Item2);
         }
 
@@ -34,34 +33,35 @@ namespace Doamin.Service.Factory
 
             foreach (var worktime in worktimes)
             {
-                double hour = worktime.Value;
-                DateTime date = worktime.Key;
+                var hour = worktime.Value;
+                var date = worktime.Key;
 
                 if (Math.Abs(hour) < Tolerance)
                 {
                     continue;
                 }
 
-                WorkTimeStatistic wt = this.repository.FindAll(m => m.EmployeeId == employeeId && m.Date == date).FirstOrDefault();
-                if (wt != null && Math.Abs(hour - wt.WorkTimeHr) > Tolerance)
+                var wt = repository.FindAll(m => m.EmployeeId == employeeId && m.Date == date).FirstOrDefault();
+                if (wt != null &&
+                    Math.Abs(hour - wt.WorkTimeHr) > Tolerance)
                 {
                     wt.WorkTimeHr = hour;
-                    this.repository.Update(wt);
+                    repository.Update(wt);
                 }
                 else
                 {
-                    WorkTimeStatistic w = new WorkTimeStatistic
+                    var w = new WorkTimeStatistic
                     {
                         EmployeeId = employeeId,
                         WorkTimeHr = hour,
-                        Date = date,
+                        Date = date
                     };
 
-                    this.repository.Add(w);
+                    repository.Add(w);
                 }
             }
-           
-            this.unitOfWork.Commit();
+
+            unitOfWork.Commit();
         }
     }
 }

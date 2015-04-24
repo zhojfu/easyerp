@@ -1,8 +1,7 @@
 ﻿namespace Domain.Model.Products
 {
-    using Infrastructure.Domain.Model;
-    using System;
     using System.ComponentModel;
+    using Infrastructure.Domain.Model;
 
     public class ProductUom : BaseEntity
     {
@@ -18,7 +17,6 @@
         public int Type { get; set; }
 
         public long UomCategoryId { get; set; }
-
         public virtual ProductUomCategory Category { get; set; }
     }
 

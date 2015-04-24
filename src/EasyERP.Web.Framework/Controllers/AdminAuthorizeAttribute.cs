@@ -1,17 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web.Mvc;
-using Nop.Core.Infrastructure;
-using Nop.Services.Security;
-
-namespace Nop.Web.Framework.Controllers
+﻿namespace EasyERP.Web.Framework.Controllers
 {
-    [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class, Inherited=true, AllowMultiple=true)]
+    using Doamin.Service.Security;
+    using EasyErp.Core.Infrastructure;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Web.Mvc;
+
+    [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class, Inherited = true, AllowMultiple = true)]
     public class AdminAuthorizeAttribute : FilterAttribute, IAuthorizationFilter
     {
-        private readonly bool _dontValidate;
-
+        private readonly bool dontValidate;
 
         public AdminAuthorizeAttribute()
             : this(false)
@@ -20,7 +19,7 @@ namespace Nop.Web.Framework.Controllers
 
         public AdminAuthorizeAttribute(bool dontValidate)
         {
-            this._dontValidate = dontValidate;
+            this.dontValidate = dontValidate;
         }
 
         private void HandleUnauthorizedRequest(AuthorizationContext filterContext)
@@ -38,14 +37,12 @@ namespace Nop.Web.Framework.Controllers
         private bool IsAdminPageRequested(AuthorizationContext filterContext)
         {
             var adminAttributes = GetAdminAuthorizeAttributes(filterContext.ActionDescriptor);
-            if (adminAttributes != null && adminAttributes.Any())
-                return true;
-            return false;
+            return adminAttributes != null && adminAttributes.Any();
         }
 
         public void OnAuthorization(AuthorizationContext filterContext)
         {
-            if (_dontValidate)
+            if (dontValidate)
                 return;
 
             if (filterContext == null)

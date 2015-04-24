@@ -1,6 +1,5 @@
 ﻿namespace Doamin.Service.Events
 {
-    using EasyErp.Core.Infrastructure;
     using System;
     using System.Linq;
 
@@ -17,7 +16,18 @@
         /// <param name="subscriptionService"></param>
         public EventPublisher(ISubscriptionService subscriptionService)
         {
-            this._subscriptionService = subscriptionService;
+            _subscriptionService = subscriptionService;
+        }
+
+        /// <summary>
+        /// Publish event
+        /// </summary>
+        /// <typeparam name="T">Type</typeparam>
+        /// <param name="eventMessage">Event message</param>
+        public virtual void Publish<T>(T eventMessage)
+        {
+            var subscriptions = _subscriptionService.GetSubscriptions<T>();
+            subscriptions.ToList().ForEach(x => PublishToConsumer(x, eventMessage));
         }
 
         /// <summary>
@@ -29,17 +39,6 @@
         protected virtual void PublishToConsumer<T>(IConsumer<T> x, T eventMessage)
         {
             throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Publish event
-        /// </summary>
-        /// <typeparam name="T">Type</typeparam>
-        /// <param name="eventMessage">Event message</param>
-        public virtual void Publish<T>(T eventMessage)
-        {
-            var subscriptions = this._subscriptionService.GetSubscriptions<T>();
-            subscriptions.ToList().ForEach(x => this.PublishToConsumer(x, eventMessage));
         }
     }
 }

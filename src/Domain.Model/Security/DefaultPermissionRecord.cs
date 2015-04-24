@@ -6,11 +6,10 @@
     {
         public DefaultPermissionRecord()
         {
-            this.PermissionRecords = new List<PermissionRecord>();
+            PermissionRecords = new List<PermissionRecord>();
         }
 
         public string UserRoleSystemName { get; set; }
-
         public IEnumerable<PermissionRecord> PermissionRecords { get; set; }
     }
 }

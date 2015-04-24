@@ -1,5 +1,4 @@
-﻿
-namespace Domain.EntityFramework.Configurations.Factory
+﻿namespace Domain.EntityFramework.Configurations.Factory
 {
     using System.Data.Entity.ModelConfiguration;
     using Domain.Model.Factory;
@@ -8,11 +7,11 @@ namespace Domain.EntityFramework.Configurations.Factory
     {
         public AttritionStatisticConfiguration()
         {
-            this.HasKey(o => o.Id);
-            this.Property(o => o.Date);
-            this.Property(o => o.Volume);
-            this.Property(o => o.PriceOfUnit);
-            this.HasRequired(o => o.Attrition).WithMany(a => a.AttritionRecords).HasForeignKey(o => o.AttritionId);
+            HasKey(o => o.Id);
+            Property(o => o.Date);
+            Property(o => o.Volume);
+            Property(o => o.PriceOfUnit);
+            HasRequired(o => o.Attrition).WithMany(a => a.AttritionRecords).HasForeignKey(o => o.AttritionId);
         }
     }
 }

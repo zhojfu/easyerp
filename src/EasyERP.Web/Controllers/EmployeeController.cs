@@ -1,14 +1,11 @@
-﻿using System.Web.Mvc;
-
-namespace EasyERP.Web.Controllers
+﻿namespace EasyERP.Web.Controllers
 {
+    using System.Collections.Generic;
+    using System.Web.Mvc;
     using AutoMapper;
     using Doamin.Service.Factory;
     using Domain.Model;
     using EasyERP.Web.Models;
-    using Infrastructure.Utility;
-    using System;
-    using System.Collections.Generic;
 
     public class EmployeeController : Controller
     {
@@ -32,7 +29,7 @@ namespace EasyERP.Web.Controllers
 
         public ActionResult Edit(int id)
         {
-            Employee e = this.employeeService.GetEmployeeById(id);
+            var e = employeeService.GetEmployeeById(id);
             if (e != null)
             {
                 var model = Mapper.Map<Employee, EmployeeModel>(e);
@@ -47,7 +44,7 @@ namespace EasyERP.Web.Controllers
             var e = Mapper.Map<EmployeeModel, Employee>(model);
             if (e != null)
             {
-                this.employeeService.UpdateEmployee(e);
+                employeeService.UpdateEmployee(e);
             }
             return RedirectToAction("Index");
         }
@@ -55,10 +52,10 @@ namespace EasyERP.Web.Controllers
         [HttpPost]
         public ActionResult Create(EmployeeModel employee)
         {
-            Employee e = Mapper.Map<EmployeeModel, Employee>(employee);
+            var e = Mapper.Map<EmployeeModel, Employee>(employee);
             if (e != null)
             {
-                this.employeeService.AddEmployee(e);
+                employeeService.AddEmployee(e);
             }
 
             return RedirectToAction("Index");
@@ -69,7 +66,7 @@ namespace EasyERP.Web.Controllers
         {
             if (ids != null)
             {
-                this.employeeService.DeleteEmployeeByIds(ids);
+                employeeService.DeleteEmployeeByIds(ids);
             }
             return Json(null);
         }
@@ -81,14 +78,14 @@ namespace EasyERP.Web.Controllers
             //const int pageSize = 10;
             //int page = 1;
             //Request["page"];
-            PagedResult<Employee> employees = this.employeeService.GetEmployees(page, pageSize);
+            var employees = employeeService.GetEmployees(page, pageSize);
             if (employees != null)
             {
-                List<EmployeeListModel> employeesList = new List<EmployeeListModel>();
+                var employeesList = new List<EmployeeListModel>();
 
                 foreach (var employee in employees)
                 {
-                    EmployeeListModel model = Mapper.Map<Employee, EmployeeListModel>(employee);
+                    var model = Mapper.Map<Employee, EmployeeListModel>(employee);
                     model.Sex = employee.Male ? "男" : "女";
                     model.FullName = employee.LastName + employee.FirstName;
                     employeesList.Add(model);

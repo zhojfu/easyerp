@@ -1,8 +1,6 @@
 ﻿namespace EasyERP.Web.Framework
 {
-    using Doamin.Service.Stores;
-    using EasyErp.Core;
-    using EasyErp.Core.Infrastructure;
+    using Antlr.Runtime.Tree;
     using EasyERP.Web.Framework.Mvc;
     using Infrastructure.Domain.Model;
     using System;
@@ -11,10 +9,8 @@
     using System.Linq;
     using System.Linq.Expressions;
     using System.Text;
-    using System.Web;
     using System.Web.Mvc;
     using System.Web.Mvc.Html;
-    using System.Web.WebPages;
 
     public static class HtmlExtensions
     {
@@ -27,7 +23,8 @@
 
             // Add attributes
             var urlHelper = new UrlHelper(helper.ViewContext.RequestContext);
-            var url = MvcHtmlString.Create(urlHelper.Content("~/Administration/Content/images/ico-help.gif")).ToHtmlString();
+            var url =
+                MvcHtmlString.Create(urlHelper.Content("~/Administration/Content/images/ico-help.gif")).ToHtmlString();
 
             builder.MergeAttribute("src", url);
             builder.MergeAttribute("alt", value);
@@ -37,19 +34,25 @@
             return MvcHtmlString.Create(builder.ToString());
         }
 
-        public static MvcHtmlString DeleteConfirmation<T>(this HtmlHelper<T> helper, string buttonsSelector) where T : BaseEntity
+        public static MvcHtmlString DeleteConfirmation<T>(this HtmlHelper<T> helper, string buttonsSelector)
+            where T : BaseEntityModel
         {
             return DeleteConfirmation(helper, "", buttonsSelector);
         }
 
-        public static MvcHtmlString DeleteConfirmation<T>(this HtmlHelper<T> helper, string actionName,
-            string buttonsSelector) where T : BaseEntity
+        public static MvcHtmlString DeleteConfirmation<T>(
+            this HtmlHelper<T> helper,
+            string actionName,
+            string buttonsSelector) where T : BaseEntityModel
         {
             if (String.IsNullOrEmpty(actionName))
+            {
                 actionName = "Delete";
+            }
 
-            var modalId = MvcHtmlString.Create(helper.ViewData.ModelMetadata.ModelType.Name.ToLower() + "-delete-confirmation")
-                .ToHtmlString();
+            var modalId =
+                MvcHtmlString.Create(helper.ViewData.ModelMetadata.ModelType.Name.ToLower() + "-delete-confirmation")
+                             .ToHtmlString();
 
             var deleteConfirmationModel = new DeleteConfirmationModel
             {
@@ -84,9 +87,13 @@
             return MvcHtmlString.Create(window.ToString());
         }
 
-        public static MvcHtmlString NopLabelFor<TModel, TValue>(this HtmlHelper<TModel> helper, Expression<Func<TModel, TValue>> expression, bool displayHint = true)
+        public static MvcHtmlString NopLabelFor<TModel, TValue>(
+            this HtmlHelper<TModel> helper,
+            Expression<Func<TModel, TValue>> expression,
+            bool displayHint = true)
         {
             var result = new StringBuilder();
+
             //var metadata = ModelMetadata.FromLambdaExpression(expression, helper.ViewData);
             //var hintResource = string.Empty;
             //object value;
@@ -106,17 +113,24 @@
             return MvcHtmlString.Create(result.ToString());
         }
 
-        public static MvcHtmlString OverrideStoreCheckboxFor<TModel, TValue>(this HtmlHelper<TModel> helper,
+        public static MvcHtmlString OverrideStoreCheckboxFor<TModel, TValue>(
+            this HtmlHelper<TModel> helper,
             Expression<Func<TModel, bool>> expression,
             Expression<Func<TModel, TValue>> forInputExpression,
             int activeStoreScopeConfiguration)
         {
             var dataInputIds = new List<string>();
             dataInputIds.Add(helper.FieldIdFor(forInputExpression));
-            return OverrideStoreCheckboxFor(helper, expression, activeStoreScopeConfiguration, null, dataInputIds.ToArray());
+            return OverrideStoreCheckboxFor(
+                helper,
+                expression,
+                activeStoreScopeConfiguration,
+                null,
+                dataInputIds.ToArray());
         }
 
-        public static MvcHtmlString OverrideStoreCheckboxFor<TModel, TValue1, TValue2>(this HtmlHelper<TModel> helper,
+        public static MvcHtmlString OverrideStoreCheckboxFor<TModel, TValue1, TValue2>(
+            this HtmlHelper<TModel> helper,
             Expression<Func<TModel, bool>> expression,
             Expression<Func<TModel, TValue1>> forInputExpression1,
             Expression<Func<TModel, TValue2>> forInputExpression2,
@@ -125,10 +139,16 @@
             var dataInputIds = new List<string>();
             dataInputIds.Add(helper.FieldIdFor(forInputExpression1));
             dataInputIds.Add(helper.FieldIdFor(forInputExpression2));
-            return OverrideStoreCheckboxFor(helper, expression, activeStoreScopeConfiguration, null, dataInputIds.ToArray());
+            return OverrideStoreCheckboxFor(
+                helper,
+                expression,
+                activeStoreScopeConfiguration,
+                null,
+                dataInputIds.ToArray());
         }
 
-        public static MvcHtmlString OverrideStoreCheckboxFor<TModel, TValue1, TValue2, TValue3>(this HtmlHelper<TModel> helper,
+        public static MvcHtmlString OverrideStoreCheckboxFor<TModel, TValue1, TValue2, TValue3>(
+            this HtmlHelper<TModel> helper,
             Expression<Func<TModel, bool>> expression,
             Expression<Func<TModel, TValue1>> forInputExpression1,
             Expression<Func<TModel, TValue2>> forInputExpression2,
@@ -139,10 +159,16 @@
             dataInputIds.Add(helper.FieldIdFor(forInputExpression1));
             dataInputIds.Add(helper.FieldIdFor(forInputExpression2));
             dataInputIds.Add(helper.FieldIdFor(forInputExpression3));
-            return OverrideStoreCheckboxFor(helper, expression, activeStoreScopeConfiguration, null, dataInputIds.ToArray());
+            return OverrideStoreCheckboxFor(
+                helper,
+                expression,
+                activeStoreScopeConfiguration,
+                null,
+                dataInputIds.ToArray());
         }
 
-        public static MvcHtmlString OverrideStoreCheckboxFor<TModel>(this HtmlHelper<TModel> helper,
+        public static MvcHtmlString OverrideStoreCheckboxFor<TModel>(
+            this HtmlHelper<TModel> helper,
             Expression<Func<TModel, bool>> expression,
             string parentContainer,
             int activeStoreScopeConfiguration)
@@ -150,36 +176,45 @@
             return OverrideStoreCheckboxFor(helper, expression, activeStoreScopeConfiguration, parentContainer);
         }
 
-        private static MvcHtmlString OverrideStoreCheckboxFor<TModel>(this HtmlHelper<TModel> helper,
+        private static MvcHtmlString OverrideStoreCheckboxFor<TModel>(
+            this HtmlHelper<TModel> helper,
             Expression<Func<TModel, bool>> expression,
             int activeStoreScopeConfiguration,
             string parentContainer = null,
             params string[] datainputIds)
         {
-            if (String.IsNullOrEmpty(parentContainer) && datainputIds == null)
+            if (String.IsNullOrEmpty(parentContainer) &&
+                datainputIds == null)
+            {
                 throw new ArgumentException("Specify at least one selector");
+            }
 
             var result = new StringBuilder();
             if (activeStoreScopeConfiguration > 0)
             {
                 //render only when a certain store is chosen
                 const string cssClass = "multi-store-override-option";
-                string dataInputSelector = "";
+                var dataInputSelector = "";
                 if (!String.IsNullOrEmpty(parentContainer))
                 {
-                    dataInputSelector = "#" + parentContainer + " input, #" + parentContainer + " textarea, #" + parentContainer + " select";
+                    dataInputSelector = "#" + parentContainer + " input, #" + parentContainer + " textarea, #" +
+                                        parentContainer + " select";
                 }
-                if (datainputIds != null && datainputIds.Length > 0)
+                if (datainputIds != null &&
+                    datainputIds.Length > 0)
                 {
                     dataInputSelector = "#" + String.Join(", #", datainputIds);
                 }
                 var onClick = string.Format("checkOverriddenStoreValue(this, '{0}')", dataInputSelector);
-                result.Append(helper.CheckBoxFor(expression, new Dictionary<string, object>
-                {
-                    { "class", cssClass },
-                    { "onclick", onClick },
-                    { "data-for-input-selector", dataInputSelector },
-                }));
+                result.Append(
+                    helper.CheckBoxFor(
+                        expression,
+                        new Dictionary<string, object>
+                        {
+                            { "class", cssClass },
+                            { "onclick", onClick },
+                            { "data-for-input-selector", dataInputSelector }
+                        }));
             }
             return MvcHtmlString.Create(result.ToString());
         }
@@ -194,11 +229,15 @@
         public static MvcHtmlString RenderSelectedTabIndex(this HtmlHelper helper, int currentIndex, int indexToSelect)
         {
             if (helper == null)
+            {
                 throw new ArgumentNullException("helper");
+            }
 
             //ensure it's not negative
             if (indexToSelect < 0)
+            {
                 indexToSelect = 0;
+            }
 
             //required validation
             if (indexToSelect == currentIndex)
@@ -219,10 +258,14 @@
             var builder = new TagBuilder("span");
             builder.AddCssClass("required");
             var innerText = "*";
+
             //add additional text if specified
             if (!String.IsNullOrEmpty(additionalText))
+            {
                 innerText += " " + additionalText;
+            }
             builder.SetInnerText(innerText);
+
             // Render tag
             return MvcHtmlString.Create(builder.ToString());
         }
@@ -235,6 +278,7 @@
         public static string FieldIdFor<T, TResult>(this HtmlHelper<T> html, Expression<Func<T, TResult>> expression)
         {
             var id = html.ViewData.TemplateInfo.GetFullHtmlFieldId(ExpressionHelper.GetExpressionText(expression));
+
             // because "[" and "]" aren't replaced with "_" in GetFullHtmlFieldId
             return id.Replace('[', '_').Replace(']', '_');
         }
@@ -254,10 +298,17 @@
         /// <param name="selectedYear">Selected year</param>
         /// <param name="localizeLabels">Localize labels</param>
         /// <returns></returns>
-        public static MvcHtmlString DatePickerDropDowns(this HtmlHelper html,
-            string dayName, string monthName, string yearName,
-            int? beginYear = null, int? endYear = null,
-            int? selectedDay = null, int? selectedMonth = null, int? selectedYear = null, bool localizeLabels = true)
+        public static MvcHtmlString DatePickerDropDowns(
+            this HtmlHelper html,
+            string dayName,
+            string monthName,
+            string yearName,
+            int? beginYear = null,
+            int? endYear = null,
+            int? selectedDay = null,
+            int? selectedMonth = null,
+            int? selectedYear = null,
+            bool localizeLabels = true)
         {
             var daysList = new TagBuilder("select");
             var monthsList = new TagBuilder("select");
@@ -286,37 +337,54 @@
             }
 
             days.AppendFormat("<option value='{0}'>{1}</option>", "0", dayLocale);
-            for (int i = 1; i <= 31; i++)
-                days.AppendFormat("<option value='{0}'{1}>{0}</option>", i,
+            for (var i = 1; i <= 31; i++)
+            {
+                days.AppendFormat(
+                    "<option value='{0}'{1}>{0}</option>",
+                    i,
                     (selectedDay.HasValue && selectedDay.Value == i) ? " selected=\"selected\"" : null);
+            }
 
             months.AppendFormat("<option value='{0}'>{1}</option>", "0", monthLocale);
-            for (int i = 1; i <= 12; i++)
+            for (var i = 1; i <= 12; i++)
             {
-                months.AppendFormat("<option value='{0}'{1}>{2}</option>",
-                                    i,
-                                    (selectedMonth.HasValue && selectedMonth.Value == i) ? " selected=\"selected\"" : null,
-                                    CultureInfo.CurrentUICulture.DateTimeFormat.GetMonthName(i));
+                months.AppendFormat(
+                    "<option value='{0}'{1}>{2}</option>",
+                    i,
+                    (selectedMonth.HasValue && selectedMonth.Value == i) ? " selected=\"selected\"" : null,
+                    CultureInfo.CurrentUICulture.DateTimeFormat.GetMonthName(i));
             }
 
             years.AppendFormat("<option value='{0}'>{1}</option>", "0", yearLocale);
 
             if (beginYear == null)
+            {
                 beginYear = DateTime.UtcNow.Year - 100;
+            }
             if (endYear == null)
+            {
                 endYear = DateTime.UtcNow.Year;
+            }
 
             if (endYear > beginYear)
             {
-                for (int i = beginYear.Value; i <= endYear.Value; i++)
-                    years.AppendFormat("<option value='{0}'{1}>{0}</option>", i,
+                for (var i = beginYear.Value; i <= endYear.Value; i++)
+                {
+                    years.AppendFormat(
+                        "<option value='{0}'{1}>{0}</option>",
+                        i,
                         (selectedYear.HasValue && selectedYear.Value == i) ? " selected=\"selected\"" : null);
+                }
             }
             else
             {
-                for (int i = beginYear.Value; i >= endYear.Value; i--)
-                    years.AppendFormat("<option value='{0}'{1}>{0}</option>", i,
+                for (var i = beginYear.Value; i >= endYear.Value; i--)
+                {
+                    years.AppendFormat(
+                        "<option value='{0}'{1}>{0}</option>",
+                        i,
                         (selectedYear.HasValue && selectedYear.Value == i) ? " selected=\"selected\"" : null);
+                }
             }
 
             daysList.InnerHtml = days.ToString();
@@ -328,7 +396,14 @@
 
         public static MvcHtmlString Widget(this HtmlHelper helper, string widgetZone, object additionalData = null)
         {
-            return helper.Action("WidgetsByZone", "Widget", new { widgetZone = widgetZone, additionalData = additionalData });
+            return helper.Action(
+                "WidgetsByZone",
+                "Widget",
+                new
+                {
+                    widgetZone,
+                    additionalData
+                });
         }
 
         /// <summary>
@@ -341,17 +416,23 @@
         /// <param name="htmlAttributes">HTML attributes</param>
         /// <param name="suffix">Suffix</param>
         /// <returns>Label</returns>
-        public static MvcHtmlString LabelFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, object htmlAttributes, string suffix)
+        public static MvcHtmlString LabelFor<TModel, TValue>(
+            this HtmlHelper<TModel> html,
+            Expression<Func<TModel, TValue>> expression,
+            object htmlAttributes,
+            string suffix)
         {
-            string htmlFieldName = ExpressionHelper.GetExpressionText(expression);
+            var htmlFieldName = ExpressionHelper.GetExpressionText(expression);
             var metadata = ModelMetadata.FromLambdaExpression(expression, html.ViewData);
-            string resolvedLabelText = metadata.DisplayName ?? (metadata.PropertyName ?? htmlFieldName.Split(new[] { '.' }).Last());
+            var resolvedLabelText = metadata.DisplayName ?? (metadata.PropertyName ?? htmlFieldName.Split('.').Last());
             if (string.IsNullOrEmpty(resolvedLabelText))
             {
                 return MvcHtmlString.Empty;
             }
             var tag = new TagBuilder("label");
-            tag.Attributes.Add("for", TagBuilder.CreateSanitizedId(html.ViewContext.ViewData.TemplateInfo.GetFullHtmlFieldId(htmlFieldName)));
+            tag.Attributes.Add(
+                "for",
+                TagBuilder.CreateSanitizedId(html.ViewContext.ViewData.TemplateInfo.GetFullHtmlFieldId(htmlFieldName)));
             if (!String.IsNullOrEmpty(suffix))
             {
                 resolvedLabelText = String.Concat(resolvedLabelText, suffix);

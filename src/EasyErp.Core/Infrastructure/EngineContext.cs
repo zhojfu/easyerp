@@ -1,11 +1,23 @@
 ﻿namespace EasyErp.Core.Infrastructure
 {
-    using EasyErp.Core.Configuration;
     using System.Configuration;
     using System.Runtime.CompilerServices;
+    using EasyErp.Core.Configuration;
 
     public class EngineContext
     {
+        public static IEngine Current
+        {
+            get
+            {
+                if (Singleton<IEngine>.Instance == null)
+                {
+                    Initialize(false);
+                }
+                return Singleton<IEngine>.Instance;
+            }
+        }
+
         protected static IEngine CreateEngineInstance()
         {
             return new EasyErpEngine();
@@ -26,18 +38,6 @@
         public static void Replace(IEngine engine)
         {
             Singleton<IEngine>.Instance = engine;
-        }
-
-        public static IEngine Current
-        {
-            get
-            {
-                if (Singleton<IEngine>.Instance == null)
-                {
-                    Initialize(false);
-                }
-                return Singleton<IEngine>.Instance;
-            }
         }
     }
 }

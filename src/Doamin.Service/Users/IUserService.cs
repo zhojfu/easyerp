@@ -13,5 +13,9 @@
         UserRole GetUserRoleById(int roleId);
 
         void InsertUserRole(UserRole role);
+
+        void ResetCheckoutData(User user);
+
+        void UpdateUser(User user);
     }
 }

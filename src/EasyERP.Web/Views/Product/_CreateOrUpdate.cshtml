@@ -1,7 +1,4 @@
-﻿@using Doamin.Service.Events
-@using EasyErp.Core.Infrastructure
-@using EasyERP.Web.Framework
-@using EasyERP.Web.Framework.Events
+﻿@using EasyERP.Web.Framework
 @model EasyERP.Web.Models.Products.ProductModel
 @Html.ValidationSummary(false)
 @Html.HiddenFor(model => model.Id)
@@ -22,33 +19,12 @@
         <li @Html.RenderSelectedTabIndex(0, GetSelectedTabIndex())>
             "产品信息"
         </li>
-        <li @Html.RenderSelectedTabIndex(1, GetSelectedTabIndex())>
-            "Categories"
-        </li>
     </ul>
     <div>
         @TabInfo()
     </div>
-    <div>
-        @TabCategories()
-    </div>
 </div>
-@{
-    //custom tabs
-    var eventMessage = new AdminTabStripCreated(this.Html, "product-edit");
-    //EngineContext.Current.Resolve<IEventPublisher>().Publish(eventMessage);
-    foreach (var eventBlock in eventMessage.BlocksToRender)
-    {
-        @eventBlock
-    }
-}
 @*save selected tab index*@
 <input type="hidden" id="selected-tab-index" name="selected-tab-index" value="1">
 @helper TabInfo()
-{
-    @Html.Partial("_CreateOrUpdate.Info", Model)
-}
-@helper TabCategories()
-{
-    @Html.Partial("_CreateOrUpdate.Categories", Model)
-}
+{ @Html.Partial("_CreateOrUpdate.Info", Model) }

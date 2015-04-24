@@ -6,30 +6,18 @@
 
     public class PermissionRecord : BaseEntity, IAggregateRoot
     {
-        private ICollection<UserRole> customerRoles;
+        private ICollection<UserRole> userRoles;
 
-        /// <summary>
-        /// Gets or sets the permission name
-        /// </summary>
         public string Name { get; set; }
 
-        /// <summary>
-        /// Gets or sets the permission system name
-        /// </summary>
         public string SystemName { get; set; }
 
-        /// <summary>
-        /// Gets or sets the permission category
-        /// </summary>
         public string Category { get; set; }
 
-        /// <summary>
-        /// Gets or sets discount usage history
-        /// </summary>
         public virtual ICollection<UserRole> CustomerRoles
         {
-            get { return this.customerRoles ?? (this.customerRoles = new List<UserRole>()); }
-            protected set { this.customerRoles = value; }
+            get { return userRoles ?? (userRoles = new List<UserRole>()); }
+            protected set { userRoles = value; }
         }
     }
 }

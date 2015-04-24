@@ -1,16 +1,15 @@
-﻿@using EasyErp.Core.Infrastructure
-@using EasyERP.Web.Framework.Menu;
+﻿@using EasyERP.Web.Framework.Menu
 @using SiteMapNode = EasyERP.Web.Framework.Menu.SiteMapNode
 @{
     //load sitemap
     var siteMap = new XmlSiteMap();
     siteMap.LoadFrom("~/sitemap.config");
-
 }
 @helper RenderMenuItem(SiteMapNode item)
 {
     string url = null;
-    if (!string.IsNullOrEmpty(item.ControllerName) && !string.IsNullOrEmpty(item.ActionName))
+    if (!string.IsNullOrEmpty(item.ControllerName) &&
+        !string.IsNullOrEmpty(item.ActionName))
     {
         url = Url.Action(item.ActionName, item.ControllerName, item.RouteValues, null, null);
     }
@@ -19,10 +18,10 @@
         url = item.Url.StartsWith("~/", StringComparison.Ordinal) ? Url.Content(item.Url) : item.Url;
     }
     <li>
-
         @if (!String.IsNullOrEmpty(url))
         {
             <a href="@url">
+
                 @if (!String.IsNullOrEmpty(item.ImageUrl))
                 {
                     <text>
@@ -45,6 +44,7 @@
         @if (item.ChildNodes.Any(x => x.Visible))
         {
             <ul>
+
                 @foreach (var childItem in item.ChildNodes.Where(x => x.Visible))
                 {
                     @RenderMenuItem(childItem)
@@ -55,11 +55,13 @@
 }
 
 <ul id="admin-menu">
+
     @foreach (var item in siteMap.RootNode.ChildNodes.Where(x => x.Visible))
     {
         @RenderMenuItem(item)
     }
 </ul>
+
 <script>
     $(document).ready(function () {
         $("#admin-menu").kendoMenu();

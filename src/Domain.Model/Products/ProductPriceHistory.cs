@@ -1,6 +1,7 @@
 ﻿namespace Domain.Model.Products
 {
     using Domain.Model.Company;
+    using Domain.Model.Stores;
     using Infrastructure.Domain.Model;
     using System;
 
@@ -10,12 +11,12 @@
 
         public float Cost { get; set; }
 
-        public long ProductTemplateId { get; set; }
+        public int StoreId { get; set; }
 
-        public virtual ProductTemplate ProductTemplate { get; set; }
+        public virtual Store Store { get; set; }
 
-        public long CompanyId { get; set; }
+        public int ProductId { get; set; }
 
-        public virtual Company Company { get; set; }
+        public virtual Product Product { get; set; }
     }
 }

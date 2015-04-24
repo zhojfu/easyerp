@@ -1,28 +1,28 @@
 ﻿namespace EasyERP.Web.Framework
 {
     using Doamin.Service.Authentication;
-    using Doamin.Service.Helpers;
-    using Doamin.Service.Stores;
     using Doamin.Service.Users;
-    using Doamin.Service.Vendors;
     using Domain.Model.Users;
-    using Domain.Model.Vendors;
     using EasyErp.Core;
     using System;
-    using System.Linq;
     using System.Web;
 
-    public partial class WebWorkContext : IWorkContext
+    public class WebWorkContext : IWorkContext
     {
-        private readonly HttpContextBase httpContext;
         private const string UserCookieName = "Easyerp.user";
 
-        private readonly IUserService userService;
         private readonly IAuthenticationService authenticationService;
+
+        private readonly HttpContextBase httpContext;
+
+        private readonly IUserService userService;
 
         private User cachedUser;
 
-        public WebWorkContext(HttpContextBase httpContext, IUserService userService, IAuthenticationService authenticationService)
+        public WebWorkContext(
+            HttpContextBase httpContext,
+            IUserService userService,
+            IAuthenticationService authenticationService)
         {
             this.httpContext = httpContext;
             this.userService = userService;
@@ -33,29 +33,37 @@
         {
             get
             {
-                if (this.cachedUser != null)
+                if (cachedUser != null)
                 {
-                    return this.cachedUser;
+                    return cachedUser;
                 }
-                var user = this.authenticationService.GetAuthenticatedUser();
+                var user = authenticationService.GetAuthenticatedUser();
+
+                if (user == null)
+                {
+                    return null;
+                }
+
                 if (user.Active &&
                     !user.Deleted)
                 {
-                    this.SetUserCookie(user.UseGuid);
-                    this.cachedUser = user;
+                    SetUserCookie(user.UseGuid);
+                    cachedUser = user;
                 }
-                return this.cachedUser;
+
+                return cachedUser;
             }
             set
             {
-                this.SetUserCookie(value.UseGuid);
-                this.cachedUser = value;
+                SetUserCookie(value.UseGuid);
+                cachedUser = value;
             }
         }
 
         protected virtual void SetUserCookie(Guid userGuid)
         {
-            if (httpContext != null && httpContext.Response != null)
+            if (httpContext != null &&
+                httpContext.Response != null)
             {
                 var cookie = new HttpCookie(UserCookieName);
                 cookie.HttpOnly = true;

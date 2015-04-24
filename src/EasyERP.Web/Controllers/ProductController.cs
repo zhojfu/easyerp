@@ -1,21 +1,13 @@
 ﻿namespace EasyERP.Web.Controllers
 {
-    using Doamin.Service.Directory;
-    using Doamin.Service.Discounts;
     using Doamin.Service.Helpers;
     using Doamin.Service.Products;
     using Doamin.Service.Security;
     using Doamin.Service.Stores;
-    using Doamin.Service.Vendors;
-    using Domain.Model.Directory;
-    using Domain.Model.Discounts;
     using Domain.Model.Payment;
     using Domain.Model.Products;
-    using Domain.Model.Vendors;
-    using EasyErp.Core;
-    using EasyErp.Core.Configuration.Settings;
     using EasyERP.Web.Extensions;
-    using EasyERP.Web.Kendoui;
+    using EasyERP.Web.Framework.Kendoui;
     using EasyERP.Web.Models.Products;
     using System;
     using System.Collections.Generic;
@@ -24,106 +16,87 @@
 
     public class ProductController : BaseAdminController
     {
-        private readonly IPermissionService permissionService;
-        private readonly IProductTemplateService _productTemplateService;
+        private readonly ICategoryService categoryService;
 
-        //private readonly IWorkContext _workContext;
-        private readonly IProductService _productService;
-
-        private readonly ICategoryService _categoryService;
-
-        private readonly IDiscountService _discountService;
-        private readonly IManufacturerService _manufacturerService;
-        private readonly IStoreService _storeService;
-        private readonly IMeasureService _measureService;
-        private readonly MeasureSettings _measureSettings;
-        private readonly IVendorService _vendorService;
-        private readonly ISpecificationAttributeService _specificationAttributeService;
-
-        private readonly IDateTimeHelper _dateTimeHelper;
-        private readonly IProductAttributeService _productAttributeService;
-        private readonly IAclService aclService;
+        private readonly IDateTimeHelper dateTimeHelper;
 
         private readonly IInventoryService inventoryService;
+
+        private readonly IPermissionService permissionService;
+
+        private readonly IProductService productService;
+
+        private readonly IStoreService storeService;
 
         public ProductController(
             IPermissionService permissionService,
             ICategoryService categoryService,
-            IProductTemplateService productTemplateService,
             IProductService productService,
-            IManufacturerService manufacturerService,
             IStoreService storeService,
-            IMeasureService measureService,
-            IDateTimeHelper dateTimeHelper,
-            IProductAttributeService productAttributeService,
-            ISpecificationAttributeService specificationAttributeService,
-            IDiscountService discountService,
-            IVendorService vendorService,
             IInventoryService inventoryService,
+            IDateTimeHelper dateTimeHelper,
             IAclService aclService)
         {
-            this._categoryService = categoryService;
             this.permissionService = permissionService;
-            this._productTemplateService = productTemplateService;
-            this._productService = productService;
-            this._manufacturerService = manufacturerService;
-            this._discountService = discountService;
-            this._storeService = storeService;
+            this.categoryService = categoryService;
+            this.productService = productService;
+            this.storeService = storeService;
             this.inventoryService = inventoryService;
-            this._measureService = measureService;
-
-            this._measureSettings = new MeasureSettings();
-
-            this._dateTimeHelper = dateTimeHelper;
-            this._vendorService = vendorService;
-            this._productAttributeService = productAttributeService;
-            this.aclService = aclService;
-            this._specificationAttributeService = specificationAttributeService;
+            this.dateTimeHelper = dateTimeHelper;
         }
 
         // GET: Product
         public ActionResult Index()
         {
-            return this.RedirectToAction("List");
+            return RedirectToAction("List");
         }
 
         [HttpPost]
         public ActionResult ProductList(DataSourceRequest command, ProductListModel model)
         {
-            if (!this.permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            if (!permissionService.Authorize(StandardPermissionProvider.ManageProducts))
             {
                 return AccessDeniedView();
             }
 
-            var categoryIds = new List<int> { model.SearchCategoryId };
+            var categoryIds = new List<int>
+            {
+                model.SearchCategoryId
+            };
+
+            var storeIds = new List<int>
+            {
+                model.SearchStoreId
+            };
 
             bool? overridePublished = null;
             if (model.SearchPublishedId == 1)
+            {
                 overridePublished = true;
+            }
             else if (model.SearchPublishedId == 2)
+            {
                 overridePublished = false;
+            }
 
-            var products = _productService.SearchProducts(
+            var products = productService.SearchProducts(
                 categoryIds: categoryIds,
-                manufacturerId: model.SearchManufacturerId,
-                storeId: model.SearchStoreId,
-                vendorId: model.SearchVendorId,
-                warehouseId: model.SearchWarehouseId,
+                storeIds: storeIds,
                 keywords: model.SearchProductName,
                 pageIndex: command.Page - 1,
                 pageSize: command.PageSize,
-                showHidden: true,
                 overridePublished: overridePublished
-            );
+                );
             var gridModel = new DataSourceResult();
-            gridModel.Data = products.Select(x =>
-            {
-                var productModel = x.ToModel();
+            gridModel.Data = products.Select(
+                x =>
+                {
+                    var productModel = x.ToModel();
 
-                productModel.FullDescription = "";
+                    productModel.FullDescription = "";
 
-                return productModel;
-            });
+                    return productModel;
+                });
             gridModel.Total = products.TotalCount;
 
             return Json(gridModel);
@@ -131,72 +104,124 @@
 
         public ActionResult List()
         {
-            if (!this.permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            if (!permissionService.Authorize(StandardPermissionProvider.ManageProducts))
             {
-                return this.AccessDeniedView();
+                return AccessDeniedView();
             }
             var model = new ProductListModel();
 
             //categories
-            model.AvailableCategories.Add(new SelectListItem { Text = "All", Value = "0" });
-            var categories = _categoryService.GetAllCategories(showHidden: true);
+            model.AvailableCategories.Add(
+                new SelectListItem
+                {
+                    Text = "所有目录",
+                    Value = "0"
+                });
+
+            var categories = categoryService.GetAllCategories();
             foreach (var c in categories)
-                model.AvailableCategories.Add(new SelectListItem { Text = c.Name, Value = c.Id.ToString() });
+            {
+                model.AvailableCategories.Add(
+                    new SelectListItem
+                    {
+                        Text = c.Name,
+                        Value = c.Id.ToString()
+                    });
+            }
 
-            model.AvailablePublishedOptions.Add(new SelectListItem { Text = "All", Value = "0" });
-            model.AvailablePublishedOptions.Add(new SelectListItem { Text = "PublishedOnly", Value = "1" });
-            model.AvailablePublishedOptions.Add(new SelectListItem { Text = "UnpublishedOnly", Value = "2" });
+            //stores
+            model.AvailableStores.Add(
+                new SelectListItem
+                {
+                    Text = "所有店面",
+                    Value = "0"
+                });
+            var stores = storeService.GetAllStores();
+            foreach (var store in stores)
+            {
+                model.AvailableStores.Add(
+                    new SelectListItem
+                    {
+                        Text = store.Name,
+                        Value = store.Id.ToString()
+                    });
+            }
 
-            return this.View(model);
+            model.AvailablePublishedOptions.Add(
+                new SelectListItem
+                {
+                    Text = "所有",
+                    Value = "0"
+                });
+            model.AvailablePublishedOptions.Add(
+                new SelectListItem
+                {
+                    Text = "已发布",
+                    Value = "1"
+                });
+            model.AvailablePublishedOptions.Add(
+                new SelectListItem
+                {
+                    Text = "未发布",
+                    Value = "2"
+                });
+
+            return View(model);
         }
 
         public ActionResult Inventory()
         {
-            if (!this.permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            if (!permissionService.Authorize(StandardPermissionProvider.ManageProducts))
             {
-                return this.AccessDeniedView();
+                return AccessDeniedView();
             }
 
             var model = new InventoryModel();
 
-            var allCategories = _categoryService.GetAllCategories(showHidden: true);
+            var allCategories = categoryService.GetAllCategories();
             foreach (var category in allCategories)
             {
-                model.AvailableCategories.Add(new SelectListItem
-                {
-                    Text = category.Name,
-                    Value = category.Id.ToString()
-                });
+                model.AvailableCategories.Add(
+                    new SelectListItem
+                    {
+                        Text = category.Name,
+                        Value = category.Id.ToString()
+                    });
             }
 
-            var products = _productService.GetAllProducts();
+            var products = productService.GetAllProducts();
 
             if (products == null ||
                 !products.Any())
             {
-                return this.RedirectToAction("Create");
+                return RedirectToAction("Create");
             }
 
             products.ToList().ForEach(
                 p =>
                 {
-                    model.AvailableProducts.Add(new SelectListItem { Text = p.Name, Value = p.Id.ToString() });
+                    model.AvailableProducts.Add(
+                        new SelectListItem
+                        {
+                            Text = p.Name,
+                            Value = p.Id.ToString()
+                        });
                 });
 
             model.Paid = 0;
             model.DueDateTime = DateTime.Now + TimeSpan.FromDays(30);
 
-            return this.View(model);
+            return View(model);
         }
 
         [HttpPost]
         public ActionResult Inventory(InventoryModel model)
         {
-            if (!this.permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            if (!permissionService.Authorize(StandardPermissionProvider.ManageProducts))
             {
-                return this.AccessDeniedView();
+                return AccessDeniedView();
             }
-            if (this.ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 var inventory = model.ToEntity();
                 inventory.InStockTime = DateTime.Now;
@@ -207,123 +232,128 @@
                     Payables = model.Payables
                 };
 
-                this.inventoryService.InsertInventory(inventory, payment);
+                inventoryService.InsertInventory(inventory, payment);
             }
 
-            return this.RedirectToAction("List");
+            return RedirectToAction("List");
         }
 
         //create product
         public ActionResult Create()
         {
-            if (!this.permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            if (!permissionService.Authorize(StandardPermissionProvider.ManageProducts))
             {
-                return this.AccessDeniedView();
+                return AccessDeniedView();
             }
 
             var model = new ProductModel();
-            this.PrepareProductModel(model, null, true, true);
-            this.PrepareAclModel(model, null, false);
-            this.PrepareStoresMappingModel(model, null, false);
-            return this.View(model);
+            PrepareProductModel(model, null, true, true);
+            PrepareAclModel(model, null, false);
+            PrepareStoresMappingModel(model, null, false);
+            return View(model);
         }
 
         [HttpPost, ParameterBasedOnFormName("save-continue", "continueEditing")]
         public ActionResult Create(ProductModel model, bool continueEditing)
         {
-            if (!this.permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            if (!permissionService.Authorize(StandardPermissionProvider.ManageProducts))
             {
-                return this.AccessDeniedView();
+                return AccessDeniedView();
             }
 
-            if (this.ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 //product
                 var product = model.ToEntity();
                 product.CreatedOnUtc = DateTime.UtcNow;
                 product.UpdatedOnUtc = DateTime.UtcNow;
 
-                this._productService.InsertProduct(product);
+                productService.InsertProduct(product);
 
                 return continueEditing
-                           ? this.RedirectToAction(
+                           ? RedirectToAction(
                                "Edit",
                                new
                                {
                                    id = product.Id
                                })
-                           : this.RedirectToAction("List");
+                           : RedirectToAction("List");
             }
 
             //If we got this far, something failed, redisplay form
-            this.PrepareProductModel(model, null, false, true);
-            this.PrepareAclModel(model, null, true);
-            this.PrepareStoresMappingModel(model, null, true);
-            return this.View(model);
+            PrepareProductModel(model, null, false, true);
+            PrepareAclModel(model, null, true);
+            PrepareStoresMappingModel(model, null, true);
+            return View(model);
         }
 
         public ActionResult Edit(int id)
         {
-            if (!this.permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            if (!permissionService.Authorize(StandardPermissionProvider.ManageProducts))
             {
-                return this.AccessDeniedView();
+                return AccessDeniedView();
             }
 
-            var product = this._productService.GetProductById(id);
+            var product = productService.GetProductById(id);
 
             //No product found with the specified id
             if (product == null ||
                 product.Deleted)
             {
-                return this.RedirectToAction("List");
+                return RedirectToAction("List");
             }
 
             var model = product.ToModel();
-            this.PrepareProductModel(model, product, false, false);
-            this.PrepareAclModel(model, product, false);
-            this.PrepareStoresMappingModel(model, product, false);
-            return this.View(model);
+            PrepareProductModel(model, product, false, false);
+            PrepareAclModel(model, product, false);
+            PrepareStoresMappingModel(model, product, false);
+            return View(model);
         }
 
         [HttpPost, ParameterBasedOnFormName("save-continue", "continueEditing")]
         public ActionResult Edit(ProductModel model, bool continueEditing)
         {
-            if (!this.permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            if (!permissionService.Authorize(StandardPermissionProvider.ManageProducts))
             {
-                return this.AccessDeniedView();
+                return AccessDeniedView();
             }
 
-            var product = this._productService.GetProductById(model.Id);
+            var product = productService.GetProductById(model.Id);
             if (product == null ||
                 product.Deleted)
             {
                 //No product found with the specified id
-                return this.RedirectToAction("List");
+                return RedirectToAction("List");
             }
 
-            if (this.ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 //product
                 product = model.ToEntity(product);
-                this._productService.UpdateProduct(product);
+                productService.UpdateProduct(product);
 
                 if (continueEditing)
                 {
-                    return this.RedirectToAction(
+                    return RedirectToAction(
                         "Edit",
                         new
                         {
                             id = product.Id
                         });
                 }
-                return this.RedirectToAction("List");
+                return RedirectToAction("List");
             }
 
             //If we got this far, something failed, redisplay form
-            this.PrepareProductModel(model, product, false, true);
-            this.PrepareAclModel(model, product, true);
-            this.PrepareStoresMappingModel(model, product, true);
-            return this.View(model);
+            PrepareProductModel(model, product, false, true);
+            PrepareAclModel(model, product, true);
+            PrepareStoresMappingModel(model, product, true);
+            return View(model);
+        }
+
+        public ActionResult Detail(int productId)
+        {
+            return View();
         }
 
         [NonAction]
@@ -334,22 +364,25 @@
             bool excludeProperties)
         {
             if (model == null)
+            {
                 throw new ArgumentNullException("model");
+            }
 
-            var allCategories = _categoryService.GetAllCategories(showHidden: true);
+            var allCategories = categoryService.GetAllCategories();
             foreach (var category in allCategories)
             {
-                model.AvailableCategories.Add(new SelectListItem
-                {
-                    Text = category.Name,
-                    Value = category.Id.ToString()
-                });
+                model.AvailableCategories.Add(
+                    new SelectListItem
+                    {
+                        Text = category.Name,
+                        Value = category.Id.ToString()
+                    });
             }
 
             if (product != null)
             {
-                model.CreatedOn = _dateTimeHelper.ConvertToUserTime(product.CreatedOnUtc, DateTimeKind.Utc);
-                model.UpdatedOn = _dateTimeHelper.ConvertToUserTime(product.UpdatedOnUtc, DateTimeKind.Utc);
+                model.CreatedOn = dateTimeHelper.ConvertToUserTime(product.CreatedOnUtc, DateTimeKind.Utc);
+                model.UpdatedOn = dateTimeHelper.ConvertToUserTime(product.UpdatedOnUtc, DateTimeKind.Utc);
             }
 
             //default values
@@ -364,45 +397,45 @@
         [HttpPost]
         public ActionResult Delete(int id)
         {
-            if (!this.permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            if (!permissionService.Authorize(StandardPermissionProvider.ManageProducts))
             {
-                return this.AccessDeniedView();
+                return AccessDeniedView();
             }
 
-            var product = this._productService.GetProductById(id);
+            var product = productService.GetProductById(id);
             if (product == null)
             {
                 //No product found with the specified id
-                return this.RedirectToAction("List");
+                return RedirectToAction("List");
             }
 
-            this._productService.DeleteProduct(product);
+            productService.DeleteProduct(product);
 
-            return this.RedirectToAction("List");
+            return RedirectToAction("List");
         }
 
         [HttpPost]
         public ActionResult DeleteSelected(ICollection<int> selectedIds)
         {
-            if (!this.permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            if (!permissionService.Authorize(StandardPermissionProvider.ManageProducts))
             {
-                return this.AccessDeniedView();
+                return AccessDeniedView();
             }
 
             var products = new List<Product>();
             if (selectedIds != null)
             {
-                products.AddRange(this._productService.GetProductsByIds(selectedIds.ToArray()));
+                products.AddRange(productService.GetProductsByIds(selectedIds.ToArray()));
 
                 for (var i = 0; i < products.Count; i++)
                 {
                     var product = products[i];
 
-                    this._productService.DeleteProduct(product);
+                    productService.DeleteProduct(product);
                 }
             }
 
-            return this.Json(
+            return Json(
                 new
                 {
                     Result = true

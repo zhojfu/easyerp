@@ -1,11 +1,11 @@
 ﻿namespace EasyERP.Web.Framework.Security.Captcha
 {
-    using EasyErp.Core.Infrastructure;
     using System.Web.Mvc;
 
     public class CaptchaValidatorAttribute : ActionFilterAttribute
     {
         private const string CHALLENGE_FIELD_KEY = "recaptcha_challenge_field";
+
         private const string RESPONSE_FIELD_KEY = "recaptcha_response_field";
 
         public override void OnActionExecuting(ActionExecutingContext filterContext)

@@ -1,5 +1,6 @@
 ﻿namespace Domain.Model.Users
 {
+    using Domain.Model.Orders;
     using Domain.Model.Stores;
     using Infrastructure.Domain.Model;
     using System;
@@ -27,12 +28,14 @@
 
         public virtual ICollection<UserRole> UserRoles
         {
-            get { return this.userRoles ?? (this.userRoles = new List<UserRole>()); }
-            set { this.userRoles = value; }
+            get { return userRoles ?? (userRoles = new List<UserRole>()); }
+            set { userRoles = value; }
         }
 
         public DateTime CreatedOn { get; set; }
 
         public DateTime LastLoginDate { get; set; }
+
+        public virtual ICollection<ShoppingCartItem> ShoppingCartItems { get; set; }
     }
 }

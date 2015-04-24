@@ -2,7 +2,7 @@
 {
     using Infrastructure.Domain.Model;
 
-    public class DeleteConfirmationModel : BaseEntity
+    public class DeleteConfirmationModel : BaseEntityModel
     {
         public string ControllerName { get; set; }
 

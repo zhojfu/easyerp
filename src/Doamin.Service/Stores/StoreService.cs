@@ -1,15 +1,15 @@
 namespace Doamin.Service.Stores
 {
-    using Domain.Model.Stores;
-    using Infrastructure.Domain;
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Domain.Model.Stores;
+    using Infrastructure.Domain;
 
     /// <summary>
     /// Store service
     /// </summary>
-    public partial class StoreService : IStoreService
+    public class StoreService : IStoreService
     {
         private readonly IRepository<Store> storeRepository;
 
@@ -27,13 +27,13 @@ namespace Doamin.Service.Stores
             {
                 throw new ArgumentNullException("store");
             }
-            this.storeRepository.Remove(store);
-            this.unitOfWork.Commit();
+            storeRepository.Remove(store);
+            unitOfWork.Commit();
         }
 
         public IList<Store> GetAllStores()
         {
-            return this.storeRepository.FindAll(i => i.Id > 0).ToList();
+            return storeRepository.FindAll(i => i.Id > 0).ToList();
         }
 
         public Store GetStoreById(int storeId)
@@ -42,7 +42,7 @@ namespace Doamin.Service.Stores
             {
                 throw new ArgumentException("storeId");
             }
-            return this.storeRepository.GetByKey(storeId);
+            return storeRepository.GetByKey(storeId);
         }
 
         public void InsertStore(Store store)
@@ -51,8 +51,8 @@ namespace Doamin.Service.Stores
             {
                 throw new ArgumentNullException("store");
             }
-            this.storeRepository.Add(store);
-            this.unitOfWork.Commit();
+            storeRepository.Add(store);
+            unitOfWork.Commit();
         }
 
         public void UpdateStore(Store store)
@@ -61,8 +61,8 @@ namespace Doamin.Service.Stores
             {
                 throw new ArgumentNullException("store");
             }
-            this.storeRepository.Update(store);
-            this.unitOfWork.Commit();
+            storeRepository.Update(store);
+            unitOfWork.Commit();
         }
     }
 }

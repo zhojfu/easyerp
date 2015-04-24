@@ -13,6 +13,6 @@ namespace Domain.Model.Media
         /// <summary>
         /// Avatar
         /// </summary>
-        Avatar = 10,
+        Avatar = 10
     }
 }

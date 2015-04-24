@@ -7,10 +7,10 @@
     {
         public MaterialStatisticConfiguration()
         {
-            this.HasKey(m => m.Id);
-            this.Property(m => m.Date);
-            this.Property(m => m.ComsumeQuantity);
-            this.HasRequired(m => m.Material).WithMany(p => p.MaterialComsumptions).HasForeignKey(m => m.MaterialId);
+            HasKey(m => m.Id);
+            Property(m => m.Date);
+            Property(m => m.ComsumeQuantity);
+            HasRequired(m => m.Material).WithMany(p => p.MaterialComsumptions).HasForeignKey(m => m.MaterialId);
         }
     }
 }

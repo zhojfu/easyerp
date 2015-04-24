@@ -129,7 +129,11 @@
         /// <param name="location">A location of the script element</param>
         /// <param name="part">Script part</param>
         /// <param name="excludeFromBundle">A value indicating whether to exclude this script from bundling</param>
-        public static void AddScriptParts(this HtmlHelper html, ResourceLocation location, string part, bool excludeFromBundle = false)
+        public static void AddScriptParts(
+            this HtmlHelper html,
+            ResourceLocation location,
+            string part,
+            bool excludeFromBundle = false)
         {
             var pageHeadBuilder = EngineContext.Current.Resolve<IPageHeadBuilder>();
             pageHeadBuilder.AddScriptParts(location, part, excludeFromBundle);
@@ -153,7 +157,11 @@
         /// <param name="location">A location of the script element</param>
         /// <param name="part">Script part</param>
         /// <param name="excludeFromBundle">A value indicating whether to exclude this script from bundling</param>
-        public static void AppendScriptParts(this HtmlHelper html, ResourceLocation location, string part, bool excludeFromBundle = false)
+        public static void AppendScriptParts(
+            this HtmlHelper html,
+            ResourceLocation location,
+            string part,
+            bool excludeFromBundle = false)
         {
             var pageHeadBuilder = EngineContext.Current.Resolve<IPageHeadBuilder>();
             pageHeadBuilder.AppendScriptParts(location, part, excludeFromBundle);
@@ -167,8 +175,11 @@
         /// <param name="location">A location of the script element</param>
         /// <param name="bundleFiles">A value indicating whether to bundle script elements</param>
         /// <returns>Generated string</returns>
-        public static MvcHtmlString NopScripts(this HtmlHelper html, UrlHelper urlHelper,
-            ResourceLocation location, bool? bundleFiles = null)
+        public static MvcHtmlString NopScripts(
+            this HtmlHelper html,
+            UrlHelper urlHelper,
+            ResourceLocation location,
+            bool? bundleFiles = null)
         {
             var pageHeadBuilder = EngineContext.Current.Resolve<IPageHeadBuilder>();
             return MvcHtmlString.Create(pageHeadBuilder.GenerateScripts(urlHelper, location, bundleFiles));
@@ -226,8 +237,11 @@
         /// <param name="location">A location of the script element</param>
         /// <param name="bundleFiles">A value indicating whether to bundle script elements</param>
         /// <returns>Generated string</returns>
-        public static MvcHtmlString NopCssFiles(this HtmlHelper html, UrlHelper urlHelper,
-            ResourceLocation location, bool? bundleFiles = null)
+        public static MvcHtmlString NopCssFiles(
+            this HtmlHelper html,
+            UrlHelper urlHelper,
+            ResourceLocation location,
+            bool? bundleFiles = null)
         {
             var pageHeadBuilder = EngineContext.Current.Resolve<IPageHeadBuilder>();
             return MvcHtmlString.Create(pageHeadBuilder.GenerateCssFiles(urlHelper, location, bundleFiles));
@@ -272,7 +286,8 @@
         /// Add any custom element to the <![CDATA[<head>]]>
         /// </summary>
         /// <param name="html">HTML helper</param>
-        /// <param name="part">The entire element. For example, <![CDATA[<meta name="msvalidate.01" content="123121231231313123123" />]]></param>
+        /// <param name="part">
+        /// The entire element. For example, <![CDATA[<meta name="msvalidate.01" content="123121231231313123123" />]]></param>
         public static void AddHeadCustomParts(this HtmlHelper html, string part)
         {
             var pageHeadBuilder = EngineContext.Current.Resolve<IPageHeadBuilder>();
@@ -283,7 +298,8 @@
         /// Append any custom element to the <![CDATA[<head>]]>
         /// </summary>
         /// <param name="html">HTML helper</param>
-        /// <param name="part">The entire element. For example, <![CDATA[<meta name="msvalidate.01" content="123121231231313123123" />]]></param>
+        /// <param name="part">
+        /// The entire element. For example, <![CDATA[<meta name="msvalidate.01" content="123121231231313123123" />]]></param>
         public static void AppendHeadCustomParts(this HtmlHelper html, string part)
         {
             var pageHeadBuilder = EngineContext.Current.Resolve<IPageHeadBuilder>();

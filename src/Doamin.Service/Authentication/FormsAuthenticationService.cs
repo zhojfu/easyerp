@@ -1,34 +1,43 @@
 namespace Doamin.Service.Authentication
 {
-    using Doamin.Service.Users;
-    using Domain.Model.Users;
     using System;
     using System.Web;
     using System.Web.Security;
+    using Doamin.Service.Users;
+    using Domain.Model.Users;
 
     /// <summary>
     /// Authentication service
     /// </summary>
-    public partial class FormsAuthenticationService : IAuthenticationService
+    public class FormsAuthenticationService : IAuthenticationService
     {
-        private readonly HttpContextBase _httpContext;
         private readonly IUserService _customerService;
+
         private readonly TimeSpan _expirationTimeSpan;
+
+        private readonly HttpContextBase _httpContext;
 
         private User cachedUser;
 
         public FormsAuthenticationService(HttpContextBase httpContext, IUserService customerService)
         {
-            this._httpContext = httpContext;
-            this._customerService = customerService;
-            this._expirationTimeSpan = FormsAuthentication.Timeout;
+            _httpContext = httpContext;
+            _customerService = customerService;
+            _expirationTimeSpan = FormsAuthentication.Timeout;
         }
 
         public virtual void SignIn(User user, bool createPersistentCookie)
         {
             var now = DateTime.UtcNow.ToLocalTime();
 
-            var ticket = new FormsAuthenticationTicket(1, user.Name, now, now.Add(this._expirationTimeSpan), createPersistentCookie, user.Name, FormsAuthentication.FormsCookiePath);
+            var ticket = new FormsAuthenticationTicket(
+                1,
+                user.Name,
+                now,
+                now.Add(_expirationTimeSpan),
+                createPersistentCookie,
+                user.Name,
+                FormsAuthentication.FormsCookiePath);
 
             var encryptedTicket = FormsAuthentication.Encrypt(ticket);
 
@@ -47,47 +56,49 @@ namespace Doamin.Service.Authentication
                 cookie.Domain = FormsAuthentication.CookieDomain;
             }
 
-            this._httpContext.Response.Cookies.Add(cookie);
-            this.cachedUser = user;
+            _httpContext.Response.Cookies.Add(cookie);
+            cachedUser = user;
         }
 
         public virtual void SignOut()
         {
-            this.cachedUser = null;
+            cachedUser = null;
             FormsAuthentication.SignOut();
         }
 
         public virtual User GetAuthenticatedUser()
         {
-            if (this.cachedUser != null)
+            if (cachedUser != null)
             {
-                return this.cachedUser;
+                return cachedUser;
             }
 
-            if (this._httpContext == null ||
-                this._httpContext.Request == null ||
-                !this._httpContext.Request.IsAuthenticated ||
-                !(this._httpContext.User.Identity is FormsIdentity))
+            if (_httpContext == null ||
+                _httpContext.Request == null ||
+                !_httpContext.Request.IsAuthenticated ||
+                !(_httpContext.User.Identity is FormsIdentity))
             {
                 return null;
             }
 
-            var formsIdentity = (FormsIdentity)this._httpContext.User.Identity;
-            var user = this.GetAuthenticatedUserFromTicket(formsIdentity.Ticket);
+            var formsIdentity = (FormsIdentity)_httpContext.User.Identity;
+            var user = GetAuthenticatedUserFromTicket(formsIdentity.Ticket);
             if (user != null &&
                 user.Active &&
                 !user.Deleted)
             {
-                this.cachedUser = user;
+                cachedUser = user;
             }
 
-            return this.cachedUser;
+            return cachedUser;
         }
 
         public virtual User GetAuthenticatedUserFromTicket(FormsAuthenticationTicket ticket)
         {
             if (ticket == null)
+            {
                 throw new ArgumentNullException("ticket");
+            }
 
             var username = ticket.UserData;
 
@@ -96,7 +107,7 @@ namespace Doamin.Service.Authentication
                 return null;
             }
 
-            return this._customerService.GetUserByName(username);
+            return _customerService.GetUserByName(username);
         }
     }
 }
