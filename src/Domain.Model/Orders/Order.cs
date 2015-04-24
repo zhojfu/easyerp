@@ -1,9 +1,9 @@
 ﻿namespace Domain.Model.Orders
 {
-    using System;
-    using System.Collections.Generic;
     using Domain.Model.Stores;
     using Infrastructure.Domain.Model;
+    using System;
+    using System.Collections.Generic;
 
     public class Order : BaseEntity, IAggregateRoot
     {
@@ -55,18 +55,12 @@
             set { ShippingStatusId = (int)value; }
         }
 
-        /// <summary>
-        /// Gets or sets the order status
-        /// </summary>
         public OrderStatus OrderStatus
         {
             get { return (OrderStatus)OrderStatusId; }
             set { OrderStatusId = (int)value; }
         }
 
-        /// <summary>
-        /// Gets or sets the payment status
-        /// </summary>
         public PaymentStatus PaymentStatus
         {
             get { return (PaymentStatus)PaymentStatusId; }
@@ -98,29 +92,14 @@
 
     public enum ShippingStatus
     {
-        /// <summary>
-        /// Shipping not required
-        /// </summary>
         ShippingNotRequired = 10,
 
-        /// <summary>
-        /// Not yet shipped
-        /// </summary>
         NotYetShipped = 20,
 
-        /// <summary>
-        /// Partially shipped
-        /// </summary>
         PartiallyShipped = 25,
 
-        /// <summary>
-        /// Shipped
-        /// </summary>
         Shipped = 30,
 
-        /// <summary>
-        /// Delivered
-        /// </summary>
         Delivered = 40
     }
 }

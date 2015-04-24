@@ -48,6 +48,8 @@ namespace EasyERP.Web.Framework
                    .As<HttpSessionStateBase>()
                    .InstancePerLifetimeScope();
 
+            builder.RegisterInstance(new AreaSettings()).AsSelf();
+
             //web helper
             builder.RegisterType<WebHelper>().As<IWebHelper>().InstancePerLifetimeScope();
 

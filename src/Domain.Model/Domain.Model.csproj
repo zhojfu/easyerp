@@ -43,11 +43,6 @@
     <Compile Include="Company\Company.cs" />
     <Compile Include="Directory\MeasureDimension.cs" />
     <Compile Include="Directory\MeasureWeight.cs" />
-    <Compile Include="Discounts\Discount.cs" />
-    <Compile Include="Discounts\DiscountLimitationType.cs" />
-    <Compile Include="Discounts\DiscountRequirement.cs" />
-    <Compile Include="Discounts\DiscountType.cs" />
-    <Compile Include="Discounts\DiscountUsageHistory.cs" />
     <Compile Include="Factory\Attrition.cs" />
     <Compile Include="Factory\MaterialStatisitc.cs" />
     <Compile Include="Factory\Statistic.cs" />
@@ -75,6 +70,8 @@
     <Compile Include="Products\ProductUomCategory.cs" />
     <Compile Include="Products\Supplierinfo.cs" />
     <Compile Include="Factory\AttritionStatistic.cs" />
+    <Compile Include="Sales\Sales.cs" />
+    <Compile Include="Sales\SalesItem.cs" />
     <Compile Include="Security\AclRecord.cs" />
     <Compile Include="Security\DefaultPermissionRecord.cs" />
     <Compile Include="Security\IAclSupported.cs" />

@@ -60,7 +60,7 @@
                 new DefaultPermissionRecord
                 {
                     UserRoleSystemName = SystemUserRoleNames.Administrators,
-                    PermissionRecords = new[] { ManageProducts, ManageStores, ManageOrders }
+                    PermissionRecords = new[] { ManageProducts, ManageStores, ManageOrders, AccessAdminPanel }
                 },
                 new DefaultPermissionRecord
                 {
