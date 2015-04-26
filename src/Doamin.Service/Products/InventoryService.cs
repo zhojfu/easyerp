@@ -1,24 +1,25 @@
 ﻿namespace Doamin.Service.Products
 {
+    using System;
+    using System.Collections.Generic;
     using Domain.Model.Payment;
     using Domain.Model.Products;
     using Infrastructure.Domain;
-    using System;
-    using System.Collections.Generic;
 
     public class InventoryService : IInventoryService
     {
-        private readonly IRepository<Product> productRepository;
-
         private readonly IRepository<Inventory> inventoryRepository;
+
         private readonly IRepository<Payment> paymentRepository;
+
+        private readonly IRepository<Product> productRepository;
 
         private readonly IUnitOfWork unitOfWork;
 
         public InventoryService(
             IRepository<Product> productRepository,
             IRepository<Inventory> inventoryRepository,
-IRepository<Payment> paymentRepository,
+            IRepository<Payment> paymentRepository,
             IUnitOfWork unitOfWork)
         {
             this.productRepository = productRepository;
@@ -34,14 +35,14 @@ IRepository<Payment> paymentRepository,
 
         public void InsertInventory(Inventory inventory, Payment payment)
         {
-            this.inventoryRepository.Add(inventory);
-            var product = this.productRepository.GetByKey(inventory.ProductId);
+            inventoryRepository.Add(inventory);
+            var product = productRepository.GetByKey(inventory.ProductId);
             product.StockQuantity += inventory.Quantity;
-            this.paymentRepository.Add(payment);
+            paymentRepository.Add(payment);
 
-            this.productRepository.Update(product);
+            productRepository.Update(product);
 
-            this.unitOfWork.Commit();
+            unitOfWork.Commit();
         }
     }
 }

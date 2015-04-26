@@ -1,0 +1,85 @@
+﻿@using EasyERP.Web.Framework
+@using EasyERP.Web.Framework.Security.Captcha
+@using EasyERP.Web.Framework.UI
+@model EasyERP.Web.Models.Users.LoginModel
+@{
+    Layout = null;
+
+    //title
+    Html.AddTitleParts("登录");
+}
+<div class="page login-page">
+
+    <div class="page-title">
+
+        <h1>欢迎</h1>
+
+    </div>
+
+    <div class="page-body">
+
+        <div class="customer-blocks">
+
+            <div class="returning-wrapper">
+
+                <div class="title">
+
+                    <strong>登录</strong>
+
+                </div>
+
+                <div class="form-fields">
+
+                    @using (Html.BeginForm())
+                    {
+                        <div class="message-error">
+
+                            @Html.ValidationSummary(true, "登录失败")
+                        </div>
+
+                        <div class="inputs">
+
+                            @Html.LabelFor(m => m.Username, new
+                            {
+                            }, ":")
+                            @Html.TextBoxFor(m => m.Username, new
+                            {
+                                @class = "username",
+                                autofocus = "autofocus"
+                            })
+                            @Html.ValidationMessageFor(m => m.Username)
+                        </div>
+
+                        <div class="inputs">
+
+                            @Html.LabelFor(m => m.Password, new
+                            {
+                            }, ":")
+                            @Html.PasswordFor(m => m.Password, new
+                            {
+                                @class = "password"
+                            })
+                            @Html.ValidationMessageFor(m => m.Password)
+                        </div>
+                        if (Model.DisplayCaptcha)
+                        {
+                            <div class="captcha-box">
+
+                                @Html.Raw(Html.GenerateCaptcha())
+                            </div>
+                        }
+                        <div class="buttons">
+
+                            <input class="button-1 login-button" type="submit" value="登录"/>
+
+                        </div>
+                    }
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

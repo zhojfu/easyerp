@@ -14,7 +14,10 @@
     {
         private static T instance;
 
-        /// <summary>The singleton instance for the specified type T. Only one instance (at the time) of this object for each type of T.</summary>
+        /// <summary>
+        /// The singleton instance for the specified type T. Only one instance (at the time) of this object for each type
+        /// of T.
+        /// </summary>
         public static T Instance
         {
             get { return instance; }
@@ -37,7 +40,10 @@
             Singleton<IList<T>>.Instance = new List<T>();
         }
 
-        /// <summary>The singleton instance for the specified type T. Only one instance (at the time) of this list for each type of T.</summary>
+        /// <summary>
+        /// The singleton instance for the specified type T. Only one instance (at the time) of this list for each type of
+        /// T.
+        /// </summary>
         public new static IList<T> Instance
         {
             get { return Singleton<IList<T>>.Instance; }
@@ -56,7 +62,10 @@
             Singleton<Dictionary<TKey, TValue>>.Instance = new Dictionary<TKey, TValue>();
         }
 
-        /// <summary>The singleton instance for the specified type T. Only one instance (at the time) of this dictionary for each type of T.</summary>
+        /// <summary>
+        /// The singleton instance for the specified type T. Only one instance (at the time) of this dictionary for each
+        /// type of T.
+        /// </summary>
         public new static IDictionary<TKey, TValue> Instance
         {
             get { return Singleton<Dictionary<TKey, TValue>>.Instance; }
@@ -64,16 +73,16 @@
     }
 
     /// <summary>
-    /// Provides access to all "singletons" stored by <see cref="Singleton{T}"/>.
+    /// Provides access to all "singletons" stored by <see cref="Singleton{T}" />.
     /// </summary>
     public class Singleton
     {
+        private static readonly IDictionary<Type, object> allSingletons;
+
         static Singleton()
         {
             allSingletons = new Dictionary<Type, object>();
         }
-
-        private static readonly IDictionary<Type, object> allSingletons;
 
         /// <summary>Dictionary of type to singleton instances.</summary>
         public static IDictionary<Type, object> AllSingletons

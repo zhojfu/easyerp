@@ -8,6 +8,7 @@ namespace EasyERP.Web.Controllers
     using Doamin.Service.Factory;
     using Domain.Model;
     using Domain.Model.Factory;
+    using EasyERP.Web.Models;
     using EasyERP.Web.Models.Employee;
     using Infrastructure.Utility;
     using System.Collections.Generic;

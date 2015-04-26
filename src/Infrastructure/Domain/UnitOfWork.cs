@@ -1,9 +1,9 @@
 ﻿namespace Infrastructure.Domain
 {
-    using Infrastructure.Domain.Model;
     using System;
     using System.Collections.Generic;
     using System.Transactions;
+    using Infrastructure.Domain.Model;
 
     public class UnitOfWork : IUnitOfWork
     {
@@ -11,9 +11,9 @@
 
         public void RegisterAdd(IAggregateRoot aggregateRoot, IUnitOfWorkRepository repository)
         {
-            if (!this.operations.Exists(op => (op.AggregateRoot.Id == aggregateRoot.Id)))
+            if (!operations.Exists(op => (op.AggregateRoot.Id == aggregateRoot.Id)))
             {
-                this.operations.Add(
+                operations.Add(
                     new Operation
                     {
                         Type = Operation.OperationType.Insert,
@@ -26,9 +26,9 @@
 
         public void RegisterUpdate(IAggregateRoot aggregateRoot, IUnitOfWorkRepository repository)
         {
-            if (!this.operations.Exists(op => (op.AggregateRoot.Id == aggregateRoot.Id)))
+            if (!operations.Exists(op => (op.AggregateRoot.Id == aggregateRoot.Id)))
             {
-                this.operations.Add(
+                operations.Add(
                     new Operation
                     {
                         Type = Operation.OperationType.Update,
@@ -41,9 +41,9 @@
 
         public void RegisterRemoved(IAggregateRoot aggregateRoot, IUnitOfWorkRepository repository)
         {
-            if (!this.operations.Exists(op => (op.AggregateRoot.Id == aggregateRoot.Id)))
+            if (!operations.Exists(op => (op.AggregateRoot.Id == aggregateRoot.Id)))
             {
-                this.operations.Add(
+                operations.Add(
                     new Operation
                     {
                         Type = Operation.OperationType.Remove,
@@ -58,7 +58,7 @@
         {
             using (var scope = new TransactionScope())
             {
-                foreach (var operation in this.operations)
+                foreach (var operation in operations)
                 {
                     switch (operation.Type)
                     {
@@ -75,7 +75,7 @@
                             break;
                     }
                 }
-                this.operations.Clear();
+                operations.Clear();
                 scope.Complete();
             }
         }
@@ -93,11 +93,8 @@
         }
 
         public OperationType Type { get; set; }
-
         public IAggregateRoot AggregateRoot { get; set; }
-
         public DateTime ProcessDate { get; set; }
-
         public IUnitOfWorkRepository Repository { get; set; }
     }
 }

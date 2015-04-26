@@ -53,9 +53,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configurations\Users\UserRoleConfiguration.cs" />
+    <Compile Include="Configurations\Users\UserConfiguration.cs" />
     <Compile Include="Configurations\EmployeeConfiguration.cs" />
     <Compile Include="Configurations\Orders\OrderConfiguration.cs" />
     <Compile Include="Configurations\Orders\OrderItemConfiguration.cs" />
+    <Compile Include="Security\PermissionRecordConfiguration.cs" />
     <Compile Include="Configurations\Products\CategoryConfiguration.cs" />
     <Compile Include="Configurations\Factory\AttritionConfiguration.cs" />
     <Compile Include="Configurations\Factory\AttritionStatisticConfiguration.cs" />
@@ -74,13 +77,21 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Doamin.Service\Doamin.Service.csproj">
+      <Project>{e272f806-c9cc-4c73-9eee-89af5800532c}</Project>
+      <Name>Doamin.Service</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Domain.Model\Domain.Model.csproj">
       <Project>{9a1defac-0977-4b5c-896b-f079b2d26382}</Project>
       <Name>Domain.Model</Name>
     </ProjectReference>
+    <ProjectReference Include="..\EasyErp.Core\EasyErp.Core.csproj">
+      <Project>{122d143e-0fd6-42d4-b18a-5f48b00959ad}</Project>
+      <Name>EasyErp.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj">
       <Project>{35B3A042-0187-4530-A9F5-2063E2EEBDAD}</Project>
-      <Name>Infrastructure %28Infrastructure\Infrastructure%29</Name>
+      <Name>Infrastructure</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -89,11 +100,7 @@
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Configurations\Base\" />
-    <Folder Include="Configurations\Products\Price\" />
-    <Folder Include="Configurations\Purchase\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

@@ -1,0 +1,183 @@
+﻿@using EasyERP.Web.Framework
+@model EasyErp.StoreAdmin.Models.Products.ProductListModel
+@{
+    ViewBag.Title = "产品管理";
+    const int DefaultGridPageSize = 10;
+    const int GridPageSizes = 10;
+    const int Quantity = 1;
+}
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <table width="100%">
+        <tr>
+            <td class="adminTitle">
+                SearchProductName:
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.SearchProductName)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                SearchCategory:
+            </td>
+            <td class="adminData">
+                @Html.DropDownList("SearchCategoryId", Model.AvailableCategories)
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <input type="button" id="search-products" class="k-button" value="Search" />
+            </td>
+        </tr>
+    </table>
+    <table class="content">
+        <tr>
+            <td>
+                <div id="products-grid"></div>
+                <script>
+                    $(document).ready(function() {
+                        $("#products-grid").kendoGrid({
+                            dataSource: {
+                                type: "json",
+                                transport: {
+                                    read: {
+                                        url: "@Html.Raw(Url.Action("ProductList", "Product"))",
+                                        type: "POST",
+                                        dataType: "json",
+                                        data: additionalData
+                                    }
+                                },
+                                schema: {
+                                    data: "Data",
+                                    total: "Total",
+                                    errors: "Errors"
+                                },
+                                error: function(e) {
+                                    display_kendoui_grid_error(e);
+                                    // Cancel the changes
+                                    this.cancelChanges();
+                                },
+                                pageSize: @(DefaultGridPageSize),
+                                serverPaging: true,
+                                serverFiltering: true,
+                                serverSorting: true
+                            },
+                            pageable: {
+                                refresh: true,
+                                pageSizes: [@(GridPageSizes)]
+                            },
+                            editable: {
+                                confirmation: false,
+                                mode: "inline"
+                            },
+                            scrollable: false,
+                            dataBound: onDataBound,
+                            columns: [
+                                {
+                                    field: "Name",
+                                    title: "产品名",
+                                    width: 300
+                                },
+                                {
+                                    field: "CategoryName",
+                                    title: "产品目录",
+                                    width: 300
+                                },
+                                {
+                                    field: "Price",
+                                    title: "价格",
+                                    width: 100
+                                },
+                                { command: { text: "加入购物车", click: addToCart }, title: " ", width: "180px" },
+                            ]
+                        });
+                    });
+                </script>
+            </td>
+        </tr>
+    </table>
+    <script type="text/javascript">
+
+        function addToCart(e) {
+            e.preventDefault();
+            var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+            var link = "/StoreAdmin/ShoppingCart/AddProductToCart/".concat(dataItem.Id).concat("/").concat(@Quantity);
+            AjaxCart.addproducttocart_catalog(link);
+            return false;
+        }
+
+        var selectedIds = [];
+
+        $(document).ready(function() {
+
+            //search button
+            $("#search-products").click(function() {
+                //search
+                var grid = $("#products-grid").data("kendoGrid");
+                grid.dataSource.page(1);
+                $(".checkboxGroups").attr("checked", false).change();
+                selectedIds = [];
+                return false;
+            });
+
+            $("#@Html.FieldIdFor(model => model.SearchProductName)").keydown(function(event) {
+                if (event.keyCode === 13) {
+                    $("#search-products").click();
+                    return false;
+                }
+            });
+
+            $("#mastercheckbox").click(function() {
+                $(".checkboxGroups").attr("checked", $(this).is(":checked")).change();
+            });
+
+            //wire up checkboxes.
+            $("#products-grid").on("change", "input[type=checkbox][id!=mastercheckbox]", function(e) {
+                var $check = $(this);
+                if ($check.is(":checked") == true) {
+                    var checked = jQuery.inArray($check.val(), selectedIds);
+                    if (checked == -1) {
+                        //add id to selectedIds.
+                        selectedIds.push($check.val());
+                    }
+                } else {
+                    var checked = jQuery.inArray($check.val(), selectedIds);
+                    if (checked > -1) {
+                        //remove id from selectedIds.
+                        selectedIds = $.grep(selectedIds, function(item, index) {
+                            return item != $check.val();
+                        });
+                    }
+                }
+                updateMasterCheckbox();
+            });
+        });
+
+        function additionalData() {
+            var data = {
+                SearchProductName: $("#@Html.FieldIdFor(model => model.SearchProductName)").val(),
+            };
+            addAntiForgeryToken(data);
+            return data;
+        }
+
+        function onDataBound(e) {
+            $("#products-grid input[type=checkbox][id!=mastercheckbox]").each(function() {
+                var currentId = $(this).val();
+                var checked = jQuery.inArray(currentId, selectedIds);
+                //set checked based on if current checkbox's value is in selectedIds.
+                $(this).attr("checked", checked > -1);
+            });
+
+            updateMasterCheckbox();
+        }
+
+        function updateMasterCheckbox() {
+            var numChkBoxes = $("#products-grid input[type=checkbox][id!=mastercheckbox]").length;
+            var numChkBoxesChecked = $("#products-grid input[type=checkbox][id!=mastercheckbox]:checked").length;
+            $("#mastercheckbox").attr("checked", numChkBoxes == numChkBoxesChecked && numChkBoxes > 0);
+        }
+    </script>
+}

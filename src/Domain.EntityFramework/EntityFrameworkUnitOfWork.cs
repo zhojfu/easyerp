@@ -15,7 +15,7 @@
         public override void Commit()
         {
             base.Commit();
-            this.dbContext.SaveChanges();
+            dbContext.SaveChanges();
         }
     }
 }

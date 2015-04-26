@@ -1,6 +1,4 @@
-﻿
-
-namespace Infrastructure.Utility
+﻿namespace Infrastructure.Utility
 {
     using System;
 
@@ -10,12 +8,12 @@ namespace Infrastructure.Utility
 
         public static Tuple<DateTime, DateTime> GetWeekRangeOfCurrentDate(DateTime now)
         {
-            int currentDay = (int)now.DayOfWeek;
+            var currentDay = (int)now.DayOfWeek;
 
             double firstDayOfWeek = -((currentDay + WeekDays) - 1) % WeekDays;
 
             double lastDayOfWeek = (WeekDays - currentDay) % WeekDays;
-           
+
             return new Tuple<DateTime, DateTime>(now.AddDays(firstDayOfWeek), now.AddDays(lastDayOfWeek));
         }
     }

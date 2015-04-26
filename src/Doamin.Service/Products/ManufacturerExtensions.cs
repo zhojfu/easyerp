@@ -1,7 +1,7 @@
 namespace Doamin.Service.Products
 {
-    using Domain.Model.Products;
     using System.Collections.Generic;
+    using Domain.Model.Products;
 
     /// <summary>
     /// Extensions
@@ -15,12 +15,19 @@ namespace Doamin.Service.Products
         /// <param name="productId">Product identifier</param>
         /// <param name="manufacturerId">Manufacturer identifier</param>
         /// <returns>A ProductManufacturer that has the specified values; otherwise null</returns>
-        public static ProductManufacturer FindProductManufacturer(this IList<ProductManufacturer> source,
-            int productId, int manufacturerId)
+        public static ProductManufacturer FindProductManufacturer(
+            this IList<ProductManufacturer> source,
+            int productId,
+            int manufacturerId)
         {
             foreach (var productManufacturer in source)
-                if (productManufacturer.ProductId == productId && productManufacturer.ManufacturerId == manufacturerId)
+            {
+                if (productManufacturer.ProductId == productId &&
+                    productManufacturer.ManufacturerId == manufacturerId)
+                {
                     return productManufacturer;
+                }
+            }
 
             return null;
         }

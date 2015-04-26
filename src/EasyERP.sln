@@ -29,6 +29,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyERP.Web.Framework", "Ea
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyErp.Core", "EasyErp.Core\EasyErp.Core.csproj", "{122D143E-0FD6-42D4-B18A-5F48B00959AD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyErp.StoreAdmin", "EasyERP.Web\EasyErp.StoreAdmin\EasyErp.StoreAdmin.csproj", "{F5B28867-4016-4FA0-84A3-695224E2965F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -71,6 +73,10 @@ Global
 		{122D143E-0FD6-42D4-B18A-5F48B00959AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{122D143E-0FD6-42D4-B18A-5F48B00959AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{122D143E-0FD6-42D4-B18A-5F48B00959AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F5B28867-4016-4FA0-84A3-695224E2965F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F5B28867-4016-4FA0-84A3-695224E2965F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F5B28867-4016-4FA0-84A3-695224E2965F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F5B28867-4016-4FA0-84A3-695224E2965F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -85,5 +91,6 @@ Global
 		{43EF0B4D-63C5-4223-993D-FF5304CB6938} = {EF2005F7-07CC-43EC-AC53-B519A7485C70}
 		{C8E55B58-7CB1-4E5C-A637-3A7D082B08E1} = {EF2005F7-07CC-43EC-AC53-B519A7485C70}
 		{122D143E-0FD6-42D4-B18A-5F48B00959AD} = {DE2544E3-3B00-4AFC-A53F-E0145261F4EB}
+		{F5B28867-4016-4FA0-84A3-695224E2965F} = {EF2005F7-07CC-43EC-AC53-B519A7485C70}
 	EndGlobalSection
 EndGlobal

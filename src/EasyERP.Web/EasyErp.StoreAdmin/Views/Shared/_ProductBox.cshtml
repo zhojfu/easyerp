@@ -1,0 +1,30 @@
+﻿@using EasyERP.Web.Framework
+@model EasyErp.StoreAdmin.Models.Products.ProductOverviewModel
+@{
+    //prepare "Add to cart" AJAX link
+    var addtocartlink = "";
+    var quantity = 1;
+
+    //addtocartlink = Url.RouteUrl("AddProductToCart", new { productId = Model.Id, quantity = quantity, });
+    addtocartlink = "add to cart";
+}
+<div class="product-item" data-productid="@Model.Id">
+    <div class="details">
+        <h2 class="product-title">
+            @*<a href="@Url.RouteUrl("Product", new { Name = Model.Name })">@Model.Name</a>*@
+            <a href="Product">@Model.Name</a>
+        </h2>
+        <div class="description">
+            @Html.Raw(Model.ShortDescription)
+        </div>
+        <div class="add-info">
+            <div class="prices">
+                <span class="price actual-price">@Model.ProductPrice.Price</span>
+            </div>
+            <div class="buttons">
+                <input type="button" value="加入购物车" class="button-2 product-box-add-to-cart-button" onclick=" ajaxcart.addproducttocart_catalog('@addtocartlink ');return false; " />
+            </div>
+            @Html.Widget("productbox_add_info", Model.Id)
+        </div>
+    </div>
+</div>

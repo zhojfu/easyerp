@@ -1,13 +1,13 @@
 namespace Domain.Model.Media
 {
-    using global::Domain.Model.Products;
-    using global::Infrastructure.Domain.Model;
     using System.Collections.Generic;
+    using Domain.Model.Products;
+    using Infrastructure.Domain.Model;
 
     /// <summary>
     /// Represents a picture
     /// </summary>
-    public partial class Picture : BaseEntity
+    public class Picture : BaseEntity
     {
         private ICollection<ProductPicture> _productPictures;
 
@@ -36,8 +36,8 @@ namespace Domain.Model.Media
         /// </summary>
         public virtual ICollection<ProductPicture> ProductPictures
         {
-            get { return this._productPictures ?? (this._productPictures = new List<ProductPicture>()); }
-            protected set { this._productPictures = value; }
+            get { return _productPictures ?? (_productPictures = new List<ProductPicture>()); }
+            protected set { _productPictures = value; }
         }
     }
 }

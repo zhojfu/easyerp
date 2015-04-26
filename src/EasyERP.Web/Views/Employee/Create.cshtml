@@ -1,10 +1,13 @@
-﻿
-@section SectionTitle
+﻿@section SectionTitle
 {
     <div>
+
         员工- 创建
+
     </div>
+
 }
+
 
 @using (Html.BeginForm("Create", "Employee", FormMethod.Post, new
 {
@@ -12,5 +15,5 @@
     role = "form"
 }))
 {
-   @Html.Partial("EmployeeArea")
+    @Html.Partial("EmployeeArea")
 }

@@ -1,11 +1,10 @@
 ﻿namespace Infrastructure.Domain
 {
-    using Infrastructure.Domain.Model;
-    using Infrastructure.Utility;
     using System;
-    using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
+    using Infrastructure.Domain.Model;
+    using Infrastructure.Utility;
 
     public abstract class BaseRepository<TAggregateRoot> : IRepository<TAggregateRoot>, IUnitOfWorkRepository
         where TAggregateRoot : IAggregateRoot
@@ -19,28 +18,26 @@
 
         public void Add(TAggregateRoot aggregateRoot)
         {
-            this.RegisterAdd(aggregateRoot);
+            RegisterAdd(aggregateRoot);
         }
 
         public void Update(TAggregateRoot aggregateRoot)
         {
-            this.RegisterUpdate(aggregateRoot);
+            RegisterUpdate(aggregateRoot);
         }
 
         public void Remove(TAggregateRoot aggregateRoot)
         {
-            this.RegisterRemoved(aggregateRoot);
+            RegisterRemoved(aggregateRoot);
         }
 
         public void Update()
         {
-            this.unitOfWork.Commit();
+            unitOfWork.Commit();
         }
 
         public abstract TAggregateRoot GetByKey(long key);
-
         public abstract IQueryable<TAggregateRoot> FindAll(Expression<Func<TAggregateRoot, bool>> expression);
-
         public abstract bool Exist(TAggregateRoot aggregateRoot);
 
         public abstract PagedResult<TAggregateRoot> FindAll(
@@ -51,26 +48,24 @@
             SortOrder sortOrder);
 
         public abstract void PersistNewItem(IAggregateRoot item);
-
         public abstract void PersistUpdateItem(IAggregateRoot item);
-
         public abstract void PersistRemoveItem(IAggregateRoot item);
 
         #region Wrapper UnitofWork Implementation
 
         protected void RegisterAdd(IAggregateRoot entity)
         {
-            this.unitOfWork.RegisterAdd(entity, this);
+            unitOfWork.RegisterAdd(entity, this);
         }
 
         protected void RegisterUpdate(IAggregateRoot entity)
         {
-            this.unitOfWork.RegisterUpdate(entity, this);
+            unitOfWork.RegisterUpdate(entity, this);
         }
 
         protected void RegisterRemoved(IAggregateRoot entity)
         {
-            this.unitOfWork.RegisterRemoved(entity, this);
+            unitOfWork.RegisterRemoved(entity, this);
         }
 
         #endregion Wrapper UnitofWork Implementation

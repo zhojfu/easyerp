@@ -1,0 +1,364 @@
+﻿@using System.Web.Mvc.Html
+@using EasyErp.Core.Infrastructure
+@using EasyERP.Web.Framework
+@model EasyERP.Web.Models.Orders.OrderListModel
+@{
+    var defaultGridPageSize = 10;
+    var gridPageSizes = 10;
+
+    //page title
+    ViewBag.Title = "订单管理";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="section-header">
+        <div class="title">
+            订单管理
+        </div>
+        <div class="options">
+        </div>
+    </div>
+    <table width="100%">
+
+        <tr>
+            <td class="adminTitle">
+                @Html.LabelFor(model => model.CustomerId):
+            </td>
+            <td class="adminData">
+                @Html.DropDownList("CustomerId", Model.AvailableStores)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.LabelFor(model => model.OrderStatusId):
+            </td>
+            <td class="adminData">
+                @Html.DropDownList("OrderStatusId", Model.AvailableOrderStatuses)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.LabelFor(model => model.PaymentStatusId):
+            </td>
+            <td class="adminData">
+                @Html.DropDownList("PaymentStatusId", Model.AvailablePaymentStatuses)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.LabelFor(model => model.ShippingStatusId):
+            </td>
+            <td class="adminData">
+                @Html.DropDownList("ShippingStatusId", Model.AvailableShippingStatuses)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.LabelFor(model => model.ProductId):
+            </td>
+            <td class="adminData">
+                <input type="text" id="search-product-name" autocomplete="off" />
+                <span id="search-product-friendly-name"></span>
+                <input type="button" id="search-product-clear" class="k-button" value="Clear" />
+
+                @Html.TextBoxFor(model => model.ProductId, new { autocomplete = "off", style = "display:none;" })
+                <script type="text/javascript">
+                    $(function() {
+                        $('#search-product-name').autocomplete({
+                            delay: 500,
+                            minLength: 3,
+                            source: '@(Url.Action("ProductSearchAutoComplete"))',
+                            select: function(event, ui) {
+                                $('#@Html.FieldIdFor(model => model.ProductId)').val(ui.item.productid);
+                                $('#search-product-friendly-name').text(ui.item.label);
+
+                                $('#search-product-clear').show();
+                                return false;
+                            }
+                        });
+
+                        //remove button
+                        $('#search-product-clear').click(function () {
+                            $('#@Html.FieldIdFor(model => model.ProductId)').val('0');
+                            $('#search-product-friendly-name').text('');
+                            $('#search-product-clear').hide();
+                            return false;
+                        });
+                    });
+                </script>
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.LabelFor(model => model.OrderGuid):
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.OrderGuid)
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <input type="button" id="search-orders" class="k-button" value="Search" />
+            </td>
+        </tr>
+    </table>
+    <table class="adminContent">
+        <tr>
+            <td>
+                <div id="orders-grid"></div>
+
+                <script>
+                    $(document).ready(function() {
+                        $("#orders-grid").kendoGrid({
+                            dataSource: {
+                                type: "json",
+                                transport: {
+                                    read: {
+                                        url: "@Html.Raw(Url.Action("OrderList", "Order"))",
+                                        type: "POST",
+                                        dataType: "json",
+                                        data: additionalData
+                                    }
+                                },
+                                schema: {
+                                    data: "Data",
+                                    total: "Total",
+                                    errors: "Errors"
+                                },
+                                requestEnd: function (e) {
+                                    if (e.type == "read") {
+                                        var response = e.response;
+                                        if (response) {
+                                            //store extra data
+                                            reportAggregates = e.response["ExtraData"];
+                                        }
+                                    }
+                                },
+                                error: function(e) {
+                                    display_kendoui_grid_error(e);
+                                    // Cancel the changes
+                                    this.cancelChanges();
+                                },
+                                pageSize: @(defaultGridPageSize),
+                                serverPaging: true,
+                                serverFiltering: true,
+                                serverSorting: true
+                            },
+                            pageable: {
+                                refresh: true,
+                                pageSizes: [@(gridPageSizes)]
+                            },
+                            editable: {
+                                confirmation: false,
+                                mode: "inline"
+                            },
+                            scrollable: false,
+                            dataBound: onDataBound,
+                            columns: [
+                                {
+                                    field: "Id",
+                                    headerTemplate: "<input id='mastercheckbox' type='checkbox' />",
+                                    headerAttributes: { style: "text-align:center" },
+                                    attributes: { style: "text-align:center" },
+                                    template: "<input type='checkbox' value='#=Id#' class='checkboxGroups' />",
+                                    width: 50
+                                },
+                                {
+                                    field: "Id",
+                                    title: "ID",
+                                    width: 50
+                                },
+                                    {
+                                        field: "OrderStatus",
+                                        title: "OrderStatus",
+                                        width: 200
+                                    },
+
+                                {
+                                    field: "PaymentStatus",
+                                    title: "PaymentStatus",
+                                    width: 200
+                                },
+
+                               {
+                                   field: "ShippingStatus",
+                                   title: "ShippingStatus",
+                                   width: 200
+                               },
+                                 {
+                                     field: "CreatedOn",
+                                     title: "CreatedOn",
+                                     width: 200,
+                                     type: "date",
+                                     format: "{0:G}"
+                                 },
+                                {
+                                    field: "OrderTotal",
+                                    title: "OrderTotal",
+                                    width: 200,
+                                    footerTemplate: '<div><strong>"Summary":</strong></div>' +
+                                                         '<div>"Profit": <span id=\"aggregator-profit-block\"></span></div>' +
+                                                         '<div>"Shipping": <span id=\"aggregator-shipping-block\"></span></div>' +
+                                                         '<div>"Tax"): <span id=\"aggregator-tax-block\"></span></div>' +
+                                                         '<div>"Total": <span id=\"aggregator-total-block\"></span></div>'
+                                },
+                                {
+                                    field: "Id",
+                                    title: "Edit",
+                                    width: 100,
+                                    template: '<a href="Edit/#=Id#">"Edit"</a>'
+                                }
+                            ]
+                        } );
+                    });
+                </script>
+
+                <script type="text/javascript">
+
+                    var selectedIds = [];
+                    var reportAggregates = "";
+
+                    $(document).ready(function () {
+
+                        //search button
+                        $('#search-orders').click(function () {
+                            //search
+                            var grid = $('#orders-grid').data('kendoGrid');
+                            grid.dataSource.page(1); //new search. Set page size to 1
+                            //grid.dataSource.read(); we already loaded the grid above using "page" function
+                            //clear selected checkboxes
+                            $('.checkboxGroups').attr('checked', false).change();
+                            selectedIds = [];
+                            return false;
+                        });
+
+                        $('#mastercheckbox').click(function () {
+                            $('.checkboxGroups').attr('checked', $(this).is(':checked')).change();
+                        });
+
+                        //wire up checkboxes.
+                        $('#orders-grid').on('change', 'input[type=checkbox][id!=mastercheckbox]', function (e) {
+                            var $check = $(this);
+                            if ($check.is(":checked") == true) {
+                                var checked = jQuery.inArray($check.val(), selectedIds);
+                                if (checked == -1) {
+                                    //add id to selectedIds.
+                                    selectedIds.push($check.val());
+                                }
+                            }
+                            else {
+                                var checked = jQuery.inArray($check.val(), selectedIds);
+                                if (checked > -1) {
+                                    //remove id from selectedIds.
+                                    selectedIds = $.grep(selectedIds, function (item, index) {
+                                        return item != $check.val();
+                                    });
+                                }
+                            }
+                            updateMasterCheckbox();
+                        });
+                    });
+
+                    function additionalData() {
+                        var data = {
+                            OrderStatusId: $('#@Html.FieldIdFor(model => model.OrderStatusId)').val(),
+                            PaymentStatusId: $('#@Html.FieldIdFor(model => model.PaymentStatusId)').val(),
+                            ShippingStatusId: $('#@Html.FieldIdFor(model => model.ShippingStatusId)').val(),
+                            ProductId: $('#@Html.FieldIdFor(model => model.ProductId)').val(),
+                            OrderGuid: $('#@Html.FieldIdFor(model => model.OrderGuid)').val()
+                        };
+                        addAntiForgeryToken(data);
+                        return data;
+                    }
+
+                    function onDataBound(e) {
+
+                        $('#orders-grid input[type=checkbox][id!=mastercheckbox]').each(function () {
+                            var currentId = $(this).val();
+                            var checked = jQuery.inArray(currentId, selectedIds);
+                            //set checked based on if current checkbox's value is in selectedIds.
+                            $(this).attr('checked', checked > -1);
+                        });
+
+                        updateMasterCheckbox();
+
+                        //update order totals summary
+                        if (reportAggregates != "") {
+                            for (var key in reportAggregates) {
+                                $('#aggregator-profit-block').text(reportAggregates['aggregatorprofit']);
+                                $('#aggregator-shipping-block').text(reportAggregates['aggregatorshipping']);
+                                $('#aggregator-tax-block').text(reportAggregates['aggregatortax']);
+                                $('#aggregator-total-block').text(reportAggregates['aggregatortotal']);
+                            }
+                        }
+                    }
+
+                    function updateMasterCheckbox() {
+                        var numChkBoxes = $('#orders-grid input[type=checkbox][id!=mastercheckbox]').length;
+                        var numChkBoxesChecked = $('#orders-grid input[type=checkbox][id!=mastercheckbox]:checked').length;
+                        $('#mastercheckbox').attr('checked', numChkBoxes == numChkBoxesChecked && numChkBoxes > 0);
+                    }
+                </script>
+            </td>
+        </tr>
+    </table>
+}
+
+@*export selected (XML). We don't use GET approach because it's limited to 2K-4K chars and won't work for large number of entities*@
+@using (Html.BeginForm("ExportXmlSelected", "Order", FormMethod.Post, new { id = "export-xml-selected-form" }))
+{
+    @Html.AntiForgeryToken()
+    <input type="hidden" id="selectedIds" name="selectedIds" value="" />
+}
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $('#exportxml-selected').click(function (e) {
+            e.preventDefault();
+            var ids = selectedIds.join(",");
+            $('#export-xml-selected-form #selectedIds').val(ids);
+            $('#export-xml-selected-form').submit();
+            return false;
+        });
+    });
+</script>
+
+@*export selected (Excel). We don't use GET approach because it's limited to 2K-4K chars and won't work for large number of entities*@
+@using (Html.BeginForm("ExportExcelSelected", "Order", FormMethod.Post, new { id = "export-excel-selected-form" }))
+{
+    @Html.AntiForgeryToken()
+    <input type="hidden" id="selectedIds" name="selectedIds" value="" />
+}
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $('#exportexcel-selected').click(function (e) {
+            e.preventDefault();
+            var ids = selectedIds.join(",");
+            $('#export-excel-selected-form #selectedIds').val(ids);
+            $('#export-excel-selected-form').submit();
+            return false;
+        });
+    });
+</script>
+
+@*Print packaging slips selected (XML). We don't use GET approach because it's limited to 2K-4K chars and won't work for large number of entities*@
+@using (Html.BeginForm("PdfInvoiceSelected", "Order", FormMethod.Post, new { id = "pdf-invoice-selected-form" }))
+{
+    @Html.AntiForgeryToken()
+    <input type="hidden" id="selectedIds" name="selectedIds" value="" />
+}
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $('#pdf-invoice-selected').click(function (e) {
+            e.preventDefault();
+            var ids = selectedIds.join(",");
+            $('#pdf-invoice-selected-form #selectedIds').val(ids);
+            $('#pdf-invoice-selected-form').submit();
+            return false;
+        });
+    });
+</script>

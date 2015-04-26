@@ -1,12 +1,13 @@
 namespace Domain.Model.Stores
 {
+    using Domain.Model.Company;
+    using Domain.Model.Orders;
+    using Domain.Model.Products;
     using Infrastructure.Domain.Model;
     using System;
+    using System.Collections.Generic;
 
-    /// <summary>
-    /// Represents a store
-    /// </summary>
-    public partial class Store : BaseEntity, IAggregateRoot
+    public class Store : BaseEntity, IAggregateRoot
     {
         public string Name { get; set; }
 
@@ -16,14 +17,26 @@ namespace Domain.Model.Stores
 
         public int DisplayOrder { get; set; }
 
-        public string CompanyName { get; set; }
+        public string StoreName { get; set; }
 
-        public string CompanyAddress { get; set; }
+        public string Address { get; set; }
 
-        public string CompanyPhoneNumber { get; set; }
+        public string PhoneNumber { get; set; }
+
+        public int CompanyId { get; set; }
+
+        public virtual Company Company { get; set; }
 
         public DateTime CreatedOn { get; set; }
 
         public DateTime UpdatedOn { get; set; }
+
+        public virtual ICollection<Order> Orders { get; set; }
+
+        public virtual ICollection<ShoppingCartItem> ShoppingCartItems { get; set; }
+
+        public virtual ICollection<Product> Products { get; set; }
+
+        public virtual ICollection<Employee> Employees { get; set; }
     }
 }

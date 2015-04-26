@@ -1,17 +1,14 @@
 namespace Doamin.Service.Directory
 {
-    using Doamin.Service.Events;
-    using Domain.Model.Directory;
-    using EasyErp.Core.Caching;
-    using Infrastructure.Domain;
-    using Nop.Core.Domain.Directory;
     using System;
     using System.Collections.Generic;
+    using Domain.Model.Directory;
+    using Nop.Core.Domain.Directory;
 
     /// <summary>
     /// Measure dimension service
     /// </summary>
-    public partial class MeasureService : IMeasureService
+    public class MeasureService : IMeasureService
     {
         public void DeleteMeasureDimension(MeasureDimension measureDimension)
         {

@@ -1,10 +1,9 @@
 ﻿namespace Doamin.Service.Factory
 {
+    using System.Collections.Generic;
     using Domain.Model;
     using Infrastructure.Domain;
     using Infrastructure.Utility;
-    using System;
-    using System.Collections.Generic;
 
     public class EmployeeService : IEmployeeService
     {
@@ -20,38 +19,38 @@
 
         public Employee GetEmployeeById(int id)
         {
-            return this.repository.GetByKey(id);
+            return repository.GetByKey(id);
         }
 
         public void AddEmployee(Employee employee)
         {
-            this.repository.Add(employee);
-            this.unitOfWork.Commit();
+            repository.Add(employee);
+            unitOfWork.Commit();
         }
 
         public void DeleteEmployeeByIds(List<int> ids)
         {
             foreach (var id in ids)
             {
-                var e = this.repository.GetByKey(id);
+                var e = repository.GetByKey(id);
                 if (e != null)
                 {
-                    this.repository.Remove(e);
+                    repository.Remove(e);
                 }
             }
 
-            this.unitOfWork.Commit();
+            unitOfWork.Commit();
         }
 
         public void UpdateEmployee(Employee employee)
         {
-            this.repository.Update(employee);
-            this.unitOfWork.Commit();
+            repository.Update(employee);
+            unitOfWork.Commit();
         }
 
         public PagedResult<Employee> GetEmployees(int pageNumber, int pageSize)
         {
-            return this.repository.FindAll(pageSize, pageNumber, e => true, m => m.LastName, SortOrder.Ascending);
+            return repository.FindAll(pageSize, pageNumber, e => true, m => m.LastName, SortOrder.Ascending);
         }
     }
 }

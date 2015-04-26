@@ -1,7 +1,7 @@
 ﻿namespace Doamin.Service.Events
 {
-    using EasyErp.Core.Infrastructure;
     using System.Collections.Generic;
+    using EasyErp.Core.Infrastructure;
 
     /// <summary>
     /// Event subscription service

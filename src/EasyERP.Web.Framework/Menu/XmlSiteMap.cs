@@ -15,7 +15,7 @@ namespace EasyERP.Web.Framework.Menu
     {
         public XmlSiteMap()
         {
-            this.RootNode = new SiteMapNode();
+            RootNode = new SiteMapNode();
         }
 
         public SiteMapNode RootNode { get; set; }
@@ -47,7 +47,7 @@ namespace EasyERP.Web.Framework.Menu
                             doc.HasChildNodes)
                         {
                             var xmlRootNode = doc.DocumentElement.FirstChild;
-                            Iterate(this.RootNode, xmlRootNode);
+                            Iterate(RootNode, xmlRootNode);
                         }
                     }
                 }
@@ -75,16 +75,7 @@ namespace EasyERP.Web.Framework.Menu
             //title
             var nopResource = GetStringValueFromAttribute(xmlNode, "nopResource");
 
-            //if (!string.IsNullOrEmpty(nopResource))
-            //{
-            //    var localizationService = EngineContext.Current.Resolve<ILocalizationService>();
-            //    siteMapNode.Title = localizationService.GetResource(nopResource);
-            //}
-            //else
-            //{
             siteMapNode.Title = GetStringValueFromAttribute(xmlNode, "title");
-
-            //}
 
             //routes, url
             var controllerName = GetStringValueFromAttribute(xmlNode, "controller");
@@ -96,7 +87,6 @@ namespace EasyERP.Web.Framework.Menu
                 siteMapNode.ControllerName = controllerName;
                 siteMapNode.ActionName = actionName;
 
-                //apply admin area as described here - http://www.nopcommerce.com/boards/t/20478/broken-menus-in-admin-area-whilst-trying-to-make-a-plugin-admin-page.aspx
                 siteMapNode.RouteValues = new RouteValueDictionary
                 {
                     { "area", "Admin" }

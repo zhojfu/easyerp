@@ -1,11 +1,11 @@
 namespace Nop.Core.Domain.Directory
 {
-    using global::Infrastructure.Domain.Model;
+    using Infrastructure.Domain.Model;
 
     /// <summary>
     /// Represents a measure weight
     /// </summary>
-    public partial class MeasureWeight : BaseEntity
+    public class MeasureWeight : BaseEntity
     {
         /// <summary>
         /// Gets or sets the name

@@ -1,13 +1,13 @@
 ﻿namespace Domain.EntityFramework.Configurations.Store
 {
-    using Domain.Model.Stores;
     using System.Data.Entity.ModelConfiguration;
+    using Domain.Model.Stores;
 
     public class StoreConfiguration : EntityTypeConfiguration<Store>
     {
         public StoreConfiguration()
         {
-            this.HasKey(s => s.Id);
+            HasKey(s => s.Id);
         }
     }
 }

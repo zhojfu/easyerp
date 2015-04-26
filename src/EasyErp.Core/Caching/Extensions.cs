@@ -45,7 +45,9 @@ namespace EasyErp.Core.Caching
 
                 var result = acquire();
                 if (cacheTime > 0)
+                {
                     cacheManager.Set(key, result, cacheTime);
+                }
                 return result;
             }
         }

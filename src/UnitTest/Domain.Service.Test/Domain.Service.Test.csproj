@@ -80,7 +80,7 @@
     </ProjectReference>
     <ProjectReference Include="..\..\Infrastructure\Infrastructure.csproj">
       <Project>{35B3A042-0187-4530-A9F5-2063E2EEBDAD}</Project>
-      <Name>Infrastructure %28Infrastructure\Infrastructure%29</Name>
+      <Name>Infrastructure</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

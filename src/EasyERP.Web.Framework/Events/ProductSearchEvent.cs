@@ -2,9 +2,6 @@
 {
     using System.Collections.Generic;
 
-    /// <summary>
-    /// Product search event
-    /// </summary>
     public class ProductSearchEvent
     {
         public string SearchTerm { get; set; }

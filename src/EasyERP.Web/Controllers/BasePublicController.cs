@@ -1,20 +1,11 @@
-﻿using System.Web.Mvc;
-using System.Web.Routing;
-using Nop.Core.Infrastructure;
-using Nop.Web.Framework;
-using Nop.Web.Framework.Controllers;
-using Nop.Web.Framework.Security;
-using Nop.Web.Framework.Seo;
-
-namespace Nop.Web.Controllers
+﻿namespace EasyERP.Web.Controllers
 {
-    [CheckAffiliate]
-    [StoreClosed]
-    [PublicStoreAllowNavigation]
-    [LanguageSeoCode]
-    [NopHttpsRequirement(SslRequirement.NoMatter)]
-    [WwwRequirement]
-    public abstract partial class BasePublicController : BaseController
+    using System.Web.Mvc;
+    using System.Web.Routing;
+    using EasyErp.Core.Infrastructure;
+    using EasyERP.Web.Framework.Controllers;
+
+    public abstract class BasePublicController : BaseController
     {
         protected virtual ActionResult InvokeHttp404()
         {
@@ -25,10 +16,9 @@ namespace Nop.Web.Controllers
             routeData.Values.Add("controller", "Common");
             routeData.Values.Add("action", "PageNotFound");
 
-            errorController.Execute(new RequestContext(this.HttpContext, routeData));
+            errorController.Execute(new RequestContext(HttpContext, routeData));
 
             return new EmptyResult();
         }
-
     }
 }

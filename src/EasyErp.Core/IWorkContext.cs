@@ -1,7 +1,9 @@
 ﻿namespace EasyErp.Core
 {
+    using Domain.Model.Users;
+
     public interface IWorkContext
     {
-        bool IsAdmin { get; set; }
+        User CurrentUser { get; set; }
     }
 }

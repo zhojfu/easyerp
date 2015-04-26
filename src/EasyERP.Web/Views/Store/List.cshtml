@@ -1,112 +1,108 @@
-﻿@using EasyERP.Web.Framework
-
+﻿@using EasyErp.Core.Configuration.Settings
+@using EasyErp.Core.Infrastructure
+@section SectionTitle
+{
+    产品管理
+}
 @{
-    ViewBag.Title = "门店管理";
-    var defaultGridPageSize = 10;
-    var gridPageSizes = 10;
-}@using (Html.BeginForm())
+    ViewBag.Title = "产品管理";
+    var defaultGridPageSize = EngineContext.Current.Resolve<AreaSettings>().DefaultGridPageSize;
+    var gridPageSizes = EngineContext.Current.Resolve<AreaSettings>().GridPageSizes;
+}
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
     <div class="section-header">
-
         <div class="title">
             <label>门店管理</label>
         </div>
         <div class="options">
             <a href="@Url.Action("Create")" class="k-button">添加门店</a>
-            <input type="button" id="delete-selected" class="k-button" value="Delete" />
+            <input type="button" id="delete-selected" class="k-button" value="删除" />
         </div>
     </div>
-    <table class="content">
-        <tr>
-            <td>
-                <div id="stores-grid"></div>
-                <script>
-                    $(document).ready(function() {
-                        $("#stores-grid").kendoGrid({
-                            dataSource: {
-                                type: "json",
-                                transport: {
-                                    read: {
-                                        url: "@Html.Raw(Url.Action("StoreList", "Store"))",
-                                        type: "POST",
-                                        dataType: "json",
-                                        data: additionalData
-                                    }
-                                },
-                                schema: {
-                                    data: "Data",
-                                    total: "Total",
-                                    errors: "Errors"
-                                },
-                                error: function(e) {
-                                    display_kendoui_grid_error(e);
-                                    // Cancel the changes
-                                    this.cancelChanges();
-                                },
-                                pageSize: @(defaultGridPageSize),
-                                serverPaging: true,
-                                serverFiltering: true,
-                                serverSorting: true
-                            },
-                            pageable: {
-                                refresh: true,
-                                pageSizes: [@(gridPageSizes)]
-                            },
-                            editable: {
-                                confirmation: false,
-                                mode: "inline"
-                            },
-                            scrollable: false,
-                            dataBound: onDataBound,
-                            columns: [
-                                {
-                                    field: "Id",
-                                    headerTemplate: "<input id='mastercheckbox' type='checkbox' />",
-                                    headerAttributes: { style: "text-align:center" },
-                                    attributes: { style: "text-align:center" },
-                                    template: "<input type='checkbox' value='#=Id#' class='checkboxGroups' />",
-                                    width: 50
-                                },
-                                {
-                                    field: "Name",
-                                    title: "店名",
-                                    width: 300
-                                },
-                                {
-                                    field: "CompanyAddress",
-                                    title: "地址",
-                                    width: 100
-                                },
-                                {
-                                    field: "CompanyPhoneNumber",
-                                    title: "电话",
-                                    width: 100
-                                },
-                                {
-                                    field: "Id",
-                                    title: "员工",
-                                    width: 100,
-                                    template: '<a href="Records/#=Id#">查看员工</a>'
-                                },
-                                {
-                                    field: "Id",
-                                    title: "修改",
-                                    width: 100,
-                                    template: '<a href="Edit/#=Id#">编辑</a>'
-                                }
-                            ]
-                        });
-                    });
-                </script>
-            </td>
-        </tr>
-    </table>
+    <div id="stores-grid"></div>
+
     <script type="text/javascript">
 
         var selectedIds = [];
 
         $(document).ready(function() {
+
+            $("#stores-grid").kendoGrid({
+                dataSource: {
+                    type: "json",
+                    transport: {
+                        read: {
+                            url: "@Html.Raw(Url.Action("StoreList", "Store"))",
+                            type: "POST",
+                            dataType: "json",
+                            data: additionalData
+                        }
+                    },
+                    schema: {
+                        data: "Data",
+                        total: "Total",
+                        errors: "Errors"
+                    },
+                    error: function(e) {
+                        display_kendoui_grid_error(e);
+                        // Cancel the changes
+                        this.cancelChanges();
+                    },
+                    pageSize: @(defaultGridPageSize),
+                    serverPaging: true,
+                    serverFiltering: true,
+                    serverSorting: true
+                },
+                pageable: {
+                    refresh: true,
+                    pageSizes: [@(gridPageSizes)]
+                },
+                editable: {
+                    confirmation: false,
+                    mode: "inline"
+                },
+                scrollable: false,
+                dataBound: onDataBound,
+                columns: [
+                    {
+                        field: "Id",
+                        headerTemplate: "<input id='mastercheckbox' type='checkbox' />",
+                        headerAttributes: { style: "text-align:center" },
+                        attributes: { style: "text-align:center" },
+                        template: "<input type='checkbox' value='#=Id#' class='checkboxGroups' />",
+                        width: 50
+                    },
+                    {
+                        field: "Name",
+                        title: "店名",
+                        width: 300
+                    },
+                    {
+                        field: "Address",
+                        title: "地址",
+                        width: 100
+                    },
+                    {
+                        field: "PhoneNumber",
+                        title: "电话",
+                        width: 100
+                    },
+                    {
+                        field: "Id",
+                        title: "员工",
+                        width: 100,
+                        template: "<a href=\"Records/#=Id#\">查看员工</a>"
+                    },
+                    {
+                        field: "Id",
+                        title: "修改",
+                        width: 100,
+                        template: "<a href=\"Edit/#=Id#\">编辑</a>"
+                    }
+                ]
+            });
 
             //delete selected
             $("#delete-selected").click(function(e) {
@@ -122,7 +118,7 @@
                     cache: false,
                     type: "POST",
                     url: "@(Url.Action("DeleteSelected", "Store" +
-                                                         "e"))",
+                                                          "e"))",
                     data: postData,
                     complete: function(data) {
                         //reload grid
@@ -165,6 +161,7 @@
 
         function additionalData() {
             var data = {
+
             };
             addAntiForgeryToken(data);
             return data;

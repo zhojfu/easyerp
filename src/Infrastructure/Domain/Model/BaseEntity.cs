@@ -20,7 +20,7 @@
             }
 
             var entity = obj as BaseEntity;
-            return entity != null && this.Id.Equals(entity.Id);
+            return entity != null && Id.Equals(entity.Id);
         }
 
         public static bool operator ==(BaseEntity left, BaseEntity right)
@@ -40,7 +40,7 @@
 
         public override int GetHashCode()
         {
-            return this.Id.GetHashCode();
+            return Id.GetHashCode();
         }
 
         #endregion Equality

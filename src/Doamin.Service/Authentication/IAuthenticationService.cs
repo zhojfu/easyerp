@@ -1,16 +1,14 @@
 namespace Doamin.Service.Authentication
 {
-    using Domain.Model.Base;
+    using Domain.Model.Users;
 
     /// <summary>
     /// Authentication service interface
     /// </summary>
-    public partial interface IAuthenticationService
+    public interface IAuthenticationService
     {
         void SignIn(User user, bool createPersistentCookie);
-
         void SignOut();
-
         User GetAuthenticatedUser();
     }
 }

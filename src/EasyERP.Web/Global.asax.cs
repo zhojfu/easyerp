@@ -1,30 +1,30 @@
-﻿using System.Web.Mvc;
-using System.Web.Routing;
-
-namespace EasyERP.Web
+﻿namespace EasyERP.Web
 {
     using EasyErp.Core;
     using EasyErp.Core.Infrastructure;
-    using EasyERP.Web.App_Start;
     using EasyERP.Web.Framework;
+    using EasyERP.Web.Framework.Themes;
     using FluentValidation.Mvc;
     using System;
     using System.Globalization;
     using System.Threading;
     using System.Web;
-    using System.Web.Optimization;
+    using System.Web.Mvc;
+    using System.Web.Routing;
 
-    public class MvcApplication : System.Web.HttpApplication
+    public class MvcApplication : HttpApplication
     {
         protected void Application_Start()
         {
-            //initialize engine context
             EngineContext.Initialize(false);
+            ViewEngines.Engines.Clear();
+            ViewEngines.Engines.Add(new ThemeableRazorViewEngine());
 
-            AutoMapperBootstraper.RegisterModelMapper();
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
-            BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+            // auto mapper
+            AutoMapperBootstraper.RegisterModelMapper();
 
             //fluent validation
             DataAnnotationsModelValidatorProvider.AddImplicitRequiredAttributeForValueTypes = false;
@@ -46,10 +46,11 @@ namespace EasyERP.Web
 
             //process 404 HTTP errors
             var httpException = exception as HttpException;
-            if (httpException != null && httpException.GetHttpCode() == 404)
+            if (httpException != null &&
+                httpException.GetHttpCode() == 404)
             {
                 var webHelper = EngineContext.Current.Resolve<IWebHelper>();
-                if (!webHelper.IsStaticResource(this.Request))
+                if (!webHelper.IsStaticResource(Request))
                 {
                     Response.Clear();
                     Server.ClearError();
@@ -71,15 +72,20 @@ namespace EasyERP.Web
         {
             //ignore static resources
             var webHelper = EngineContext.Current.Resolve<IWebHelper>();
-            if (webHelper.IsStaticResource(this.Request))
+            if (webHelper.IsStaticResource(Request))
+            {
                 return;
+            }
 
             //keep alive page requested (we ignore it to prevent creation of guest customer records)
-            string keepAliveUrl = string.Format("{0}keepalive/index", webHelper.GetStoreLocation());
+            var keepAliveUrl = string.Format("{0}keepalive/index", webHelper.GetStoreLocation());
             if (webHelper.GetThisPageUrl(false).StartsWith(keepAliveUrl, StringComparison.InvariantCultureIgnoreCase))
+            {
                 return;
+            }
 
-            if (webHelper.GetThisPageUrl(false).StartsWith(string.Format("{0}admin", webHelper.GetStoreLocation()),
+            if (webHelper.GetThisPageUrl(false).StartsWith(
+                string.Format("{0}admin", webHelper.GetStoreLocation()),
                 StringComparison.InvariantCultureIgnoreCase))
             {
                 //admin area

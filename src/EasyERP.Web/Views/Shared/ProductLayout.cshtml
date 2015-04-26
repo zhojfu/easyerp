@@ -1,118 +1,39 @@
-﻿@using Doamin.Service.Helpers
-@using EasyErp.Core
-@using EasyErp.Core.Infrastructure
-@using EasyERP.Web.Framework
-@using EasyERP.Web.Framework.UI
-@{
-    var currentVersion = EasyErpVersion.CurrentVersion;
-    const string KendoVersion = "2014.2.716";
-
-    //CSS resources
-    Html.AppendCssFileParts(string.Format("~/Content/kendo/{0}/kendo.default.min.css", KendoVersion));
-    Html.AppendCssFileParts(string.Format("~/Content/kendo/{0}/kendo.common.min.css", KendoVersion));
-    Html.AppendCssFileParts("~/Content/jquery-ui-themes/smoothness/jquery-ui-1.10.3.custom.min.css");
-    Html.AppendCssFileParts("~/Content/styles.css");
-
-    Html.AppendScriptParts(string.Format("~/Scripts/kendo/{0}/kendo.web.min.js", KendoVersion));
-    Html.AppendScriptParts("~/Scripts/admin.common.js");
-    Html.AppendScriptParts("~/Scripts/jquery-migrate-1.2.1.min.js");
-    Html.AppendScriptParts("~/Scripts/jquery-ui-1.10.3.custom.min.js");
-    Html.AppendScriptParts("~/Scripts/jquery.validate.unobtrusive.min.js");
-    Html.AppendScriptParts("~/Scripts/jquery.validate.min.js");
-    Html.AppendScriptParts("~/Scripts/jquery-1.10.2.min.js");
-
-    //page title
-    var adminPageTitle = "";
-    if (!String.IsNullOrWhiteSpace(ViewBag.Title))
-    {
-        adminPageTitle = ViewBag.Title + " / ";
-    }
-    adminPageTitle += "EasyErp 管理";
-
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<!DOCTYPE html>
-<html>
-<head>
-    <title>@adminPageTitle</title>
-    <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
-    @Html.NopHeadCustom()
-    @Html.NopCssFiles(this.Url, ResourceLocation.Head)
-    @Html.NopScripts(this.Url, ResourceLocation.Head)
-</head>
-<body>
-    <div id="ajaxBusy">
-        <span>&nbsp;</span>
-    </div>
-    <div class="master-wrapper-page k-content">
-        <div class="master-wrapper-content">
-            @if (IsSectionDefined("header"))
-            {
-                @RenderSection("header")
-            }
-            else
-            {
-                <script type="text/javascript">
-                    $(document).ready(function () {
-                        $("#restart-application").click(function (e) {
-                            showThrobber('@Html.Raw(HttpUtility.JavaScriptStringEncode("Restart"))');
-                        });
-                    });
-                </script>
-                <div class="header">
-                    <div class="logo">
-                    </div>
-                    <div class="languageselector">
-                    </div>
-                    <div class="links">
-                    </div>
-                    <div class="login-info">
-                        @String.Format("LogInAs: {0}", "User Name")
-                        <text>, </text> @Html.ActionLink("Logout", "Logout", "Customer", new { area = "" }, null)
-                    </div>
-                    <div class="version">
-                        <span>nopCommerce @currentVersion</span>
-                    </div>
-                </div>
-            }
-            @if (IsSectionDefined("headermenu"))
-            {
-                @RenderSection("headermenu")
-            }
-            else
-            {
-                <div class="header-menu">
-                    @Html.Partial("Menu")
-                </div>
-            }
-            @if (IsSectionDefined("statusbar"))
-            {
-                @RenderSection("statusbar")
-            }
-            else
-            {
-                <div class="status-bar">
-                    @(EngineContext.Current.Resolve<IDateTimeHelper>().ConvertToUserTime(DateTime.Now).ToString("f"))
-                </div>
-            }
-            <div class="content">
-                <div class="cph">
-                    @RenderBody()
-                </div>
-            </div>
-            <div class="throbber">
-                <div class="curtain">
-                </div>
-                <div class="curtain-content">
-                    <div>
-                        <h1 class="throbber-header">Wait...</h1>
-                        <p>
-                        </p>
-                    </div>
-                </div>
+
+@section SiderBar{
+    <div id="nav-wrapper">
+
+        <div id="nav" class="root">
+
+            <div id="root-nav">
+
+                <ul class="root-nav-categories">
+                    <li>
+                        <h3>@Html.ActionLink("产品信息", "Index", "Product")</h3>
+                    </li>
+                </ul>
+
+                <ul class="root-nav-categories">
+                    <li>
+                        <h3>@Html.ActionLink("添加产品", "Create", "Product")</h3>
+                    </li>
+                </ul>
+
+                <ul class="root-nav-categories">
+                    <li>
+                        <h3>@Html.ActionLink("入库", "Inventory", "Product")</h3>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>
-    @Html.NopCssFiles(this.Url, ResourceLocation.Foot)
-    @Html.NopScripts(this.Url, ResourceLocation.Foot)
-</body>
-</html>
+
+}
+
+<div id="section-title">@RenderSection("SectionTitle", false)</div>
+
+@RenderBody()
+
+@RenderSection("scripts", false)
