@@ -1,18 +1,19 @@
-﻿using System;
-
-namespace EasyERP.Web.Models
+﻿
+namespace EasyERP.Web.Models.Employee
 {
-    using EasyERP.Web.Framework.Mvc;
-    using EasyERP.Web.Validators.Employees;
-    using FluentValidation.Attributes;
     using System;
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
 
-    [Validator(typeof(EmployeeValidator))]
-    public class EmployeeModel : BaseEntityModel
+    using EasyERP.Web.Framework.Mvc;
+    using EasyERP.Web.Validators.Employees;
+
+    using FluentValidation.Attributes;
+
+    // [Validator(typeof(EmployeeValidator))]
+    public class EmployeeModel // : BaseEntityModel
     {
-        public  int Id { get; set; }
+        public int Id { get; set; }
         [DisplayName("名")]
         [StringLength(10, ErrorMessage = "不能超过10个字符")]
         [Required]

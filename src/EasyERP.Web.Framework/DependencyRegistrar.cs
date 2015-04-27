@@ -80,9 +80,7 @@ namespace EasyERP.Web.Framework
             builder.RegisterType<CategoryService>().As<ICategoryService>().InstancePerLifetimeScope();
             builder.RegisterType<InventoryService>().As<IInventoryService>().InstancePerLifetimeScope();
             builder.RegisterType<PaymentService>().As<IPaymentService>().InstancePerLifetimeScope();
-            builder.RegisterType<EmployeeTimesheetService>().As<ITimesheetService<WorkTimeStatistic>>().InstancePerLifetimeScope();
-            builder.RegisterType<ConsumptionTimesheetService>().As<ITimesheetService<ConsumptionStatistic>>().InstancePerLifetimeScope();
-
+           
             builder.RegisterType<OrderService>().As<IOrderService>().InstancePerLifetimeScope();
             builder.RegisterType<UserService>().As<IUserService>().InstancePerLifetimeScope();
             builder.RegisterType<EncryptionService>().As<IEncryptionService>().InstancePerLifetimeScope();
@@ -99,6 +97,12 @@ namespace EasyERP.Web.Framework
             builder.RegisterType<DateTimeHelper>().As<IDateTimeHelper>().InstancePerLifetimeScope();
             builder.RegisterType<PageHeadBuilder>().As<IPageHeadBuilder>().InstancePerLifetimeScope();
             builder.RegisterType<RoutePublisher>().As<IRoutePublisher>().SingleInstance();
+
+
+            builder.RegisterType<EmployeeTimesheetService>().As<ITimesheetService<WorkTimeStatistic>>().InstancePerLifetimeScope();
+            builder.RegisterType<ConsumptionTimesheetService>().As<ITimesheetService<ConsumptionStatistic>>().InstancePerLifetimeScope();
+            builder.RegisterType<EmployeeService>().As<IEmployeeService>().InstancePerLifetimeScope();
+            builder.RegisterType<ConsumptionService>().As<IConsumptionService>().InstancePerLifetimeScope();
         }
 
         public int Order
