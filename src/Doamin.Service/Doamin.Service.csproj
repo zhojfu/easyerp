@@ -76,6 +76,8 @@
     <Compile Include="Products\IInventoryService.cs" />
     <Compile Include="Products\IManufacturerService.cs" />
     <Compile Include="Products\InventoryService.cs" />
+    <Compile Include="Products\ProductPriceService.cs" />
+    <Compile Include="Products\IProductPriceService.cs" />
     <Compile Include="Products\IProductService.cs" />
     <Compile Include="Products\ManufacturerExtensions.cs" />
     <Compile Include="Products\ManufacturerService.cs" />

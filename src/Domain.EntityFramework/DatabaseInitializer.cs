@@ -18,28 +18,23 @@
             var c1 = new Category
             {
                 Name = "Rice",
-                Description = "Rice",
+                Description = "Rice category",
                 UpdatedOnUtc = DateTime.Now,
                 CreatedOnUtc = DateTime.Now
-
-                //Descriiption = "Rice category"
             };
             var c2 = new Category
             {
                 Name = "Food Oil",
-                Description = "Food Oil",
+                Description = "Food Oil category",
                 UpdatedOnUtc = DateTime.Now,
                 CreatedOnUtc = DateTime.Now
-
-                //Descriiption = "Food Oil category"
             };
             var c3 = new Category
             {
                 Name = "Other",
+                Description = "Other category",
                 UpdatedOnUtc = DateTime.Now,
                 CreatedOnUtc = DateTime.Now
-
-                //Descriiption = "Other category"
             };
             context.Entry(c1).State = EntityState.Added;
             context.Entry(c2).State = EntityState.Added;
@@ -60,7 +55,6 @@
                 CreatedOn = DateTime.Now,
                 UpdatedOn = DateTime.Now
             };
-            context.Entry(s1).State = EntityState.Added;
 
             var p1 = new Product
             {
@@ -74,6 +68,11 @@
                 ProductCost = 10,
                 Gtin = "690000121"
             };
+
+            p1.Stores.Add(s1);
+            s1.Products.Add(p1);
+
+            context.Entry(s1).State = EntityState.Added;
 
             context.Entry(p1).State = EntityState.Added;
 

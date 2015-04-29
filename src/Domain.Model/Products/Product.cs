@@ -8,6 +8,10 @@
 
     public class Product : BaseEntity, IAggregateRoot
     {
+        private ICollection<Store> stores;
+
+        private ICollection<ProductPrice> prices;
+
         public string Name { get; set; }
 
         public string ShortDescription { get; set; }
@@ -48,6 +52,16 @@
 
         public virtual ICollection<MaterialStatisitc> MaterialComsumptions { get; set; }
 
-        public virtual ICollection<Store> Stores { get; set; }
+        public virtual ICollection<Store> Stores
+        {
+            get { return stores ?? new List<Store>(); }
+            set { stores = value; }
+        }
+
+        public virtual ICollection<ProductPrice> ProductPrices
+        {
+            get { return prices ?? new List<ProductPrice>(); }
+            set { prices = value; }
+        }
     }
 }

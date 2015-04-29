@@ -73,7 +73,7 @@
                 products = products.Where(p => p.Published == published);
             }
 
-            if (string.IsNullOrEmpty(keywords))
+            if (!string.IsNullOrEmpty(keywords))
             {
                 products = products.Where(
                     p =>
