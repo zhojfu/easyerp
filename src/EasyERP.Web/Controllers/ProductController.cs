@@ -1,5 +1,6 @@
 ﻿namespace EasyERP.Web.Controllers
 {
+    using Antlr.Runtime;
     using Doamin.Service.Helpers;
     using Doamin.Service.Products;
     using Doamin.Service.Security;
@@ -28,11 +29,14 @@
 
         private readonly IStoreService storeService;
 
+        private readonly IProductPriceService productPriceService;
+
         public ProductController(
             IPermissionService permissionService,
             ICategoryService categoryService,
             IProductService productService,
             IStoreService storeService,
+            IProductPriceService productPriceService,
             IInventoryService inventoryService,
             IDateTimeHelper dateTimeHelper,
             IAclService aclService)
@@ -41,6 +45,7 @@
             this.categoryService = categoryService;
             this.productService = productService;
             this.storeService = storeService;
+            this.productPriceService = productPriceService;
             this.inventoryService = inventoryService;
             this.dateTimeHelper = dateTimeHelper;
         }
@@ -356,44 +361,6 @@
             return View();
         }
 
-        [NonAction]
-        protected virtual void PrepareProductModel(
-            ProductModel model,
-            Product product,
-            bool setPredefinedValues,
-            bool excludeProperties)
-        {
-            if (model == null)
-            {
-                throw new ArgumentNullException("model");
-            }
-
-            var allCategories = categoryService.GetAllCategories();
-            foreach (var category in allCategories)
-            {
-                model.AvailableCategories.Add(
-                    new SelectListItem
-                    {
-                        Text = category.Name,
-                        Value = category.Id.ToString()
-                    });
-            }
-
-            if (product != null)
-            {
-                model.CreatedOn = dateTimeHelper.ConvertToUserTime(product.CreatedOnUtc, DateTimeKind.Utc);
-                model.UpdatedOn = dateTimeHelper.ConvertToUserTime(product.UpdatedOnUtc, DateTimeKind.Utc);
-            }
-
-            //default values
-            if (setPredefinedValues)
-            {
-                model.StockQuantity = 10000;
-
-                model.Published = true;
-            }
-        }
-
         [HttpPost]
         public ActionResult Delete(int id)
         {
@@ -440,6 +407,128 @@
                 {
                     Result = true
                 });
+        }
+
+        public ActionResult Price(int id)
+        {
+            var model = new PriceListModel()
+            {
+                ProductId = id
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult PriceList(DataSourceRequest command, PriceListModel model)
+        {
+            if (!permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            {
+                return AccessDeniedView();
+            }
+
+            var stores = storeService.GetStoresByProductId(model.ProductId).ToList();
+
+            var product = productService.GetProductById(model.ProductId);
+
+            if (product == null)
+            {
+                return new JsonResult();
+            }
+
+            var gridModel = new DataSourceResult()
+            {
+                Data = stores.Select(
+                x =>
+                {
+                    var priceModel = new PriceModel()
+                    {
+                        StoreName = x.Name,
+                        ProductId = product.Id,
+                        ProductName = product.Name,
+                        Cost = product.ProductCost,
+                        Price = product.Price,
+                        StoreId = x.Id
+                    };
+
+                    return priceModel;
+                }),
+                Total = stores.Count
+            };
+
+            return Json(gridModel);
+        }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult PriceUpdate(DataSourceRequest request, [Bind(Prefix = "models")]IEnumerable<PriceModel> priceModels)
+        {
+            var priceList = priceModels as IList<PriceModel> ?? priceModels.ToList();
+            if (priceModels != null &&
+                ModelState.IsValid)
+            {
+                foreach (var priceModel in priceList)
+                {
+                    productPriceService.InsertPrice(priceModel.ToEntity());
+                }
+            }
+
+            var gridModel = new DataSourceResult
+            {
+                Data = priceList.ToList().Select(
+                    x =>
+                    {
+                        var priceModel = new PriceModel()
+                        {
+                            ProductId = x.ProductId,
+                            Cost = x.Cost,
+                            Price = x.Price,
+                            StoreId = x.StoreId
+                        };
+
+                        return priceModel;
+                    }),
+                Total = priceList.Count
+            };
+
+            return Json(gridModel);
+        }
+
+        [NonAction]
+        protected virtual void PrepareProductModel(
+            ProductModel model,
+            Product product,
+            bool setPredefinedValues,
+            bool excludeProperties)
+        {
+            if (model == null)
+            {
+                throw new ArgumentNullException("model");
+            }
+
+            var allCategories = categoryService.GetAllCategories();
+            foreach (var category in allCategories)
+            {
+                model.AvailableCategories.Add(
+                    new SelectListItem
+                    {
+                        Text = category.Name,
+                        Value = category.Id.ToString()
+                    });
+            }
+
+            if (product != null)
+            {
+                model.CreatedOn = dateTimeHelper.ConvertToUserTime(product.CreatedOnUtc, DateTimeKind.Utc);
+                model.UpdatedOn = dateTimeHelper.ConvertToUserTime(product.UpdatedOnUtc, DateTimeKind.Utc);
+            }
+
+            //default values
+            if (setPredefinedValues)
+            {
+                model.StockQuantity = 10000;
+
+                model.Published = true;
+            }
         }
 
         [NonAction]

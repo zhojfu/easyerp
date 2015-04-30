@@ -8,12 +8,12 @@
 
     public static class MapperExtensions
     {
-        public static TDestination MapTo<TSource, TDestination>(this TSource source)
+        private static TDestination MapTo<TSource, TDestination>(this TSource source)
         {
             return Mapper.Map<TSource, TDestination>(source);
         }
 
-        public static TDestination MapTo<TSource, TDestination>(this TSource source, TDestination destination)
+        private static TDestination MapTo<TSource, TDestination>(this TSource source, TDestination destination)
         {
             return Mapper.Map(source, destination);
         }
@@ -51,6 +51,16 @@
         public static StoreModel ToModel(this Store entity)
         {
             return entity.MapTo<Store, StoreModel>();
+        }
+
+        public static PriceModel ToModel(this ProductPrice entity)
+        {
+            return entity.MapTo<ProductPrice, PriceModel>();
+        }
+
+        public static ProductPrice ToEntity(this PriceModel model)
+        {
+            return model.MapTo<PriceModel, ProductPrice>();
         }
     }
 }

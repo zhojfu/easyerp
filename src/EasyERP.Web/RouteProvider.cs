@@ -1,16 +1,25 @@
 ﻿namespace EasyERP.Web
 {
+    using EasyERP.Web.Framework.Mvc.Routes;
     using System.Web.Mvc;
     using System.Web.Routing;
-    using EasyERP.Web.Framework.Mvc.Routes;
 
     public class RouteProvider : IRouteProvider
     {
         public void RegisterRoutes(RouteCollection routes)
         {
             routes.MapRoute(
-                "HomePage",
+                "root",
                 "",
+                new
+                {
+                    controller = "User",
+                    action = "Login"
+                },
+                new[] { "EasyERP.Web.Controllers" });
+            routes.MapRoute(
+                "HomePage",
+                "HomePage",
                 new
                 {
                     controller = "User",

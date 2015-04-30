@@ -1,0 +1,103 @@
+﻿@using EasyErp.Core.Configuration.Settings
+@using EasyErp.Core.Infrastructure
+@using EasyERP.Web.Framework
+@model EasyERP.Web.Models.Products.PriceListModel
+@section SectionTitle
+{
+    价格管理
+}
+@{
+    ViewBag.Title = "价格管理";
+    var defaultGridPageSize = EngineContext.Current.Resolve<AreaSettings>().DefaultGridPageSize;
+    var gridPageSizes = EngineContext.Current.Resolve<AreaSettings>().GridPageSizes;
+}
+@Html.AntiForgeryToken()
+@using (Html.BeginForm())
+{
+    @Html.HiddenFor(m => m.ProductId, new { id = "product-id" })
+    @Html.AntiForgeryToken()
+    <div class="section-header">
+        <div class="title">
+            <label>价格管理</label>
+        </div>
+    </div>
+    <div>
+        <div id="product-price-mapping-grid"></div>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $("#product-price-mapping-grid").kendoGrid({
+                    dataSource: {
+                        type: "json",
+                        transport: {
+                            read: {
+                                url: "/Product/PriceList",
+                                type: "POST",
+                                dataType: "json",
+                                data: additionalData
+                            },
+                            update: {
+                                url: "/Product/PriceUpdate",
+                                type: "POST",
+                                dataType: "jsonp",
+                                data:additionalData
+                            }
+                            //parameterMap: function(options, operation) {
+                            //    if (operation !== "read" && options.models) {
+                            //        return {models: kendo.stringify(options.models)};
+                            //    }
+                            //}
+                        },
+                        schema: {
+                            model: {
+                                id :"StoreId",
+                                fields:{
+                                    StoreId:{editable:false, nullable:true},
+                                    ProductId:{editable:false, nullable:true},
+                                    StoreName: {editable:false, nullable:true},
+                                    ProductName: {editable:false, nullable:true},
+                                    Cost: {type:"number", validation:{min:0, required:true}},
+                                    Price:{type:"number", validation:{min:0, required:true}}
+                                }
+                            },
+                            data: "Data",
+                            total: "Total",
+                            errors: "Errors"
+                        },
+                        error: function(e) {
+                            display_kendoui_grid_error(e);
+                            // Cancel the changes
+                            this.cancelChanges();
+                        },
+                        pageSize: @(defaultGridPageSize),
+                        serverPaging: true,
+                        serverFiltering: true,
+                        serverSorting: true
+                    },
+                    pageable: {
+                        refresh: true,
+                        pageSizes: [@(gridPageSizes)]
+                    },
+                    editable: true,
+                    scrollable: false,
+                    toolbar: ["create", "save", "cancel"],
+                    columns: [
+                        { field: "StoreName", title: "店名", width: 100 },
+                        { field: "ProductName", title: "产品名", width: 100 },
+                        { field: "Cost", title: "购进价格", width: 100 },
+                        { field: "Price", title: "售价", width: 100 },
+                        //{ field: "Id", title: "历史价格", width: 100, template: "<a href=\"PriceHistory/#=Id#\">查看</a>" }
+                    ]
+                });
+            });
+        </script>
+    </div>
+    <script>
+        function additionalData() {
+            var data = {
+                ProductId: $("#product-id").val()
+            };
+            addAntiForgeryToken(data);
+            return data;
+        }
+    </script>
+}

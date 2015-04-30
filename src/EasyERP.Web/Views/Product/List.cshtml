@@ -30,122 +30,94 @@
             @class = "text-danger"
         })
         @Html.LabelFor(m => m.SearchProductName)
-        @Html.EditorFor(model => model.SearchProductName)
+        @Html.EditorFor(model => model.SearchProductName, new { id = "search-product-name" })
     </div>
     <div class="form-group">
         @Html.LabelFor(m => m.SearchCategoryId)
         @Html.DropDownList("SearchCategoryId", Model.AvailableCategories, new
         {
-            id = "select-category"
+            id = "selected-category"
         })
     </div>
     <div class="form-group">
         @Html.LabelFor(m => m.SearchStoreId)
         @Html.DropDownList("SearchStoreId", Model.AvailableStores, new
         {
-            id = "select-store"
+            id = "selected-store"
         })
     </div>
     <div>
         <input type="button" id="search-products" class="k-button" value="搜索" />
     </div>
-    <div id="products-grid"></div>
-    <script type="text/javascript">
+    <div>
+        <div id="products-grid"></div>
+        <script type="text/javascript">
 
-        var selectedIds = [];
+            $(document).ready(function() {
 
-        $(document).ready(function() {
-
-            $("#products-grid").kendoGrid({
-                dataSource: {
-                    type: "json",
-                    transport: {
-                        read: {
-                            url: "@Html.Raw(Url.Action("ProductList", "Product"))",
-                            type: "POST",
-                            dataType: "json",
-                            data: additionalData
-                        }
+                $("#products-grid").kendoGrid({
+                    dataSource: {
+                        type: "json",
+                        transport: {
+                            read: {
+                                url: "/Product/ProductList",
+                                type: "POST",
+                                dataType: "json",
+                                data: additionalData
+                            }
+                        },
+                        schema: {
+                            data: "Data",
+                            total: "Total",
+                            errors: "Errors"
+                        },
+                        error: function(e) {
+                            display_kendoui_grid_error(e);
+                            // Cancel the changes
+                            this.cancelChanges();
+                        },
+                        pageSize: @(defaultGridPageSize),
+                        serverPaging: true,
+                        serverFiltering: true,
+                        serverSorting: true
                     },
-                    schema: {
-                        data: "Data",
-                        total: "Total",
-                        errors: "Errors"
+                    pageable: {
+                        refresh: true,
+                        pageSizes: [@(gridPageSizes)]
                     },
-                    error: function(e) {
-                        display_kendoui_grid_error(e);
-                        // Cancel the changes
-                        this.cancelChanges();
+                    editable: {
+                        confirmation: false,
+                        mode: "inline"
                     },
-                    pageSize: @(defaultGridPageSize),
-                    serverPaging: true,
-                    serverFiltering: true,
-                    serverSorting: true
-                },
-                pageable: {
-                    refresh: true,
-                    pageSizes: [@(gridPageSizes)]
-                },
-                editable: {
-                    confirmation: false,
-                    mode: "inline"
-                },
-                scrollable: false,
-                dataBound: onDataBound,
-                columns: [
-                    {
-                        field: "Id",
-                        headerTemplate: "<input id='mastercheckbox' type='checkbox' />",
-                        headerAttributes: { style: "text-align:center" },
-                        attributes: { style: "text-align:center" },
-                        template: "<input type='checkbox' value='#=Id#' class='checkboxGroups' />",
-                        width: 50
-                    },
-                    {
-                        field: "Name",
-                        title: "产品名",
-                        width: 300
-                    },
-                    {
-                        field: "CategoryName",
-                        title: "产品目录",
-                        width: 300
-                    },
-                    {
-                        field: "StockQuantity",
-                        title: "库存",
-                        width: 100
-                    },
-                    {
-                        field: "Price",
-                        title: "价格",
-                        width: 100
-                    },
-                    {
-                        field: "ProductCost",
-                        title: "成本",
-                        width: 100
-                    },
-                    {
-                        field: "Sku",
-                        title: "条码",
-                        width: 100
-                    },
-                    {
-                        field: "Id",
-                        title: "查看入库记录",
-                        width: 100,
-                        template: "<a href=\"Records/#=Id#\">编辑</a>"
-                    },
-                    {
-                        field: "Id",
-                        title: "修改",
-                        width: 100,
-                        template: "<a href=\"Edit/#=Id#\">编辑</a>"
-                    }
-                ]
+                    scrollable: false,
+                    dataBound: onDataBound,
+                    columns: [
+                        {
+                            field: "Id",
+                            headerTemplate: "<input id='mastercheckbox' type='checkbox' />",
+                            headerAttributes: { style: "text-align:center" },
+                            attributes: { style: "text-align:center" },
+                            template: "<input type='checkbox' value='#=Id#' class='checkboxGroups' />",
+                            width: 50
+                        },
+                        { field: "Name", title: "产品名", width: 300 },
+                        { field: "CategoryName", title: "产品目录", width: 300 },
+                        { field: "StockQuantity", title: "库存", width: 100 },
+                        { field: "Price", title: "价格", width: 100 },
+                        { field: "ProductCost", title: "成本", width: 100 },
+                        { field: "Sku", title: "条码", width: 100 },
+                        { field: "Id", title: "查看入库记录", width: 100, template: "<a href=\"Records/#=Id#\">编辑</a>" },
+                        { field: "Id", title: "修改", width: 100, template: "<a href=\"Edit/#=Id#\">编辑</a>" },
+                        { field: "Id", title: "修改价格", width: 100, template: "<a href=\"Price/#=Id#\">修改价格</a>" }
+                    ]
+                });
             });
+        </script>
+    </div>
 
+    <script type="text/javascript">
+        var selectedIds = [];
+        $(document).ready(function() {
             //search button
             $("#search-products").click(function() {
                 //search
@@ -225,7 +197,9 @@
 
         function additionalData() {
             var data = {
-                SearchProductName: $("#@Html.FieldIdFor(model => model.SearchProductName)").val(),
+                SearchProductName: $("#search-product-name").val(),
+                SearchStoreId: $("#selected-store").val(),
+                SearchCategoryId: $("#selected-category").val()
             };
             addAntiForgeryToken(data);
             return data;

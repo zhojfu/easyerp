@@ -8,7 +8,7 @@
     using EasyERP.Web.Models.Products;
     using EasyERP.Web.Models.Stores;
 
-    public class AutoMapperBootstraper
+    public static class AutoMapperBootstraper
     {
         public static void RegisterModelMapper()
         {
@@ -21,6 +21,7 @@
             Mapper.CreateMap<Employee, EmployeeListModel>();
             Mapper.CreateMap<Store, StoreModel>();
             Mapper.CreateMap<StoreModel, Store>();
+            Mapper.CreateMap<PriceModel, ProductPrice>();
         }
     }
 }
