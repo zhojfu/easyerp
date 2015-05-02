@@ -459,7 +459,7 @@
             return Json(gridModel);
         }
 
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult PriceUpdate(DataSourceRequest request, [Bind(Prefix = "models")]IEnumerable<PriceModel> priceModels)
         {
             var priceList = priceModels as IList<PriceModel> ?? priceModels.ToList();

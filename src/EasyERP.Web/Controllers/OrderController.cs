@@ -215,5 +215,11 @@
                 .ToList();
             return Json(result, JsonRequestBehavior.AllowGet);
         }
+
+        public ActionResult Create()
+        {
+            var model = new OrderModel();
+            return View(model);
+        }
     }
 }

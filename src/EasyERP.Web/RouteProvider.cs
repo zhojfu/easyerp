@@ -26,6 +26,23 @@
                     action = "Login"
                 },
                 new[] { "EasyERP.Web.Controllers" });
+            routes.MapRoute(
+                "OrderItems",
+                "OrderItems/{orderGuid}",
+                new { controller ="Order", action="OrderItems", orderGuid = UrlParameter.Optional},
+                new[] { "EasyERP.Web.Controllers" });
+            
+            routes.MapRoute(
+                "AddItem",
+                "AddItem/{orderGuid}",
+                new { controller ="Order", action="AddItem", orderGuid = UrlParameter.Optional},
+                new[] { "EasyERP.Web.Controllers" });
+
+            routes.MapRoute(
+                "UpdateItems",
+                "UpdateItems{orderGuid}",
+                new { controller ="Order", action="UpdateItems", orderGuid = UrlParameter.Optional},
+                new[] { "EasyERP.Web.Controllers" });
         }
 
         public int Priority

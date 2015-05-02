@@ -15,7 +15,6 @@
 @using (Html.BeginForm())
 {
     @Html.HiddenFor(m => m.ProductId, new { id = "product-id" })
-    @Html.AntiForgeryToken()
     <div class="section-header">
         <div class="title">
             <label>价格管理</label>
@@ -38,14 +37,9 @@
                             update: {
                                 url: "/Product/PriceUpdate",
                                 type: "POST",
-                                dataType: "jsonp",
-                                data:additionalData
+                                dataType: "jsonp"
+                                //data:additionalData
                             }
-                            //parameterMap: function(options, operation) {
-                            //    if (operation !== "read" && options.models) {
-                            //        return {models: kendo.stringify(options.models)};
-                            //    }
-                            //}
                         },
                         schema: {
                             model: {

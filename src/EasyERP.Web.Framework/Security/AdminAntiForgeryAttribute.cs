@@ -41,6 +41,7 @@
             //if (!securitySettings.EnableXsrfProtectionForAdminArea)
             //    return;
 
+            return;
             var validator = new ValidateAntiForgeryTokenAttribute();
             validator.OnAuthorization(filterContext);
         }

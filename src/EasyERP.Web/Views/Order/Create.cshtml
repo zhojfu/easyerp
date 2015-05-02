@@ -1,0 +1,87 @@
+﻿@using EasyErp.Core.Configuration.Settings
+@using EasyErp.Core.Infrastructure
+@using EasyERP.Web.Framework
+@model EasyERP.Web.Models.Orders.OrderModel
+@section SectionTitle
+{
+    新建订单
+}
+@Html.AntiForgeryToken()
+@using (Html.BeginForm())
+{
+    @Html.HiddenFor(m => m.OrderGuid, new { id = "product-id" })
+    <div class="section-header">
+        <div class="title">
+            <label>新建订单</label>
+        </div>
+       <div class="options">
+
+            <input type="submit" name="save" class="k-button" value="保存" />
+
+            <input type="submit" name="save-continue" class="k-button" value="Save Contine" />
+        </div>
+    </div>
+    <div>
+        <div id="order-item-list"></div>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $('#order-item-list').kendoGrid({
+                    dataSource: {
+                        type: "json",
+                        transport: {
+                            read: {
+                                url: "OrderItems/"+@Html.Raw(Model.OrderGuid),
+                                type: "POST",
+                                dataType: "json"
+                            },
+                            update: {
+                                url: "UpdateItems/"+@Html.Raw(Model.OrderGuid),
+                                type: "POST",
+                                dataType: "json"
+                            },
+                            create: {
+                                url: "AddItem"+@Html.Raw(Model.OrderGuid),
+                                type: "POST",
+                                dataType: "json"
+                            }
+                        },
+                        schema: {
+                            model: {
+                                id: "OrderId",
+                                fields: {
+                                    ProductName: { editable: true },
+                                    Price:{editable:false, nullable:false},
+                                    Quantity:{type:"number", validation:{min:0, required:true}}
+                                }
+                            },
+                            data: "Data",
+                            total: "Total",
+                            errors:"Errors"
+                        },
+
+                        error: function(e) {
+                            display_kendoui_grid_error(e);
+                            // Cancel the changes
+                            this.cancelChanges();
+                        },
+                        serverPaging: true,
+                        serverFiltering: true,
+                        serverSorting: true
+                    },
+
+                    pageable: {
+                        refresh: true,
+                    },
+                    editable: true,
+                    scrollable: false,
+                    toolbar: ["create", "save", "cancel"],
+                    columns: [
+                        {field:"ProductName", title:"产品名", width:100},
+                        { field: "Price", title: "售价", width: 100 },
+                        { field: "Quantity", title: "售价", width: 100 }
+                    ]
+                });
+            });
+        </script>
+    </div>
+}
