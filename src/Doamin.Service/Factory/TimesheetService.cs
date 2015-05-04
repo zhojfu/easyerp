@@ -43,7 +43,7 @@
                 {
                     Id = category.Id,
                     DateOfWeek = selectedDate,
-                    Title = category.DisplayName
+                    Title = category.Name
                 };
                 foreach (var timeSheet in timeSheets)
                 {

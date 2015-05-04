@@ -1,0 +1,17 @@
+﻿@section SectionTitle
+{
+    <div>
+        员工- 客户 
+    </div>
+}
+
+@model EasyERP.Web.Models.Customer.CustomerModel
+
+@using (Html.BeginForm("Create", "Customer", FormMethod.Post, new
+{
+    @class = "",
+    role = "form"
+}))
+{
+    @Html.Partial("CustomerArea")
+}

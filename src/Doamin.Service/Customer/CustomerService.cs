@@ -1,34 +1,34 @@
-﻿namespace Doamin.Service.Factory
+﻿namespace Doamin.Service.Customer
 {
     using System.Collections.Generic;
-    using Domain.Model;
+    using Domain.Model.Customer;
     using Infrastructure.Domain;
     using Infrastructure.Utility;
 
-    public class EmployeeService : IEmployeeService
+    public class CustomerService : ICustomerService
     {
-        private readonly IRepository<Employee> repository;
+        private readonly IRepository<Customer> repository;
 
         private readonly IUnitOfWork unitOfWork;
 
-        public EmployeeService(IRepository<Employee> repository, IUnitOfWork unitOfWork)
+        public CustomerService(IRepository<Customer> repository, IUnitOfWork unitOfWork)
         {
             this.repository = repository;
             this.unitOfWork = unitOfWork;
         }
 
-        public Employee GetEmployeeById(int id)
+        public Customer GetCustomerById(int id)
         {
             return repository.GetByKey(id);
         }
 
-        public void AddEmployee(Employee employee)
+        public void AddCustomer(Customer customer)
         {
-            repository.Add(employee);
+            repository.Add(customer);
             unitOfWork.Commit();
         }
 
-        public void DeleteEmployeeByIds(List<int> ids)
+        public void DeleteCustomerByIds(List<int> ids)
         {
             foreach (var id in ids)
             {
@@ -42,13 +42,13 @@
             unitOfWork.Commit();
         }
 
-        public void UpdateEmployee(Employee employee)
+        public void UpdateCustomer(Customer customer)
         {
-            repository.Update(employee);
+            repository.Update(customer);
             unitOfWork.Commit();
         }
 
-        public PagedResult<Employee> GetEmployees(int pageNumber, int pageSize)
+        public PagedResult<Customer> GetCustomers(int pageNumber, int pageSize)
         {
             return repository.FindAll(pageSize, pageNumber, e => true, m => m.Name, SortOrder.Ascending);
         }

@@ -8,8 +8,7 @@
         public EmployeeConfiguration()
         {
             HasKey(e => e.Id).ToTable(typeof(Employee).Name);
-            Property(e => e.FirstName);
-            Property(e => e.LastName);
+            Property(e => e.Name);
             Property(e => e.IdNumber);
             Property(e => e.Male);
             Property(e => e.Married);

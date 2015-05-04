@@ -7,12 +7,7 @@ namespace Domain.Model.Factory
     /*water, power...*/
     public class Consumption : BaseEntity, IAggregateRoot
     {
-        public string Name { get; set; }
-
-        public override string DisplayName
-        {
-            get { return this.Name; }
-        }
+        public override string Name { get; set; }
 
         public string Unit { get; set; }
 

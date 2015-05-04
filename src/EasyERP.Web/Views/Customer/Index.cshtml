@@ -1,0 +1,17 @@
+﻿
+@using System.Web.Optimization
+@section SectionTitle
+{
+    员工信息
+}
+
+@Html.ActionLink("创建客户", "Create")
+
+<a href="#" id="deleteCustomer">删除客户</a>
+<div id="customerList"></div>
+
+
+@section scripts
+{
+     @Scripts.Render("~/Scripts/employee/employee.js")
+}

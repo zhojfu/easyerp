@@ -1,6 +1,7 @@
 ﻿namespace Domain.Model.Orders
 {
     using Domain.Model.Stores;
+    using Domain.Model.Customer;
     using Infrastructure.Domain.Model;
     using System;
     using System.Collections.Generic;
@@ -14,6 +15,8 @@
         public Guid OrderGuid { get; set; }
 
         public int CustomerId { get; set; }
+
+        public int StoreId { get; set; }
 
         public int OrderStatusId { get; set; }
 
@@ -37,7 +40,9 @@
 
         #region Navigation properties
 
-        public virtual Store Customer { get; set; }
+        public virtual Store Store { get; set; }
+
+        public virtual Customer Customer { get; set; }
 
         public virtual ICollection<OrderItem> OrderItems
         {

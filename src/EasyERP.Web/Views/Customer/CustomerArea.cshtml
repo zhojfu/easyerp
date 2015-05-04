@@ -1,5 +1,5 @@
 ﻿@using System.Web.Optimization
-@model EasyERP.Web.Models.Employee.EmployeeModel
+@model EasyERP.Web.Models.Customer.CustomerModel
 <div>
 
     <button type="submit">保存</button>
@@ -69,66 +69,16 @@
 
 <div class="form-group">
 
-    @Html.LabelFor(m => m.Married, new
+    @Html.LabelFor(m => m.TelePhone, new
     {
         @class = ""
     })
-    @Html.RadioButtonFor(m => m.Married, true, new
-    {
-        @checked = "checked"
-    })已婚
-
-    @Html.RadioButtonFor(m => m.Married, false)未婚
-
-</div>
-
-<div class="form-group">
-
-    @Html.LabelFor(m => m.Race, new
-    {
-        @class = ""
-    })
-    @Html.TextBoxFor(m => m.Race, new
+    @Html.TextBoxFor(m => m.TelePhone, new
     {
         @class = ""
     })
 </div>
 
-<div class="form-group">
-
-    @Html.LabelFor(m => m.Education, new
-    {
-        @class = ""
-    })
-    @Html.TextBoxFor(m => m.Education, new
-    {
-        @class = ""
-    })
-</div>
-
-<div class="form-group">
-
-    @Html.LabelFor(m => m.CellPhone, new
-    {
-        @class = ""
-    })
-    @Html.TextBoxFor(m => m.CellPhone, new
-    {
-        @class = ""
-    })
-</div>
-
-<div class="form-group">
-
-    @Html.LabelFor(m => m.NativePlace, new
-    {
-        @class = ""
-    })
-    @Html.TextBoxFor(m => m.NativePlace, new
-    {
-        @class = ""
-    })
-</div>
 
 <div class="form-group">
 
@@ -142,57 +92,20 @@
     })
 </div>
 
+
 <div class="form-group">
 
-    @Html.LabelFor(m => m.HomePhone, new
+    @Html.LabelFor(m => m.Description, new
     {
         @class = ""
     })
-    @Html.TextBoxFor(m => m.HomePhone, new
+    @Html.TextBoxFor(m => m.Description, new
     {
         @class = ""
     })
 </div>
 
-<div class="form-group">
 
-    @Html.LabelFor(m => m.EMail, new
-    {
-        @class = ""
-    })
-    @Html.TextBoxFor(m => m.EMail, new
-    {
-        @class = ""
-    })
-</div>
-
-<div class="form-group">
-
-    @Html.LabelFor(m => m.Department, new
-    {
-        @class = ""
-    })
-    @Html.TextBoxFor(m => m.Department, new
-    {
-        @class = ""
-    })
-</div>
-
-<div class="form-group">
-
-    @Html.ValidationMessageFor(m => m.SalaryOfMonth, "", new
-    {
-        @class = "text-danger"
-    })
-    @Html.LabelFor(m => m.SalaryOfMonth, new
-    {
-        @class = ""
-    })
-    @Html.TextBoxFor(m => m.SalaryOfMonth, new
-    {
-        @class = ""
-    })
-</div>
 
 
 <script>

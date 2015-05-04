@@ -96,7 +96,6 @@ namespace EasyERP.Web.Controllers
                 {
                     EmployeeListModel model = Mapper.Map<Employee, EmployeeListModel>(employee);
                     model.Sex = employee.Male ? "男" : "女";
-                    model.FullName = employee.LastName + employee.FirstName;
                     employeesList.Add(model);
                 }
 

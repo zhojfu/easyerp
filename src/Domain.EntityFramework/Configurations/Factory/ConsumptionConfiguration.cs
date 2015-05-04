@@ -3,9 +3,9 @@
     using System.Data.Entity.ModelConfiguration;
     using Domain.Model.Factory;
 
-    internal class AttritionConfiguration : EntityTypeConfiguration<Consumption>
+    internal class ConsumptionConfiguration : EntityTypeConfiguration<Consumption>
     {
-        public AttritionConfiguration()
+        public ConsumptionConfiguration()
         {
             HasKey(a => a.Id);
             Property(a => a.Name);

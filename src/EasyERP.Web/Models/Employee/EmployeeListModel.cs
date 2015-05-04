@@ -3,7 +3,7 @@
     public class EmployeeListModel
     {
         public string Id { get; set; }
-        public string FullName { get; set; }
+        public string Name { get; set; }
         public string Sex { get; set; }
         public string CellPhone { get; set; }
         public string NativePlace { get; set; }

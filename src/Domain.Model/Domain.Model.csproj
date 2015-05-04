@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Company\Company.cs" />
+    <Compile Include="Customer\Customer.cs" />
     <Compile Include="Directory\MeasureDimension.cs" />
     <Compile Include="Directory\MeasureWeight.cs" />
     <Compile Include="Factory\Consumption.cs" />
@@ -83,7 +84,7 @@
     <Compile Include="Test\TestDoubles.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Factory\WorkTimeStatistic.cs" />
-    <Compile Include="Employee.cs" />
+    <Compile Include="Employee\Employee.cs" />
     <Compile Include="Users\User.cs" />
     <Compile Include="Users\UserRole.cs" />
   </ItemGroup>

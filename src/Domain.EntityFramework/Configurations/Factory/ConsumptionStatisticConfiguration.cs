@@ -3,9 +3,9 @@
     using System.Data.Entity.ModelConfiguration;
     using Domain.Model.Factory;
 
-    internal class AttritionStatisticConfiguration : EntityTypeConfiguration<ConsumptionStatistic>
+    internal class ConsumptionStatisticConfiguration : EntityTypeConfiguration<ConsumptionStatistic>
     {
-        public AttritionStatisticConfiguration()
+        public ConsumptionStatisticConfiguration()
         {
             HasKey(o => o.Id);
             Property(o => o.Date);

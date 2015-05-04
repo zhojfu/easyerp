@@ -7,14 +7,14 @@
 
     public class Employee : BaseEntity, IAggregateRoot
     {
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
+        // public string FirstName { get; set; }
+        // public string LastName { get; set; }
 
-        public override string DisplayName
+        /*public override string DisplayName
         {
             get { return LastName + FirstName; }
-        }
-
+        }*/
+        public override string Name { get; set; }
         public string IdNumber { get; set; }
         public bool Male { get; set; }
         public DateTime Birth { get; set; }

@@ -4,7 +4,8 @@
     {
         public virtual int Id { get; set; }
 
-        public virtual string DisplayName { get; set; }
+        //public virtual string DisplayName { get; set; }
+        public virtual  string Name { get; set; }
 
         #region Equality
 
