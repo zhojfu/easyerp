@@ -7,8 +7,6 @@
 
     public class PriceModel : BaseModel
     {
-        public DateTime DateTime { get; set; }
-
         public decimal Cost { get; set; }
 
         public decimal Price { get; set; }

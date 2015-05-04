@@ -1,5 +1,6 @@
 ﻿namespace Doamin.Service.Order
 {
+    using System;
     using System.Collections.Generic;
     using Domain.Model.Orders;
     using EasyErp.Core;
@@ -16,6 +17,7 @@
             int pageSize = int.MaxValue);
 
         Order GetOrderById(int id);
+        Order GetOrderByGuid(Guid guid);
         IList<Order> GetOrdersByIds(int[] orderIds);
     }
 }

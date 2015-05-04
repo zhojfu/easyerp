@@ -17,8 +17,6 @@
             AvailableCategories = new List<SelectListItem>();
         }
 
-        public override int Id { get; set; }
-
         [AllowHtml]
         [DisplayName("产品名称:")]
         public string Name { get; set; }
@@ -63,10 +61,9 @@
 
         public DateTime? UpdatedOn { get; set; }
 
-        [DisplayName("目录名称：")]
         public string CategoryName { get; set; }
 
-        [DisplayName("目录名称：")]
+        [DisplayName("目录名称:")]
         public string CategoryId { get; set; }
 
         //categories

@@ -7,8 +7,9 @@
     using System;
     using System.Collections.Generic;
     using System.Web.Mvc;
+    using EasyERP.Web.Validators.Orders;
 
-    [Validator(typeof(ProductValidator))]
+    [Validator(typeof(OrderValidator))]
     public class OrderModel : BaseEntityModel
     {
         public OrderModel()

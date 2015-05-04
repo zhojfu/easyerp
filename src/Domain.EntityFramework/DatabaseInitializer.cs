@@ -17,22 +17,22 @@
         {
             var c1 = new Category
             {
-                Name = "Rice",
-                Description = "Rice category",
+                Name = "米",
+                Description = "米粮",
                 UpdatedOnUtc = DateTime.Now,
                 CreatedOnUtc = DateTime.Now
             };
             var c2 = new Category
             {
-                Name = "Food Oil",
-                Description = "Food Oil category",
+                Name = "油",
+                Description = "食物油",
                 UpdatedOnUtc = DateTime.Now,
                 CreatedOnUtc = DateTime.Now
             };
             var c3 = new Category
             {
-                Name = "Other",
-                Description = "Other category",
+                Name = "其他",
+                Description = "其他",
                 UpdatedOnUtc = DateTime.Now,
                 CreatedOnUtc = DateTime.Now
             };
@@ -56,25 +56,123 @@
                 UpdatedOn = DateTime.Now
             };
 
-            var p1 = new Product
+            var s2 = new Store
+            {
+                Id = 2,
+                Name = "Store2",
+                CompanyId = company.Id,
+                CreatedOn = DateTime.Now,
+                UpdatedOn = DateTime.Now
+            };
+
+            var products = new List<Product>{
+                new Product
             {
                 CategoryId = 1,
                 CreatedOnUtc = DateTime.Now,
                 UpdatedOnUtc = DateTime.Now,
-                FullDescription = "Rice",
-                ShortDescription = "rice",
-                Name = "rice",
+                FullDescription = "小米",
+                ShortDescription = "小米",
+                Name = "小米",
                 Price = 15,
                 ProductCost = 10,
-                Gtin = "690000121"
-            };
+                Gtin = "9019339641569"
+            },
+            new Product
+            {
+                CategoryId = 2,
+                CreatedOnUtc = DateTime.Now,
+                UpdatedOnUtc = DateTime.Now,
+                FullDescription = "菜油",
+                ShortDescription = "菜油",
+                Name = "菜油",
+                Price = 20,
+                ProductCost = 15,
+                Gtin = "9019339641579"
+            },
 
-            p1.Stores.Add(s1);
-            s1.Products.Add(p1);
+            new Product
+            {
+                CategoryId = 3,
+                CreatedOnUtc = DateTime.Now,
+                UpdatedOnUtc = DateTime.Now,
+                FullDescription = "老干妈",
+                ShortDescription = "老干妈",
+                Name = "老干妈",
+                Price = 20,
+                ProductCost = 15,
+                Gtin = "9019339641580"
+            },
+            new Product
+            {
+                CategoryId = 1,
+                CreatedOnUtc = DateTime.Now,
+                UpdatedOnUtc = DateTime.Now,
+                FullDescription = "大米",
+                ShortDescription = "大米",
+                Name = "大米",
+                Price = 20,
+                ProductCost = 15,
+                Gtin = "9019339641581"
+            },
+            new Product
+            {
+                CategoryId = 1,
+                CreatedOnUtc = DateTime.Now,
+                UpdatedOnUtc = DateTime.Now,
+                FullDescription = "大豆",
+                ShortDescription = "大豆",
+                Name = "大豆",
+                Price = 20,
+                ProductCost = 15,
+                Gtin = "9019339641582"
+            },
+            new Product
+            {
+                CategoryId = 2,
+                CreatedOnUtc = DateTime.Now,
+                UpdatedOnUtc = DateTime.Now,
+                FullDescription = "豆油",
+                ShortDescription = "豆油",
+                Name = "豆油",
+                Price = 20,
+                ProductCost = 15,
+                Gtin = "9019339641592"
+            },
+            new Product
+            {
+                CategoryId = 3,
+                CreatedOnUtc = DateTime.Now,
+                UpdatedOnUtc = DateTime.Now,
+                FullDescription = "辣椒酱",
+                ShortDescription = "辣椒酱",
+                Name = "辣椒酱",
+                Price = 20,
+                ProductCost = 15,
+                Gtin = "9019339641502"
+            } };
+
+            products.ForEach(
+                p =>
+                {
+                    s1.Products.Add(p);
+                    p.Stores.Add(s1);
+                });
+
+            products.ForEach(
+                p =>
+                {
+                    if (p.CategoryId == 1)
+                    {
+                        s2.Products.Add(p);
+                        p.Stores.Add(s2);
+                    }
+                });
 
             context.Entry(s1).State = EntityState.Added;
+            context.Entry(s2).State = EntityState.Added;
 
-            context.Entry(p1).State = EntityState.Added;
+            products.ForEach(p => context.Entry(p).State = EntityState.Added);
 
             var enryptionService = EngineContext.Current.Resolve<IEncryptionService>();
             var saltKey = enryptionService.CreateSaltKey(5);

@@ -19,7 +19,8 @@
             Property(p => p.Width).HasPrecision(18, 4);
             Property(p => p.Height).HasPrecision(18, 4);
             HasRequired(p => p.Category).WithMany().HasForeignKey(p => p.CategoryId);
-            HasMany(p => p.Stores).WithMany().Map(m => m.ToTable("Project_Store_Mapping"));
+            HasMany(p => p.Stores).WithMany(w=>w.Products).Map(m => m.ToTable("Project_Store_Mapping"));
+
         }
     }
 }

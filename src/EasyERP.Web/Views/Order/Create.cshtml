@@ -9,7 +9,7 @@
 @Html.AntiForgeryToken()
 @using (Html.BeginForm())
 {
-    @Html.HiddenFor(m => m.OrderGuid, new { id = "product-id" })
+    @Html.HiddenFor(m => m.OrderGuid, new { id = "order-guid" })
     <div class="section-header">
         <div class="title">
             <label>新建订单</label>
@@ -30,27 +30,26 @@
                         type: "json",
                         transport: {
                             read: {
-                                url: "OrderItems/"+@Html.Raw(Model.OrderGuid),
+                                url: "OrderItems/".concat("@Html.Raw(Model.OrderGuid)"),
                                 type: "POST",
                                 dataType: "json"
                             },
                             update: {
-                                url: "UpdateItems/"+@Html.Raw(Model.OrderGuid),
+                                url: "UpdateItems/".concat("@Html.Raw(Model.OrderGuid)"),
                                 type: "POST",
                                 dataType: "json"
                             },
                             create: {
-                                url: "AddItem"+@Html.Raw(Model.OrderGuid),
+                                url: "AddItem/".concat("@Html.Raw(Model.OrderGuid)"),
                                 type: "POST",
                                 dataType: "json"
                             }
                         },
                         schema: {
                             model: {
-                                id: "OrderId",
                                 fields: {
                                     ProductName: { editable: true },
-                                    Price:{editable:false, nullable:false},
+                                    Price:{type:"number", nullable:false},
                                     Quantity:{type:"number", validation:{min:0, required:true}}
                                 }
                             },
@@ -78,7 +77,7 @@
                     columns: [
                         {field:"ProductName", title:"产品名", width:100},
                         { field: "Price", title: "售价", width: 100 },
-                        { field: "Quantity", title: "售价", width: 100 }
+                        { field: "Quantity", title: "数量", width: 100 }
                     ]
                 });
             });

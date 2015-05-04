@@ -9,8 +9,11 @@
     using EasyERP.Web.Framework.Kendoui;
     using EasyERP.Web.Models.Orders;
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Web.Mvc;
+    using Infrastructure;
+    using WebGrease.Css.Extensions;
 
     public class OrderController : BaseAdminController
     {
@@ -21,6 +24,8 @@
         private readonly IProductService productService;
 
         private readonly IStoreService storeService;
+
+        private Order newOrder;
 
         public OrderController(
             IPermissionService permissionService,
@@ -218,8 +223,61 @@
 
         public ActionResult Create()
         {
-            var model = new OrderModel();
+
+            newOrder = new Order()
+            {
+                OrderGuid = Guid.NewGuid()
+            };
+            var model = new OrderModel()
+            {
+                OrderGuid = newOrder.OrderGuid
+            };
             return View(model);
         }
+
+        [HttpPost]
+        public ActionResult Create(OrderModel model)
+        {
+            return View(model);
+        }
+
+        [HttpPost]
+        public JsonResult OrderItems(DataSourceRequest data, OrderModel model )
+        {
+            var gridModel = new DataSourceResult();
+            
+            newOrder.OrderItems.IfNotNull(
+
+                items =>
+                {
+                    gridModel.Data = items.Select(
+                        i => new OrderItemModel
+                        {
+                            ProductId = i.ProductId,
+                            OrderId = i.OrderId,
+                            Price = i.Price,
+                            ProductName = "verify",
+                            Quantity = i.Quantity
+                        });
+                    gridModel.Total = items.Count;
+                    return Json(gridModel);
+                });
+
+            return Json(null);
+        }
+
+        [HttpPost]
+        public JsonResult UpdateItems(DataSourceRequest data, IEnumerable<OrderItemModel> models)
+        {
+            return Json(null);
+        }
+
+        [HttpPost]
+        public JsonResult AddItem(DataSourceRequest data, OrderItemModel model)
+        {
+            return Json(null);
+        }
+
+
     }
 }

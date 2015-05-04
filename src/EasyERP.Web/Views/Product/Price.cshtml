@@ -37,16 +37,16 @@
                             update: {
                                 url: "/Product/PriceUpdate",
                                 type: "POST",
-                                dataType: "jsonp"
+                                dataType: "json"
                                 //data:additionalData
                             }
                         },
                         schema: {
                             model: {
-                                id :"StoreId",
+                                id:"ProductId",
                                 fields:{
-                                    StoreId:{editable:false, nullable:true},
-                                    ProductId:{editable:false, nullable:true},
+                                    StoreId :{editable:false, nullable:false},
+                                    ProductId :{editable:false, nullable:false},
                                     StoreName: {editable:false, nullable:true},
                                     ProductName: {editable:false, nullable:true},
                                     Cost: {type:"number", validation:{min:0, required:true}},
@@ -63,6 +63,7 @@
                             this.cancelChanges();
                         },
                         pageSize: @(defaultGridPageSize),
+                        batch: true,
                         serverPaging: true,
                         serverFiltering: true,
                         serverSorting: true
@@ -70,17 +71,15 @@
                     pageable: {
                         refresh: true,
                         pageSizes: [@(gridPageSizes)]
-                    },
+                    }, 
                     editable: true,
-                    scrollable: false,
-                    toolbar: ["create", "save", "cancel"],
+                    toolbar: ["create", "save"],
                     columns: [
-                        { field: "StoreName", title: "店名", width: 100 },
-                        { field: "ProductName", title: "产品名", width: 100 },
+                        { field: "StoreName", title: "店名", width:50},
+                        { field: "ProductName", title: "产品名", width:50},
                         { field: "Cost", title: "购进价格", width: 100 },
                         { field: "Price", title: "售价", width: 100 },
-                        //{ field: "Id", title: "历史价格", width: 100, template: "<a href=\"PriceHistory/#=Id#\">查看</a>" }
-                    ]
+                        { command: "edit", title: "&nbsp;", width: "250px" }]
                 });
             });
         </script>

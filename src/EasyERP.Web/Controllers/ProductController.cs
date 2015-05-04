@@ -10,6 +10,7 @@
     using EasyERP.Web.Extensions;
     using EasyERP.Web.Framework.Kendoui;
     using EasyERP.Web.Models.Products;
+    using Infrastructure;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -362,6 +363,27 @@
         }
 
         [HttpPost]
+        public ActionResult Destroy(DataSourceRequest request, ProductModel model)
+        {
+            if (!permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            {
+                return AccessDeniedView();
+            }
+
+            if (model != null &&
+                model.Id > 0)
+            {
+                var product = productService.GetProductById(model.Id);
+                product.DoIfNotNull(p => productService.DeleteProduct(p));
+            }
+            return Json(
+                new
+                {
+                    Result = true
+                });
+        }
+
+        [HttpPost]
         public ActionResult Delete(int id)
         {
             if (!permissionService.Authorize(StandardPermissionProvider.ManageProducts))
@@ -460,34 +482,25 @@
         }
 
         [HttpPost]
-        public ActionResult PriceUpdate(DataSourceRequest request, [Bind(Prefix = "models")]IEnumerable<PriceModel> priceModels)
+        public ActionResult PriceUpdate(
+             DataSourceRequest request,
+            [Bind(Prefix = "models")] IEnumerable<PriceModel> priceModels)
         {
-            var priceList = priceModels as IList<PriceModel> ?? priceModels.ToList();
             if (priceModels != null &&
                 ModelState.IsValid)
             {
-                foreach (var priceModel in priceList)
+                foreach (var priceModel in priceModels)
                 {
-                    productPriceService.InsertPrice(priceModel.ToEntity());
+                    var price = priceModel.ToEntity();
+                    price.DateTime = DateTime.Now;
+                    productPriceService.InsertPrice(price);
                 }
             }
 
             var gridModel = new DataSourceResult
             {
-                Data = priceList.ToList().Select(
-                    x =>
-                    {
-                        var priceModel = new PriceModel()
-                        {
-                            ProductId = x.ProductId,
-                            Cost = x.Cost,
-                            Price = x.Price,
-                            StoreId = x.StoreId
-                        };
-
-                        return priceModel;
-                    }),
-                Total = priceList.Count
+                Data = priceModels,
+                Total = priceModels.Count()
             };
 
             return Json(gridModel);

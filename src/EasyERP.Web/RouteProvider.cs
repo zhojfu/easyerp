@@ -40,7 +40,7 @@
 
             routes.MapRoute(
                 "UpdateItems",
-                "UpdateItems{orderGuid}",
+                "UpdateItems/{orderGuid}",
                 new { controller ="Order", action="UpdateItems", orderGuid = UrlParameter.Optional},
                 new[] { "EasyERP.Web.Controllers" });
         }

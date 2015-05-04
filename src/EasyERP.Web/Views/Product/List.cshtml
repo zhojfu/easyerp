@@ -7,7 +7,6 @@
     产品管理
 }
 @{
-    ViewBag.Title = "产品管理";
     var defaultGridPageSize = EngineContext.Current.Resolve<AreaSettings>().DefaultGridPageSize;
     var gridPageSizes = EngineContext.Current.Resolve<AreaSettings>().GridPageSizes;
 }
@@ -18,11 +17,6 @@
         <div class="title">
             <label>产品管理</label>
         </div>
-        <div class="options">
-            <a href="@Url.Action("Create")" class="k-button">添加产品</a>
-            <a href="@Url.Action("Inventory")" class="k-button">入库</a>
-            <input type="button" id="delete-selected" class="k-button" value="删除" />
-        </div>
     </div>
     <div class="form-group">
         @Html.ValidationMessageFor(m => m.SearchProductName, "", new
@@ -30,7 +24,7 @@
             @class = "text-danger"
         })
         @Html.LabelFor(m => m.SearchProductName)
-        @Html.EditorFor(model => model.SearchProductName, new { id = "search-product-name" })
+        @Html.TextBoxFor(model => model.SearchProductName, new { id = "search-product-name" })
     </div>
     <div class="form-group">
         @Html.LabelFor(m => m.SearchCategoryId)
@@ -57,16 +51,22 @@
 
                 $("#products-grid").kendoGrid({
                     dataSource: {
-                        type: "json",
+                        autoSync:true,
                         transport: {
                             read: {
                                 url: "/Product/ProductList",
                                 type: "POST",
                                 dataType: "json",
                                 data: additionalData
+                            },
+                            destroy: {
+                                url: "/Product/Destroy",
+                                type: "POST",
+                                dataType: "json"
                             }
                         },
                         schema: {
+                            model:{id:"Id"},
                             data: "Data",
                             total: "Total",
                             errors: "Errors"
@@ -85,9 +85,11 @@
                         refresh: true,
                         pageSizes: [@(gridPageSizes)]
                     },
+                    batch:false,
                     editable: {
-                        confirmation: false,
-                        mode: "inline"
+                        confirmation: true,
+                        mode: "inline",
+                        destroy:true
                     },
                     scrollable: false,
                     dataBound: onDataBound,
@@ -100,15 +102,16 @@
                             template: "<input type='checkbox' value='#=Id#' class='checkboxGroups' />",
                             width: 50
                         },
-                        { field: "Name", title: "产品名", width: 300 },
-                        { field: "CategoryName", title: "产品目录", width: 300 },
+                        { field: "Name", title: "产品名", width: 100 },
+                        { field: "CategoryName", title: "产品目录", width: 100 },
                         { field: "StockQuantity", title: "库存", width: 100 },
                         { field: "Price", title: "价格", width: 100 },
                         { field: "ProductCost", title: "成本", width: 100 },
                         { field: "Sku", title: "条码", width: 100 },
-                        { field: "Id", title: "查看入库记录", width: 100, template: "<a href=\"Records/#=Id#\">编辑</a>" },
-                        { field: "Id", title: "修改", width: 100, template: "<a href=\"Edit/#=Id#\">编辑</a>" },
-                        { field: "Id", title: "修改价格", width: 100, template: "<a href=\"Price/#=Id#\">修改价格</a>" }
+                        { field: "Id", title: "&nbsp;", width: 100, template: "<a href=\"Records/#=Id#\">查看入库记录</a>" },
+                        { field: "Id", title: "&nbsp;", width: 100, template: "<a href=\"Edit/#=Id#\">修改</a>" },
+                        { field: "Id", title: "&nbsp;", width: 100, template: "<a href=\"Price/#=Id#\">修改价格</a>" },
+                        { command: "destroy", text:"删除", title: "&nbsp;", width: 100 }
                     ]
                 });
             });

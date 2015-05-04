@@ -77,12 +77,12 @@
 
         public Order GetOrderById(int orderId)
         {
-            if (orderId == 0)
-            {
-                return null;
-            }
+            return orderId == 0 ? null : orderRepository.GetByKey(orderId);
+        }
 
-            return orderRepository.GetByKey(orderId);
+        public Order GetOrderByGuid(Guid guid)
+        {
+            return guid == Guid.Empty ? null : orderRepository.FindAll(o => o.OrderGuid == guid).FirstOrDefault();
         }
 
         public virtual IList<Order> GetOrdersByIds(int[] orderIds)
