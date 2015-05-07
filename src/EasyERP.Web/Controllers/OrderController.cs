@@ -5,14 +5,15 @@
     using Doamin.Service.Security;
     using Doamin.Service.Stores;
     using Domain.Model.Orders;
+    using EasyERP.Web.Extensions;
     using EasyERP.Web.Framework;
     using EasyERP.Web.Framework.Kendoui;
     using EasyERP.Web.Models.Orders;
+    using Infrastructure;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Web.Mvc;
-    using Infrastructure;
     using WebGrease.Css.Extensions;
 
     public class OrderController : BaseAdminController
@@ -223,7 +224,6 @@
 
         public ActionResult Create()
         {
-
             newOrder = new Order()
             {
                 OrderGuid = Guid.NewGuid()
@@ -236,16 +236,36 @@
         }
 
         [HttpPost]
-        public ActionResult Create(OrderModel model)
+        public ActionResult Products(DataSourceRequest data, OrderModel model)
         {
-            return View(model);
+            if (!permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            {
+                return AccessDeniedView();
+            }
+
+            var products = productService.SearchProducts(
+
+                );
+            var gridModel = new DataSourceResult();
+            gridModel.Data = products.Select(
+                x =>
+                {
+                    var productModel = x.ToModel();
+
+                    productModel.FullDescription = "";
+
+                    return productModel;
+                });
+            gridModel.Total = products.TotalCount;
+
+            return Json(gridModel);
         }
 
         [HttpPost]
-        public JsonResult OrderItems(DataSourceRequest data, OrderModel model )
+        public JsonResult OrderItems(DataSourceRequest data, OrderModel model)
         {
             var gridModel = new DataSourceResult();
-            
+
             newOrder.OrderItems.IfNotNull(
 
                 items =>
@@ -277,7 +297,5 @@
         {
             return Json(null);
         }
-
-
     }
 }

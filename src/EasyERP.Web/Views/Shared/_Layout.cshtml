@@ -12,7 +12,7 @@
     Html.AppendCssFileParts("~/Content/bootstrap.css");
     Html.AppendCssFileParts("~/Content/site.css");
 
-    Html.AppendScriptParts(string.Format("~/Scripts/kendo/{0}/kendo.web.min.js", KendoVersion));
+    Html.AppendScriptParts(string.Format("~/Scripts/kendo/{0}/kendo.all.min.js", KendoVersion));
     Html.AppendScriptParts("~/Scripts/admin.common.js");
     Html.AppendScriptParts("~/Scripts/jquery-migrate-1.2.1.min.js");
     Html.AppendScriptParts("~/Scripts/jquery-ui-1.10.3.custom.min.js");
@@ -68,6 +68,9 @@
                         </li>
                         <li class="active">
                             @Html.ActionLink("费用管理", "Index", "Charge")<span class="sr-only">(current)</span>
+                        </li>
+                        <li class="active">
+                            @Html.ActionLink("订单", "Index", "Order")<span class="sr-only">(current)</span>
                         </li>
                         <li>
                             <a href="#">Link</a>

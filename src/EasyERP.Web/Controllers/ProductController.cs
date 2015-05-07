@@ -11,8 +11,10 @@
     using EasyERP.Web.Framework.Kendoui;
     using EasyERP.Web.Models.Products;
     using Infrastructure;
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using System.Web.Mvc;
 
@@ -504,6 +506,23 @@
             };
 
             return Json(gridModel);
+        }
+
+        public ActionResult Orders()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public JsonResult Menu()
+        {
+            var data = System.IO.File.ReadAllText(@"C:\Users\Administrator\Desktop\easyerp55\easyerp\src\EasyERP.Web\data\menu.json");
+
+            var result = new JsonResult
+            {
+                Data = JsonConvert.DeserializeObject(data)
+            };
+            return result;
         }
 
         [NonAction]

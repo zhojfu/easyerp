@@ -6,81 +6,134 @@
 {
     新建订单
 }
+@{
+    var defaultGridPageSize = EngineContext.Current.Resolve<AreaSettings>().DefaultGridPageSize;
+    var gridPageSizes = EngineContext.Current.Resolve<AreaSettings>().GridPageSizes;
+}
 @Html.AntiForgeryToken()
 @using (Html.BeginForm())
 {
-    @Html.HiddenFor(m => m.OrderGuid, new { id = "order-guid" })
-    <div class="section-header">
-        <div class="title">
-            <label>新建订单</label>
-        </div>
-       <div class="options">
-
-            <input type="submit" name="save" class="k-button" value="保存" />
-
-            <input type="submit" name="save-continue" class="k-button" value="Save Contine" />
-        </div>
-    </div>
     <div>
-        <div id="order-item-list"></div>
+        <div id="product-list"></div>
         <script type="text/javascript">
-            $(document).ready(function() {
-                $('#order-item-list').kendoGrid({
+            $(document).ready(function () {
+                $("#product-list").kendoGrid({
                     dataSource: {
-                        type: "json",
                         transport: {
                             read: {
-                                url: "OrderItems/".concat("@Html.Raw(Model.OrderGuid)"),
+                                url: "/Order/Products",
                                 type: "POST",
-                                dataType: "json"
-                            },
-                            update: {
-                                url: "UpdateItems/".concat("@Html.Raw(Model.OrderGuid)"),
-                                type: "POST",
-                                dataType: "json"
-                            },
-                            create: {
-                                url: "AddItem/".concat("@Html.Raw(Model.OrderGuid)"),
-                                type: "POST",
-                                dataType: "json"
+                                dataType:"json"
                             }
                         },
                         schema: {
-                            model: {
-                                fields: {
-                                    ProductName: { editable: true },
-                                    Price:{type:"number", nullable:false},
-                                    Quantity:{type:"number", validation:{min:0, required:true}}
-                                }
-                            },
+                            model: { id: "Id" },
                             data: "Data",
                             total: "Total",
                             errors:"Errors"
                         },
-
                         error: function(e) {
                             display_kendoui_grid_error(e);
                             // Cancel the changes
                             this.cancelChanges();
                         },
-                        serverPaging: true,
-                        serverFiltering: true,
-                        serverSorting: true
+                        pageSize: @(defaultGridPageSize),
+                        serverPaging: true
                     },
-
                     pageable: {
                         refresh: true,
+                        pageSizes: [@(gridPageSizes)]
                     },
-                    editable: true,
+                    batch:false,
+                    editable: false,
                     scrollable: false,
-                    toolbar: ["create", "save", "cancel"],
                     columns: [
-                        {field:"ProductName", title:"产品名", width:100},
-                        { field: "Price", title: "售价", width: 100 },
-                        { field: "Quantity", title: "数量", width: 100 }
+                        { field: "Name", title: "产品名", width: 100 },
+                        { field: "Price", title: "价格", width: 100 },
+                        { command: {text:"购买", click:addToCart}, title: "&nbsp;", width: 100 }
                     ]
+
                 });
             });
+
+            var contents = [{Name:"1", Quantity:"2", Price:"2"}];
+
+            function addToCart(e) {
+                e.preventDefault();
+                var grid = $("#cart-items").data("kendoGrid");
+                var item = this.dataItem($(e.currentTarget).closest("tr"));
+                grid.dataSource.add(item);
+            }
+
+        $(function() {
+            var dataSource = new kendo.data.DataSource({
+                data: contents, 
+                pageSizes: [@(gridPageSizes)]
+            });
+
+            $("#pager").kendoPager({
+                dataSource: dataSource
+            });
+
+            $("#listView").kendoListView({
+                dataSource: dataSource,
+                template: kendo.template($("#detail-checkout-template").html())
+            });
+        });
+    
         </script>
     </div>
+    @section OrderPreview
+    {
+        @*<div id="detail-checkout">
+            <h1>Order Details</h1>
+            <div id="cart-items"></div>
+            <p id="total-checkout"><em>total:</em><span id="total-price"></span></p>
+            <a class="cancel-order" href="#" data-bind="click: emptyCart">cancel order</a>
+            <button class="order-now" data-bind="click: proceed">order now!</button>
+            <script>
+                $("#cart-items").kendoGrid({
+                    columns:[
+                        { field: "Name", title: "产品名", width: 100 },
+                        { field: "Price", title: "价格", width: 100 },
+                        { field: "Quantity", title: "数量", width: 100 },
+                        {command:{text:"取消", click:""}, title: "&nbsp;", width: 100 }
+                    ]
+                });
+            </script>
+        </div>*@
+        
+        <div class="detail-checkout">
+        <div id="listView"></div>
+        <div id="pager" class="k-pager-wrap"></div>
+    </div>
+
+        <script type="text/x-kendo-template" id="large-cart-item">
+            <tr>
+                <td> <span class="product-name" data-bind="text: item.name"></span></td>
+                <td><input type="text" data-role="numerictextbox" data-min="0" data-max="10" data-bind="value: quantity"></td>
+                <td><p class="table-price" data-bind="text: itemPrice"><p></td>
+            </tr>
+        </script>
+
+        <script type="text/x-kendo-template" id="detail-checkout-template">
+			<div id="details-checkout">
+                <h1>Order Details</h1>
+				<table>
+					<thead>
+						<tr>
+							<th>产品</th>
+							<th>数量</th>
+							<th>价格</th>
+						</tr>
+					</thead>
+					<tbody data-role="listview" data-bind="source: cart.contents" data-template="large-cart-item">
+					</tbody>
+				</table>
+				<p id="total-checkout"><em>total:</em><span data-bind="text: totalPrice"></span></p>
+				<a class="cancel-order" href="\\#" data-bind="click: emptyCart">cancel order</a><button class="order-now" data-bind="click: proceed">order now!</button>
+			</div>
+    </script>
+
+    }
 }

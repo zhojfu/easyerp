@@ -1898,6 +1898,7 @@
     <Content Include="Views\Product\Price.cshtml" />
     <Content Include="Views\Order\Create.cshtml" />
     <Content Include="Views\Product\Orders.cshtml" />
+    <Content Include="Views\Shared\OrderLayout.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
