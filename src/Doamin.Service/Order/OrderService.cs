@@ -1,22 +1,27 @@
 ﻿namespace Doamin.Service.Order
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
     using Domain.Model.Orders;
     using EasyErp.Core;
     using Infrastructure.Domain;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
 
     public class OrderService : IOrderService
     {
         private readonly IRepository<Order> orderRepository;
 
         private readonly IUnitOfWork unitOfWork;
+        private readonly IWorkContext workContext;
 
-        public OrderService(IRepository<Order> orderRepository, IUnitOfWork unitOfWork)
+        public OrderService(IRepository<Order> orderRepository,
+            IUnitOfWork unitOfWork,
+            IWorkContext workContext
+            )
         {
             this.orderRepository = orderRepository;
             this.unitOfWork = unitOfWork;
+            this.workContext = workContext;
         }
 
         public IPagedList<Order> SearchOrders(
@@ -98,6 +103,35 @@
 
             //sort by passed identifiers
             return orderIds.Select(id => orders.Find(x => x.Id == id)).Where(order => order != null).ToList();
+        }
+
+        public void InsertOrder(Order order)
+        {
+            if (order == null)
+            {
+                throw new ArgumentNullException("order");
+            }
+
+            orderRepository.Add(order);
+            unitOfWork.Commit();
+        }
+
+        public void CreateOrderByOrderItems(IEnumerable<OrderItem> orderItems)
+        {
+            if (orderItems == null)
+            {
+                throw new ArgumentNullException("orderItems");
+            }
+
+            var order = new Order()
+            {
+                OrderGuid = Guid.NewGuid(),
+                OrderStatus = OrderStatus.Pending,
+                CreatedOnUtc = DateTime.Now,
+                CustomerId = workContext.CurrentUser.StoreId,
+                PaymentStatus = PaymentStatus.Pending
+            };
+            orderRepository.Add(order);
         }
     }
 }

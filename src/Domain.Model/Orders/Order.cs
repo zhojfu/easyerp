@@ -4,11 +4,14 @@
     using Infrastructure.Domain.Model;
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations.Schema;
 
     public class Order : BaseEntity, IAggregateRoot
     {
-        private ICollection<OrderItem> orderItems;
-
+        public Order()
+        {
+            OrderItems = new List<OrderItem>();
+        }
         #region Properties
 
         public Guid OrderGuid { get; set; }
@@ -31,6 +34,7 @@
 
         public DateTime CreatedOnUtc { get; set; }
 
+        [Column]
         public DateTime ApproveTime { get; set; }
 
         #endregion Properties
@@ -39,11 +43,7 @@
 
         public virtual Store Customer { get; set; }
 
-        public virtual ICollection<OrderItem> OrderItems
-        {
-            get { return orderItems ?? (orderItems = new List<OrderItem>()); }
-            protected set { orderItems = value; }
-        }
+        public virtual ICollection<OrderItem> OrderItems { get; set; }
 
         #endregion Navigation properties
 

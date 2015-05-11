@@ -1624,6 +1624,8 @@
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Models\Orders\OrderItemModel.cs" />
+    <Compile Include="Models\Orders\CartItemModel.cs" />
+    <Compile Include="Models\Orders\MyOrderModel.cs" />
     <Compile Include="Models\Products\PriceListModel.cs" />
     <Compile Include="Models\Products\PriceModel.cs" />
     <Compile Include="RouteProvider.cs" />
@@ -1899,6 +1901,7 @@
     <Content Include="Views\Order\Create.cshtml" />
     <Content Include="Views\Product\Orders.cshtml" />
     <Content Include="Views\Shared\OrderLayout.cshtml" />
+    <Content Include="Views\Order\MyOrder.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

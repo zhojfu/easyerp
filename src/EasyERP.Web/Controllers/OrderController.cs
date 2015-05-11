@@ -5,6 +5,7 @@
     using Doamin.Service.Security;
     using Doamin.Service.Stores;
     using Domain.Model.Orders;
+    using EasyErp.Core;
     using EasyERP.Web.Extensions;
     using EasyERP.Web.Framework;
     using EasyERP.Web.Framework.Kendoui;
@@ -26,19 +27,21 @@
 
         private readonly IStoreService storeService;
 
-        private Order newOrder;
+        private readonly IWorkContext workContext;
 
         public OrderController(
             IPermissionService permissionService,
             IStoreService storeService,
             IProductService productService,
-            IOrderService orderService
+            IOrderService orderService,
+            IWorkContext workContext
             )
         {
             this.permissionService = permissionService;
             this.storeService = storeService;
             this.productService = productService;
             this.orderService = orderService;
+            this.workContext = workContext;
         }
 
         public ActionResult Index()
@@ -224,15 +227,7 @@
 
         public ActionResult Create()
         {
-            newOrder = new Order()
-            {
-                OrderGuid = Guid.NewGuid()
-            };
-            var model = new OrderModel()
-            {
-                OrderGuid = newOrder.OrderGuid
-            };
-            return View(model);
+            return View();
         }
 
         [HttpPost]
@@ -246,56 +241,66 @@
             var products = productService.SearchProducts(
 
                 );
-            var gridModel = new DataSourceResult();
-            gridModel.Data = products.Select(
-                x =>
-                {
-                    var productModel = x.ToModel();
+            var gridModel = new DataSourceResult
+            {
+                Data = products.Select(
+                    x =>
+                    {
+                        var productModel = new
+                        {
+                            id = x.Id,
+                            name = x.Name,
+                            price = x.Price
+                        };
 
-                    productModel.FullDescription = "";
-
-                    return productModel;
-                });
-            gridModel.Total = products.TotalCount;
+                        return productModel;
+                    }),
+                Total = products.TotalCount
+            };
 
             return Json(gridModel);
         }
 
         [HttpPost]
-        public JsonResult OrderItems(DataSourceRequest data, OrderModel model)
+        public ActionResult OrderUpdate(DataSourceRequest request, IEnumerable<CartItemModel> cartItems)
         {
-            var gridModel = new DataSourceResult();
-
-            newOrder.OrderItems.IfNotNull(
-
-                items =>
+            if (ModelState.IsValid)
+            {
+                var order = new Order()
                 {
-                    gridModel.Data = items.Select(
-                        i => new OrderItemModel
-                        {
-                            ProductId = i.ProductId,
-                            OrderId = i.OrderId,
-                            Price = i.Price,
-                            ProductName = "verify",
-                            Quantity = i.Quantity
-                        });
-                    gridModel.Total = items.Count;
-                    return Json(gridModel);
-                });
+                    OrderGuid = Guid.NewGuid(),
+                    OrderStatus = OrderStatus.Pending,
+                    CreatedOnUtc = DateTime.Now,
+                    CustomerId = workContext.CurrentUser.StoreId,
+                    PaymentStatus = PaymentStatus.Pending
+                };
+                order.OrderItems = cartItems.Select(
+                    c => new OrderItem
+                    {
+                        Order = order,
+                        OriginalProductCost = productService.GetProductById(c.ProductId).ProductCost,
+                        OrderItemGuid = Guid.NewGuid(),
+                        Price = c.Price,
+                        ProductId = c.ProductId,
+                        Quantity = c.Quantity
+                    }).ToList();
 
-            return Json(null);
+                orderService.InsertOrder(order);
+                return RedirectToAction("Create");
+            }
+
+            return RedirectToAction("Create");
         }
 
-        [HttpPost]
-        public JsonResult UpdateItems(DataSourceRequest data, IEnumerable<OrderItemModel> models)
+        public ActionResult MyOrder()
         {
-            return Json(null);
-        }
-
-        [HttpPost]
-        public JsonResult AddItem(DataSourceRequest data, OrderItemModel model)
-        {
-            return Json(null);
+            var mode = new MyOrderModel();
+            mode.AvailableStatuList.Add(new SelectListItem { Text = "全部订单" , Value = "0"});
+            mode.AvailableStatuList.Add(new SelectListItem { Text = "未处理" , Value = "0"});
+            mode.AvailableStatuList.Add(new SelectListItem { Text = "交易成功" , Value = "0"});
+            mode.AvailableStatuList.Add(new SelectListItem { Text = "交易取消" , Value = "0"});
+            mode.AvailableStatuList.Add(new SelectListItem { Text = "交易结束" , Value = "0"});
+            return View();
         }
     }
 }

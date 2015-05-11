@@ -1,7 +1,5 @@
 ﻿@using EasyErp.Core.Configuration.Settings
 @using EasyErp.Core.Infrastructure
-@using EasyERP.Web.Framework
-@model EasyERP.Web.Models.Orders.OrderModel
 @section SectionTitle
 {
     新建订单
@@ -13,127 +11,172 @@
 @Html.AntiForgeryToken()
 @using (Html.BeginForm())
 {
-    <div>
-        <div id="product-list"></div>
-        <script type="text/javascript">
-            $(document).ready(function () {
-                $("#product-list").kendoGrid({
-                    dataSource: {
-                        transport: {
-                            read: {
-                                url: "/Order/Products",
-                                type: "POST",
-                                dataType:"json"
-                            }
-                        },
-                        schema: {
-                            model: { id: "Id" },
-                            data: "Data",
-                            total: "Total",
-                            errors:"Errors"
-                        },
-                        error: function(e) {
-                            display_kendoui_grid_error(e);
-                            // Cancel the changes
-                            this.cancelChanges();
-                        },
-                        pageSize: @(defaultGridPageSize),
-                        serverPaging: true
-                    },
-                    pageable: {
-                        refresh: true,
-                        pageSizes: [@(gridPageSizes)]
-                    },
-                    batch:false,
-                    editable: false,
-                    scrollable: false,
-                    columns: [
-                        { field: "Name", title: "产品名", width: 100 },
-                        { field: "Price", title: "价格", width: 100 },
-                        { command: {text:"购买", click:addToCart}, title: "&nbsp;", width: 100 }
-                    ]
-
-                });
-            });
-
-            var contents = [{Name:"1", Quantity:"2", Price:"2"}];
-
-            function addToCart(e) {
-                e.preventDefault();
-                var grid = $("#cart-items").data("kendoGrid");
-                var item = this.dataItem($(e.currentTarget).closest("tr"));
-                grid.dataSource.add(item);
+    <div id="product-list"></div>
+    <div id="cart" data-bind="visible: isVisible">
+        <h1>Order Details</h1>
+                <ul>
+                    <li>产品</li>
+                    <li>数量</li>
+                    <li>价格</li>
+                </ul>
+            <ul data-role="listview" data-bind="source: cart.contents" data-template="cart-item"></ul>
+        <p id="total-checkout"><em>total:</em><span data-bind="text: totalPrice"></span></p>
+        <a class="cancel-order" href="#" data-bind="click: emptyCart">cancel order</a>
+        <button class="order-now" data-bind="click: proceed">购买</button>
+    </div>
+    <script type="text/x-kendo-template" id="cart-item">
+        <ul>
+            <li><span class="product-name" data-bind="text: item.name"></span></li>
+            <li><input type="text" data-role="numerictextbox" data-min="0" data-decimals="0" data-format="\\#" data-bind="value: quantity"></li>
+            <li><p class="table-price" data-bind="text: itemPrice"><p></li>
+            @*<li><button class="delet" data-bind="click: deleted">删除</button></li>*@
+        </ul>
+    </script>
+    <script type="text/javascript">
+        var products = new kendo.data.DataSource({
+            schema: {
+                model: { id: "id" },
+                data: "Data",
+                total: "Total",
+                errors: "Errors"
+            },
+            transport: {
+                read: {
+                    url: "/Order/Products",
+                    type: "POST",
+                    dataType: "json"
+                }
             }
+        });
 
-        $(function() {
-            var dataSource = new kendo.data.DataSource({
-                data: contents, 
-                pageSizes: [@(gridPageSizes)]
-            });
+        var cart = kendo.observable({
+            contents: [],
+            cleared: false,
 
-            $("#pager").kendoPager({
-                dataSource: dataSource
-            });
+            contentsCount: function () {
+                return this.get("contents").length;
+            },
 
-            $("#listView").kendoListView({
-                dataSource: dataSource,
-                template: kendo.template($("#detail-checkout-template").html())
+            add: function (item) {
+                var found = false;
+
+                this.set("cleared", false);
+
+                for (var i = 0; i < this.contents.length; i++) {
+                    var current = this.contents[i];
+                    if (current.item === item) {
+                        current.set("quantity", current.get("quantity") + 1);
+                        found = true;
+                        break;
+                    }
+                }
+
+                if (!found) {
+                    this.contents.push({ item: item, quantity: 1 });
+                }
+            },
+
+            remove: function (item) {
+                for (var i = 0; i < this.contents.length; i++) {
+                    var current = this.contents[i];
+                    if (current === item) {
+                        this.contents.splice(i, 1);
+                        break;
+                    }
+                }
+            },
+
+            empty: function () {
+                var contents = this.get("contents");
+                contents.splice(0, contents.length);
+            },
+
+            clear: function () {
+                var contents = this.get("contents");
+                contents.splice(0, contents.length);
+                this.set("cleared", true);
+            },
+
+            total: function () {
+                var price = 0,
+                    contents = this.get("contents"),
+                    length = contents.length,
+                    i = 0;
+
+                for (; i < length; i++) {
+                    price += parseInt(contents[i].item.price) * contents[i].quantity;
+                }
+
+                return kendo.format("{0:c}", price);
+            }
+        });
+
+        var cartPreviewModel = kendo.observable({
+            cart: cart,
+            isVisible: true,
+
+            cartContentsClass: function () {
+                return this.cart.contentsCount() > 0 ? "active" : "empty";
+            },
+
+            removeFromCart: function (e) {
+                this.get("cart").remove(e.data);
+                if (this.cart.contents.length === 0) {
+                    this.isVisible = false;
+                }
+            },
+
+            emptyCart: function () {
+                cart.empty();
+                this.isVisible = false;
+            },
+
+            itemPrice: function (cartItem) {
+                return kendo.format("{0:c}", cartItem.item.price);
+            },
+
+            totalPrice: function () {
+                return this.get("cart").total();
+            },
+
+            proceed: function (e) {
+                var data = new Array();
+                this.cart.contents.forEach(function (item) {
+                    data.push({ "ProductId": item.item.id, "Name": item.item.name, "Price": item.item.price, "Quantity": item.quantity });
+                });
+
+                //$.post("/Order/OrderUpdate", JSON.stringify(data));
+                $.post("/Order/OrderUpdate", { "": data });
+
+            }
+        });
+
+        $(document).ready(function () {
+            $("#product-list").kendoGrid({
+                dataSource: products,
+                pageable: {
+                    refresh: true,
+                    pageSizes: [@(gridPageSizes)]
+                },
+                batch: false,
+                editable: false,
+                scrollable: false,
+                columns: [
+                    { field: "name", title: "产品名", width: 100 },
+                    { field: "price", title: "价格", width: 100 },
+                    { command: { text: "购买", click: addToCart }, title: "&nbsp;", width: 100 }
+                ]
+
             });
         });
-    
-        </script>
-    </div>
-    @section OrderPreview
-    {
-        @*<div id="detail-checkout">
-            <h1>Order Details</h1>
-            <div id="cart-items"></div>
-            <p id="total-checkout"><em>total:</em><span id="total-price"></span></p>
-            <a class="cancel-order" href="#" data-bind="click: emptyCart">cancel order</a>
-            <button class="order-now" data-bind="click: proceed">order now!</button>
-            <script>
-                $("#cart-items").kendoGrid({
-                    columns:[
-                        { field: "Name", title: "产品名", width: 100 },
-                        { field: "Price", title: "价格", width: 100 },
-                        { field: "Quantity", title: "数量", width: 100 },
-                        {command:{text:"取消", click:""}, title: "&nbsp;", width: 100 }
-                    ]
-                });
-            </script>
-        </div>*@
-        
-        <div class="detail-checkout">
-        <div id="listView"></div>
-        <div id="pager" class="k-pager-wrap"></div>
-    </div>
 
-        <script type="text/x-kendo-template" id="large-cart-item">
-            <tr>
-                <td> <span class="product-name" data-bind="text: item.name"></span></td>
-                <td><input type="text" data-role="numerictextbox" data-min="0" data-max="10" data-bind="value: quantity"></td>
-                <td><p class="table-price" data-bind="text: itemPrice"><p></td>
-            </tr>
-        </script>
+        function addToCart(e) {
+            e.preventDefault();
+            var item = this.dataItem($(e.currentTarget).closest("tr"));
+            cartPreviewModel.isVisible = true;
+            cart.add(item);
+        }
 
-        <script type="text/x-kendo-template" id="detail-checkout-template">
-			<div id="details-checkout">
-                <h1>Order Details</h1>
-				<table>
-					<thead>
-						<tr>
-							<th>产品</th>
-							<th>数量</th>
-							<th>价格</th>
-						</tr>
-					</thead>
-					<tbody data-role="listview" data-bind="source: cart.contents" data-template="large-cart-item">
-					</tbody>
-				</table>
-				<p id="total-checkout"><em>total:</em><span data-bind="text: totalPrice"></span></p>
-				<a class="cancel-order" href="\\#" data-bind="click: emptyCart">cancel order</a><button class="order-now" data-bind="click: proceed">order now!</button>
-			</div>
+        kendo.bind($("#cart"), cartPreviewModel);
     </script>
-
-    }
 }
