@@ -170,7 +170,7 @@
                 Data = orders.Select(
                     x =>
                     {
-                        var store = storeService.GetStoreById(x.CustomerId);
+                        var store = storeService.GetStoreById(x.CustomerId.GetValueOrDefault());
                         return new OrderModel
                         {
                             Id = x.Id,

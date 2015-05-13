@@ -31,6 +31,7 @@
             Mapper.CreateMap<Consumption, ConsumptionModel>();
             Mapper.CreateMap<Customer, CustomerModel>();
             Mapper.CreateMap<CustomerModel, Customer>();
+            Mapper.CreateMap<Customer, CustomerListModel>();
             Mapper.CreateMap<ConsumptionModel, Consumption>();
             Mapper.CreateMap<Timesheet, TimesheetModel>();
             Mapper.CreateMap<TimesheetModel, Timesheet>();

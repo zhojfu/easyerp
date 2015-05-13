@@ -1,5 +1,6 @@
 ﻿namespace Doamin.Service.Customer
 {
+    using System;
     using System.Collections.Generic;
     using Domain.Model.Customer;
     using Infrastructure.Domain;
@@ -44,6 +45,9 @@
 
         public void UpdateCustomer(Customer customer)
         {
+             Customer origin = GetCustomerById(customer.Id);
+            customer.CreatedOn = origin.CreatedOn;
+            customer.UpdatedOn = DateTime.Now;
             repository.Update(customer);
             unitOfWork.Commit();
         }

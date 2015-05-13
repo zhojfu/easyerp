@@ -14,9 +14,9 @@
 
         public Guid OrderGuid { get; set; }
 
-        public int CustomerId { get; set; }
+        public int? CustomerId { get; set; }
 
-        public int StoreId { get; set; }
+        public int? StoreId { get; set; }
 
         public int OrderStatusId { get; set; }
 

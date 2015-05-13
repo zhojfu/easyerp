@@ -35,5 +35,7 @@
 
         [DisplayName("备注")]
         public string Description { get; set; }
+
+        public DateTime CreatedOn { get; set; }
     }
 }

@@ -14,7 +14,7 @@
             : base(connectionString)
         {
             Configuration.LazyLoadingEnabled = true;
-            Database.SetInitializer(new DatabaseInitializer());
+            //Database.SetInitializer(new DatabaseInitializer());
         }
 
         public new IDbSet<TEntity> Set<TEntity>() where TEntity : class, IAggregateRoot

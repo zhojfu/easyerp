@@ -1,0 +1,28 @@
+﻿@using System.Web.Optimization
+@section SectionTitle
+{
+    <div>
+        订单 - 创建
+    </div>
+}
+
+<div>
+    <label>客户姓名</label>
+    <input id="orderOwner" style="width: 400px" />
+</div>
+<div>
+    <label>客户地址</label>
+    <input id="address"  style="width: 400px" disabled/>
+</div>
+<div>
+    <label>订单名称</label>
+    <input id="orderTitle"  style="width: 400px"/>
+</div>
+<div id="order"></div>
+<div id="totalcost"></div>
+<button id="submitOrder">提交订单</button>
+
+@section scripts
+{
+    @Scripts.Render("~/Scripts/StoreSale/order.js")
+}
