@@ -146,6 +146,147 @@
             return View(model);
         }
 
+        public ActionResult ProductSearchAutoComplete(string term)
+        {
+            const int SearchTermMinimumLength = 3;
+            if (String.IsNullOrWhiteSpace(term) ||
+                term.Length < SearchTermMinimumLength)
+            {
+                return Content("");
+            }
+
+            //products
+            const int ProductNumber = 15;
+            var products = productService.SearchProducts(
+                keywords: term,
+                pageSize: ProductNumber);
+
+            var result = (from p in products
+                          select new
+                          {
+                              label = p.Name,
+                              productid = p.Id
+                          })
+                .ToList();
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult ProductList(DataSourceRequest data, OrderModel model)
+        {
+            if (!permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            {
+                return AccessDeniedView();
+            }
+
+            var products = productService.SearchProducts();
+            var gridModel = new DataSourceResult
+            {
+                Data = products.Select(
+                    x => new
+                    {
+                        id = x.Id,
+                        name = x.Name,
+                        price = x.Price
+                    }),
+                Total = products.TotalCount
+            };
+
+            return Json(gridModel);
+        }
+
+        public ActionResult Detail(Guid guid)
+        {
+            if (!permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            {
+                return AccessDeniedView();
+            }
+
+            var order = orderService.GetOrderByGuid(guid);
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult OrderUpdate(DataSourceRequest request, IEnumerable<CartItemModel> cartItems)
+        {
+            if (!permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            {
+                return AccessDeniedView();
+            }
+            if (ModelState.IsValid)
+            {
+                var order = new Order()
+                {
+                    OrderGuid = Guid.NewGuid(),
+                    OrderStatus = OrderStatus.Pending,
+                    CreatedOnUtc = DateTime.Now,
+                    CustomerId = workContext.CurrentUser.StoreId,
+                    PaymentStatus = PaymentStatus.Pending
+                };
+                order.OrderItems = cartItems.Select(
+                    c => new OrderItem
+                    {
+                        Order = order,
+                        OriginalProductCost = productService.GetProductById(c.ProductId).ProductCost,
+                        OrderItemGuid = Guid.NewGuid(),
+                        Price = c.Price,
+                        ProductId = c.ProductId,
+                        Quantity = c.Quantity
+                    }).ToList();
+
+                order.OrderTotal = order.OrderItems.Sum(o => o.Price * (decimal)o.Quantity);
+
+                orderService.InsertOrder(order);
+                return RedirectToAction("MyOrder", "Order");
+            }
+
+            return RedirectToAction("Create", "Order");
+        }
+
+        public ActionResult MyOrder()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public JsonResult MyOrder(DataSourceRequest request, int orderStatus)
+        {
+            var status = OrderStatus.Pending;
+            var storeId = workContext.CurrentUser.StoreId;
+            var orders = orderService.SearchOrders(storeId, 0, status).ToList();
+            var dataSourceResult = new DataSourceResult()
+            {
+                Data = orders.Select(
+                    o => new
+                    {
+                        orderGuid = o.OrderGuid,
+                        createdTime = o.CreatedOnUtc,
+                        totalPrice = o.OrderTotal,
+                        orderStatus = o.OrderStatus,
+                        orderItems = o.OrderItems.Select(
+                            i => new
+                            {
+                                productName = i.Product.Name,
+                                quantity = i.Quantity,
+                                itemPrice = i.Price,
+                                total = (decimal)i.Quantity * i.Price
+                            })
+                    }),
+                Total = orders.Count
+            };
+            return Json(dataSourceResult);
+        }
+
+        public ActionResult OrderManage()
+        {
+            return View();
+        }
+
         [HttpPost]
         public ActionResult OrderList(DataSourceRequest command, OrderListModel model)
         {
@@ -183,6 +324,7 @@
                         return new OrderModel
                         {
                             Id = x.Id,
+                            OrderGuid = x.OrderGuid,
                             StoreName = store != null ? store.Name : "Unknown",
                             OrderTotal = x.OrderTotal.ToString(),
                             OrderStatus = x.OrderStatus.ToString(),
@@ -198,109 +340,6 @@
             {
                 Data = gridModel
             };
-        }
-
-        public ActionResult ProductSearchAutoComplete(string term)
-        {
-            const int SearchTermMinimumLength = 3;
-            if (String.IsNullOrWhiteSpace(term) ||
-                term.Length < SearchTermMinimumLength)
-            {
-                return Content("");
-            }
-
-            //products
-            const int ProductNumber = 15;
-            var products = productService.SearchProducts(
-                keywords: term,
-                pageSize: ProductNumber);
-
-            var result = (from p in products
-                          select new
-                          {
-                              label = p.Name,
-                              productid = p.Id
-                          })
-                .ToList();
-            return Json(result, JsonRequestBehavior.AllowGet);
-        }
-
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public ActionResult Products(DataSourceRequest data, OrderModel model)
-        {
-            if (!permissionService.Authorize(StandardPermissionProvider.ManageProducts))
-            {
-                return AccessDeniedView();
-            }
-
-            var products = productService.SearchProducts(
-
-                );
-            var gridModel = new DataSourceResult
-            {
-                Data = products.Select(
-                    x =>
-                    {
-                        var productModel = new
-                        {
-                            id = x.Id,
-                            name = x.Name,
-                            price = x.Price
-                        };
-
-                        return productModel;
-                    }),
-                Total = products.TotalCount
-            };
-
-            return Json(gridModel);
-        }
-
-        [HttpPost]
-        public ActionResult OrderUpdate(DataSourceRequest request, IEnumerable<CartItemModel> cartItems)
-        {
-            if (ModelState.IsValid)
-            {
-                var order = new Order()
-                {
-                    OrderGuid = Guid.NewGuid(),
-                    OrderStatus = OrderStatus.Pending,
-                    CreatedOnUtc = DateTime.Now,
-                    CustomerId = workContext.CurrentUser.StoreId,
-                    PaymentStatus = PaymentStatus.Pending
-                };
-                order.OrderItems = cartItems.Select(
-                    c => new OrderItem
-                    {
-                        Order = order,
-                        OriginalProductCost = productService.GetProductById(c.ProductId).ProductCost,
-                        OrderItemGuid = Guid.NewGuid(),
-                        Price = c.Price,
-                        ProductId = c.ProductId,
-                        Quantity = c.Quantity
-                    }).ToList();
-
-                orderService.InsertOrder(order);
-                return RedirectToAction("Create");
-            }
-
-            return RedirectToAction("Create");
-        }
-
-        public ActionResult MyOrder()
-        {
-            var mode = new MyOrderModel();
-            mode.AvailableStatuList.Add(new SelectListItem { Text = "全部订单" , Value = "0"});
-            mode.AvailableStatuList.Add(new SelectListItem { Text = "未处理" , Value = "0"});
-            mode.AvailableStatuList.Add(new SelectListItem { Text = "交易成功" , Value = "0"});
-            mode.AvailableStatuList.Add(new SelectListItem { Text = "交易取消" , Value = "0"});
-            mode.AvailableStatuList.Add(new SelectListItem { Text = "交易结束" , Value = "0"});
-            return View();
         }
     }
 }

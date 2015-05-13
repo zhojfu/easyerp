@@ -14,12 +14,12 @@
     <div id="product-list"></div>
     <div id="cart" data-bind="visible: isVisible">
         <h1>Order Details</h1>
-                <ul>
-                    <li>产品</li>
-                    <li>数量</li>
-                    <li>价格</li>
-                </ul>
-            <ul data-role="listview" data-bind="source: cart.contents" data-template="cart-item"></ul>
+        <ul>
+            <li>产品</li>
+            <li>数量</li>
+            <li>价格</li>
+        </ul>
+        <ul data-role="listview" data-bind="source: cart.contents" data-template="cart-item"></ul>
         <p id="total-checkout"><em>total:</em><span data-bind="text: totalPrice"></span></p>
         <a class="cancel-order" href="#" data-bind="click: emptyCart">cancel order</a>
         <button class="order-now" data-bind="click: proceed">购买</button>
@@ -42,7 +42,7 @@
             },
             transport: {
                 read: {
-                    url: "/Order/Products",
+                    url: "/Order/ProductList",
                     type: "POST",
                     dataType: "json"
                 }
@@ -145,8 +145,12 @@
                     data.push({ "ProductId": item.item.id, "Name": item.item.name, "Price": item.item.price, "Quantity": item.quantity });
                 });
 
-                //$.post("/Order/OrderUpdate", JSON.stringify(data));
                 $.post("/Order/OrderUpdate", { "": data });
+                //$.ajax({
+                //    url: "/Order/OrderUpdate",
+                //    data: { "": data },
+                //    type:"POST"
+                //});
 
             }
         });

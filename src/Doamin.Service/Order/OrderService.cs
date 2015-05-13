@@ -73,7 +73,7 @@
             {
                 orders = orders.Where(o => o.ShippingStatusId == shippingStatusId);
             }
-            orders = orders.Where(o => o.Deleted);
+            orders = orders.Where(o => !o.Deleted);
             orders = orders.OrderByDescending(o => o.CreatedOnUtc);
 
             //database layer paging
