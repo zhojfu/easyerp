@@ -17,6 +17,7 @@
                     action = "Login"
                 },
                 new[] { "EasyERP.Web.Controllers" });
+
             routes.MapRoute(
                 "HomePage",
                 "HomePage",
@@ -26,22 +27,12 @@
                     action = "Login"
                 },
                 new[] { "EasyERP.Web.Controllers" });
-            routes.MapRoute(
-                "OrderItems",
-                "OrderItems/{orderGuid}",
-                new { controller ="Order", action="OrderItems", orderGuid = UrlParameter.Optional},
-                new[] { "EasyERP.Web.Controllers" });
-            
-            routes.MapRoute(
-                "AddItem",
-                "AddItem/{orderGuid}",
-                new { controller ="Order", action="AddItem", orderGuid = UrlParameter.Optional},
-                new[] { "EasyERP.Web.Controllers" });
 
             routes.MapRoute(
-                "UpdateItems",
-                "UpdateItems/{orderGuid}",
-                new { controller ="Order", action="UpdateItems", orderGuid = UrlParameter.Optional},
+                "Order",
+                "Order/Review/{orderGuid}",
+                new { controller = "Order", action = "Review" },
+                new { orderGuid = new GuidConstraint(false) },
                 new[] { "EasyERP.Web.Controllers" });
         }
 

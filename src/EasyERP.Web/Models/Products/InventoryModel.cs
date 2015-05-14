@@ -1,6 +1,6 @@
 ﻿namespace EasyERP.Web.Models.Products
 {
-    using Domain.Model.Payment;
+    using Domain.Model.Payments;
     using EasyERP.Web.Framework.Mvc;
     using System;
     using System.Collections.Generic;

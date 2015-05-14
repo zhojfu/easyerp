@@ -1,0 +1,70 @@
+﻿@using EasyERP.Web.Framework
+@model EasyERP.Web.Models.Orders.OrderModel
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="section-header">
+        <div class="title">我的订单</div>
+    </div>
+    <div class="order-info">
+        <label>订单号:</label>
+        @Html.DisplayTextFor(model => model.OrderGuid)
+    </div>
+    <div class="order-info">
+        <label>提交时间:</label>
+        @Html.DisplayTextFor(model => model.CreatedOn)
+    </div>
+    <div class="form-group">
+        <label>订单状态:</label>
+        <input id="order-status" />
+    </div>
+    <div class="details">
+        <div id="product-list">
+
+        </div>
+    </div>
+    <div class="order-info">
+        <label>总金额:</label>
+        @Html.DisplayTextFor(model => model.OrderTotal)
+    </div>
+    <input type="submit" name="save" class="k-button" value="保存" />
+    <input type="submit" name="cancel" class="k-button" value="取消" />
+    @*<div id="order-items" data-bind="source: orderItems" data-template="order-item-template"></div>*@
+    <script id="order-item-template" type="text/x-kendo-template">
+        <div>
+            <ul>
+                <li><em>产品名:</em><span data-bind="text: productName"></span></li>
+                <li><em>数量:</em><span data-bind="text: quantity"></span></li>
+                <li><em>单价:</em><span data-bind="text: itemPrice"></span></li>
+                <li><em>总计:</em><span data-bind="text: total"></span></li>
+            </ul>
+        </div>
+    </script>
+
+    <script type="text/javascript">
+        var orderStatus = [
+                { text: "未处理", value: "1" },
+                { text: "交易成功", value: "2" },
+                { text: "已发货", value: "3" },
+                { text: "交易结束", value: "4" },
+                { text: "交易取消", value: "5" }
+        ];
+        $("#order-status").kendoDropDownList({
+            dataTextField: "text",
+            dataValueField: "value",
+            dataSource: orderStatus,
+            index: 0
+        });
+        var status = $("#order-status").data("kendoDropDownList").value(@Model.OrderStatus);
+
+        var s = @(Html.ToJson(Model));
+        $("#product-list").kendoGrid({
+            dataSource: s.items, 
+            columns: [
+                    { field: "productName", title: "产品名", width: 100 },
+                    { field: "quantity", title: "数量", width: 100 },
+                    { field: "price", title: "价格", width: 100 }
+                ]
+        });
+    </script>
+}

@@ -29,7 +29,6 @@
             int productId = 0,
             OrderStatus? os = null,
             PaymentStatus? ps = null,
-            ShippingStatus? ss = null,
             int pageIndex = 0,
             int pageSize = Int32.MaxValue)
         {
@@ -44,13 +43,6 @@
             {
                 paymentStatusId = (int)ps.Value;
             }
-
-            int? shippingStatusId = null;
-            if (ss.HasValue)
-            {
-                shippingStatusId = (int)ss.Value;
-            }
-
             var orders = orderRepository.FindAll(x => x.Id > 0);
             if (customerId > 0)
             {
@@ -69,10 +61,7 @@
             {
                 orders = orders.Where(o => o.PaymentStatusId == paymentStatusId.Value);
             }
-            if (shippingStatusId.HasValue)
-            {
-                orders = orders.Where(o => o.ShippingStatusId == shippingStatusId);
-            }
+
             orders = orders.Where(o => !o.Deleted);
             orders = orders.OrderByDescending(o => o.CreatedOnUtc);
 

@@ -5,7 +5,7 @@
     using Doamin.Service.Products;
     using Doamin.Service.Security;
     using Doamin.Service.Stores;
-    using Domain.Model.Payment;
+    using Domain.Model.Payments;
     using Domain.Model.Products;
     using EasyERP.Web.Extensions;
     using EasyERP.Web.Framework.Kendoui;
@@ -236,8 +236,7 @@
                 var payment = new Payment
                 {
                     DueDateTime = model.DueDateTime,
-                    Paid = model.Paid,
-                    Payables = model.Payables
+                    TotalAmount = model.Payables
                 };
 
                 inventoryService.InsertInventory(inventory, payment);

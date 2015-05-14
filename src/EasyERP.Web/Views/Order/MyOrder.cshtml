@@ -37,13 +37,14 @@
 
     <script>
         $(document).ready(function () {
-            var orderStatus = [
-                { text: "全部订单", value: "0" },
+        var orderStatus = [
+                { text: "全部订单", value: "1" },
                 { text: "未处理", value: "1" },
                 { text: "交易成功", value: "2" },
-                { text: "交易取消", value: "3" },
-                { text: "交易结束", value: "4" }
-            ];
+                { text: "已发货", value: "3" },
+                { text: "交易结束", value: "4" },
+                { text: "交易取消", value: "5" }
+        ];
 
             $("#order-status").kendoDropDownList({
                 dataTextField: "text",
@@ -78,20 +79,19 @@
                 schema: {                               // describe the result format
                     data: "Data",
                     model: {
-                        fields:{
+                        fields: {
                             createdTime: { type: "date" },
-                            orderStatus:function(){return "未处理";}
+                            orderStatus: function () { return "未处理"; }
 
+                        }
                     }
                 }
-}
 
             });
 
             var orderViewModel = kendo.observable({
                 orders: orders
             });
-
 
             kendo.bind("#view-model", orderViewModel);
 

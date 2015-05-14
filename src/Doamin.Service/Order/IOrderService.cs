@@ -12,7 +12,6 @@
             int productId = 0,
             OrderStatus? os = null,
             PaymentStatus? ps = null,
-            ShippingStatus? ss = null,
             int pageIndex = 0,
             int pageSize = int.MaxValue);
 

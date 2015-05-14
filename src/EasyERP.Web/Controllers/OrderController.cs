@@ -6,16 +6,13 @@
     using Doamin.Service.Stores;
     using Domain.Model.Orders;
     using EasyErp.Core;
-    using EasyERP.Web.Extensions;
-    using EasyERP.Web.Framework;
     using EasyERP.Web.Framework.Kendoui;
     using EasyERP.Web.Models.Orders;
-    using Infrastructure;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Web.Mvc;
-    using WebGrease.Css.Extensions;
+    using Domain.Model.Payments;
 
     public class OrderController : BaseAdminController
     {
@@ -59,91 +56,7 @@
                 return AccessDeniedView();
             }
 
-            //order statuses
-            var model = new OrderListModel();
-            model.AvailableOrderStatuses = OrderStatus.Pending.ToSelectList(false).ToList();
-            model.AvailableOrderStatuses.Insert(
-                0,
-                new SelectListItem
-                {
-                    Text = "All",
-                    Value = "0"
-                });
-            if (orderStatusId.HasValue)
-            {
-                //pre-select value?
-                var item = model.AvailableOrderStatuses.FirstOrDefault(x => x.Value == orderStatusId.Value.ToString());
-                if (item != null)
-                {
-                    item.Selected = true;
-                }
-            }
-
-            //payment statuses
-            model.AvailablePaymentStatuses = PaymentStatus.Pending.ToSelectList(false).ToList();
-            model.AvailablePaymentStatuses.Insert(
-                0,
-                new SelectListItem
-                {
-                    Text = "All",
-                    Value = "0"
-                });
-            if (paymentStatusId.HasValue)
-            {
-                //pre-select value?
-                var item =
-                    model.AvailablePaymentStatuses.FirstOrDefault(x => x.Value == paymentStatusId.Value.ToString());
-                if (item != null)
-                {
-                    item.Selected = true;
-                }
-            }
-
-            //shipping statuses
-            model.AvailableShippingStatuses = ShippingStatus.NotYetShipped.ToSelectList(false).ToList();
-            model.AvailableShippingStatuses.Insert(
-                0,
-                new SelectListItem
-                {
-                    Text = "All",
-                    Value = "0"
-                });
-            if (shippingStatusId.HasValue)
-            {
-                //pre-select value?
-                var item =
-                    model.AvailableShippingStatuses.FirstOrDefault(x => x.Value == shippingStatusId.Value.ToString());
-                if (item != null)
-                {
-                    item.Selected = true;
-                }
-            }
-
-            //stores
-            model.AvailableStores.Add(
-                new SelectListItem
-                {
-                    Text = "All",
-                    Value = "0"
-                });
-            foreach (var s in storeService.GetAllStores())
-            {
-                model.AvailableStores.Add(
-                    new SelectListItem
-                    {
-                        Text = s.Name,
-                        Value = s.Id.ToString()
-                    });
-            }
-            model.AvailableStores.Insert(
-                0,
-                new SelectListItem
-                {
-                    Text = "All",
-                    Value = "0"
-                });
-
-            return View(model);
+            return View();
         }
 
         public ActionResult ProductSearchAutoComplete(string term)
@@ -220,7 +133,7 @@
             }
             if (ModelState.IsValid)
             {
-                var order = new Order()
+                var order = new Order
                 {
                     OrderGuid = Guid.NewGuid(),
                     OrderStatus = OrderStatus.Pending,
@@ -240,6 +153,12 @@
                     }).ToList();
 
                 order.OrderTotal = order.OrderItems.Sum(o => o.Price * (decimal)o.Quantity);
+                order.Payment = new Payment
+                {
+                    DueDateTime = DateTime.Now.AddDays(45),
+                    Order = order,
+                    TotalAmount = (double)order.OrderTotal
+                };
 
                 orderService.InsertOrder(order);
                 return RedirectToAction("MyOrder", "Order");
@@ -256,10 +175,10 @@
         [HttpPost]
         public JsonResult MyOrder(DataSourceRequest request, int orderStatus)
         {
-            var status = OrderStatus.Pending;
+            var status = orderStatus > 0 ? (OrderStatus?)orderStatus : null;
             var storeId = workContext.CurrentUser.StoreId;
             var orders = orderService.SearchOrders(storeId, 0, status).ToList();
-            var dataSourceResult = new DataSourceResult()
+            var dataSourceResult = new DataSourceResult
             {
                 Data = orders.Select(
                     o => new
@@ -282,37 +201,28 @@
             return Json(dataSourceResult);
         }
 
-        public ActionResult OrderManage()
+        public ActionResult Search()
         {
             return View();
         }
 
         [HttpPost]
-        public ActionResult OrderList(DataSourceRequest command, OrderListModel model)
+        public ActionResult OrderList(DataSourceRequest command, SearchModel model)
         {
             if (!permissionService.Authorize(StandardPermissionProvider.ManageOrders))
             {
                 return AccessDeniedView();
             }
 
-            var orderStatus = model.OrderStatusId > 0 ? (OrderStatus?)(model.OrderStatusId) : null;
-            var paymentStatus = model.PaymentStatusId > 0 ? (PaymentStatus?)(model.PaymentStatusId) : null;
-            var shippingStatus = model.ShippingStatusId > 0 ? (ShippingStatus?)(model.ShippingStatusId) : null;
-
-            var filterByProductId = 0;
-            var product = productService.GetProductById(model.ProductId);
-            if (product != null)
-            {
-                filterByProductId = model.ProductId;
-            }
+            var orderStatus = model.OrderStatus > 0 ? (OrderStatus?)(model.OrderStatus) : null;
+            var payStatus = model.PayStatus > 0 ? (PaymentStatus?)(model.OrderStatus) : null;
 
             //load orders
             var orders = orderService.SearchOrders(
-                model.CustomerId,
-                filterByProductId,
+                model.StoreId,
+                0,
                 orderStatus,
-                paymentStatus,
-                shippingStatus,
+                payStatus,
                 command.Page - 1,
                 command.PageSize);
             var gridModel = new DataSourceResult
@@ -326,10 +236,9 @@
                             Id = x.Id,
                             OrderGuid = x.OrderGuid,
                             StoreName = store != null ? store.Name : "Unknown",
-                            OrderTotal = x.OrderTotal.ToString(),
-                            OrderStatus = x.OrderStatus.ToString(),
+                            OrderTotal = x.OrderTotal,
+                            OrderStatus = (int)x.OrderStatus,
                             PaymentStatus = x.PaymentStatus.ToString(),
-                            ShippingStatus = x.ShippingStatus.ToString(),
                             CreatedOn = x.CreatedOnUtc
                         };
                     }),
@@ -340,6 +249,50 @@
             {
                 Data = gridModel
             };
+        }
+
+        public ActionResult Review(Guid orderGuid)
+        {
+            if (!permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            {
+                return AccessDeniedView();
+            }
+
+            var order = orderService.GetOrderByGuid(orderGuid);
+            if (order == null)
+            {
+                return RedirectToAction("MyOrder");
+            }
+            var orderModel = new OrderModel
+            {
+                Id = order.Id,
+                OrderGuid = order.OrderGuid,
+                StoreName = order.Customer.Name,
+                OrderTotal = order.OrderTotal,
+                OrderStatus = (int)order.OrderStatus,
+                PaymentStatus = order.PaymentStatus.ToString(),
+                CreatedOn = order.CreatedOnUtc,
+                Items = order.OrderItems.Select(
+                    i => new OrderItemModel
+                    {
+                        Price = i.Price,
+                        Quantity = i.Quantity,
+                        ProductName = i.Product.Name
+                    }).ToList()
+            };
+
+            return View(orderModel);
+        }
+
+        [HttpPost]
+        public ActionResult Review(OrderModel orderModel)
+        {
+            if (!permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            {
+                return AccessDeniedView();
+            }
+
+            return null;
         }
     }
 }

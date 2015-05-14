@@ -1,6 +1,6 @@
 ﻿namespace Doamin.Service.Products
 {
-    using Domain.Model.Payment;
+    using Domain.Model.Payments;
     using Domain.Model.Products;
     using System.Collections.Generic;
 

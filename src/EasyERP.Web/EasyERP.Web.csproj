@@ -1653,7 +1653,7 @@
     <Compile Include="Models\EmployeeModel.cs" />
     <Compile Include="Models\EmployeeListModel.cs" />
     <Compile Include="Models\Orders\OrderModel.cs" />
-    <Compile Include="Models\Orders\OrderListModel.cs" />
+    <Compile Include="Models\Orders\SearchModel.cs" />
     <Compile Include="Models\Products\InventoryModel.cs" />
     <Compile Include="Models\Products\ProductListModel.cs" />
     <Compile Include="Models\Products\ProductModel.cs" />
@@ -1903,7 +1903,8 @@
     <Content Include="Views\Shared\OrderLayout.cshtml" />
     <Content Include="Views\Order\MyOrder.cshtml" />
     <Content Include="Views\Order\Detail.cshtml" />
-    <Content Include="Views\Order\OrderManage.cshtml" />
+    <Content Include="Views\Order\Search.cshtml" />
+    <Content Include="Views\Order\Review.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

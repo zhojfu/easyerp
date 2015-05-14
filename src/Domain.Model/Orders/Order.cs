@@ -1,5 +1,6 @@
 ﻿namespace Domain.Model.Orders
 {
+    using Domain.Model.Payments;
     using Domain.Model.Stores;
     using Infrastructure.Domain.Model;
     using System;
@@ -12,6 +13,7 @@
         {
             OrderItems = new List<OrderItem>();
         }
+
         #region Properties
 
         public Guid OrderGuid { get; set; }
@@ -20,21 +22,14 @@
 
         public int OrderStatusId { get; set; }
 
-        public int ShippingStatusId { get; set; }
-
         public int PaymentStatusId { get; set; }
 
-        public decimal OrderSubtotal { get; set; }
-
         public decimal OrderTotal { get; set; }
-
-        public DateTime? PaidDateUtc { get; set; }
 
         public bool Deleted { get; set; }
 
         public DateTime CreatedOnUtc { get; set; }
 
-        [Column]
         public DateTime ApproveTime { get; set; }
 
         #endregion Properties
@@ -45,15 +40,13 @@
 
         public virtual ICollection<OrderItem> OrderItems { get; set; }
 
+        public int PaymentId { get; set; }
+
+        public virtual Payment Payment { get; set; }
+
         #endregion Navigation properties
 
         #region Custom properties
-
-        public ShippingStatus ShippingStatus
-        {
-            get { return (ShippingStatus)ShippingStatusId; }
-            set { ShippingStatusId = (int)value; }
-        }
 
         public OrderStatus OrderStatus
         {
@@ -72,34 +65,23 @@
 
     public enum OrderStatus
     {
-        Pending = 10,
+        Pending = 1,
 
-        Processing = 20,
+        Approved = 2,
 
-        Complete = 30,
+        Shipped = 3,
 
-        Cancelled = 40
+        Complete = 4,
+
+        Cancelled = 5
     }
 
     public enum PaymentStatus
     {
-        Pending = 10,
+        Pending = 1,
 
-        Paid = 20,
+        Paid = 2,
 
-        PartiallyPaid = 30
-    }
-
-    public enum ShippingStatus
-    {
-        ShippingNotRequired = 10,
-
-        NotYetShipped = 20,
-
-        PartiallyShipped = 25,
-
-        Shipped = 30,
-
-        Delivered = 40
+        PartiallyPaid = 3
     }
 }

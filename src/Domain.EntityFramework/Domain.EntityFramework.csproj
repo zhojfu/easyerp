@@ -53,6 +53,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configurations\Payments\PaymentConfiguration.cs" />
+    <Compile Include="Configurations\Payments\PayItemConfiguration.cs" />
     <Compile Include="Configurations\Users\UserRoleConfiguration.cs" />
     <Compile Include="Configurations\Users\UserConfiguration.cs" />
     <Compile Include="Configurations\EmployeeConfiguration.cs" />

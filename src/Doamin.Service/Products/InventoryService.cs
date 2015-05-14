@@ -1,10 +1,10 @@
 ﻿namespace Doamin.Service.Products
 {
-    using System;
-    using System.Collections.Generic;
-    using Domain.Model.Payment;
+    using Domain.Model.Payments;
     using Domain.Model.Products;
     using Infrastructure.Domain;
+    using System;
+    using System.Collections.Generic;
 
     public class InventoryService : IInventoryService
     {
