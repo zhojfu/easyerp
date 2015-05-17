@@ -21,6 +21,9 @@
         [DisplayName("产品名称:")]
         public string Name { get; set; }
 
+        [DisplayName("产品编号:")]
+        public string ItemNo { get; set; }
+
         [AllowHtml]
         [DisplayName("简介:")]
         public string ShortDescription { get; set; }
@@ -28,10 +31,6 @@
         [AllowHtml]
         [DisplayName("详情描述:")]
         public string FullDescription { get; set; }
-
-        [AllowHtml]
-        [DisplayName("条码:")]
-        public string Sku { get; set; }
 
         [AllowHtml]
         [DisplayName("条码:")]

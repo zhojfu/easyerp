@@ -5,6 +5,7 @@
     using Doamin.Service.Security;
     using Doamin.Service.Stores;
     using Domain.Model.Orders;
+    using Domain.Model.Payments;
     using EasyErp.Core;
     using EasyERP.Web.Framework.Kendoui;
     using EasyERP.Web.Models.Orders;
@@ -12,7 +13,6 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Web.Mvc;
-    using Domain.Model.Payments;
 
     public class OrderController : BaseAdminController
     {
@@ -89,6 +89,12 @@
             return View();
         }
 
+        //[HttpPost]
+        //public ActionResult Create(OrderModel order)
+        //{
+        //    return null;
+        //}
+
         [HttpPost]
         public ActionResult ProductList(DataSourceRequest data, OrderModel model)
         {
@@ -131,6 +137,12 @@
             {
                 return AccessDeniedView();
             }
+
+            if (cartItems == null)
+            {
+                return RedirectToAction("Create", "Order");
+            }
+
             if (ModelState.IsValid)
             {
                 var order = new Order

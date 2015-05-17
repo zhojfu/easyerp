@@ -17,6 +17,8 @@
     using System.IO;
     using System.Linq;
     using System.Web.Mvc;
+    using Doamin.Service.ExportImport;
+    using EasyERP.Web.Framework.Mvc;
 
     public class ProductController : BaseAdminController
     {
@@ -33,6 +35,7 @@
         private readonly IStoreService storeService;
 
         private readonly IProductPriceService productPriceService;
+        private readonly IExportManager exportManager;
 
         public ProductController(
             IPermissionService permissionService,
@@ -42,7 +45,8 @@
             IProductPriceService productPriceService,
             IInventoryService inventoryService,
             IDateTimeHelper dateTimeHelper,
-            IAclService aclService)
+            IAclService aclService,
+            IExportManager exportManager)
         {
             this.permissionService = permissionService;
             this.categoryService = categoryService;
@@ -51,6 +55,7 @@
             this.productPriceService = productPriceService;
             this.inventoryService = inventoryService;
             this.dateTimeHelper = dateTimeHelper;
+            this.exportManager = exportManager;
         }
 
         // GET: Product
@@ -236,7 +241,7 @@
                 var payment = new Payment
                 {
                     DueDateTime = model.DueDateTime,
-                    TotalAmount = model.Payables
+                    TotalAmount = model.TotalAmount
                 };
 
                 inventoryService.InsertInventory(inventory, payment);
@@ -512,16 +517,16 @@
             return View();
         }
 
-        [HttpPost]
-        public JsonResult Menu()
+        public ActionResult ExportProducts()
         {
-            var data = System.IO.File.ReadAllText(@"C:\Users\Administrator\Desktop\easyerp55\easyerp\src\EasyERP.Web\data\menu.json");
+            
+            if (!permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+                return AccessDeniedView();
 
-            var result = new JsonResult
-            {
-                Data = JsonConvert.DeserializeObject(data)
-            };
-            return result;
+            var products = productService.GetAllProducts();
+
+            var xml = exportManager.ExportProductsToXml(products);
+            return new XmlDownloadResult(xml, "products.xml");
         }
 
         [NonAction]

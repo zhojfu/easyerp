@@ -39,9 +39,8 @@
 
             //var securitySettings = EngineContext.Current.Resolve<SecuritySettings>();
             //if (!securitySettings.EnableXsrfProtectionForAdminArea)
-            //    return;
-
             return;
+
             var validator = new ValidateAntiForgeryTokenAttribute();
             validator.OnAuthorization(filterContext);
         }

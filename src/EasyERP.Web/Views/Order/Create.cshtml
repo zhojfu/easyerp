@@ -12,7 +12,7 @@
 @using (Html.BeginForm())
 {
     <div id="product-list"></div>
-    <div id="cart" data-bind="visible: isVisible">
+    <div id="cart" data-bind="visible: cartContentsClass">
         <h1>Order Details</h1>
         <ul>
             <li>产品</li>
@@ -113,10 +113,10 @@
 
         var cartPreviewModel = kendo.observable({
             cart: cart,
-            isVisible: true,
+            isVisible: false,
 
             cartContentsClass: function () {
-                return this.cart.contentsCount() > 0 ? "active" : "empty";
+                return this.cart.contentsCount() > 0 ? true : false;
             },
 
             removeFromCart: function (e) {
@@ -144,6 +144,9 @@
                 this.cart.contents.forEach(function (item) {
                     data.push({ "ProductId": item.item.id, "Name": item.item.name, "Price": item.item.price, "Quantity": item.quantity });
                 });
+
+                //kendo.bind(checkoutWindow.element, data);
+                //checkoutWindow.open().center();
 
                 $.post("/Order/OrderUpdate", { "": data });
                 //$.ajax({

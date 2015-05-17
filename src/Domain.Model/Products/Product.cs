@@ -16,13 +16,13 @@
 
         public string Name { get; set; }
 
+        public string ItemNo { get; set; }
+
         public string ShortDescription { get; set; }
 
         public string FullDescription { get; set; }
 
         public int StockQuantity { get; set; }
-
-        public string Sku { get; set; }
 
         public string Gtin { get; set; }
 

@@ -18,6 +18,7 @@
             var c1 = new Category
             {
                 Name = "米",
+                ItemNo = "RI",
                 Description = "米粮",
                 UpdatedOnUtc = DateTime.Now,
                 CreatedOnUtc = DateTime.Now
@@ -25,6 +26,7 @@
             var c2 = new Category
             {
                 Name = "油",
+                ItemNo = "OL",
                 Description = "食物油",
                 UpdatedOnUtc = DateTime.Now,
                 CreatedOnUtc = DateTime.Now
@@ -32,6 +34,7 @@
             var c3 = new Category
             {
                 Name = "其他",
+                ItemNo = "OT",
                 Description = "其他",
                 UpdatedOnUtc = DateTime.Now,
                 CreatedOnUtc = DateTime.Now
@@ -76,6 +79,7 @@
                 Name = "小米",
                 Price = 15,
                 ProductCost = 10,
+                ItemNo = "RI0001",
                 Gtin = "9019339641569"
             },
             new Product
@@ -88,6 +92,7 @@
                 Name = "菜油",
                 Price = 20,
                 ProductCost = 15,
+                ItemNo = "OL0002",
                 Gtin = "9019339641579"
             },
 
@@ -100,6 +105,7 @@
                 ShortDescription = "老干妈",
                 Name = "老干妈",
                 Price = 20,
+                ItemNo = "OT0003",
                 ProductCost = 15,
                 Gtin = "9019339641580"
             },
@@ -113,6 +119,7 @@
                 Name = "大米",
                 Price = 20,
                 ProductCost = 15,
+                ItemNo = "RI0004",
                 Gtin = "9019339641581"
             },
             new Product
@@ -125,6 +132,7 @@
                 Name = "大豆",
                 Price = 20,
                 ProductCost = 15,
+                ItemNo = "OT0005",
                 Gtin = "9019339641582"
             },
             new Product
@@ -137,6 +145,7 @@
                 Name = "豆油",
                 Price = 20,
                 ProductCost = 15,
+                ItemNo = "OT0006",
                 Gtin = "9019339641592"
             },
             new Product
@@ -148,6 +157,7 @@
                 ShortDescription = "辣椒酱",
                 Name = "辣椒酱",
                 Price = 20,
+                ItemNo = "OT0007",
                 ProductCost = 15,
                 Gtin = "9019339641502"
             } };

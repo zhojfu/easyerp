@@ -119,9 +119,9 @@
             unitOfWork.Commit();
         }
 
-        public Product GetProductBySku(string sku)
+        public Product GetProductByGtin(string gtin)
         {
-            return string.IsNullOrEmpty(sku) ? null : productRepository.FindAll(p => p.Sku == sku).FirstOrDefault();
+            return string.IsNullOrEmpty(gtin) ? null : productRepository.FindAll(p => p.Gtin == gtin).FirstOrDefault();
         }
     }
 }
