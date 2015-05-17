@@ -1616,6 +1616,7 @@
     <Content Include="Scripts\kendo\2015.1.318\messages\kendo.messages.zh-HK.min.js" />
     <Content Include="Scripts\kendo\2015.1.318\messages\kendo.messages.zh-TW.min.js" />
     <Content Include="Scripts\Employee\employee.js" />
+    <Content Include="Scripts\StoreSale\order.js" />
     <Content Include="Scripts\StoreSale\storesale.js" />
     <Content Include="Scripts\timesheet.js" />
     <Content Include="Scripts\Product\employee.js" />
@@ -1633,6 +1634,7 @@
     <Compile Include="Models\Customer\CustomerListModel.cs" />
     <Compile Include="Models\Factory\ConsumptionModel.cs" />
     <Compile Include="Models\Orders\OrderListModel.cs" />
+    <Compile Include="Models\StoreSale\OrderListModel.cs" />
     <Compile Include="Models\StoreSale\OrderModel.cs" />
     <Compile Include="RouteProvider.cs" />
     <Compile Include="AutoMapperBootstraper.cs" />

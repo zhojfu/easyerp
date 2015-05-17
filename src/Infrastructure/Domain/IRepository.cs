@@ -19,11 +19,11 @@
         TAggregateRoot GetByKey(long key);
         IQueryable<TAggregateRoot> FindAll(Expression<Func<TAggregateRoot, bool>> expression);
 
-        PagedResult<TAggregateRoot> FindAll(
+        PagedResult<TAggregateRoot> FindAll<TCol>(
             int pageSize,
             int pageNumber,
             Expression<Func<TAggregateRoot, bool>> selectExp,
-            Expression<Func<TAggregateRoot, dynamic>> orderExp,
+            Expression<Func<TAggregateRoot, TCol>> orderExp,
             SortOrder sortOrder = SortOrder.Unspecified);
 
         void Add(TAggregateRoot aggregateRoot);

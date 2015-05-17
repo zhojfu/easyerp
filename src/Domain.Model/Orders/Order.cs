@@ -47,7 +47,7 @@
         public virtual ICollection<OrderItem> OrderItems
         {
             get { return orderItems ?? (orderItems = new List<OrderItem>()); }
-            protected set { orderItems = value; }
+            set { orderItems = value; }
         }
 
         #endregion Navigation properties

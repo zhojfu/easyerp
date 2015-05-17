@@ -12,6 +12,7 @@ namespace EasyERP.Web.Framework
     using Doamin.Service.Products;
     using Doamin.Service.Security;
     using Doamin.Service.Stores;
+    using Doamin.Service.StoreSale;
     using Doamin.Service.Users;
     using Domain.EntityFramework;
     using Domain.Model.Factory;
@@ -83,7 +84,7 @@ namespace EasyERP.Web.Framework
             builder.RegisterType<EmployeeTimesheetService>().As<ITimesheetService<WorkTimeStatistic>>().InstancePerLifetimeScope();
             builder.RegisterType<ConsumptionTimesheetService>().As<ITimesheetService<ConsumptionStatistic>>().InstancePerLifetimeScope();
             builder.RegisterType<CustomerService>().As<ICustomerService>().InstancePerLifetimeScope();
-
+            builder.RegisterType<StoreSaleService>().As<IStoreSaleService>().InstancePerLifetimeScope();
 
             // Services
             builder.RegisterType<CategoryService>().As<ICategoryService>().InstancePerLifetimeScope();

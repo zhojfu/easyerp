@@ -72,8 +72,9 @@ $(document).ready(function() {
        // console.log(orderItems);
 
         var order = new Object();
-        order.owner = $("#orderOwner").val();
-        order.address = $("#address").val();
+        //order.owner = $("#orderOwner").val();
+        //order.address = $("#address").val();
+        order.customerId = $("#customerId").val();
         order.orderTitle = $("#orderTitle").val();
         order.orderItems = new Array();
         var orderItems = $("#order").data("kendoGrid").dataSource.data();
@@ -85,6 +86,17 @@ $(document).ready(function() {
             item.Quantity = orderItems[i].Quantity;
             order.orderItems.push(item);
         }
+
+        $.ajax({
+            type: "post",
+            url: "/StoreSale/Create",
+            data: JSON.stringify(order),
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function () {
+                //$('#customerList').data('kendoGrid').dataSource.read();
+            }
+        });
 
         console.log(order);
 

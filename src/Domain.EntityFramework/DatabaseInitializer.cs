@@ -11,7 +11,7 @@
     using System.Data.Entity;
     using System.Linq;
 
-    public class DatabaseInitializer : DropCreateDatabaseAlways<EntityFrameworkDbContext>
+    public class DatabaseInitializer : DropCreateDatabaseIfModelChanges<EntityFrameworkDbContext>
     {
         protected override void Seed(EntityFrameworkDbContext context)
         {
