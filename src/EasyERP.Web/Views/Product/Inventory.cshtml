@@ -1,6 +1,4 @@
-﻿using EasyERP.Web.Framework
-
-@model EasyERP.Web.Models.Products.InventoryModel
+﻿@model EasyERP.Web.Models.Products.InventoryModel
 @{
     ViewBag.Title = "入库";
 }
@@ -44,21 +42,21 @@
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(m => m.Paid);
+        @Html.LabelFor(m => m.Paid)
         @Html.EditorFor(m => m.Paid)
         @Html.ValidationMessageFor(model => model.Paid, "", new {@class="text-danger"})
     </div>
 
     <div class="form-group">
 
-        @Html.LabelFor(m => m.DueDateTime);
+        @Html.LabelFor(m => m.DueDateTime)
         @Html.EditorFor(m => m.DueDateTime)
         @Html.ValidationMessageFor(model => model.DueDateTime, "", new {@class="text-danger"})
     </div>
 
     <div class="form-group">
 
-        @Html.LabelFor(m => m.Note);
+        @Html.LabelFor(m => m.Note)
         @Html.EditorFor(m => m.Note)
         @Html.ValidationMessageFor(model => model.Note, "", new {@class="text-danger"})
     </div>

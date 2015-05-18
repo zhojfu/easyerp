@@ -1,0 +1,115 @@
+﻿@using EasyErp.Core.Configuration.Settings
+@using EasyErp.Core.Infrastructure
+@model EasyERP.Web.Models.Products.ProductListModel
+@section SectionTitle
+{
+    产品入库信息
+}
+@{
+    var defaultGridPageSize = EngineContext.Current.Resolve<AreaSettings>().DefaultGridPageSize;
+    var gridPageSizes = EngineContext.Current.Resolve<AreaSettings>().GridPageSizes;
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="form-group">
+        <p><em>产品目录:</em></p>
+        <div id="selected-category"></div>
+    </div>
+    <div class="form-group">
+        <p><em>产品:</em></p>
+        <div id="selected-product"></div>
+    </div>
+    <div>
+        <div id="products-grid"></div>
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function() {
+        function additionalData() {
+            var data = {
+                SearchCategoryId: $("#selected-category").val()
+            };
+            addAntiForgeryToken(data);
+            return data;
+        }
+
+        var allCategories = new kendo.data.DataSource({
+            schema: {
+            }, 
+            transport: {
+                read: {
+                    url:"/Product/Categories",
+                    type:"POST",
+                    dataType:"json"
+                }
+            }
+        });
+
+        $("#selected-category").kendoDropDownList({
+            dataTextField:"Name",
+            dataValueField:"Id",
+            dataSource:{
+            schema: {
+                data: function(data){return data;}
+            }, 
+            transport: {
+                read: {
+                    url:"/Product/List",
+                    type:"POST",
+                    dataType:"json"
+                }
+            }
+        },
+            dataBound: function() { 
+                var dataSource = this.dataSource;
+                var data = dataSource.data();
+
+                if (!this._adding) {
+                    this._adding = true;
+
+                    data.splice(0, 0, {
+                        "Name": "所有",
+                        "Id": "0"
+                    });
+                    this._adding = false;
+                }
+            }
+        });
+
+        var products = new kendo.data.DataSource({
+            transport: {
+                read: {
+                    url:"/Product/List",
+                    type: "POST", 
+                    dataType: "json", 
+                    data: additionalData
+                }
+            }
+        });
+        $("#selected-product").kendoDropDownList({
+            dataTextField:"Name",
+            dataValueField:"Id",
+            dataSource:allCategories,
+            dataBound: function() { 
+                var dataSource = this.dataSource;
+                var data = dataSource.data();
+
+                if (!this._adding) {
+                    this._adding = true;
+
+                    data.splice(0, 0, {
+                        "Name": "所有",
+                        "Id": "0"
+                    });
+                    this._adding = false;
+                }
+            }
+        });
+
+
+
+        });
+
+    </script>
+}

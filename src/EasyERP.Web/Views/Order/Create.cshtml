@@ -145,9 +145,6 @@
                     data.push({ "ProductId": item.item.id, "Name": item.item.name, "Price": item.item.price, "Quantity": item.quantity });
                 });
 
-                //kendo.bind(checkoutWindow.element, data);
-                //checkoutWindow.open().center();
-
                 $.post("/Order/OrderUpdate", { "": data });
                 //$.ajax({
                 //    url: "/Order/OrderUpdate",

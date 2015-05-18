@@ -243,11 +243,53 @@
                     DueDateTime = model.DueDateTime,
                     TotalAmount = model.TotalAmount
                 };
+                
+
+                if (Math.Abs(model.Paid) > 0)
+                {
+                    payment.Items.Add(new PayItem()
+                    {
+                        Paid = model.Paid,
+                        PayDataTime = DateTime.Now
+                    });
+                }
+                inventory.Payment = payment;
 
                 inventoryService.InsertInventory(inventory, payment);
             }
 
             return RedirectToAction("List");
+        }
+
+        public ActionResult InventoryRecords()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Categories()
+        {
+            if (!permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            {
+                return AccessDeniedView();
+            }
+
+            var categories = this.categoryService.GetAllCategories();
+
+
+            if (categories == null ||
+                !categories.Any())
+            {
+                return new JsonResult();
+                
+            }
+
+            var data = categories.Select(i=> new
+            {
+                Id = i.Id, Name = i.Name
+            }) ;
+
+            return Json(data);
         }
 
         //create product

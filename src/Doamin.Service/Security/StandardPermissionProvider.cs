@@ -12,6 +12,13 @@
             SystemName = "ManageProducts",
             Category = "Catalog"
         };
+        
+        public static readonly PermissionRecord GetCategoryList = new PermissionRecord
+        {
+            Name = "GetCategoryList",
+            SystemName = "GetCategoryList",
+            Category = "Catalog"
+        };
 
         public static readonly PermissionRecord AccessAdminPanel = new PermissionRecord
         {
@@ -60,7 +67,7 @@
                 new DefaultPermissionRecord
                 {
                     UserRoleSystemName = SystemUserRoleNames.Administrators,
-                    PermissionRecords = new[] { ManageProducts, ManageStores, ManageOrders, AccessAdminPanel }
+                    PermissionRecords = new[] { ManageProducts, ManageStores, ManageOrders, AccessAdminPanel, GetCategoryList }
                 },
                 new DefaultPermissionRecord
                 {

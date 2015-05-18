@@ -1906,6 +1906,7 @@
     <Content Include="Views\Order\Detail.cshtml" />
     <Content Include="Views\Order\Search.cshtml" />
     <Content Include="Views\Order\Review.cshtml" />
+    <Content Include="Views\Product\InventoryRecords.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

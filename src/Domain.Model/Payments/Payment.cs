@@ -8,6 +8,10 @@
 
     public class Payment : BaseEntity, IAggregateRoot
     {
+        public Payment()
+        {
+            Items = new List<PayItem>();
+        }
         public DateTime DueDateTime { get; set; }
 
         public double TotalAmount { get; set; }
