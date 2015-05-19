@@ -9,6 +9,12 @@ namespace Domain.Model.Stores
 
     public class Store : BaseEntity, IAggregateRoot
     {
+        public Store()
+        {
+            ProductPrices = new List<ProductPrice>();
+            Products = new List<Product>();
+        }
+
         public string Name { get; set; }
 
         public string ShortDescription { get; set; }
@@ -38,5 +44,7 @@ namespace Domain.Model.Stores
         public virtual ICollection<Product> Products { get; set; }
 
         public virtual ICollection<Employee> Employees { get; set; }
+
+        public virtual ICollection<ProductPrice> ProductPrices { get; set; }
     }
 }

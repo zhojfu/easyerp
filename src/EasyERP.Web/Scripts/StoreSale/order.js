@@ -4,7 +4,7 @@
         transport: {
             read: {
                 //url: baseUrl + "/Consumption/Get",
-                dataType: "json"
+                //dataType: "json"
             },
             update: {
                 url: "/StoreSale/UpdateOrderItem",
@@ -26,7 +26,7 @@
                 total: "total"
             }
         },
-        //serverPaging: true,
+        serverPaging: true,
         pageSize: 10,
         schema: {
             data: "data",
@@ -47,7 +47,7 @@
         $("#order").kendoGrid({
             dataSource: dataSource,
             pageable: {
-                refresh: true,
+                refresh: true
             },
             columns: [
                 { field: "Name", title: "产品" },
@@ -61,12 +61,68 @@
     };
 }
 
+function CustomerAutoComplete() {
+    var dataSource = new kendo.data.DataSource({
+        
+        serverFiltering: true,
+
+        transport: {
+            read: "/StoreSale/AutoCompleteCustomers",
+               
+            parameterMap: function (data, action) {
+                if(action === "read") {
+                    return {
+                        name: data.filter.filters[0].value
+                    };
+                } else {
+                    return data;
+                }
+            },
+
+            dataType: "json"
+        },
+        schema: {
+            model: {
+                fields: {
+                    Id: { type: "number" },
+                    Name: { type: "string" },
+                    Address: { type: "string" }
+               }
+            }
+        }
+    });
+
+    this.initalCustomerAutoComplete = function () {
+
+        function onSelect(e) {
+            var dataItem = this.dataItem(e.item.index());
+            $("#customerId").val(dataItem.Id);
+            $("#address").val(dataItem.Address);
+        }
+
+        $("#orderOwner").kendoAutoComplete({
+            dataTextField: "Name",
+            filter: "contains",
+            minLength: 2,
+            select: onSelect,
+            dataSource: dataSource
+        });
+        
+    }
+}
+
 
 $(document).ready(function() {
     //create order
     var grid = new OrderGrid();
     grid.initiOrderGrid();
-    
+
+
+    var cAutoComplete = new CustomerAutoComplete();
+    cAutoComplete.initalCustomerAutoComplete();
+
+
+
     $("#submitOrder").click(function () {
 
        // console.log(orderItems);

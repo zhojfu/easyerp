@@ -3,9 +3,9 @@
     using System.Data.Entity.ModelConfiguration;
     using Domain.Model.Stores;
 
-    public class Storefiguration : EntityTypeConfiguration<Store>
+    public class StoreConfiguration : EntityTypeConfiguration<Store>
     {
-        public Storefiguration()
+        public StoreConfiguration()
         {
             HasKey(s => s.Id);
         }

@@ -43,6 +43,11 @@
             unitOfWork.Commit();
         }
 
+        public IEnumerable<Customer> GetCustomersByName(string name)
+        {
+            return this.repository.FindAll(c=>c.Name.Contains(name));
+        }
+
         public void UpdateCustomer(Customer customer)
         {
              Customer origin = GetCustomerById(customer.Id);

@@ -4,6 +4,7 @@ namespace EasyERP.Web.Controllers
 {
     using System;
     using System.Collections.Generic;
+    using Doamin.Service.Customer;
     using Doamin.Service.Products;
     using Doamin.Service.StoreSale;
     using Domain.Model.Orders;
@@ -16,10 +17,13 @@ namespace EasyERP.Web.Controllers
 
         private readonly IProductService productService;
 
-        public StoreSaleController(IStoreSaleService storeSaleService, IProductService productService)
+        private readonly ICustomerService customerService;
+
+        public StoreSaleController(IStoreSaleService storeSaleService, IProductService productService, ICustomerService customerService)
         {
             this.storeSaleService = storeSaleService;
             this.productService = productService;
+            this.customerService = customerService;
         }
 
         // GET: /StoreSales/
@@ -49,6 +53,28 @@ namespace EasyERP.Web.Controllers
         public JsonResult UpdateOrderItem(OrderItemModel orderItem)
         {
             return Json(orderItem);
+        }
+
+        [HttpGet]
+        public JsonResult AutoCompleteCustomers(string name)
+        {
+            //string name = "";
+            var customers = this.customerService.GetCustomersByName(name);
+            
+            List<object> jsons = new List<object>();
+            foreach (var customer in customers)
+            {
+                object o = new
+                {
+                    Id = customer.Id,
+                    Name = customer.Name,
+                    Address = customer.Address
+                };
+
+                jsons.Add(o);
+            }
+
+            return Json(jsons, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]

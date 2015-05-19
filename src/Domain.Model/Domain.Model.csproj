@@ -66,6 +66,7 @@
     <Compile Include="Products\ProductLogisticUnit.cs" />
     <Compile Include="Products\ProductManufacturer.cs" />
     <Compile Include="Products\ProductPicture.cs" />
+    <Compile Include="Products\ProductPrice.cs" />
     <Compile Include="Products\ProductPriceHistory.cs" />
     <Compile Include="Products\ProductSortingEnum.cs" />
     <Compile Include="Products\ProductUom.cs" />

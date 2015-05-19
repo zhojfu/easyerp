@@ -29,7 +29,7 @@
             bool searchSku = true,
             bool? overridePublished = null);
 
-        Product GetProductBySku(string sku);
+        Product GetProductByGtin(string gtin);
 
         #endregion Products
     }
