@@ -1,6 +1,7 @@
 ﻿namespace EasyERP.Web.Controllers
 {
     using Antlr.Runtime;
+    using Doamin.Service.ExportImport;
     using Doamin.Service.Helpers;
     using Doamin.Service.Products;
     using Doamin.Service.Security;
@@ -9,6 +10,7 @@
     using Domain.Model.Products;
     using EasyERP.Web.Extensions;
     using EasyERP.Web.Framework.Kendoui;
+    using EasyERP.Web.Framework.Mvc;
     using EasyERP.Web.Models.Products;
     using Infrastructure;
     using Newtonsoft.Json;
@@ -17,8 +19,6 @@
     using System.IO;
     using System.Linq;
     using System.Web.Mvc;
-    using Doamin.Service.ExportImport;
-    using EasyERP.Web.Framework.Mvc;
 
     public class ProductController : BaseAdminController
     {
@@ -243,7 +243,6 @@
                     DueDateTime = model.DueDateTime,
                     TotalAmount = model.TotalAmount
                 };
-                
 
                 if (Math.Abs(model.Paid) > 0)
                 {
@@ -267,6 +266,46 @@
         }
 
         [HttpPost]
+        public ActionResult InventoryRecords(int productId)
+        {
+            if (!permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            {
+                return AccessDeniedView();
+            }
+
+            var inventories = inventoryService.GetAllInventoriesForProduct(productId);
+
+            if (inventories == null ||
+                !inventories.Any())
+            {
+                return new JsonResult();
+            }
+
+            var inventoryDataSource = inventories.Select(
+                i => new
+                {
+                    Id = i.Id,
+                    ProductName = i.Product.Name,
+                    Quantity = i.Quantity,
+                    InventoryTime = i.InStockTime,
+                    IsPaid = false,
+                    Payment = new
+                    {
+                        Total = i.Payment.TotalAmount,
+                        DueDate = i.Payment.DueDateTime,
+                        Items = i.Payment.Items.Select(
+                            p => new
+                            {
+                                PayDate = p.PayDataTime,
+                                Paid = p.Paid
+                            })
+                    }
+                });
+
+            return Json(inventoryDataSource);
+        }
+
+        [HttpPost]
         public ActionResult Categories()
         {
             if (!permissionService.Authorize(StandardPermissionProvider.ManageProducts))
@@ -276,18 +315,17 @@
 
             var categories = this.categoryService.GetAllCategories();
 
-
             if (categories == null ||
                 !categories.Any())
             {
                 return new JsonResult();
-                
             }
 
-            var data = categories.Select(i=> new
+            var data = categories.Select(i => new
             {
-                Id = i.Id, Name = i.Name
-            }) ;
+                Id = i.Id,
+                Name = i.Name
+            });
 
             return Json(data);
         }
@@ -561,7 +599,6 @@
 
         public ActionResult ExportProducts()
         {
-            
             if (!permissionService.Authorize(StandardPermissionProvider.ManageProducts))
                 return AccessDeniedView();
 
