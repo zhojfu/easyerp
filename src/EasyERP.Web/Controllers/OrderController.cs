@@ -43,20 +43,7 @@
 
         public ActionResult Index()
         {
-            return RedirectToAction("List");
-        }
-
-        public ActionResult List(
-            int? orderStatusId = null,
-            int? paymentStatusId = null,
-            int? shippingStatusId = null)
-        {
-            if (!permissionService.Authorize(StandardPermissionProvider.ManageOrders))
-            {
-                return AccessDeniedView();
-            }
-
-            return View();
+            return RedirectToAction("MyOrder");
         }
 
         public ActionResult ProductSearchAutoComplete(string term)
@@ -88,12 +75,6 @@
         {
             return View();
         }
-
-        //[HttpPost]
-        //public ActionResult Create(OrderModel order)
-        //{
-        //    return null;
-        //}
 
         [HttpPost]
         public ActionResult ProductList(DataSourceRequest data, OrderModel model)

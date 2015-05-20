@@ -1,0 +1,68 @@
+﻿@using EasyErp.Core.Configuration.Settings
+@using EasyErp.Core.Infrastructure
+@using EasyERP.Web.Framework
+@model EasyERP.Web.Models.Payments.PaymentModel
+@section SectionTitle
+{
+    产品管理
+}
+@{
+    var defaultGridPageSize = EngineContext.Current.Resolve<AreaSettings>().DefaultGridPageSize;
+    var gridPageSizes = EngineContext.Current.Resolve<AreaSettings>().GridPageSizes;
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    if (Model.Paid == Model.TotalAmount)
+    {
+        <div class="property-content">
+            <label>已付全款</label>
+        </div>
+    }
+    <div>
+        <p><em>付款总额:</em><label>@Model.TotalAmount</label></p>
+    </div>
+    <div>
+        <p><em>已付款:</em><label>@Model.Paid</label></p>
+    </div>
+    <div>
+        <p><em>应付款:</em><label>@(Model.TotalAmount - Model.Paid)</label></p>
+    </div>
+    <div>
+        <p><em>截至日期:</em><label>@Model.DueDateTime</label></p>
+    </div>
+    <div>
+        <p><em>付款信息:</em></p>
+    </div>
+    <div id="payitems"></div>
+    <script type="text/x-kendo-template" id="toolbar-template">
+        <div class="toolbar" id="toolbar">
+            <button type="button">付款</button>
+        </div>
+    </script>
+    <script>
+
+        var payinfo = @(Html.ToJson(Model));
+        $("#payitems").kendoGrid({
+            dataSource: payinfo.payItems,
+            toolbar: kendo.template($("#toolbar-template").html()),
+            columns: [
+                { field: "payDate", title: "付款日期", width: 100 },
+                { field: "payAmount", title: "付款额", width: 100 }
+            ]
+        });
+
+        $(document).ready(function() {
+            if (payinfo.paid === payinfo.totalAmount){ 
+                $("#toolbar").hide(); 
+            }
+        });
+
+    </script> 
+    <style> 
+        .toolbar {
+                    float: right;
+                }
+            </style>
+}

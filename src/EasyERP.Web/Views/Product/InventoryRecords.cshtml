@@ -22,18 +22,10 @@
         <div id="selected-product"></div>
     </div>
     <div class="option">
-        <input type="checkbox" value="showUnPaidOnly" >只显示未付款信息
+        <input type="checkbox" id="showUnPaidOnly" value="true">只显示未付款信息
     </div>
     <div id="inventory-list"></div>
-    
-        <script id="payment-template" type="text/x-kendo-template">
-        var isPaid = #isPaid#;
-    # if (isPaid == true){ #
-<a href="\Pay\InventoryId">已付款</a>
-    # } else{ #
-<a href="\Pay\InventoryId">未付款</a>
-    # } #
-</script>
+
     <script type="text/javascript">
         $(document).ready(function () {
             function additionalData() {
@@ -59,8 +51,8 @@
 
             var productsDataSource = new kendo.data.DataSource({
                 schema: {
-                    data: function(data) {
-                         return data.Data;
+                    data: function (data) {
+                        return data.Data;
                     }
                 },
                 transport: {
@@ -75,12 +67,12 @@
 
             var inventoryDataSource = new kendo.data.DataSource({
                 schema: {
-                    data: function(data) {
-                        return data;
+                    data: function (data) {
+                        return data.Data;
                     },
                     model: {
                         fields: {
-                             "InventoryTime":{type:"date"}
+                            "InventoryTime": { type: "date" }
                         }
                     }
                 },
@@ -89,8 +81,11 @@
                         url: "/Product/InventoryRecords",
                         type: "POST",
                         dataType: "json",
-                        data: function() {
-                            var data = { productId: $("#selected-product").val() };
+                        data: function () {
+                            var data = {
+                                productId: $("#selected-product").val(),
+                                showUnPaidOnly: $("#showUnPaidOnly").is(":checked")
+                            };
                             addAntiForgeryToken(data);
                             return data;
                         }
@@ -103,7 +98,7 @@
                 dataValueField: "Id",
                 dataSource: allCategories,
                 index: 0,
-                dataBound: function() {
+                dataBound: function () {
                     var dataSource = this.dataSource;
                     var data = dataSource.data();
 
@@ -119,7 +114,7 @@
 
                     productsDataSource.read();
                 },
-                change: function() {
+                change: function () {
                     var value = this.value();
                     if (value) {
                         productsDataSource.read();
@@ -132,38 +127,33 @@
             }).data("kendoDropDownList");
 
             var products = $("#selected-product").kendoDropDownList({
-                //autoBind: false,
-                //optionLabel: "Select product...",
                 dataTextField: "Name",
                 dataValueField: "Id",
                 dataSource: productsDataSource,
                 dataBound: function () {
-                        inventoryDataSource.read();
+                    inventoryDataSource.read();
                 },
                 change: function () {
-                    //var value = this.value(),
-                    //    dataItem = this.dataItem();
                     var value = this.value();
                     if (value) {
-                        inventoryDataSource.read();
+                        inventoryGrid.dataSource.page(1);
+                        inventoryGrid.dataSource.read();
                     }
                 }
             }).data("kendoDropDownList");
 
-            var inventoryGrid=$("#inventory-list").kendoGrid({
+            var inventoryGrid = $("#inventory-list").kendoGrid({
                 dataSource: inventoryDataSource,
                 columns: [
                     { field: "ProductName", title: "产品名", width: 100 },
                     { field: "Quantity", title: "数量", width: 100 },
-                    { field: "InventoryTime", title: "入库日期", width: 100, template: '#= kendo.toString(InventoryTime, "MM/dd/yyyy" ) #'},
+                    { field: "InventoryTime", title: "入库日期", width: 100, template: '#= kendo.toString(InventoryTime, "MM/dd/yyyy" ) #' },
                     //{ field: "Id", title: "付款信息", width: 100, template:"<a href=\"Pay/#=Id#\">#=IsPaid#</a>" }
-                    { field: "Id", title: "付款信息", width: 100, template:"<a href=\"Pay/#=Id#\"># if(IsPaid) {#已付全款#;} else{#部分付款#} #</a>" }
+                    { field: "Id", title: "付款信息", width: 100, template: "<a href=\"/Payment/PayInfo/#=Id#\"># if(IsPaid) {#已付全款#;} else{#部分付款#} #</a>" }
                 ]
             }).data("kendoGrid");
 
         });
     </script>
-
-
 
 }

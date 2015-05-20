@@ -244,7 +244,7 @@
                     TotalAmount = model.TotalAmount
                 };
 
-                if (Math.Abs(model.Paid) > 0)
+                if (model.Paid > 0)
                 {
                     payment.Items.Add(new PayItem()
                     {
@@ -266,7 +266,7 @@
         }
 
         [HttpPost]
-        public ActionResult InventoryRecords(int productId)
+        public ActionResult InventoryRecords(int productId, bool showUnPaidOnly)
         {
             if (!permissionService.Authorize(StandardPermissionProvider.ManageProducts))
             {
@@ -288,7 +288,6 @@
                     ProductName = i.Product.Name,
                     Quantity = i.Quantity,
                     InventoryTime = i.InStockTime,
-                    IsPaid = false,
                     Payment = new
                     {
                         Total = i.Payment.TotalAmount,
@@ -299,10 +298,22 @@
                                 PayDate = p.PayDataTime,
                                 Paid = p.Paid
                             })
-                    }
-                });
+                    },
+                    UnPaid = i.Payment.TotalAmount - i.Payment.Items.Sum(iii => iii.Paid),
+                    IsPaid = (i.Payment.TotalAmount - i.Payment.Items.Sum(iii => iii.Paid)).Equals(0)
+                }).ToList();
 
-            return Json(inventoryDataSource);
+            if (showUnPaidOnly)
+            {
+                inventoryDataSource = inventoryDataSource.Where(i => !i.IsPaid).ToList();
+            }
+            var gridModel = new DataSourceResult
+            {
+                Data = inventoryDataSource,
+                Total = inventoryDataSource.Count
+            };
+
+            return Json(gridModel);
         }
 
         [HttpPost]
