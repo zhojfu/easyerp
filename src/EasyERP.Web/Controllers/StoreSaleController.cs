@@ -58,7 +58,6 @@ namespace EasyERP.Web.Controllers
         [HttpGet]
         public JsonResult AutoCompleteCustomers(string name)
         {
-            //string name = "";
             var customers = this.customerService.GetCustomersByName(name);
             
             List<object> jsons = new List<object>();
@@ -69,6 +68,39 @@ namespace EasyERP.Web.Controllers
                     Id = customer.Id,
                     Name = customer.Name,
                     Address = customer.Address
+                };
+
+                jsons.Add(o);
+            }
+
+            return Json(jsons, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public JsonResult AutoCompleteProducts(string name)
+        {
+            var products = this.productService.GetAutoCompleteProducts(name);
+
+            List<object> jsons = new List<object> { 
+                new {Id = 1, Name="米", Price = 10},
+                new {Id = 1, Name="盐", Price = 15},
+                new {Id = 1, Name="油1", Price = 11},
+                new {Id = 1, Name="油2", Price = 12},
+                new {Id = 1, Name="油3", Price = 13},
+                new {Id = 1, Name="油", Price = 20},
+                new {Id = 1, Name="柴", Price = 30},
+                new {Id = 1, Name="酱", Price = 90},
+                new {Id = 1, Name="醋", Price = 50},
+                new {Id = 1, Name="茶", Price = 10}
+            };
+
+            foreach (var product in products)
+            {
+                object o = new
+                {
+                    Id = product.Id,
+                    Name = product.Name,
+                    Price = product.Price,
                 };
 
                 jsons.Add(o);

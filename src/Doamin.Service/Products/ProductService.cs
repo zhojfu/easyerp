@@ -40,6 +40,11 @@
             return productRepository.FindAll(p => productIds.Contains(p.Id)).ToList();
         }
 
+        public IEnumerable<Product> GetAutoCompleteProducts(string name)
+        {
+            return productRepository.FindAll(p => p.Name.Contains(name));
+        }
+
         public IList<Product> GetAllProducts()
         {
             return productRepository.FindAll(p => true).ToList();

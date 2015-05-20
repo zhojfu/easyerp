@@ -37,6 +37,7 @@
                     Id: { editable: false, nullable: true },
                     Name: { type: "string", validation: { required: true } },
                     Quantity: { type: "number", validation: { required: true, min: 1 } },
+                    TotalPrice: { type: "number", validation: {required: true, min: 1} },
                     PriceOfUnit: { type: "number", validation: { required: true, min: 1 } }
                 }
             }
@@ -44,18 +45,95 @@
     });
 
     this.initiOrderGrid = function () {
+        //var that = this;
+        function productAutoCompleteEditor(container, options) {
+            $("<input data-text-field='Name' data-value-field='Name' data-bind='value:" + options.field + "'/>")
+            .appendTo(container)
+            .kendoAutoComplete({
+                autoBind: false,
+                placeholder: "输入产品名称",
+                filter: "contains",
+                select: function (e) {
+                    var dataItem = this.dataItem(e.item.index());
+                    var grid = $("#order").data("kendoGrid");
+                   
+                    var dataSource = grid.dataSource;
+                    var selectedRowIndex = grid.select().index();
+                    //var selectedRowIndex = selectedRow.index();
+                    //console.log(selectedRowIndex);
+                    var gridRow = null;
+                    if (selectedRowIndex == -1) {
+                        gridRow = dataSource.data()[0];
+                    }
+                    else {
+                        gridRow = dataSource.data()[selectedRowIndex];
+                    }
+                    gridRow.set("Id", dataItem.Id);
+                    gridRow.set("PriceOfUnit", dataItem.Price);
+                    gridRow.set("TotalPrice", dataItem.Price * gridRow.get("Quantity"));
+
+                    console.log(gridRow.get("Quantity"));
+                },
+                dataSource: {
+                    serverFiltering: true,
+                    transport: {
+                        read: "/StoreSale/AutoCompleteProducts",
+                        dataType: "json",
+                        parameterMap: function (data, action) {
+                            if (action === "read") {
+                                return {
+                                    name: data.filter.filters[0].value
+                                };
+                            } else {
+                                return data;
+                            }
+                        }
+                    },
+                    schema: {
+                        model: {
+                            fields: {
+                                Id: { type: "number" },
+                                Name: { type: "string" },
+                                Price: { type: "number" }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        dataSource.bind("change", dataSource_change);
+
+        function dataSource_change() {
+
+            var orderItems = $("#order").data("kendoGrid").dataSource.data();
+            var totalCost = 0;
+            for (var i = 0; i < orderItems.length; i++) {
+                totalCost += orderItems[i].TotalPrice;
+            }
+
+            $("#totalcost").val(totalCost);
+        }
+
         $("#order").kendoGrid({
             dataSource: dataSource,
+            selectable: "single",
             pageable: {
                 refresh: true
             },
             columns: [
-                { field: "Name", title: "产品" },
-                { field: "PriceOfUnit", title: "单价" },
+                { field: "Name", title: "产品", editor: productAutoCompleteEditor },
+                { field: "PriceOfUnit", title: "单价", editor: function (container, options) { $("#order").data("kendoGrid").closeCell(); } },
                 { field: "Quantity", title: "数量" },
+                { field: "TotalPrice", title: "总价", editor: function (container, options) { $("#order").data("kendoGrid").closeCell(); } },
                 { command: ["edit", "destroy"] }
             ],
-            editable: "popup",
+            editable: true,
+            save: function (data) {
+                if (data.values.Quantity) {
+                    data.model.set("TotalPrice", data.values.Quantity * data.model.PriceOfUnit);
+                }
+            },
             toolbar: ["create"]
         });
     };
@@ -103,7 +181,6 @@ function CustomerAutoComplete() {
         $("#orderOwner").kendoAutoComplete({
             dataTextField: "Name",
             filter: "contains",
-            minLength: 2,
             select: onSelect,
             dataSource: dataSource
         });

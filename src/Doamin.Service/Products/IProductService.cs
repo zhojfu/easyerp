@@ -12,6 +12,8 @@
 
         Product GetProductById(long productId);
 
+        IEnumerable<Product> GetAutoCompleteProducts(string name);
+
         IList<Product> GetProductsByIds(int[] productIds);
 
         void InsertProduct(Product product);
