@@ -8,6 +8,8 @@
         public PaymentConfiguration()
         {
             HasKey(p => p.Id);
+            HasOptional(i => i.Inventory).WithRequired();
+            HasOptional(i => i.Order).WithRequired();
         }
     }
 }

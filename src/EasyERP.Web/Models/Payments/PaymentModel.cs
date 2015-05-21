@@ -12,17 +12,15 @@
 
         public double Paid { get; set; }
 
-        public double PayAmount { get; set; }
-
         public DateTime DueDateTime { get; set; }
+    }
 
-        public IList<PayItemModel> PayItems { get; set; }
+    public class PayItemModel
+    {
+        public int Id { get; set; }
 
-        public class PayItemModel
-        {
-            public DateTime PayDate { get; set; }
+        //public DateTime PayDate { get; set; }
 
-            public double PayAmount { get; set; }
-        }
+        public double PayAmount { get; set; }
     }
 }

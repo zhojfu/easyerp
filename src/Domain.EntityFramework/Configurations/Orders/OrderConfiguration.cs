@@ -9,8 +9,8 @@
         {
             HasKey(o => o.Id);
             Property(o => o.ApproveTime).HasColumnType("datetime2");
+            Property(o => o.PaymentId).IsRequired();
             HasRequired(o => o.Customer).WithMany().HasForeignKey(o => o.CustomerId).WillCascadeOnDelete();
-            HasRequired(o => o.Payment).WithOptional(p => p.Order);
         }
     }
 }

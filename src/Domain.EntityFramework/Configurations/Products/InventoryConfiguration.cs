@@ -9,7 +9,6 @@
         {
             HasRequired(i => i.Product).WithMany().HasForeignKey(i => i.ProductId);
             Property(i => i.PaymentId).IsRequired();
-            HasRequired(i => i.Payment).WithOptional(p => p.Inventory);
         }
     }
 }

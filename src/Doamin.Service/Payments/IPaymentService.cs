@@ -6,6 +6,10 @@
     {
         Payment GetPaymentByInventoryId(int id);
 
+        Payment GetPaymentById(int id);
+
         Payment GetPaymentByOrderId(int id);
+
+        void UpdatePayment(Payment payment);
     }
 }

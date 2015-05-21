@@ -278,13 +278,14 @@
             if (inventories == null ||
                 !inventories.Any())
             {
-                return new JsonResult();
+                return Json(new DataSourceResult());
             }
 
             var inventoryDataSource = inventories.Select(
                 i => new
                 {
                     Id = i.Id,
+                    PaymentId = i.PaymentId,
                     ProductName = i.Product.Name,
                     Quantity = i.Quantity,
                     InventoryTime = i.InStockTime,
