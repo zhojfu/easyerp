@@ -7,6 +7,7 @@ $(document).ready(function() {
                 url: "employee/employeeList",
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
+                cache: false
             },
             schema: {
                 data: "data",
@@ -21,7 +22,7 @@ $(document).ready(function() {
             model: {
                 fields: {
                     Id: { editable: false, nullable: true },
-                    FullName: { type: "string" },
+                    Name: { type: "string" },
                     Sex: { type: "string" },
                     IdNumber: { type: "string" },
                     Address: { type: "string" },
@@ -42,7 +43,7 @@ $(document).ready(function() {
             refresh: true
         },
         columns: [
-            { field: "FullName", title: "姓名", template: "<a href=\"/Employee/Edit/${Id}\" target=\"_blank\">${FullName}</a>" },
+            { field: "Name", title: "姓名", template: "<a href=\"/Employee/Edit/${Id}\" target=\"_blank\">${Name}</a>" },
             { field: "Sex", title: "性别" },
             { field: "CellPhone", title: "手机号" },
             { field: "NativePlace", title: "籍贯" },
@@ -70,6 +71,7 @@ $(document).ready(function() {
             contentType: "application/json; charset=utf-8",
             success: function() {
                 $("#employeesList").data("kendoGrid").dataSource.read();
+                $("#employeesList").data("kendoGrid").refresh();
             }
         });
     });

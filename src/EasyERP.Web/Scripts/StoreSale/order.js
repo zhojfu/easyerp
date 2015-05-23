@@ -196,7 +196,7 @@ $(document).ready(function() {
 
         var order = new Object();
         order.customerId = $("#customerId").val();
-        order.orderTitle = $("#orderTitle").val();
+        order.title = $("#orderTitle").val();
         order.orderItems = new Array();
         var orderItems = $("#order").data("kendoGrid").dataSource.data();
 

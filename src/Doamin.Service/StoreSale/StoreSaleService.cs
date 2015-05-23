@@ -1,6 +1,7 @@
 ﻿namespace Doamin.Service.StoreSale
 {
     using System;
+    using System.Collections.Generic;
     using Domain.Model.Orders;
     using Infrastructure.Domain;
     using Infrastructure.Utility;
@@ -22,9 +23,18 @@
             return repository.FindAll(pageSize, pageNumber, e => true, m => m.CreatedOnUtc, SortOrder.Descending);
         }
 
-        public void DeleteOrderById(int id)
+        public void DeleteOrderByIds(IEnumerable<int> ids)
         {
-            throw new NotImplementedException();
+            foreach (var id in ids)
+            {
+                var e = repository.GetByKey(id);
+                if (e != null)
+                {
+                    repository.Remove(e);
+                }
+            }
+
+            unitOfWork.Commit();
         }
 
         public void UpdateOrder(Order order)
