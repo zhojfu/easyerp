@@ -40,11 +40,11 @@
         public abstract IQueryable<TAggregateRoot> FindAll(Expression<Func<TAggregateRoot, bool>> expression);
         public abstract bool Exist(TAggregateRoot aggregateRoot);
 
-        public abstract PagedResult<TAggregateRoot> FindAll(
+        public abstract PagedResult<TAggregateRoot> FindAll<TCol>(
             int pageSize,
             int pageNumber,
             Expression<Func<TAggregateRoot, bool>> selectExp,
-            Expression<Func<TAggregateRoot, dynamic>> orderExp,
+            Expression<Func<TAggregateRoot, TCol>> orderExp,
             SortOrder sortOrder);
 
         public abstract void PersistNewItem(IAggregateRoot item);

@@ -1,8 +1,8 @@
 ﻿namespace Domain.Model.Products
 {
+    using System;
     using Domain.Model.Payments;
     using Infrastructure.Domain.Model;
-    using System;
 
     public class Inventory : BaseEntity, IAggregateRoot
     {

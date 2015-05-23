@@ -1,0 +1,15 @@
+﻿@using System.Web.Optimization
+@section SectionTitle
+{
+    <div>
+        费用目录
+    </div>
+}
+
+<div id="consumptionList"></div>
+
+@section scripts
+{
+    @Scripts.Render("~/Scripts/timesheet.js")
+    @Scripts.Render("~/Scripts/Factory/consumption.js")
+}

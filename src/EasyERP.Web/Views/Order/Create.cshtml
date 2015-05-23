@@ -20,7 +20,8 @@
             <li>价格</li>
         </ul>
         <ul data-role="listview" data-bind="source: cart.contents" data-template="cart-item"></ul>
-        <p id="total-checkout"><em>total:</em><span data-bind="text: totalPrice"></span></p>
+        <p id="total-checkout">
+            <em>total:</em><span data-bind="text: totalPrice"></span></p>
         <a class="cancel-order" href="#" data-bind="click: emptyCart">cancel order</a>
         <button class="order-now" id="order-now" data-bind="click: proceed">购买</button>
     </div>
@@ -53,11 +54,11 @@
             contents: [],
             cleared: false,
 
-            contentsCount: function () {
+            contentsCount: function() {
                 return this.get("contents").length;
             },
 
-            add: function (item) {
+            add: function(item) {
                 var found = false;
 
                 this.set("cleared", false);
@@ -76,7 +77,7 @@
                 }
             },
 
-            remove: function (item) {
+            remove: function(item) {
                 for (var i = 0; i < this.contents.length; i++) {
                     var current = this.contents[i];
                     if (current === item) {
@@ -86,18 +87,18 @@
                 }
             },
 
-            empty: function () {
+            empty: function() {
                 var contents = this.get("contents");
                 contents.splice(0, contents.length);
             },
 
-            clear: function () {
+            clear: function() {
                 var contents = this.get("contents");
                 contents.splice(0, contents.length);
                 this.set("cleared", true);
             },
 
-            total: function () {
+            total: function() {
                 var price = 0,
                     contents = this.get("contents"),
                     length = contents.length,
@@ -115,39 +116,39 @@
             cart: cart,
             isVisible: false,
 
-            cartContentsClass: function () {
+            cartContentsClass: function() {
                 return this.cart.contentsCount() > 0 ? true : false;
             },
 
-            removeFromCart: function (e) {
+            removeFromCart: function(e) {
                 this.get("cart").remove(e.data);
                 if (this.cart.contents.length === 0) {
                     this.isVisible = false;
                 }
             },
 
-            emptyCart: function () {
+            emptyCart: function() {
                 cart.empty();
                 this.isVisible = false;
             },
 
-            itemPrice: function (cartItem) {
+            itemPrice: function(cartItem) {
                 return kendo.format("{0:c}", cartItem.item.price);
             },
 
-            totalPrice: function () {
+            totalPrice: function() {
                 var price = this.get("cart").total();
                 return kendo.format("{0:c}", price);
             },
 
-            prePayAmount: function () {
+            prePayAmount: function() {
                 var price = this.get("cart").total() * 0.3;
                 return kendo.format("{0:c}", price);
             },
 
-            proceed: function (e) {
+            proceed: function(e) {
                 var data = new Array();
-                this.cart.contents.forEach(function (item) {
+                this.cart.contents.forEach(function(item) {
                     data.push({ "ProductId": item.item.id, "Name": item.item.name, "Price": item.item.price, "Quantity": item.quantity });
                 });
 
@@ -155,7 +156,7 @@
             }
         });
 
-        $(document).ready(function () {
+        $(document).ready(function() {
             $("#product-list").kendoGrid({
                 dataSource: products,
                 pageable: {
@@ -207,7 +208,7 @@
     </li>
 </script>
 <script>
-    $("#order-now").click(function (e) {
+    $("#order-now").click(function(e) {
         e.preventDefault();
         var confirmWindow = $("#confirm-window").kendoWindow({
             title: "购买",
@@ -222,9 +223,9 @@
         kendo.bind(confirmWindow.element, cartPreviewModel);
         confirmWindow.open().center();
 
-        $("#buy-confirm").click(function () {
+        $("#buy-confirm").click(function() {
             var data = new Array();
-            cart.contents.forEach(function (item) {
+            cart.contents.forEach(function(item) {
                 data.push({ "ProductId": item.item.id, "Name": item.item.name, "Price": item.item.price, "Quantity": item.quantity });
             });
 
@@ -233,7 +234,7 @@
                 url: "/Order/OrderUpdate",
                 data: { "": data },
                 dataType: "json",
-                success: function (data) {
+                success: function(data) {
                     window.location.href = data;
                 }
             });

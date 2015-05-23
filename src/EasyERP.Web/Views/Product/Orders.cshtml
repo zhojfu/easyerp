@@ -23,31 +23,31 @@
         </div>
     </div>
     <script type="text/javascript">
-        $(document).ready(function () {
+        $(document).ready(function() {
             var tabstrip = $("#tabstrip").kendoTabStrip().data("kendoTabStrip");
             tabstrip.select(0);
 
             $("#grid").kendoGrid({
                 columns: [
-                  { field: "FirstName", title: "First Name" },
-                  { field: "LastName", title: "Last Name" }
+                    { field: "FirstName", title: "First Name" },
+                    { field: "LastName", title: "Last Name" }
                 ],
                 dataSource: {
                     data: [
-                      { FirstName: "Joe", LastName: "Smith" },
-                      { FirstName: "Jane", LastName: "Smith" }
+                        { FirstName: "Joe", LastName: "Smith" },
+                        { FirstName: "Jane", LastName: "Smith" }
                     ]
                 }
             });
             $("#tab2").kendoGrid({
                 columns: [
-                  { field: "FirstName", title: "Firstdf Name" },
-                  { field: "LastName", title: "Lastdf  Name" }
+                    { field: "FirstName", title: "Firstdf Name" },
+                    { field: "LastName", title: "Lastdf  Name" }
                 ],
                 dataSource: {
                     data: [
-                      { FirstName: "Joe", LastName: "Smith" },
-                      { FirstName: "Jane", LastName: "Smith" }
+                        { FirstName: "Joe", LastName: "Smith" },
+                        { FirstName: "Jane", LastName: "Smith" }
                     ]
                 }
             });

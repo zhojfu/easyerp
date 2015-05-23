@@ -1,7 +1,7 @@
 ﻿namespace Domain.Model.Products
 {
-    using Infrastructure.Domain.Model;
     using System.Collections.Generic;
+    using Infrastructure.Domain.Model;
 
     public class ProductAttributeMapping : BaseEntity
     {

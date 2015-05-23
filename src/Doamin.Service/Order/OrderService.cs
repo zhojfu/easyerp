@@ -1,20 +1,22 @@
 ﻿namespace Doamin.Service.Order
 {
-    using Domain.Model.Orders;
-    using EasyErp.Core;
-    using Infrastructure.Domain;
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Domain.Model.Orders;
+    using EasyErp.Core;
+    using Infrastructure.Domain;
 
     public class OrderService : IOrderService
     {
         private readonly IRepository<Order> orderRepository;
 
         private readonly IUnitOfWork unitOfWork;
+
         private readonly IWorkContext workContext;
 
-        public OrderService(IRepository<Order> orderRepository,
+        public OrderService(
+            IRepository<Order> orderRepository,
             IUnitOfWork unitOfWork,
             IWorkContext workContext
             )
@@ -30,7 +32,7 @@
             OrderStatus? os = null,
             PaymentStatus? ps = null,
             int pageIndex = 0,
-            int pageSize = Int32.MaxValue)
+            int pageSize = int.MaxValue)
         {
             int? orderStatusId = null;
             if (os.HasValue)
@@ -112,7 +114,7 @@
                 throw new ArgumentNullException("orderItems");
             }
 
-            var order = new Order()
+            var order = new Order
             {
                 OrderGuid = Guid.NewGuid(),
                 OrderStatus = OrderStatus.Pending,

@@ -1,8 +1,8 @@
 ﻿namespace Doamin.Service.Products
 {
+    using System.Collections.Generic;
     using Domain.Model.Products;
     using EasyErp.Core;
-    using System.Collections.Generic;
 
     public interface IProductService
     {
@@ -11,6 +11,8 @@
         void DeleteProduct(Product product);
 
         Product GetProductById(long productId);
+
+        IEnumerable<Product> GetAutoCompleteProducts(string name);
 
         IList<Product> GetProductsByIds(int[] productIds);
 

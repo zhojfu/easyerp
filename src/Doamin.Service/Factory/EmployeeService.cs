@@ -50,7 +50,7 @@
 
         public PagedResult<Employee> GetEmployees(int pageNumber, int pageSize)
         {
-            return repository.FindAll(pageSize, pageNumber, e => true, m => m.LastName, SortOrder.Ascending);
+            return repository.FindAll(pageSize, pageNumber, e => true, m => m.Name, SortOrder.Ascending);
         }
     }
 }

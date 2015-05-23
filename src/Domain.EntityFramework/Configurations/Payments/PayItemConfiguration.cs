@@ -1,7 +1,7 @@
 ﻿namespace Domain.EntityFramework.Configurations.Payments
 {
-    using Domain.Model.Payments;
     using System.Data.Entity.ModelConfiguration;
+    using Domain.Model.Payments;
 
     public class PayItemConfiguration : EntityTypeConfiguration<PayItem>
     {

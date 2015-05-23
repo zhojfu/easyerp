@@ -18,7 +18,7 @@ namespace Doamin.Service.Products
         public IPagedList<Manufacturer> GetAllManufacturers(
             string manufacturerName = "",
             int pageIndex = 0,
-            int pageSize = Int32.MaxValue,
+            int pageSize = int.MaxValue,
             bool showHidden = false)
         {
             throw new NotImplementedException();

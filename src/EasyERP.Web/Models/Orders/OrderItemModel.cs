@@ -1,7 +1,6 @@
 ﻿namespace EasyERP.Web.Models.Orders
 {
     using EasyERP.Web.Framework.Mvc;
-    using System;
 
     public class OrderItemModel : BaseEntityModel
     {

@@ -31,6 +31,7 @@
         private class ScriptReferenceMeta
         {
             public bool ExcludeFromBundle { get; set; }
+
             public string Part { get; set; }
         }
 
@@ -151,7 +152,7 @@
         public virtual string GenerateMetaDescription()
         {
             var metaDescription = string.Join(", ", metaDescriptionParts.AsEnumerable().Reverse().ToArray());
-            return !String.IsNullOrEmpty(metaDescription) ? metaDescription : string.Empty;
+            return !string.IsNullOrEmpty(metaDescription) ? metaDescription : string.Empty;
         }
 
         public virtual void AddMetaKeywordParts(string part)
@@ -177,7 +178,7 @@
         public virtual string GenerateMetaKeywords()
         {
             var metaKeyword = string.Join(", ", metaKeywordParts.AsEnumerable().Reverse().ToArray());
-            return !String.IsNullOrEmpty(metaKeyword) ? metaKeyword : string.Empty;
+            return !string.IsNullOrEmpty(metaKeyword) ? metaKeyword : string.Empty;
         }
 
         public virtual void AddScriptParts(ResourceLocation location, string part, bool excludeFromBundle)

@@ -1,5 +1,4 @@
-﻿@using EasyERP.Web.Framework.UI
-@model EasyERP.Web.Models.Products.ProductModel
+﻿@model EasyERP.Web.Models.Products.ProductModel
 
 @Html.HiddenFor(m => m.Id)
 <div class="form-group">
@@ -18,7 +17,7 @@
     @Html.LabelFor(model => model.ShortDescription):
     @Html.TextAreaFor(x => x.ShortDescription, new
     {
-        style = "Width: 250px; Height: 150px;"
+        style = "Height:150px;Width:250px;"
     })
     @Html.ValidationMessageFor(model => model.ShortDescription)
 </div>

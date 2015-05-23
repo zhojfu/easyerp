@@ -1,15 +1,15 @@
 ﻿namespace Domain.EntityFramework
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data.Entity;
+    using System.Linq;
     using Doamin.Service.Security;
     using Domain.Model.Company;
     using Domain.Model.Products;
     using Domain.Model.Stores;
     using Domain.Model.Users;
     using EasyErp.Core.Infrastructure;
-    using System;
-    using System.Collections.Generic;
-    using System.Data.Entity;
-    using System.Linq;
 
     public class DatabaseInitializer : DropCreateDatabaseIfModelChanges<EntityFrameworkDbContext>
     {
@@ -68,99 +68,100 @@
                 UpdatedOn = DateTime.Now
             };
 
-            var products = new List<Product>{
+            var products = new List<Product>
+            {
                 new Product
-            {
-                CategoryId = 1,
-                CreatedOnUtc = DateTime.Now,
-                UpdatedOnUtc = DateTime.Now,
-                FullDescription = "小米",
-                ShortDescription = "小米",
-                Name = "小米",
-                Price = 15,
-                ProductCost = 10,
-                ItemNo = "RI0001",
-                Gtin = "9019339641569"
-            },
-            new Product
-            {
-                CategoryId = 2,
-                CreatedOnUtc = DateTime.Now,
-                UpdatedOnUtc = DateTime.Now,
-                FullDescription = "菜油",
-                ShortDescription = "菜油",
-                Name = "菜油",
-                Price = 20,
-                ProductCost = 15,
-                ItemNo = "OL0002",
-                Gtin = "9019339641579"
-            },
-
-            new Product
-            {
-                CategoryId = 3,
-                CreatedOnUtc = DateTime.Now,
-                UpdatedOnUtc = DateTime.Now,
-                FullDescription = "老干妈",
-                ShortDescription = "老干妈",
-                Name = "老干妈",
-                Price = 20,
-                ItemNo = "OT0003",
-                ProductCost = 15,
-                Gtin = "9019339641580"
-            },
-            new Product
-            {
-                CategoryId = 1,
-                CreatedOnUtc = DateTime.Now,
-                UpdatedOnUtc = DateTime.Now,
-                FullDescription = "大米",
-                ShortDescription = "大米",
-                Name = "大米",
-                Price = 20,
-                ProductCost = 15,
-                ItemNo = "RI0004",
-                Gtin = "9019339641581"
-            },
-            new Product
-            {
-                CategoryId = 1,
-                CreatedOnUtc = DateTime.Now,
-                UpdatedOnUtc = DateTime.Now,
-                FullDescription = "大豆",
-                ShortDescription = "大豆",
-                Name = "大豆",
-                Price = 20,
-                ProductCost = 15,
-                ItemNo = "OT0005",
-                Gtin = "9019339641582"
-            },
-            new Product
-            {
-                CategoryId = 2,
-                CreatedOnUtc = DateTime.Now,
-                UpdatedOnUtc = DateTime.Now,
-                FullDescription = "豆油",
-                ShortDescription = "豆油",
-                Name = "豆油",
-                Price = 20,
-                ProductCost = 15,
-                ItemNo = "OT0006",
-                Gtin = "9019339641592"
-            },
-            new Product
-            {
-                CategoryId = 3,
-                CreatedOnUtc = DateTime.Now,
-                UpdatedOnUtc = DateTime.Now,
-                FullDescription = "辣椒酱",
-                ShortDescription = "辣椒酱",
-                Name = "辣椒酱",
-                Price = 20,
-                ItemNo = "OT0007",
-                ProductCost = 15,
-                Gtin = "9019339641502"
-            } };
+                {
+                    CategoryId = 1,
+                    CreatedOnUtc = DateTime.Now,
+                    UpdatedOnUtc = DateTime.Now,
+                    FullDescription = "小米",
+                    ShortDescription = "小米",
+                    Name = "小米",
+                    Price = 15,
+                    ProductCost = 10,
+                    ItemNo = "RI0001",
+                    Gtin = "9019339641569"
+                },
+                new Product
+                {
+                    CategoryId = 2,
+                    CreatedOnUtc = DateTime.Now,
+                    UpdatedOnUtc = DateTime.Now,
+                    FullDescription = "菜油",
+                    ShortDescription = "菜油",
+                    Name = "菜油",
+                    Price = 20,
+                    ProductCost = 15,
+                    ItemNo = "OL0002",
+                    Gtin = "9019339641579"
+                },
+                new Product
+                {
+                    CategoryId = 3,
+                    CreatedOnUtc = DateTime.Now,
+                    UpdatedOnUtc = DateTime.Now,
+                    FullDescription = "老干妈",
+                    ShortDescription = "老干妈",
+                    Name = "老干妈",
+                    Price = 20,
+                    ItemNo = "OT0003",
+                    ProductCost = 15,
+                    Gtin = "9019339641580"
+                },
+                new Product
+                {
+                    CategoryId = 1,
+                    CreatedOnUtc = DateTime.Now,
+                    UpdatedOnUtc = DateTime.Now,
+                    FullDescription = "大米",
+                    ShortDescription = "大米",
+                    Name = "大米",
+                    Price = 20,
+                    ProductCost = 15,
+                    ItemNo = "RI0004",
+                    Gtin = "9019339641581"
+                },
+                new Product
+                {
+                    CategoryId = 1,
+                    CreatedOnUtc = DateTime.Now,
+                    UpdatedOnUtc = DateTime.Now,
+                    FullDescription = "大豆",
+                    ShortDescription = "大豆",
+                    Name = "大豆",
+                    Price = 20,
+                    ProductCost = 15,
+                    ItemNo = "OT0005",
+                    Gtin = "9019339641582"
+                },
+                new Product
+                {
+                    CategoryId = 2,
+                    CreatedOnUtc = DateTime.Now,
+                    UpdatedOnUtc = DateTime.Now,
+                    FullDescription = "豆油",
+                    ShortDescription = "豆油",
+                    Name = "豆油",
+                    Price = 20,
+                    ProductCost = 15,
+                    ItemNo = "OT0006",
+                    Gtin = "9019339641592"
+                },
+                new Product
+                {
+                    CategoryId = 3,
+                    CreatedOnUtc = DateTime.Now,
+                    UpdatedOnUtc = DateTime.Now,
+                    FullDescription = "辣椒酱",
+                    ShortDescription = "辣椒酱",
+                    Name = "辣椒酱",
+                    Price = 20,
+                    ItemNo = "OT0007",
+                    ProductCost = 15,
+                    Gtin = "9019339641502"
+                }
+            };
 
             products.ForEach(
                 p =>

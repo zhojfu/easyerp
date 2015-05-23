@@ -1,10 +1,10 @@
 ﻿namespace Domain.Model.Users
 {
+    using System;
+    using System.Collections.Generic;
     using Domain.Model.Orders;
     using Domain.Model.Stores;
     using Infrastructure.Domain.Model;
-    using System;
-    using System.Collections.Generic;
 
     public class User : BaseEntity, IAggregateRoot
     {

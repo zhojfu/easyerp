@@ -5,7 +5,7 @@
         <div class="title">我的订单</div>
     </div>
     <div class="form-group">
-        <input id="order-status" value="1" />
+        <input id="order-status" value="1"/>
     </div>
     <script id="order-template" type="text/x-kendo-template">
         <div class="order-item">
@@ -36,22 +36,22 @@
     </div>
 
     <script>
-        $(document).ready(function () {
-        var orderStatus = [
+        $(document).ready(function() {
+            var orderStatus = [
                 { text: "全部订单", value: "1" },
                 { text: "未处理", value: "1" },
                 { text: "交易成功", value: "2" },
                 { text: "已发货", value: "3" },
                 { text: "交易结束", value: "4" },
                 { text: "交易取消", value: "5" }
-        ];
+            ];
 
             $("#order-status").kendoDropDownList({
                 dataTextField: "text",
                 dataValueField: "value",
                 dataSource: orderStatus,
                 index: 0,
-                change: function () {
+                change: function() {
                     orders.read();
                 }
             });
@@ -76,12 +76,13 @@
                         data: additionalData
                     }
                 },
-                schema: {                               // describe the result format
+                schema: {
+// describe the result format
                     data: "Data",
                     model: {
                         fields: {
                             createdTime: { type: "date" },
-                            orderStatus: function () { return "未处理"; }
+                            orderStatus: function() { return "未处理"; }
 
                         }
                     }

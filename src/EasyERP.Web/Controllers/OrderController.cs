@@ -1,5 +1,9 @@
 ﻿namespace EasyERP.Web.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Web.Mvc;
     using Doamin.Service.Order;
     using Doamin.Service.Products;
     using Doamin.Service.Security;
@@ -9,10 +13,6 @@
     using EasyErp.Core;
     using EasyERP.Web.Framework.Kendoui;
     using EasyERP.Web.Models.Orders;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Web.Mvc;
 
     public class OrderController : BaseAdminController
     {
@@ -49,7 +49,7 @@
         public ActionResult ProductSearchAutoComplete(string term)
         {
             const int SearchTermMinimumLength = 3;
-            if (String.IsNullOrWhiteSpace(term) ||
+            if (string.IsNullOrWhiteSpace(term) ||
                 term.Length < SearchTermMinimumLength)
             {
                 return Content("");
@@ -223,7 +223,7 @@
                 Data = orders.Select(
                     x =>
                     {
-                        var store = storeService.GetStoreById(x.CustomerId);
+                        var store = storeService.GetStoreById(x.StoreId.GetValueOrDefault());
                         return new OrderModel
                         {
                             Id = x.Id,

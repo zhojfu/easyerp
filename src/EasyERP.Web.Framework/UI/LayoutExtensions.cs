@@ -1,7 +1,7 @@
 ﻿namespace EasyERP.Web.Framework.UI
 {
-    using EasyErp.Core.Infrastructure;
     using System.Web.Mvc;
+    using EasyErp.Core.Infrastructure;
 
     public static class LayoutExtensions
     {

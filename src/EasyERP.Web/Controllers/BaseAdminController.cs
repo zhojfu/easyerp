@@ -1,9 +1,9 @@
 ﻿namespace EasyERP.Web.Controllers
 {
-    using EasyERP.Web.Framework.Controllers;
-    using EasyERP.Web.Framework.Security;
     using System.Web.Mvc;
     using System.Web.Routing;
+    using EasyERP.Web.Framework.Controllers;
+    using EasyERP.Web.Framework.Security;
 
     [HttpsRequirement(SslRequirement.Yes)]
     [AdminAuthorize]

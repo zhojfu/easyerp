@@ -1,6 +1,5 @@
 ﻿@using EasyErp.Core.Configuration.Settings
 @using EasyErp.Core.Infrastructure
-@using EasyERP.Web.Framework
 @model EasyERP.Web.Models.Products.PriceListModel
 @section SectionTitle
 {
@@ -14,7 +13,10 @@
 @Html.AntiForgeryToken()
 @using (Html.BeginForm())
 {
-    @Html.HiddenFor(m => m.ProductId, new { id = "product-id" })
+    @Html.HiddenFor(m => m.ProductId, new
+    {
+        id = "product-id"
+    })
     <div class="section-header">
         <div class="title">
             <label>价格管理</label>
@@ -43,14 +45,14 @@
                         },
                         schema: {
                             model: {
-                                id:"ProductId",
-                                fields:{
-                                    StoreId :{editable:false, nullable:false},
-                                    ProductId :{editable:false, nullable:false},
-                                    StoreName: {editable:false, nullable:true},
-                                    ProductName: {editable:false, nullable:true},
-                                    Cost: {type:"number", validation:{min:0, required:true}},
-                                    Price:{type:"number", validation:{min:0, required:true}}
+                                id: "ProductId",
+                                fields: {
+                                    StoreId: { editable: false, nullable: false },
+                                    ProductId: { editable: false, nullable: false },
+                                    StoreName: { editable: false, nullable: true },
+                                    ProductName: { editable: false, nullable: true },
+                                    Cost: { type: "number", validation: { min: 0, required: true } },
+                                    Price: { type: "number", validation: { min: 0, required: true } }
                                 }
                             },
                             data: "Data",
@@ -71,15 +73,16 @@
                     pageable: {
                         refresh: true,
                         pageSizes: [@(gridPageSizes)]
-                    }, 
+                    },
                     editable: true,
                     toolbar: ["create", "save"],
                     columns: [
-                        { field: "StoreName", title: "店名", width:50},
-                        { field: "ProductName", title: "产品名", width:50},
+                        { field: "StoreName", title: "店名", width: 50 },
+                        { field: "ProductName", title: "产品名", width: 50 },
                         { field: "Cost", title: "购进价格", width: 100 },
                         { field: "Price", title: "售价", width: 100 },
-                        { command: "edit", title: "&nbsp;", width: "250px" }]
+                        { command: "edit", title: "&nbsp;", width: "250px" }
+                    ]
                 });
             });
         </script>

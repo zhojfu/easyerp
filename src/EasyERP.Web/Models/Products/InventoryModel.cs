@@ -1,11 +1,10 @@
 ﻿namespace EasyERP.Web.Models.Products
 {
-    using Domain.Model.Payments;
-    using EasyERP.Web.Framework.Mvc;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Web.Mvc;
+    using EasyERP.Web.Framework.Mvc;
 
     public class InventoryModel : BaseEntityModel
     {
@@ -39,6 +38,5 @@
 
         [DisplayName("说明：")]
         public string Note { get; set; }
-
     }
 }

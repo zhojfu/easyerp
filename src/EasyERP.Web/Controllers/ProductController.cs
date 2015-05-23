@@ -1,6 +1,9 @@
 ﻿namespace EasyERP.Web.Controllers
 {
-    using Antlr.Runtime;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Web.Mvc;
     using Doamin.Service.ExportImport;
     using Doamin.Service.Helpers;
     using Doamin.Service.Products;
@@ -13,12 +16,6 @@
     using EasyERP.Web.Framework.Mvc;
     using EasyERP.Web.Models.Products;
     using Infrastructure;
-    using Newtonsoft.Json;
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-    using System.Web.Mvc;
 
     public class ProductController : BaseAdminController
     {
@@ -26,16 +23,17 @@
 
         private readonly IDateTimeHelper dateTimeHelper;
 
+        private readonly IExportManager exportManager;
+
         private readonly IInventoryService inventoryService;
 
         private readonly IPermissionService permissionService;
 
+        private readonly IProductPriceService productPriceService;
+
         private readonly IProductService productService;
 
         private readonly IStoreService storeService;
-
-        private readonly IProductPriceService productPriceService;
-        private readonly IExportManager exportManager;
 
         public ProductController(
             IPermissionService permissionService,
@@ -246,11 +244,12 @@
 
                 if (model.Paid > 0)
                 {
-                    payment.Items.Add(new PayItem()
-                    {
-                        Paid = model.Paid,
-                        PayDataTime = DateTime.Now
-                    });
+                    payment.Items.Add(
+                        new PayItem
+                        {
+                            Paid = model.Paid,
+                            PayDataTime = DateTime.Now
+                        });
                 }
                 inventory.Payment = payment;
 
@@ -284,10 +283,10 @@
             var inventoryDataSource = inventories.Select(
                 i => new
                 {
-                    Id = i.Id,
-                    PaymentId = i.PaymentId,
+                    i.Id,
+                    i.PaymentId,
                     ProductName = i.Product.Name,
-                    Quantity = i.Quantity,
+                    i.Quantity,
                     InventoryTime = i.InStockTime,
                     Payment = new
                     {
@@ -297,7 +296,7 @@
                             p => new
                             {
                                 PayDate = p.PayDataTime,
-                                Paid = p.Paid
+                                p.Paid
                             })
                     },
                     UnPaid = i.Payment.TotalAmount - i.Payment.Items.Sum(iii => iii.Paid),
@@ -325,7 +324,7 @@
                 return AccessDeniedView();
             }
 
-            var categories = this.categoryService.GetAllCategories();
+            var categories = categoryService.GetAllCategories();
 
             if (categories == null ||
                 !categories.Any())
@@ -333,11 +332,12 @@
                 return new JsonResult();
             }
 
-            var data = categories.Select(i => new
-            {
-                Id = i.Id,
-                Name = i.Name
-            });
+            var data = categories.Select(
+                i => new
+                {
+                    i.Id,
+                    i.Name
+                });
 
             return Json(data);
         }
@@ -531,7 +531,7 @@
 
         public ActionResult Price(int id)
         {
-            var model = new PriceListModel()
+            var model = new PriceListModel
             {
                 ProductId = id
             };
@@ -556,23 +556,23 @@
                 return new JsonResult();
             }
 
-            var gridModel = new DataSourceResult()
+            var gridModel = new DataSourceResult
             {
                 Data = stores.Select(
-                x =>
-                {
-                    var priceModel = new PriceModel()
+                    x =>
                     {
-                        StoreName = x.Name,
-                        ProductId = product.Id,
-                        ProductName = product.Name,
-                        Cost = product.ProductCost,
-                        Price = product.Price,
-                        StoreId = x.Id
-                    };
+                        var priceModel = new PriceModel
+                        {
+                            StoreName = x.Name,
+                            ProductId = product.Id,
+                            ProductName = product.Name,
+                            Cost = product.ProductCost,
+                            Price = product.Price,
+                            StoreId = x.Id
+                        };
 
-                    return priceModel;
-                }),
+                        return priceModel;
+                    }),
                 Total = stores.Count
             };
 
@@ -581,7 +581,7 @@
 
         [HttpPost]
         public ActionResult PriceUpdate(
-             DataSourceRequest request,
+            DataSourceRequest request,
             [Bind(Prefix = "models")] IEnumerable<PriceModel> priceModels)
         {
             if (priceModels != null &&
@@ -612,7 +612,9 @@
         public ActionResult ExportProducts()
         {
             if (!permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            {
                 return AccessDeniedView();
+            }
 
             var products = productService.GetAllProducts();
 

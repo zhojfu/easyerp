@@ -1,9 +1,9 @@
 ﻿namespace EasyERP.Web.Models.Products
 {
-    using EasyERP.Web.Framework.Mvc;
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Web.Mvc;
+    using EasyERP.Web.Framework.Mvc;
 
     public class ProductListModel : BaseModel
     {

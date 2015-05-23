@@ -37,10 +37,9 @@ $(document).ready(function() {
 
     $("#employeesList").kendoGrid({
         dataSource: dataSource,
-        height: 400,
         selectable: "multiple",
         pageable: {
-            refresh: true,
+            refresh: true
         },
         columns: [
             { field: "FullName", title: "姓名", template: "<a href=\"/Employee/Edit/${Id}\" target=\"_blank\">${FullName}</a>" },
@@ -75,4 +74,7 @@ $(document).ready(function() {
         });
     });
 
+
+    var timesheet = new Timesheet("/Employee/GetTimeSheetByDate", "/Employee/UpdateTimesheet");
+    timesheet.InitialTimesheetGrid();
 });

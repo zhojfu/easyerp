@@ -10,6 +10,7 @@
         }
 
         public string UserRoleSystemName { get; set; }
+
         public IEnumerable<PermissionRecord> PermissionRecords { get; set; }
     }
 }

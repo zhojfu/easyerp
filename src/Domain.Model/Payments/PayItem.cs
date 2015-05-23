@@ -1,10 +1,7 @@
 ﻿namespace Domain.Model.Payments
 {
-    using Domain.Model.Orders;
-    using Domain.Model.Products;
-    using Infrastructure.Domain.Model;
     using System;
-    using System.Collections.Generic;
+    using Infrastructure.Domain.Model;
 
     public class PayItem : BaseEntity, IAggregateRoot
     {

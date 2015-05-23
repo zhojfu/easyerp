@@ -1,8 +1,8 @@
 ﻿namespace EasyERP.Web
 {
-    using EasyERP.Web.Framework.Mvc.Routes;
     using System.Web.Mvc;
     using System.Web.Routing;
+    using EasyERP.Web.Framework.Mvc.Routes;
 
     public class RouteProvider : IRouteProvider
     {
@@ -31,8 +31,15 @@
             routes.MapRoute(
                 "Order",
                 "Order/Review/{orderGuid}",
-                new { controller = "Order", action = "Review" },
-                new { orderGuid = new GuidConstraint(false) },
+                new
+                {
+                    controller = "Order",
+                    action = "Review"
+                },
+                new
+                {
+                    orderGuid = new GuidConstraint(false)
+                },
                 new[] { "EasyERP.Web.Controllers" });
         }
 

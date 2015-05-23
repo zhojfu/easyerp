@@ -20,19 +20,29 @@
         </div>
     }
     <div>
-        <p><em>付款总额:</em><label>@Model.TotalAmount</label></p>
+        <p>
+            <em>付款总额:</em><label>@Model.TotalAmount</label>
+        </p>
     </div>
     <div>
-        <p><em>已付款:</em><label>@Model.Paid</label></p>
+        <p>
+            <em>已付款:</em><label>@Model.Paid</label>
+        </p>
     </div>
     <div>
-        <p><em>应付款:</em><label>@(Model.TotalAmount - Model.Paid)</label></p>
+        <p>
+            <em>应付款:</em><label>@(Model.TotalAmount - Model.Paid)</label>
+        </p>
     </div>
     <div>
-        <p><em>截至日期:</em><label>@Model.DueDateTime</label></p>
+        <p>
+            <em>截至日期:</em><label>@Model.DueDateTime</label>
+        </p>
     </div>
     <div>
-        <p><em>付款信息:</em></p>
+        <p>
+            <em>付款信息:</em>
+        </p>
     </div>
     <div id="payitems"></div>
     <div id="pay-window"></div>
@@ -56,6 +66,7 @@
     </script>
     <script>
         var payinfo = @(Html.ToJson(Model));
+
         function additionalData() {
             var data = {
                 model: payinfo
@@ -63,13 +74,14 @@
             addAntiForgeryToken(data);
             return data;
         }
+
         var payItemsSource = new kendo.data.DataSource({
             transport: {
                 read: {
                     url: "/Payment/PayInfo",
                     type: "POST",
-                    dataType:"Json",
-                    data:additionalData
+                    dataType: "Json",
+                    data: additionalData
                 }
             },
             schema: {
@@ -93,7 +105,7 @@
         function getCurrentDateTime() {
             var currentdate = new Date();
             var datetime = currentdate.getDate() + "/"
-                + (currentdate.getMonth()+1)  + "/"
+                + (currentdate.getMonth() + 1) + "/"
                 + currentdate.getFullYear() + " T "
                 + currentdate.getHours() + ":"
                 + currentdate.getMinutes() + ":"
@@ -102,15 +114,13 @@
         }
 
         $(document).ready(function() {
-            if (payinfo.paid === payinfo.totalAmount){
+            if (payinfo.paid === payinfo.totalAmount) {
                 $("#toolbar").hide();
             }
         });
     </script>
     <style>
-        .toolbar {
-            float: right;
-        }
+        .toolbar { float: right; }
     </style>
 }
 @using (Html.BeginForm("Pay", "Payment", FormMethod.Post, new
@@ -119,41 +129,41 @@
 }))
 {
     @Html.AntiForgeryToken()
-    <input type="hidden" id="payAmount" name="PayAmount" value="" />
-    <input type="hidden" id="payId" name="Id" value="" />
+    <input type="hidden" id="payAmount" name="PayAmount" value=""/>
+    <input type="hidden" id="payId" name="Id" value=""/>
 }
 <script>
     $("#pay-button").click(function() {
         var payWindow = $("#pay-window").kendoWindow({
             title: "付款",
-            width:400,
-            height:300,
+            width: 400,
+            height: 300,
             resizeable: false,
-            actions:["Close"],
+            actions: ["Close"],
             modal: true,
             viewable: false,
             visible: false,
-            content:{template:$("#pay-window-template").html()}
+            content: { template: $("#pay-window-template").html() }
         }).data("kendoWindow");
         payWindow.open().center();
         $("#currentDateTime").text(getCurrentDateTime());
-        $("#pay-amount").attr({ 
-            "max" : payinfo.totalAmount-payinfo.paid,
-            "min" : 1        
+        $("#pay-amount").attr({
+            "max": payinfo.totalAmount - payinfo.paid,
+            "min": 1
         });
 
         $("#okayButton").click(function(e) {
             e.preventDefault();
             var payAmount = $("#pay-amount").val();
             if (!payAmount) {
-                  $('<span class="text-danger">请输入付款金额</span>').
-                        insertAfter('#pay-amount');
+                $('<span class="text-danger">请输入付款金额</span>').
+                    insertAfter('#pay-amount');
                 return;
             }
-            
-            if (payAmount < 0 || payAmount > payinfo.totalAmount-payinfo.paid) {
-                  $('<span class="text-danger">数额不正确</span>').
-                        insertAfter('#pay-amount');
+
+            if (payAmount < 0 || payAmount > payinfo.totalAmount - payinfo.paid) {
+                $('<span class="text-danger">数额不正确</span>').
+                    insertAfter('#pay-amount');
                 return;
             }
             var payId = payinfo.id;
@@ -163,7 +173,7 @@
             payWindow.close();
 
         });
-        $("#cancelButton").click( function (e) {
+        $("#cancelButton").click(function(e) {
             payWindow.close();
         });
 

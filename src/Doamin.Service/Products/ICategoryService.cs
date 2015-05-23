@@ -1,6 +1,5 @@
 ﻿namespace Doamin.Service.Products
 {
-    using System.Collections;
     using Domain.Model.Products;
     using EasyErp.Core;
 
@@ -14,9 +13,7 @@
             int pageSize = int.MaxValue);
 
         Category GetCategoryById(int categoryId);
-
         void InsertCategory(Category category);
-
         void UpdateCategory(Category category);
     }
 }

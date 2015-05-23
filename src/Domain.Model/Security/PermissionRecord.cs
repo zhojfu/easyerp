@@ -1,8 +1,8 @@
 ﻿namespace Domain.Model.Security
 {
+    using System.Collections.Generic;
     using Domain.Model.Users;
     using Infrastructure.Domain.Model;
-    using System.Collections.Generic;
 
     public class PermissionRecord : BaseEntity, IAggregateRoot
     {

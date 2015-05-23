@@ -16,7 +16,7 @@
     </div>
     <div class="form-group">
         <label>订单状态:</label>
-        <input id="order-status" />
+        <input id="order-status"/>
     </div>
     <div class="details">
         <div id="product-list">
@@ -27,8 +27,8 @@
         <label>总金额:</label>
         @Html.DisplayTextFor(model => model.OrderTotal)
     </div>
-    <input type="submit" name="save" class="k-button" value="保存" />
-    <input type="submit" name="cancel" class="k-button" value="取消" />
+    <input type="submit" name="save" class="k-button" value="保存"/>
+    <input type="submit" name="cancel" class="k-button" value="取消"/>
     @*<div id="order-items" data-bind="source: orderItems" data-template="order-item-template"></div>*@
     <script id="order-item-template" type="text/x-kendo-template">
         <div>
@@ -43,11 +43,11 @@
 
     <script type="text/javascript">
         var orderStatus = [
-                { text: "未处理", value: "1" },
-                { text: "交易成功", value: "2" },
-                { text: "已发货", value: "3" },
-                { text: "交易结束", value: "4" },
-                { text: "交易取消", value: "5" }
+            { text: "未处理", value: "1" },
+            { text: "交易成功", value: "2" },
+            { text: "已发货", value: "3" },
+            { text: "交易结束", value: "4" },
+            { text: "交易取消", value: "5" }
         ];
         $("#order-status").kendoDropDownList({
             dataTextField: "text",
@@ -59,12 +59,12 @@
 
         var s = @(Html.ToJson(Model));
         $("#product-list").kendoGrid({
-            dataSource: s.items, 
+            dataSource: s.items,
             columns: [
-                    { field: "productName", title: "产品名", width: 100 },
-                    { field: "quantity", title: "数量", width: 100 },
-                    { field: "price", title: "价格", width: 100 }
-                ]
+                { field: "productName", title: "产品名", width: 100 },
+                { field: "quantity", title: "数量", width: 100 },
+                { field: "price", title: "价格", width: 100 }
+            ]
         });
     </script>
 }

@@ -1,21 +1,24 @@
 ﻿namespace Doamin.Service.Payments
 {
+    using System;
+    using System.Linq;
     using Domain.Model.Payments;
     using Domain.Model.Products;
     using Infrastructure;
     using Infrastructure.Domain;
-    using System;
-    using System.Linq;
-    using System.Runtime.Remoting.Messaging;
 
     public class PaymentService : IPaymentService
     {
-        private readonly IRepository<Payment> paymentRepository;
         private readonly IRepository<Inventory> inventoryRepository;
+
+        private readonly IRepository<Payment> paymentRepository;
 
         private readonly IUnitOfWork unitOfWork;
 
-        public PaymentService(IRepository<Payment> paymentRepository, IRepository<Inventory> inventoryRepository, IUnitOfWork unitOfWork)
+        public PaymentService(
+            IRepository<Payment> paymentRepository,
+            IRepository<Inventory> inventoryRepository,
+            IUnitOfWork unitOfWork)
         {
             this.paymentRepository = paymentRepository;
             this.inventoryRepository = inventoryRepository;

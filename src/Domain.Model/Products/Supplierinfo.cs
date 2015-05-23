@@ -1,9 +1,8 @@
 ﻿namespace Domain.Model.Products
 {
+    using System.ComponentModel;
     using Domain.Model.Company;
     using Infrastructure.Domain.Model;
-    using System.Collections.Generic;
-    using System.ComponentModel;
 
     public class Supplierinfo : BaseEntity
     {

@@ -1,17 +1,16 @@
 ﻿namespace Doamin.Service.Products
 {
-    using Domain.Model.Products;
-    using EasyErp.Core;
-    using Infrastructure.Domain;
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Domain.Model.Products;
+    using Infrastructure.Domain;
 
     public class ProductPriceService : IProductPriceService
     {
-        private IRepository<ProductPrice> priceRepository;
+        private readonly IRepository<ProductPrice> priceRepository;
 
-        private IUnitOfWork unitOfWork;
+        private readonly IUnitOfWork unitOfWork;
 
         public ProductPriceService(IRepository<ProductPrice> priceRepository, IUnitOfWork unitOfWork)
         {
@@ -32,7 +31,9 @@
 
         public IList<ProductPrice> GetProductPricesByIdProduct(int productId)
         {
-            return productId < 0 ? new List<ProductPrice>() : priceRepository.FindAll(i => i.ProductId == productId).ToList();
+            return productId < 0
+                       ? new List<ProductPrice>()
+                       : priceRepository.FindAll(i => i.ProductId == productId).ToList();
         }
 
         public void InsertPrice(ProductPrice price)

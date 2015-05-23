@@ -1,8 +1,8 @@
 ﻿namespace Domain.Model.Orders
 {
+    using System;
     using Domain.Model.Products;
     using Infrastructure.Domain.Model;
-    using System;
 
     public class OrderItem : BaseEntity, IAggregateRoot
     {

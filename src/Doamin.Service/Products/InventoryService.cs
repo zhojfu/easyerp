@@ -1,11 +1,10 @@
 ﻿namespace Doamin.Service.Products
 {
+    using System.Collections.Generic;
+    using System.Linq;
     using Domain.Model.Payments;
     using Domain.Model.Products;
     using Infrastructure.Domain;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
 
     public class InventoryService : IInventoryService
     {
@@ -27,7 +26,9 @@
 
         public IList<Inventory> GetAllInventoriesForProduct(int productId)
         {
-            return productId <= 0 ? new List<Inventory>() : inventoryRepository.FindAll(i => i.ProductId == productId).ToList();
+            return productId <= 0
+                       ? new List<Inventory>()
+                       : inventoryRepository.FindAll(i => i.ProductId == productId).ToList();
         }
 
         public void InsertInventory(Inventory inventory, Payment payment)

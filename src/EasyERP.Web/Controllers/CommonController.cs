@@ -1,11 +1,11 @@
 ﻿namespace EasyERP.Web.Controllers
 {
-    using EasyErp.Core;
-    using EasyERP.Web.Models.Common;
     using System;
     using System.Collections.Generic;
     using System.Text;
     using System.Web.Mvc;
+    using EasyErp.Core;
+    using EasyERP.Web.Models.Common;
 
     public class CommonController : BasePublicController
     {

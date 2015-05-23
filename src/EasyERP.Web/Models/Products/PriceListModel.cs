@@ -1,11 +1,10 @@
 ﻿namespace EasyERP.Web.Models.Products
 {
+    using System.Collections.Generic;
+    using System.Web.Mvc;
     using Domain.Model.Products;
     using Domain.Model.Stores;
     using EasyERP.Web.Framework.Mvc;
-    using System;
-    using System.Collections.Generic;
-    using System.Web.Mvc;
 
     public class PriceListModel : BaseModel
     {

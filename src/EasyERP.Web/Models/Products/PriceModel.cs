@@ -1,9 +1,6 @@
 ﻿namespace EasyERP.Web.Models.Products
 {
-    using Domain.Model.Products;
-    using Domain.Model.Stores;
     using EasyERP.Web.Framework.Mvc;
-    using System;
 
     public class PriceModel : BaseModel
     {

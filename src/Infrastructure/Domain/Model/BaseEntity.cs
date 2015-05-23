@@ -2,6 +2,9 @@
 {
     public abstract class BaseEntity : IEntity
     {
+        //public virtual string DisplayName { get; set; }
+        public virtual string Name { get; set; }
+
         public virtual int Id { get; set; }
 
         #region Equality

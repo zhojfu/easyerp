@@ -1,0 +1,19 @@
+﻿namespace Doamin.Service.StoreSale
+{
+    using Domain.Model.Orders;
+    using Infrastructure.Utility;
+
+    public interface IStoreSaleService
+    {
+        /*Customer GetCustomerById(int id);
+        void AddCustomer(Customer customer);
+
+        void DeleteCustomerByIds(List<int> ids);
+        void UpdateCustomer(Customer customer);*/
+
+        void DeleteOrderById(int id);
+        void UpdateOrder(Order order);
+        void AddOrder(Order order);
+        PagedResult<Order> GetOrders(int pageNumber, int pageSize);
+    }
+}

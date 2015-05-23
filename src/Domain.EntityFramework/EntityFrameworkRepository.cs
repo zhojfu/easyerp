@@ -27,7 +27,7 @@
 
         public override IQueryable<TAggregateRoot> FindAll(Expression<Func<TAggregateRoot, bool>> expression)
         {
-            return GenerateSelectLinq(expression, null);
+            return GenerateSelectLinq<object>(expression, null);
         }
 
         public override bool Exist(TAggregateRoot aggregateRoot)
@@ -42,7 +42,19 @@
 
         public override void PersistUpdateItem(IAggregateRoot entity)
         {
-            ((DbContext)dbContext).Entry((TAggregateRoot)entity).State = EntityState.Modified;
+            var origion = GetByKey(entity.Id);
+
+            var properties = typeof(TAggregateRoot).GetProperties();
+
+            foreach (var property in properties)
+            {
+                if (property.GetValue(origion) != property.GetValue(entity))
+                {
+                    property.SetValue(origion, property.GetValue(entity));
+                }
+            }
+
+            ((DbContext)dbContext).Entry(origion).State = EntityState.Modified;
         }
 
         public override void PersistRemoveItem(IAggregateRoot entity)
@@ -50,11 +62,11 @@
             dbContext.Set<TAggregateRoot>().Remove((TAggregateRoot)entity);
         }
 
-        public override PagedResult<TAggregateRoot> FindAll(
+        public override PagedResult<TAggregateRoot> FindAll<TField>(
             int pageSize,
             int pageNumber,
             Expression<Func<TAggregateRoot, bool>> selectExp,
-            Expression<Func<TAggregateRoot, dynamic>> orderExp,
+            Expression<Func<TAggregateRoot, TField>> orderExp,
             SortOrder sortOrder)
         {
             if (pageNumber <= 0 ||
@@ -86,9 +98,9 @@
             return null;
         }
 
-        private IQueryable<TAggregateRoot> GenerateSelectLinq(
+        private IQueryable<TAggregateRoot> GenerateSelectLinq<TCol>(
             Expression<Func<TAggregateRoot, bool>> selectExp,
-            Expression<Func<TAggregateRoot, dynamic>> orderExp,
+            Expression<Func<TAggregateRoot, TCol>> orderExp,
             SortOrder sortOrder = SortOrder.Unspecified)
         {
             var query = dbContext.Set<TAggregateRoot>().Where(selectExp);

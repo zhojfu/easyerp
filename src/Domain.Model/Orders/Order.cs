@@ -1,11 +1,11 @@
 ﻿namespace Domain.Model.Orders
 {
+    using System;
+    using System.Collections.Generic;
+    using Domain.Model.Customer;
     using Domain.Model.Payments;
     using Domain.Model.Stores;
     using Infrastructure.Domain.Model;
-    using System;
-    using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations.Schema;
 
     public class Order : BaseEntity, IAggregateRoot
     {
@@ -18,7 +18,9 @@
 
         public Guid OrderGuid { get; set; }
 
-        public int CustomerId { get; set; }
+        public int? CustomerId { get; set; }
+
+        public int? StoreId { get; set; }
 
         public int OrderStatusId { get; set; }
 
@@ -36,7 +38,9 @@
 
         #region Navigation properties
 
-        public virtual Store Customer { get; set; }
+        public virtual Store Store { get; set; }
+
+        public virtual Customer Customer { get; set; }
 
         public virtual ICollection<OrderItem> OrderItems { get; set; }
 

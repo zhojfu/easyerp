@@ -1,19 +1,28 @@
 ﻿namespace EasyERP.Web.Controllers
 {
+    using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Web.Mvc;
     using AutoMapper;
     using Doamin.Service.Factory;
     using Domain.Model;
-    using EasyERP.Web.Models;
+    using Domain.Model.Factory;
+    using EasyERP.Web.Models.Employee;
+    using Infrastructure;
 
     public class EmployeeController : Controller
     {
         private readonly IEmployeeService employeeService;
 
-        public EmployeeController(IEmployeeService employeeService)
+        private readonly ITimesheetService<WorkTimeStatistic> timesheetService;
+
+        public EmployeeController(
+            IEmployeeService employeeService,
+            ITimesheetService<WorkTimeStatistic> timesheetService)
         {
             this.employeeService = employeeService;
+            this.timesheetService = timesheetService;
         }
 
         // GET: /Employee/
@@ -23,6 +32,11 @@
         }
 
         public ActionResult Create()
+        {
+            return View();
+        }
+
+        public ActionResult Timesheet()
         {
             return View();
         }
@@ -71,13 +85,8 @@
             return Json(null);
         }
 
-        //[Route("Employee/EmployeeList/{skip:int}/{take:int}/{page:int}/{pageSize:int}")]
-        //[HttpPost]
         public JsonResult EmployeeList(int skip, int take, int page, int pageSize)
         {
-            //const int pageSize = 10;
-            //int page = 1;
-            //Request["page"];
             var employees = employeeService.GetEmployees(page, pageSize);
             if (employees != null)
             {
@@ -87,7 +96,6 @@
                 {
                     var model = Mapper.Map<Employee, EmployeeListModel>(employee);
                     model.Sex = employee.Male ? "男" : "女";
-                    model.FullName = employee.LastName + employee.FirstName;
                     employeesList.Add(model);
                 }
 
@@ -100,6 +108,45 @@
                     JsonRequestBehavior.AllowGet);
             }
             return Json(null);
+        }
+
+        public JsonResult GetTimeSheetByDate(string date, int page, int pageSize)
+        {
+            DateTime selectedDate;
+
+            if (!DateTime.TryParse(date, out selectedDate))
+            {
+                return null;
+            }
+
+            var timesheet = timesheetService.GetTimesheetByDate(page, pageSize, selectedDate);
+
+            var result =
+                timesheet.IfNotNull(
+                    t =>
+                    Enumerable.Where(t.Select(Mapper.Map<Timesheet, TimesheetModel>), model => model != null).ToList());
+
+            return Json(
+                new
+                {
+                    data = result,
+                    total = result.Count
+                },
+                JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult UpdateTimesheet(TimesheetModel model)
+        {
+            DateTime selectedDate;
+
+            if (!DateTime.TryParse(model.DateOfWeek, out selectedDate))
+            {
+                return null;
+            }
+            var timesheet = Mapper.Map<TimesheetModel, Timesheet>(model);
+            timesheetService.UpdateTimesheet(selectedDate, timesheet);
+            return Json(model);
         }
     }
 }

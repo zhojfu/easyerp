@@ -53,6 +53,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configurations\Customer\CustomerConfiguration.cs" />
     <Compile Include="Configurations\Payments\PaymentConfiguration.cs" />
     <Compile Include="Configurations\Payments\PayItemConfiguration.cs" />
     <Compile Include="Configurations\Users\UserRoleConfiguration.cs" />
@@ -62,8 +63,8 @@
     <Compile Include="Configurations\Orders\OrderItemConfiguration.cs" />
     <Compile Include="Security\PermissionRecordConfiguration.cs" />
     <Compile Include="Configurations\Products\CategoryConfiguration.cs" />
-    <Compile Include="Configurations\Factory\AttritionConfiguration.cs" />
-    <Compile Include="Configurations\Factory\AttritionStatisticConfiguration.cs" />
+    <Compile Include="Configurations\Factory\ConsumptionConfiguration.cs" />
+    <Compile Include="Configurations\Factory\ConsumptionStatisticConfiguration.cs" />
     <Compile Include="Configurations\Factory\MaterialStatisticConfiguration.cs" />
     <Compile Include="Configurations\Factory\ProductStatisticConfiguration.cs" />
     <Compile Include="Configurations\Factory\WorkTimeStatisticConfiguration.cs" />

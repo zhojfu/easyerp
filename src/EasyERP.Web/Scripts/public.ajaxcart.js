@@ -5,7 +5,7 @@
     topwishlistselector: "",
     flyoutcartselector: "",
 
-    init: function (usepopupnotifications, topcartselector, topwishlistselector, flyoutcartselector) {
+    init: function(usepopupnotifications, topcartselector, topwishlistselector, flyoutcartselector) {
         this.loadWaiting = false;
         this.usepopupnotifications = usepopupnotifications;
         this.topcartselector = topcartselector;
@@ -13,13 +13,13 @@
         this.flyoutcartselector = flyoutcartselector;
     },
 
-    setLoadWaiting: function (display) {
+    setLoadWaiting: function(display) {
         displayAjaxLoading(display);
         this.loadWaiting = display;
     },
 
     //add a product to the cart/wishlist from the catalog pages
-    addproducttocart_catalog: function (urladd) {
+    addproducttocart_catalog: function(urladd) {
         if (this.loadWaiting != false) {
             return;
         }
@@ -36,7 +36,7 @@
     },
 
     //add a product to the cart/wishlist from the product details page
-    addproducttocart_details: function (urladd, formselector) {
+    addproducttocart_details: function(urladd, formselector) {
         if (this.loadWaiting != false) {
             return;
         }
@@ -53,7 +53,7 @@
         });
     },
 
-    success_process: function (response) {
+    success_process: function(response) {
         if (response.updatetopcartsectionhtml) {
             $(AjaxCart.topcartselector).html(response.updatetopcartsectionhtml);
         }
@@ -91,11 +91,11 @@
         return false;
     },
 
-    resetLoadWaiting: function () {
+    resetLoadWaiting: function() {
         AjaxCart.setLoadWaiting(false);
     },
 
-    ajaxFailure: function () {
+    ajaxFailure: function() {
         alert("Failed to add the product to the cart. Please refresh the page and try one more time.");
     }
 };

@@ -1,12 +1,12 @@
 ﻿namespace EasyErp.StoreAdmin.Controllers
 {
+    using System.Linq;
+    using System.Web.Mvc;
     using Doamin.Service.Order;
     using Doamin.Service.Products;
     using Doamin.Service.Security;
     using EasyErp.Core;
     using EasyErp.StoreAdmin.Models.Order;
-    using System.Linq;
-    using System.Web.Mvc;
 
     public class ShoppingCartController : Controller
     {

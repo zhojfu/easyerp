@@ -22,7 +22,7 @@ namespace EasyErp.Core
 
         #region Utilities
 
-        protected virtual Boolean IsRequestAvailable(HttpContextBase context)
+        protected virtual bool IsRequestAvailable(HttpContextBase context)
         {
             if (context == null)
             {
@@ -129,7 +129,7 @@ namespace EasyErp.Core
                 //for identifying the originating IP address of a client
                 //connecting to a web server through an HTTP proxy or load balancer.
                 var forwardedHttpHeader = "X-FORWARDED-FOR";
-                if (!String.IsNullOrEmpty(ConfigurationManager.AppSettings["ForwardedHTTPheader"]))
+                if (!string.IsNullOrEmpty(ConfigurationManager.AppSettings["ForwardedHTTPheader"]))
                 {
                     //but in some cases server use other HTTP header
                     //in these cases an administrator can specify a custom Forwarded HTTP header
@@ -145,14 +145,14 @@ namespace EasyErp.Core
                                      .FirstOrDefault();
 
                 //if you want to exclude private IP addresses, then see http://stackoverflow.com/questions/2577496/how-can-i-get-the-clients-ip-address-in-asp-net-mvc
-                if (!String.IsNullOrEmpty(xff))
+                if (!string.IsNullOrEmpty(xff))
                 {
                     var lastIp = xff.Split(',').FirstOrDefault();
                     result = lastIp;
                 }
             }
 
-            if (String.IsNullOrEmpty(result) &&
+            if (string.IsNullOrEmpty(result) &&
                 httpContext.Request.UserHostAddress != null)
             {
                 result = httpContext.Request.UserHostAddress;
@@ -165,7 +165,7 @@ namespace EasyErp.Core
             }
 
             //remove port
-            if (!String.IsNullOrEmpty(result))
+            if (!string.IsNullOrEmpty(result))
             {
                 var index = result.IndexOf(":", StringComparison.InvariantCultureIgnoreCase);
                 if (index > 0)
@@ -583,7 +583,7 @@ namespace EasyErp.Core
                 queryParam = httpContext.Request.QueryString[name];
             }
 
-            if (!String.IsNullOrEmpty(queryParam))
+            if (!string.IsNullOrEmpty(queryParam))
             {
                 return CommonHelper.To<T>(queryParam);
             }
@@ -638,7 +638,7 @@ namespace EasyErp.Core
             // new request will come to the newly started AppDomain.
             if (httpContext != null && makeRedirect)
             {
-                if (String.IsNullOrEmpty(redirectUrl))
+                if (string.IsNullOrEmpty(redirectUrl))
                 {
                     redirectUrl = GetThisPageUrl(true);
                 }

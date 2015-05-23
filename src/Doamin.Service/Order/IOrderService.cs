@@ -1,9 +1,9 @@
 ﻿namespace Doamin.Service.Order
 {
-    using Domain.Model.Orders;
-    using EasyErp.Core;
     using System;
     using System.Collections.Generic;
+    using Domain.Model.Orders;
+    using EasyErp.Core;
 
     public interface IOrderService
     {
@@ -16,13 +16,9 @@
             int pageSize = int.MaxValue);
 
         Order GetOrderById(int id);
-
         Order GetOrderByGuid(Guid guid);
-
         IList<Order> GetOrdersByIds(int[] orderIds);
-
         void InsertOrder(Order order);
-
         void CreateOrderByOrderItems(IEnumerable<OrderItem> orderItems);
     }
 }

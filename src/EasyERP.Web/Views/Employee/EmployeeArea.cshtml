@@ -1,5 +1,5 @@
 ﻿@using System.Web.Optimization
-@model EasyERP.Web.Models.EmployeeModel
+@model EasyERP.Web.Models.Employee.EmployeeModel
 <div>
 
     <button type="submit">保存</button>
@@ -9,31 +9,15 @@
 @Html.HiddenFor(m => m.Id)
 <div class="form-group">
 
-    @Html.ValidationMessageFor(m => m.FirstName, "", new
+    @Html.ValidationMessageFor(m => m.Name, "", new
     {
         @class = "text-danger"
     })
-    @Html.LabelFor(m => m.FirstName, new
+    @Html.LabelFor(m => m.Name, new
     {
         @class = ""
     })
-    @Html.TextBoxFor(m => m.FirstName, new
-    {
-        @class = ""
-    })
-</div>
-
-<div class="form-group">
-
-    @Html.ValidationMessageFor(m => m.LastName, "", new
-    {
-        @class = "text-danger"
-    })
-    @Html.LabelFor(m => m.LastName, new
-    {
-        @class = ""
-    })
-    @Html.TextBoxFor(m => m.LastName, new
+    @Html.TextBoxFor(m => m.Name, new
     {
         @class = ""
     })

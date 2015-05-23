@@ -2,7 +2,7 @@ namespace Domain.Model.Products
 {
     using Infrastructure.Domain.Model;
 
-    public partial class ProductManufacturer : BaseEntity
+    public class ProductManufacturer : BaseEntity
     {
         public int ProductId { get; set; }
 

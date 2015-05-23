@@ -1,10 +1,7 @@
 ﻿namespace EasyERP.Web.Models.Payments
 {
-    using EasyERP.Web.Framework.Mvc;
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Web;
+    using EasyERP.Web.Framework.Mvc;
 
     public class PaymentModel : BaseEntityModel
     {

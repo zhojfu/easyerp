@@ -4,13 +4,15 @@
     using System.Web.Mvc;
 
     [ModelBinder(typeof(BaseModelBinder))]
-    public partial class BaseModel
+    public class BaseModel
     {
         public BaseModel()
         {
-            this.CustomProperties = new Dictionary<string, object>();
+            CustomProperties = new Dictionary<string, object>();
             PostInitialize();
         }
+
+        public Dictionary<string, object> CustomProperties { get; set; }
 
         public virtual void BindModel(ControllerContext controllerContext, ModelBindingContext bindingContext)
         {
@@ -19,11 +21,9 @@
         protected virtual void PostInitialize()
         {
         }
-
-        public Dictionary<string, object> CustomProperties { get; set; }
     }
 
-    public partial class BaseEntityModel : BaseModel
+    public class BaseEntityModel : BaseModel
     {
         public virtual int Id { get; set; }
     }

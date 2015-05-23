@@ -1,20 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-
-namespace EasyERP.Web.Controllers
+﻿namespace EasyERP.Web.Controllers
 {
+    using System;
+    using System.Linq;
+    using System.Web.Mvc;
     using Doamin.Service.Payments;
     using Domain.Model.Payments;
     using EasyERP.Web.Models.Payments;
-    using EasyERP.Web.Models.Products;
-    using System.Web.Routing;
 
     public class PaymentController : Controller
     {
-        private IPaymentService paymentService;
+        private readonly IPaymentService paymentService;
 
         public PaymentController(IPaymentService paymentService)
         {
@@ -29,7 +24,7 @@ namespace EasyERP.Web.Controllers
                 return new HttpNotFoundResult();
             }
 
-            var paymentModel = new PaymentModel()
+            var paymentModel = new PaymentModel
             {
                 Id = payment.Id,
                 DueDateTime = payment.DueDateTime,
@@ -65,7 +60,7 @@ namespace EasyERP.Web.Controllers
                 "PayInfo",
                 new
                 {
-                    Id = model.Id
+                    model.Id
                 });
         }
 
@@ -80,11 +75,12 @@ namespace EasyERP.Web.Controllers
                     return new HttpNotFoundResult();
                 }
 
-                payment.Items.Add(new PayItem()
-                {
-                    PayDataTime = DateTime.Now,
-                    Paid = model.PayAmount
-                });
+                payment.Items.Add(
+                    new PayItem
+                    {
+                        PayDataTime = DateTime.Now,
+                        Paid = model.PayAmount
+                    });
 
                 paymentService.UpdatePayment(payment);
             }
@@ -93,7 +89,7 @@ namespace EasyERP.Web.Controllers
                 "PayInfo",
                 new
                 {
-                    Id = model.Id
+                    model.Id
                 });
         }
     }

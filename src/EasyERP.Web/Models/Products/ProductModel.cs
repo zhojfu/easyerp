@@ -1,13 +1,12 @@
 ﻿namespace EasyERP.Web.Models.Products
 {
-    using EasyERP.Web.Framework.Mvc;
-    using EasyERP.Web.Validators.Products;
-    using FluentValidation.Attributes;
-    using Infrastructure.Domain.Model;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Web.Mvc;
+    using EasyERP.Web.Framework.Mvc;
+    using EasyERP.Web.Validators.Products;
+    using FluentValidation.Attributes;
 
     [Validator(typeof(ProductValidator))]
     public class ProductModel : BaseEntityModel

@@ -3,20 +3,25 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Domain.Model;
     using Domain.Model.Factory;
     using Infrastructure.Domain;
     using Infrastructure.Utility;
 
-    public class EmployeeTimesheetService : IEmployeeTimesheetService
+    public class EmployeeTimesheetService : TimesheetService<Employee, WorkTimeStatistic>
     {
+        private readonly IEmployeeService employeeService;
+
         private readonly IRepository<WorkTimeStatistic> repository;
 
-        private readonly IUnitOfWork unitOfWork;
-
-        public EmployeeTimesheetService(IRepository<WorkTimeStatistic> repository, IUnitOfWork unitOfWork)
+        public EmployeeTimesheetService(
+            IRepository<WorkTimeStatistic> repository,
+            IUnitOfWork unitOfWork,
+            IEmployeeService employeeService)
+            : base(unitOfWork)
         {
             this.repository = repository;
-            this.unitOfWork = unitOfWork;
+            this.employeeService = employeeService;
         }
 
         public IEnumerable<WorkTimeStatistic> GetEmployeeTimesheetByDate(int employeeId, DateTime date)
@@ -27,41 +32,41 @@
                 m => m.EmployeeId == employeeId && m.Date >= dateRange.Item1 && m.Date <= dateRange.Item2);
         }
 
-        public void UpdateTimesheet(int employeeId, Dictionary<DateTime, double> worktimes)
+        protected override PagedResult<Employee> GetCategories(int page, int pageSize)
         {
-            const double Tolerance = 0.001;
+            return employeeService.GetEmployees(page, pageSize);
+        }
 
-            foreach (var worktime in worktimes)
+        protected override IEnumerable<WorkTimeStatistic> GetTimesheetOfWeekByCategory(
+            int categoryId,
+            DateTime dateOfWeek)
+        {
+            var dateRange = DateHelper.GetWeekRangeOfCurrentDate(dateOfWeek);
+
+            return repository.FindAll(
+                m => m.EmployeeId == categoryId && m.Date >= dateRange.Item1 && m.Date <= dateRange.Item2);
+        }
+
+        protected override WorkTimeStatistic FindSpecificDataOfDateTime(int categoryId, DateTime date)
+        {
+            return repository.FindAll(m => m.EmployeeId == categoryId && m.Date == date).FirstOrDefault();
+        }
+
+        protected override void UpdateDataOfTime(WorkTimeStatistic s)
+        {
+            repository.Update(s);
+        }
+
+        protected override void AddNewDataForTime(int categoryId, double value, DateTime date)
+        {
+            var c = new WorkTimeStatistic
             {
-                var hour = worktime.Value;
-                var date = worktime.Key;
+                EmployeeId = categoryId,
+                Value = value,
+                Date = date
+            };
 
-                if (Math.Abs(hour) < Tolerance)
-                {
-                    continue;
-                }
-
-                var wt = repository.FindAll(m => m.EmployeeId == employeeId && m.Date == date).FirstOrDefault();
-                if (wt != null &&
-                    Math.Abs(hour - wt.WorkTimeHr) > Tolerance)
-                {
-                    wt.WorkTimeHr = hour;
-                    repository.Update(wt);
-                }
-                else
-                {
-                    var w = new WorkTimeStatistic
-                    {
-                        EmployeeId = employeeId,
-                        WorkTimeHr = hour,
-                        Date = date
-                    };
-
-                    repository.Add(w);
-                }
-            }
-
-            unitOfWork.Commit();
+            repository.Add(c);
         }
     }
 }

@@ -14,11 +14,15 @@
 {
     @Html.AntiForgeryToken()
     <div class="form-group">
-        <p><em>产品目录:</em></p>
+        <p>
+            <em>产品目录:</em>
+        </p>
         <div id="selected-category"></div>
     </div>
     <div class="form-group">
-        <p><em>产品:</em></p>
+        <p>
+            <em>产品:</em>
+        </p>
         <div id="selected-product"></div>
     </div>
     <div class="option">
@@ -26,7 +30,7 @@
     </div>
     <div id="inventory-list"></div>
     <script type="text/javascript">
-        $(document).ready(function () {
+        $(document).ready(function() {
 
             function additionalData() {
                 var data = {
@@ -38,7 +42,7 @@
 
             var allCategories = new kendo.data.DataSource({
                 schema: {
-                    data: function (data) { return data; }
+                    data: function(data) { return data; }
                 },
                 transport: {
                     read: {
@@ -51,7 +55,7 @@
 
             var productsDataSource = new kendo.data.DataSource({
                 schema: {
-                    data: function (data) {
+                    data: function(data) {
                         return data.Data;
                     }
                 },
@@ -67,7 +71,7 @@
 
             var inventoryDataSource = new kendo.data.DataSource({
                 schema: {
-                    data: function (data) {
+                    data: function(data) {
                         return data.Data;
                     },
                     model: {
@@ -81,7 +85,7 @@
                         url: "/Product/InventoryRecords",
                         type: "POST",
                         dataType: "json",
-                        data: function () {
+                        data: function() {
                             var data = {
                                 productId: $("#selected-product").val(),
                                 showUnPaidOnly: $("#showUnPaidOnly").is(":checked")
@@ -98,7 +102,7 @@
                 dataValueField: "Id",
                 dataSource: allCategories,
                 index: 0,
-                dataBound: function () {
+                dataBound: function() {
                     var dataSource = this.dataSource;
                     var data = dataSource.data();
 
@@ -114,7 +118,7 @@
 
                     productsDataSource.read();
                 },
-                change: function () {
+                change: function() {
                     var value = this.value();
                     if (value) {
                         productsDataSource.read();
@@ -130,10 +134,10 @@
                 dataTextField: "Name",
                 dataValueField: "Id",
                 dataSource: productsDataSource,
-                dataBound: function () {
+                dataBound: function() {
                     inventoryDataSource.read();
                 },
-                change: function () {
+                change: function() {
                     var value = this.value();
                     if (value) {
                         inventoryGrid.dataSource.page(1);
@@ -153,5 +157,4 @@
             }).data("kendoGrid");
         });
     </script>
-
 }

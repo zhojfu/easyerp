@@ -1,9 +1,9 @@
 namespace Domain.Model.Shipment
 {
-    using Domain.Model.Orders;
-    using Infrastructure.Domain.Model;
     using System;
     using System.Collections.Generic;
+    using Domain.Model.Orders;
+    using Infrastructure.Domain.Model;
 
     public class Shipment : BaseEntity
     {
