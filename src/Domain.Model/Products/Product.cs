@@ -14,8 +14,6 @@
             ProductPrices = new List<ProductPrice>();
         }
 
-        public string Name { get; set; }
-
         public string ItemNo { get; set; }
 
         public string ShortDescription { get; set; }

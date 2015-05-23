@@ -8,9 +8,6 @@
         public override int Id { get; set; }
 
         [AllowHtml]
-        public string Name { get; set; }
-
-        [AllowHtml]
         public string ShortDescription { get; set; }
 
         [AllowHtml]

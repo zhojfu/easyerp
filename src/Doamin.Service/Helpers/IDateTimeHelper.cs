@@ -20,19 +20,6 @@ namespace Doamin.Service.Helpers
         TimeZoneInfo CurrentTimeZone { get; set; }
 
         /// <summary>
-        /// Retrieves a System.TimeZoneInfo object from the registry based on its identifier.
-        /// </summary>
-        /// <param name="id">The time zone identifier, which corresponds to the System.TimeZoneInfo.Id property.</param>
-        /// <returns>A System.TimeZoneInfo object whose identifier is the value of the id parameter.</returns>
-        TimeZoneInfo FindTimeZoneById(string id);
-
-        /// <summary>
-        /// Returns a sorted collection of all the time zones
-        /// </summary>
-        /// <returns>A read-only collection of System.TimeZoneInfo objects.</returns>
-        ReadOnlyCollection<TimeZoneInfo> GetSystemTimeZones();
-
-        /// <summary>
         /// Converts the date and time to current user date and time
         /// </summary>
         /// <param name="dt">The date and time (respesents local system time or UTC time) to convert.</param>

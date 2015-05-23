@@ -120,7 +120,6 @@
   <ItemGroup>
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\ShoppingCartController.cs" />
     <Compile Include="Extensions\MappingExtensions.cs" />
     <Compile Include="Models\Order\ShoppingCartItemModel.cs" />
     <Compile Include="Models\Products\ProductListModel.cs" />
