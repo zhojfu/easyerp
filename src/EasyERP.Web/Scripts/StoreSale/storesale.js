@@ -37,10 +37,10 @@ $(document).ready(function() {
         dataSource: dataSource,
         selectable: "single",
         pageable: {
-            refresh: true,
+            refresh: true
         },
         columns: [
-            { field: "Title", title: "订单名称", template: "<a href=\"/StoreSale/Order/${Id}\" target=\"_blank\">${Name}</a>" },
+            { field: "Title", title: "订单名称", template: "<a href=\"/StoreSale/Order/${Id}\" target=\"_blank\">${Title}</a>" },
             { field: "Owner", title: "收货人" },
             { field: "TotalPrice", title: "总价" },
             { field: "Address", title: "送货地址" },

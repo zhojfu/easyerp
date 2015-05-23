@@ -7,6 +7,7 @@
     using Doamin.Service.Products;
     using Doamin.Service.StoreSale;
     using Domain.Model.Orders;
+    using Domain.Model.Payments;
     using EasyERP.Web.Models.StoreSale;
 
     public class StoreSaleController : Controller
@@ -82,18 +83,6 @@
         {
             var products = productService.GetAutoCompleteProducts(name);
 
-            /*List<object> jsons = new List<object> { 
-                new {Id = 1, Name="米", Price = 10},
-                new {Id = 1, Name="盐", Price = 15},
-                new {Id = 1, Name="油1", Price = 11},
-                new {Id = 1, Name="油2", Price = 12},
-                new {Id = 1, Name="油3", Price = 13},
-                new {Id = 1, Name="油", Price = 20},
-                new {Id = 1, Name="柴", Price = 30},
-                new {Id = 1, Name="酱", Price = 90},
-                new {Id = 1, Name="醋", Price = 50},
-                new {Id = 1, Name="茶", Price = 10}
-            };*/
             var jsons = new List<object>();
             foreach (var product in products)
             {
@@ -122,17 +111,21 @@
             {
                 CustomerId = model.CustomerId,
                 Name = model.Title,
-                CreatedOnUtc = DateTime.Now
+                CreatedOnUtc = DateTime.Now,
+                OrderGuid = Guid.NewGuid(),
+                Payment = new Payment()
             };
 
+            order.Payment.DueDateTime = DateTime.Now.AddDays(30);
+            
             decimal totalPrice = 0;
             var orderItems = new List<OrderItem>();
             foreach (var item in model.OrderItems)
             {
                 totalPrice += item.PriceOfUnit * (decimal)item.Quantity;
+                order.Payment.TotalAmount = (double)totalPrice;
                 var orderItem = new OrderItem
                 {
-                    OrderId = order.Id,
                     Quantity = item.Quantity,
                     Price = item.PriceOfUnit,
                     ProductId = item.ProductId,
@@ -169,6 +162,7 @@
                 {
                     var model = new OrderListModel
                     {
+                        Id = order.Id,
                         Address = order.Customer.Address,
                         CreatedOn = string.Format("{0:yy-MMM-dd ddd}", order.CreatedOnUtc),
                         Owner = order.Customer.Name,
@@ -186,7 +180,17 @@
                     },
                     JsonRequestBehavior.AllowGet);
             }
-            return Json(null);
+            return Json(new {}, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult Delete(List<int> ids)
+        {
+            if (ids != null)
+            {
+                this.storeSaleService.DeleteOrderByIds(ids);
+            }
+            return Json(ids);
         }
     }
 }

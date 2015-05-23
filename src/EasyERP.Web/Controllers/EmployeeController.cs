@@ -82,7 +82,7 @@
             {
                 employeeService.DeleteEmployeeByIds(ids);
             }
-            return Json(null);
+            return Json(ids);
         }
 
         public JsonResult EmployeeList(int skip, int take, int page, int pageSize)
@@ -107,7 +107,7 @@
                     },
                     JsonRequestBehavior.AllowGet);
             }
-            return Json(null);
+            return Json(new{}, JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult GetTimeSheetByDate(string date, int page, int pageSize)
@@ -125,6 +125,9 @@
                 timesheet.IfNotNull(
                     t =>
                     Enumerable.Where(t.Select(Mapper.Map<Timesheet, TimesheetModel>), model => model != null).ToList());
+            
+            if(result == null)
+                return Json(null);
 
             return Json(
                 new

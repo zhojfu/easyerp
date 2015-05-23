@@ -2,6 +2,8 @@
 {
     public class OrderListModel
     {
+        public int Id { get; set; }
+
         public string CreatedOn { get; set; }
 
         public string Title { get; set; }
