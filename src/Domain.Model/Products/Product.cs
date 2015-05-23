@@ -1,10 +1,10 @@
 ﻿namespace Domain.Model.Products
 {
+    using System;
+    using System.Collections.Generic;
     using Domain.Model.Factory;
     using Domain.Model.Stores;
     using Infrastructure.Domain.Model;
-    using System;
-    using System.Collections.Generic;
 
     public class Product : BaseEntity, IAggregateRoot
     {

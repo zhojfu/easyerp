@@ -195,3 +195,5 @@ tinymce
 /src/EasyERP.Web/Content/bootstrap.min.css
 /src/EasyERP.Web/Scripts/bootstrap.js
 /src/EasyERP.Web/Scripts/bootstrap.min.js
+
+*.orig

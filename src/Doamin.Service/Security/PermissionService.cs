@@ -1,13 +1,13 @@
 namespace Doamin.Service.Security
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using Doamin.Service.Users;
     using Domain.Model.Security;
     using Domain.Model.Users;
     using EasyErp.Core;
     using Infrastructure.Domain;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
 
     /// <summary>
     /// Permission service
@@ -173,7 +173,7 @@ namespace Doamin.Service.Security
 
         public bool Authorize(string permissionRecordSystemName, User user)
         {
-            if (String.IsNullOrEmpty(permissionRecordSystemName))
+            if (string.IsNullOrEmpty(permissionRecordSystemName))
             {
                 return false;
             }
@@ -198,7 +198,7 @@ namespace Doamin.Service.Security
 
         protected virtual bool Authorize(string permissionRecordSystemName, UserRole userRole)
         {
-            if (String.IsNullOrEmpty(permissionRecordSystemName))
+            if (string.IsNullOrEmpty(permissionRecordSystemName))
             {
                 return false;
             }

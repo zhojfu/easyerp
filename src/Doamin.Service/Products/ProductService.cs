@@ -1,11 +1,11 @@
 ﻿namespace Doamin.Service.Products
 {
-    using Domain.Model.Products;
-    using EasyErp.Core;
-    using Infrastructure.Domain;
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Domain.Model.Products;
+    using EasyErp.Core;
+    using Infrastructure.Domain;
 
     public class ProductService : IProductService
     {
@@ -40,19 +40,19 @@
             return productRepository.FindAll(p => productIds.Contains(p.Id)).ToList();
         }
 
-        public IEnumerable<Product> GetAutoCompleteProducts(string name)
-        {
-            return productRepository.FindAll(p => p.Name.Contains(name));
-        }
-
         public IList<Product> GetAllProducts()
         {
             return productRepository.FindAll(p => true).ToList();
         }
 
+        public IEnumerable<Product> GetAutoCompleteProducts(string name)
+        {
+            return productRepository.FindAll(p => p.Name.Contains(name));
+        }
+
         public IPagedList<Product> SearchProducts(
             int pageIndex = 0,
-            int pageSize = Int32.MaxValue,
+            int pageSize = int.MaxValue,
             IList<int> categoryIds = null,
             IList<int> storeIds = null,
             string keywords = null,

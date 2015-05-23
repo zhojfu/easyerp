@@ -42,7 +42,7 @@
 
         public override void PersistUpdateItem(IAggregateRoot entity)
         {
-            TAggregateRoot origion = this.GetByKey(entity.Id);
+            var origion = GetByKey(entity.Id);
 
             var properties = typeof(TAggregateRoot).GetProperties();
 
@@ -54,7 +54,7 @@
                 }
             }
 
-            ((DbContext)this.dbContext).Entry(origion).State = EntityState.Modified;
+            ((DbContext)dbContext).Entry(origion).State = EntityState.Modified;
         }
 
         public override void PersistRemoveItem(IAggregateRoot entity)

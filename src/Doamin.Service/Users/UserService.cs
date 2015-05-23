@@ -1,10 +1,10 @@
 ﻿namespace Doamin.Service.Users
 {
+    using System;
+    using System.Linq;
     using Doamin.Service.Security;
     using Domain.Model.Users;
     using Infrastructure.Domain;
-    using System;
-    using System.Linq;
 
     public class UserService : IUserService
     {

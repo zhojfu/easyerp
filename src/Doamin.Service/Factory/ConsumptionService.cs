@@ -1,10 +1,7 @@
-﻿
-namespace Doamin.Service.Factory
+﻿namespace Doamin.Service.Factory
 {
-    using System.Collections.Generic;
     using System.Linq;
     using Domain.Model.Factory;
-
     using Infrastructure.Domain;
     using Infrastructure.Utility;
 
@@ -22,40 +19,44 @@ namespace Doamin.Service.Factory
 
         public void UpdateConsumptionCategory(Consumption consumption)
         {
-            if (!this.repository.Exist(consumption))
+            if (!repository.Exist(consumption))
             {
                 return;
             }
 
-            this.repository.Update(consumption);
-            this.unitOfWork.Commit();
+            repository.Update(consumption);
+            unitOfWork.Commit();
         }
 
         public void AddConsumptionCategory(Consumption consumption)
         {
             if (IsConsumptionExist(consumption))
+            {
                 return;
-            this.repository.Add(consumption);
-            this.unitOfWork.Commit();
+            }
+            repository.Add(consumption);
+            unitOfWork.Commit();
         }
 
         public void DeleteConsumptionCategory(Consumption consumption)
         {
-            var cons = this.repository.GetByKey(consumption.Id);
+            var cons = repository.GetByKey(consumption.Id);
             if (cons == null)
+            {
                 return;
-            this.repository.Remove(cons);
-            this.unitOfWork.Commit();
+            }
+            repository.Remove(cons);
+            unitOfWork.Commit();
         }
 
         public PagedResult<Consumption> GetConsumptionCategories(int page, int pageSize)
         {
-            return this.repository.FindAll(pageSize, page, c=> true, c=>c.Name, SortOrder.Ascending);
+            return repository.FindAll(pageSize, page, c => true, c => c.Name, SortOrder.Ascending);
         }
 
         private bool IsConsumptionExist(Consumption consumption)
         {
-            return this.repository.FindAll(m => m.Name == consumption.Name).Any();
+            return repository.FindAll(m => m.Name == consumption.Name).Any();
         }
     }
 }

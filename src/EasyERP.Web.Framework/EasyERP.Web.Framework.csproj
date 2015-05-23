@@ -122,6 +122,7 @@
     <Compile Include="Mvc\Routes\IRouteProvider.cs" />
     <Compile Include="Mvc\Routes\IRoutePublisher.cs" />
     <Compile Include="Mvc\Routes\RoutePublisher.cs" />
+    <Compile Include="Mvc\XmlDownloadResult.cs" />
     <Compile Include="Security\Captcha\CaptchaSettings.cs" />
     <Compile Include="Security\Captcha\CaptchaValidatorAttribute.cs" />
     <Compile Include="Security\Captcha\HtmlExtensions.cs" />

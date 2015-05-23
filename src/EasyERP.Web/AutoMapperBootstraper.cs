@@ -6,7 +6,6 @@
     using Domain.Model.Factory;
     using Domain.Model.Products;
     using Domain.Model.Stores;
-    using EasyERP.Web.Models;
     using EasyERP.Web.Models.Customer;
     using EasyERP.Web.Models.Employee;
     using EasyERP.Web.Models.Factory;
@@ -18,7 +17,7 @@
         public static void RegisterModelMapper()
         {
             Mapper.CreateMap<EmployeeModel, Employee>();
-           
+
             Mapper.CreateMap<Product, ProductModel>();
             Mapper.CreateMap<ProductModel, Product>();
             Mapper.CreateMap<Inventory, InventoryModel>();
@@ -35,7 +34,6 @@
             Mapper.CreateMap<ConsumptionModel, Consumption>();
             Mapper.CreateMap<Timesheet, TimesheetModel>();
             Mapper.CreateMap<TimesheetModel, Timesheet>();
-
         }
     }
 }

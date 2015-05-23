@@ -1,5 +1,5 @@
 ﻿/*员工信息*/
-$(document).ready(function () {
+$(document).ready(function() {
 
     var dataSource = new kendo.data.DataSource({
         transport: {
@@ -42,7 +42,7 @@ $(document).ready(function () {
             refresh: true
         },
         columns: [
-            { field: "FullName", title: "姓名", template: '<a href="/Employee/Edit/${Id}" target="_blank">${FullName}</a>' },
+            { field: "FullName", title: "姓名", template: "<a href=\"/Employee/Edit/${Id}\" target=\"_blank\">${FullName}</a>" },
             { field: "Sex", title: "性别" },
             { field: "CellPhone", title: "手机号" },
             { field: "NativePlace", title: "籍贯" },
@@ -68,13 +68,13 @@ $(document).ready(function () {
             data: JSON.stringify({ ids: selectedItems }),
             dataType: "json",
             contentType: "application/json; charset=utf-8",
-            success : function() {
-                $('#employeesList').data('kendoGrid').dataSource.read();
+            success: function() {
+                $("#employeesList").data("kendoGrid").dataSource.read();
             }
         });
     });
-    
-   
+
+
     var timesheet = new Timesheet("/Employee/GetTimeSheetByDate", "/Employee/UpdateTimesheet");
     timesheet.InitialTimesheetGrid();
 });

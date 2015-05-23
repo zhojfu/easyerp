@@ -14,6 +14,7 @@
         public string SearchProductName { get; set; }
 
         public int SearchCategoryId { get; set; }
+
         public IList<SelectListItem> AvailableCategories { get; set; }
     }
 }

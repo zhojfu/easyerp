@@ -7,7 +7,7 @@
     {
         private readonly DbContext dbContext;
 
-        public EntityFrameworkUnitOfWork(DbContext dbContext)
+        public EntityFrameworkUnitOfWork(EntityFrameworkDbContext dbContext)
         {
             this.dbContext = dbContext;
         }

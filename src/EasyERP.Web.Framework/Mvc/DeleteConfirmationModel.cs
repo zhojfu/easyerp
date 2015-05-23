@@ -1,7 +1,5 @@
 ﻿namespace EasyERP.Web.Framework.Mvc
 {
-    using Infrastructure.Domain.Model;
-
     public class DeleteConfirmationModel : BaseEntityModel
     {
         public string ControllerName { get; set; }

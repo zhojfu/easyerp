@@ -1,11 +1,11 @@
 ﻿namespace EasyERP.Web.Framework
 {
+    using System;
+    using System.Web;
     using Doamin.Service.Authentication;
     using Doamin.Service.Users;
     using Domain.Model.Users;
     using EasyErp.Core;
-    using System;
-    using System.Web;
 
     public class WebWorkContext : IWorkContext
     {

@@ -1,0 +1,31 @@
+﻿@{
+    <div class="section-header">
+        <div class="title">我的订单</div>
+    </div>
+
+    <div id="order-detail-info"></div>
+
+    <script id="order-template" type="text/x-kendo-template">
+        <div class="order-item">
+            <div class="order-header">
+                <p><em>订单号:</em><span data-bind="text: orderGuid"></span></p>
+                <p><em>创建时间:</em><span data-bind="text: createdTime"></span></p>
+                <a id="order-detail-info" href="\#/Order/#: orderGuid#">详细信息</a>
+                <div class="orderitems" data-role="listview" data-bind="source: orderItems" data-template="order-item-template">
+                </div>
+                <p><em>状态:</em><span data-bind="text: orderStatus"></span></p>
+                <p><em>总计:</em><span data-bind="text: totalPrice"></span></p>
+            </div>
+        </div>
+    </script>
+    <script id="order-item-template" type="text/x-kendo-template">
+        <div>
+            <ul>
+                <li><em>产品名:</em><span data-bind="text: productName"></span></li>
+                <li><em>数量:</em><span data-bind="text: quantity"></span></li>
+                <li><em>单价:</em><span data-bind="text: itemPrice"></span></li>
+                <li><em>总计:</em><span data-bind="text: total"></span></li>
+            </ul>
+        </div>
+    </script>
+}

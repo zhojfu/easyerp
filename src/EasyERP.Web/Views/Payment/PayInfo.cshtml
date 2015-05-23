@@ -1,0 +1,181 @@
+﻿@using EasyErp.Core.Configuration.Settings
+@using EasyErp.Core.Infrastructure
+@using EasyERP.Web.Framework
+@model EasyERP.Web.Models.Payments.PaymentModel
+@section SectionTitle
+{
+    产品管理
+}
+@{
+    var defaultGridPageSize = EngineContext.Current.Resolve<AreaSettings>().DefaultGridPageSize;
+    var gridPageSizes = EngineContext.Current.Resolve<AreaSettings>().GridPageSizes;
+}
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    if (Model.Paid.Equals(Model.TotalAmount))
+    {
+        <div class="property-content">
+            <label>已付全款</label>
+        </div>
+    }
+    <div>
+        <p>
+            <em>付款总额:</em><label>@Model.TotalAmount</label>
+        </p>
+    </div>
+    <div>
+        <p>
+            <em>已付款:</em><label>@Model.Paid</label>
+        </p>
+    </div>
+    <div>
+        <p>
+            <em>应付款:</em><label>@(Model.TotalAmount - Model.Paid)</label>
+        </p>
+    </div>
+    <div>
+        <p>
+            <em>截至日期:</em><label>@Model.DueDateTime</label>
+        </p>
+    </div>
+    <div>
+        <p>
+            <em>付款信息:</em>
+        </p>
+    </div>
+    <div id="payitems"></div>
+    <div id="pay-window"></div>
+
+    <script type="text/x-kendo-template" id="toolbar-template">
+        <div class="toolbar" id="toolbar">
+            <button type="button" id="pay-button">付款</button>
+        </div>
+    </script>
+
+    <script id="pay-window-template" type="text/x-kendo-template">
+        <div> 
+            <p>应付款:<label>@(Model.TotalAmount - Model.Paid)</label></p>
+            <p>付款金额:<input type="number" id="pay-amount"></p>
+            <p>付款日期:<span id="currentDateTime" /></p>
+        </div>
+        <div>
+            <button id="okayButton" class="k-button">付款</button>
+            <button id="cancelButton" class="k-button">取消</button>
+        </div>
+    </script>
+    <script>
+        var payinfo = @(Html.ToJson(Model));
+
+        function additionalData() {
+            var data = {
+                model: payinfo
+            };
+            addAntiForgeryToken(data);
+            return data;
+        }
+
+        var payItemsSource = new kendo.data.DataSource({
+            transport: {
+                read: {
+                    url: "/Payment/PayInfo",
+                    type: "POST",
+                    dataType: "Json",
+                    data: additionalData
+                }
+            },
+            schema: {
+                model: {
+                    fields: {
+                        "PayDate": { type: "date" }
+                    }
+                }
+            }
+        });
+
+        $("#payitems").kendoGrid({
+            dataSource: payItemsSource,
+            toolbar: kendo.template($("#toolbar-template").html()),
+            columns: [
+                { field: "PayDate", title: "付款日期", width: 100, template: '#= kendo.toString(PayDate, "yyyy/M/d H:m:s" ) #' },
+                { field: "PayAmount", title: "付款额", width: 100 }
+            ]
+        });
+
+        function getCurrentDateTime() {
+            var currentdate = new Date();
+            var datetime = currentdate.getDate() + "/"
+                + (currentdate.getMonth() + 1) + "/"
+                + currentdate.getFullYear() + " T "
+                + currentdate.getHours() + ":"
+                + currentdate.getMinutes() + ":"
+                + currentdate.getSeconds();
+            return datetime;
+        }
+
+        $(document).ready(function() {
+            if (payinfo.paid === payinfo.totalAmount) {
+                $("#toolbar").hide();
+            }
+        });
+    </script>
+    <style>
+        .toolbar { float: right; }
+    </style>
+}
+@using (Html.BeginForm("Pay", "Payment", FormMethod.Post, new
+{
+    id = "pay-action"
+}))
+{
+    @Html.AntiForgeryToken()
+    <input type="hidden" id="payAmount" name="PayAmount" value=""/>
+    <input type="hidden" id="payId" name="Id" value=""/>
+}
+<script>
+    $("#pay-button").click(function() {
+        var payWindow = $("#pay-window").kendoWindow({
+            title: "付款",
+            width: 400,
+            height: 300,
+            resizeable: false,
+            actions: ["Close"],
+            modal: true,
+            viewable: false,
+            visible: false,
+            content: { template: $("#pay-window-template").html() }
+        }).data("kendoWindow");
+        payWindow.open().center();
+        $("#currentDateTime").text(getCurrentDateTime());
+        $("#pay-amount").attr({
+            "max": payinfo.totalAmount - payinfo.paid,
+            "min": 1
+        });
+
+        $("#okayButton").click(function(e) {
+            e.preventDefault();
+            var payAmount = $("#pay-amount").val();
+            if (!payAmount) {
+                $('<span class="text-danger">请输入付款金额</span>').
+                    insertAfter('#pay-amount');
+                return;
+            }
+
+            if (payAmount < 0 || payAmount > payinfo.totalAmount - payinfo.paid) {
+                $('<span class="text-danger">数额不正确</span>').
+                    insertAfter('#pay-amount');
+                return;
+            }
+            var payId = payinfo.id;
+            $("#pay-action #payAmount").val(payAmount);
+            $("#pay-action #payId").val(payId);
+            $("#pay-action").submit();
+            payWindow.close();
+
+        });
+        $("#cancelButton").click(function(e) {
+            payWindow.close();
+        });
+
+    });
+</script>

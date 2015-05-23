@@ -9,6 +9,7 @@
         {
             ToTable("Category");
             HasKey(c => c.Id);
+            Property(c => c.ItemNo).IsRequired();
             Property(c => c.Name).IsRequired().HasMaxLength(400);
         }
     }

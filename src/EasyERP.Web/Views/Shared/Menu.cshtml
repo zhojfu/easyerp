@@ -18,14 +18,14 @@
         url = item.Url.StartsWith("~/", StringComparison.Ordinal) ? Url.Content(item.Url) : item.Url;
     }
     <li>
-        @if (!String.IsNullOrEmpty(url))
+        @if (!string.IsNullOrEmpty(url))
         {
             <a href="@url">
 
-                @if (!String.IsNullOrEmpty(item.ImageUrl))
+                @if (!string.IsNullOrEmpty(item.ImageUrl))
                 {
                     <text>
-                        <img alt="" src="@Url.Content(item.ImageUrl)" />
+                        <img alt="" src="@Url.Content(item.ImageUrl)"/>
                     </text>
                 }
                 @item.Title
@@ -33,10 +33,10 @@
         }
         else
         {
-            if (!String.IsNullOrEmpty(item.ImageUrl))
+            if (!string.IsNullOrEmpty(item.ImageUrl))
             {
                 <text>
-                    <img alt="" src="@Url.Content(item.ImageUrl)" />
+                    <img alt="" src="@Url.Content(item.ImageUrl)"/>
                 </text>
             }
             @item.Title
@@ -63,7 +63,7 @@
 </ul>
 
 <script>
-    $(document).ready(function () {
+    $(document).ready(function() {
         $("#admin-menu").kendoMenu();
     });
 </script>

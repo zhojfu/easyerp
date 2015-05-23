@@ -2,12 +2,11 @@
 {
     using System;
     using System.Collections.Generic;
-    using AutoMapper;
     using System.Web.Mvc;
+    using AutoMapper;
     using Doamin.Service.Customer;
     using Domain.Model.Customer;
     using EasyERP.Web.Models.Customer;
-    using Infrastructure.Utility;
 
     public class CustomerController : Controller
     {
@@ -31,28 +30,27 @@
         [HttpPost]
         public ActionResult Create(CustomerModel customer)
         {
-            Customer e = Mapper.Map<CustomerModel, Customer>(customer);
+            var e = Mapper.Map<CustomerModel, Customer>(customer);
             if (e != null)
             {
                 e.CreatedOn = DateTime.Now;
                 e.UpdatedOn = DateTime.Now;
-                this.customerService.AddCustomer(e);
+                customerService.AddCustomer(e);
             }
 
             return RedirectToAction("Index");
         }
 
-
         public JsonResult CustomerList(int skip, int take, int page, int pageSize)
         {
-            PagedResult<Customer> cutomers = this.customerService.GetCustomers(page, pageSize);
+            var cutomers = customerService.GetCustomers(page, pageSize);
             if (cutomers != null)
             {
-                List<CustomerListModel> customersList = new List<CustomerListModel>();
+                var customersList = new List<CustomerListModel>();
 
                 foreach (var customer in cutomers)
                 {
-                    CustomerListModel model = Mapper.Map<Customer, CustomerListModel>(customer);
+                    var model = Mapper.Map<Customer, CustomerListModel>(customer);
                     model.Sex = customer.Male ? "男" : "女";
                     model.CreatedOn = customer.CreatedOn.ToShortDateString();
                     customersList.Add(model);
@@ -73,15 +71,14 @@
         {
             if (ids != null)
             {
-                this.customerService.DeleteCustomerByIds(ids);
+                customerService.DeleteCustomerByIds(ids);
             }
             return RedirectToAction("Index");
         }
 
-
         public ActionResult Edit(int id)
         {
-            Customer c = this.customerService.GetCustomerById(id);
+            var c = customerService.GetCustomerById(id);
             if (c != null)
             {
                 var model = Mapper.Map<Customer, CustomerModel>(c);
@@ -90,14 +87,13 @@
             return View();
         }
 
-
         [HttpPost]
         public ActionResult Edit(CustomerModel customer)
         {
             var e = Mapper.Map<CustomerModel, Customer>(customer);
             if (e != null)
             {
-                this.customerService.UpdateCustomer(e);
+                customerService.UpdateCustomer(e);
             }
             return RedirectToAction("Index");
         }

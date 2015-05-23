@@ -1,10 +1,10 @@
 ﻿namespace EasyERP.Web.Controllers
 {
+    using System.Web.Mvc;
     using Doamin.Service.Authentication;
     using Doamin.Service.Users;
     using EasyERP.Web.Framework.Security.Captcha;
     using EasyERP.Web.Models.Users;
-    using System.Web.Mvc;
 
     public class UserController : BasePublicController
     {
@@ -46,13 +46,13 @@
                 switch (loginResult)
                 {
                     case UserLoginResults.Successful:
-                        {
-                            var user = userService.GetUserByName(model.Username);
-                            authenticationService.SignIn(user, false);
+                    {
+                        var user = userService.GetUserByName(model.Username);
+                        authenticationService.SignIn(user, false);
 
-                            // TODO:redirection to page according user type
-                            return RedirectToAction("List", "Product");
-                        }
+                        // TODO:redirection to page according user type
+                        return RedirectToAction("List", "Product");
+                    }
                     case UserLoginResults.UserNotExist:
                         ModelState.AddModelError("", "用户不存在");
                         break;

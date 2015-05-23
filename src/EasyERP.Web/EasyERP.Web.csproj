@@ -1627,20 +1627,29 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Controllers\CommonController.cs" />
     <Compile Include="Controllers\ConsumptionController.cs" />
     <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\StoreSaleController.cs" />
     <Compile Include="Models\Customer\CustomerModel.cs" />
     <Compile Include="Models\Customer\CustomerListModel.cs" />
+    <Compile Include="Models\Employee\EmployeeListModel.cs" />
+    <Compile Include="Models\Employee\EmployeeModel.cs" />
     <Compile Include="Models\Factory\ConsumptionModel.cs" />
     <Compile Include="Models\Orders\OrderListModel.cs" />
     <Compile Include="Models\StoreSale\OrderListModel.cs" />
     <Compile Include="Models\StoreSale\OrderModel.cs" />
+    <Compile Include="Controllers\PaymentController.cs" />
+    <Compile Include="Models\Orders\OrderItemModel.cs" />
+    <Compile Include="Models\Orders\CartItemModel.cs" />
+    <Compile Include="Models\Orders\MyOrderModel.cs" />
+    <Compile Include="Models\Payments\PaymentModel.cs" />
+    <Compile Include="Models\Products\PriceListModel.cs" />
+    <Compile Include="Models\Products\PriceModel.cs" />
     <Compile Include="RouteProvider.cs" />
     <Compile Include="AutoMapperBootstraper.cs" />
     <Compile Include="Controllers\BaseAdminController.cs" />
     <Compile Include="Controllers\BasePublicController.cs" />
+    <Compile Include="Controllers\CommonController.cs" />
     <Compile Include="Controllers\EmployeeController.cs" />
     <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -1656,9 +1665,8 @@
     <Compile Include="Models\Common\FaviconModel.cs" />
     <Compile Include="Models\Common\FooterModel.cs" />
     <Compile Include="Models\Common\HeaderLinksModel.cs" />
-    <Compile Include="Models\Employee\EmployeeModel.cs" />
-    <Compile Include="Models\Employee\EmployeeListModel.cs" />
     <Compile Include="Models\Orders\OrderModel.cs" />
+    <Compile Include="Models\Orders\SearchModel.cs" />
     <Compile Include="Models\Products\InventoryModel.cs" />
     <Compile Include="Models\Products\ProductListModel.cs" />
     <Compile Include="Models\Products\ProductModel.cs" />
@@ -1667,6 +1675,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Validators\Employees\EmployeeValidator.cs" />
     <Compile Include="Validators\Orders\OrderValidator.cs" />
+    <Compile Include="Validators\Products\InventoryValidator.cs" />
     <Compile Include="Validators\Products\ProductValidator.cs" />
     <Compile Include="Validators\Stores\StoreValidator.cs" />
     <Compile Include="Models\Employee\TimesheetModel.cs" />
@@ -1909,6 +1918,17 @@
     <Content Include="Views\Shared\StoreSalesLayout.cshtml" />
     <Content Include="Views\StoreSale\Create.cshtml" />
     <Content Include="Views\StoreSale\Retail.cshtml" />
+    <Content Include="Views\Product\Price.cshtml" />
+    <Content Include="Views\Order\Create.cshtml" />
+    <Content Include="Views\Product\Orders.cshtml" />
+    <Content Include="Views\Shared\OrderLayout.cshtml" />
+    <Content Include="Views\Order\MyOrder.cshtml" />
+    <Content Include="Views\Order\Detail.cshtml" />
+    <Content Include="Views\Order\Search.cshtml" />
+    <Content Include="Views\Order\Review.cshtml" />
+    <Content Include="Views\Product\InventoryRecords.cshtml" />
+    <Content Include="Views\Payment\PayInfo.cshtml" />
+    <Content Include="Views\Payment\_ViewStart.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

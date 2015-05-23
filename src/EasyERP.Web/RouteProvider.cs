@@ -9,12 +9,36 @@
         public void RegisterRoutes(RouteCollection routes)
         {
             routes.MapRoute(
-                "HomePage",
+                "root",
                 "",
                 new
                 {
                     controller = "User",
                     action = "Login"
+                },
+                new[] { "EasyERP.Web.Controllers" });
+
+            routes.MapRoute(
+                "HomePage",
+                "HomePage",
+                new
+                {
+                    controller = "User",
+                    action = "Login"
+                },
+                new[] { "EasyERP.Web.Controllers" });
+
+            routes.MapRoute(
+                "Order",
+                "Order/Review/{orderGuid}",
+                new
+                {
+                    controller = "Order",
+                    action = "Review"
+                },
+                new
+                {
+                    orderGuid = new GuidConstraint(false)
                 },
                 new[] { "EasyERP.Web.Controllers" });
         }

@@ -1,7 +1,7 @@
 ﻿namespace Domain.EntityFramework.Configurations.Users
 {
-    using Domain.Model.Users;
     using System.Data.Entity.ModelConfiguration;
+    using Domain.Model.Users;
 
     public class UserConfiguration : EntityTypeConfiguration<User>
     {

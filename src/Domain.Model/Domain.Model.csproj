@@ -55,6 +55,7 @@
     <Compile Include="Orders\Order.cs" />
     <Compile Include="Orders\OrderItem.cs" />
     <Compile Include="Orders\ShoppingCartItem.cs" />
+    <Compile Include="Payments\PayItem.cs" />
     <Compile Include="Payments\Payment.cs" />
     <Compile Include="Products\Inventory.cs" />
     <Compile Include="Products\Manufacturer.cs" />
@@ -67,14 +68,13 @@
     <Compile Include="Products\ProductManufacturer.cs" />
     <Compile Include="Products\ProductPicture.cs" />
     <Compile Include="Products\ProductPrice.cs" />
-    <Compile Include="Products\ProductPriceHistory.cs" />
     <Compile Include="Products\ProductSortingEnum.cs" />
     <Compile Include="Products\ProductUom.cs" />
     <Compile Include="Products\ProductUomCategory.cs" />
     <Compile Include="Products\Supplierinfo.cs" />
+    <Compile Include="Factory\ConsumptionStatistic.cs" />
     <Compile Include="Sales\Sales.cs" />
     <Compile Include="Sales\SalesItem.cs" />
-    <Compile Include="Factory\ConsumptionStatistic.cs" />
     <Compile Include="Security\AclRecord.cs" />
     <Compile Include="Security\DefaultPermissionRecord.cs" />
     <Compile Include="Security\IAclSupported.cs" />

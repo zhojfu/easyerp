@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Doamin.Service.Factory
+﻿namespace Doamin.Service.Factory
 {
+    using System;
+    using System.Collections.Generic;
     using Domain.Model.Factory;
 
     public interface ITimesheetService<T>

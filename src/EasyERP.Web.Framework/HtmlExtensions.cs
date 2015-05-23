@@ -1,8 +1,5 @@
 ﻿namespace EasyERP.Web.Framework
 {
-    using Antlr.Runtime.Tree;
-    using EasyERP.Web.Framework.Mvc;
-    using Infrastructure.Domain.Model;
     using System;
     using System.Collections.Generic;
     using System.Globalization;
@@ -11,10 +8,29 @@
     using System.Text;
     using System.Web.Mvc;
     using System.Web.Mvc.Html;
+    using EasyERP.Web.Framework.Mvc;
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Serialization;
 
     public static class HtmlExtensions
     {
+        private static readonly JsonSerializerSettings settings;
+
         #region Admin area extensions
+
+        static HtmlExtensions()
+        {
+            settings = new JsonSerializerSettings
+            {
+                // CamelCase: "MyProperty" will become "myProperty"
+                ContractResolver = new CamelCasePropertyNamesContractResolver()
+            };
+        }
+
+        public static MvcHtmlString ToJson(this HtmlHelper html, object value)
+        {
+            return MvcHtmlString.Create(JsonConvert.SerializeObject(value, Formatting.None, settings));
+        }
 
         public static MvcHtmlString Hint(this HtmlHelper helper, string value)
         {
@@ -45,7 +61,7 @@
             string actionName,
             string buttonsSelector) where T : BaseEntityModel
         {
-            if (String.IsNullOrEmpty(actionName))
+            if (string.IsNullOrEmpty(actionName))
             {
                 actionName = "Delete";
             }
@@ -183,7 +199,7 @@
             string parentContainer = null,
             params string[] datainputIds)
         {
-            if (String.IsNullOrEmpty(parentContainer) &&
+            if (string.IsNullOrEmpty(parentContainer) &&
                 datainputIds == null)
             {
                 throw new ArgumentException("Specify at least one selector");
@@ -195,7 +211,7 @@
                 //render only when a certain store is chosen
                 const string cssClass = "multi-store-override-option";
                 var dataInputSelector = "";
-                if (!String.IsNullOrEmpty(parentContainer))
+                if (!string.IsNullOrEmpty(parentContainer))
                 {
                     dataInputSelector = "#" + parentContainer + " input, #" + parentContainer + " textarea, #" +
                                         parentContainer + " select";
@@ -203,7 +219,7 @@
                 if (datainputIds != null &&
                     datainputIds.Length > 0)
                 {
-                    dataInputSelector = "#" + String.Join(", #", datainputIds);
+                    dataInputSelector = "#" + string.Join(", #", datainputIds);
                 }
                 var onClick = string.Format("checkOverriddenStoreValue(this, '{0}')", dataInputSelector);
                 result.Append(
@@ -260,7 +276,7 @@
             var innerText = "*";
 
             //add additional text if specified
-            if (!String.IsNullOrEmpty(additionalText))
+            if (!string.IsNullOrEmpty(additionalText))
             {
                 innerText += " " + additionalText;
             }
@@ -433,9 +449,9 @@
             tag.Attributes.Add(
                 "for",
                 TagBuilder.CreateSanitizedId(html.ViewContext.ViewData.TemplateInfo.GetFullHtmlFieldId(htmlFieldName)));
-            if (!String.IsNullOrEmpty(suffix))
+            if (!string.IsNullOrEmpty(suffix))
             {
-                resolvedLabelText = String.Concat(resolvedLabelText, suffix);
+                resolvedLabelText = string.Concat(resolvedLabelText, suffix);
             }
             tag.SetInnerText(resolvedLabelText);
 

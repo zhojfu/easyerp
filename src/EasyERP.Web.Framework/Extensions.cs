@@ -1,10 +1,10 @@
 ﻿namespace EasyERP.Web.Framework
 {
-    using Doamin.Service.Helpers;
-    using EasyErp.Core.Infrastructure;
     using System;
     using System.Linq;
     using System.Web.Mvc;
+    using Doamin.Service.Helpers;
+    using EasyErp.Core.Infrastructure;
 
     /// <summary>
     /// Extensions
@@ -111,7 +111,7 @@
                 }
 
                 //default formatting
-                if (!String.IsNullOrEmpty(defaultFormat))
+                if (!string.IsNullOrEmpty(defaultFormat))
                 {
                     result = tmp1.ToString(defaultFormat);
                 }

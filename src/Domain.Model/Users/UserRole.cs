@@ -1,8 +1,8 @@
 ﻿namespace Domain.Model.Users
 {
+    using System.Collections.Generic;
     using Domain.Model.Security;
     using Infrastructure.Domain.Model;
-    using System.Collections.Generic;
 
     public class UserRole : BaseEntity, IAggregateRoot
     {

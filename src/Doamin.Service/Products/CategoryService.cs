@@ -1,11 +1,11 @@
 ﻿namespace Doamin.Service.Products
 {
+    using System;
+    using System.Linq;
     using Domain.Model.Products;
     using Domain.Model.Security;
     using EasyErp.Core;
     using Infrastructure.Domain;
-    using System;
-    using System.Linq;
 
     public class CategoryService : ICategoryService
     {
@@ -50,7 +50,7 @@
             int pageSize = int.MaxValue)
         {
             var categories = categoryRepository.FindAll(c => true);
-            if (!String.IsNullOrWhiteSpace(categoryName))
+            if (!string.IsNullOrWhiteSpace(categoryName))
             {
                 categories = categories.Where(c => c.Name.Contains(categoryName));
             }

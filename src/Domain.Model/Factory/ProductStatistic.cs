@@ -6,6 +6,7 @@
     public class ProductStatistic : Statistic, IAggregateRoot
     {
         public double QualifyQuaitity { get; set; }
+
         public double UnQualifyQuatity { get; set; }
 
         #region foreign Key

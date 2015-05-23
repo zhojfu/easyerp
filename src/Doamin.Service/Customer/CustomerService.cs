@@ -45,12 +45,12 @@
 
         public IEnumerable<Customer> GetCustomersByName(string name)
         {
-            return this.repository.FindAll(c=>c.Name.Contains(name));
+            return repository.FindAll(c => c.Name.Contains(name));
         }
 
         public void UpdateCustomer(Customer customer)
         {
-             Customer origin = GetCustomerById(customer.Id);
+            var origin = GetCustomerById(customer.Id);
             customer.CreatedOn = origin.CreatedOn;
             customer.UpdatedOn = DateTime.Now;
             repository.Update(customer);

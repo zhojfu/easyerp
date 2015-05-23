@@ -1,10 +1,8 @@
-﻿using System.Web.Mvc;
-
-namespace EasyERP.Web.Controllers
+﻿namespace EasyERP.Web.Controllers
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
+    using System.Web.Mvc;
     using AutoMapper;
     using Doamin.Service.Factory;
     using Domain.Model.Factory;
@@ -17,12 +15,14 @@ namespace EasyERP.Web.Controllers
 
         private readonly ITimesheetService<ConsumptionStatistic> timesheetService;
 
-        public ConsumptionController(IConsumptionService consumptionService, ITimesheetService<ConsumptionStatistic> timesheetService)
+        public ConsumptionController(
+            IConsumptionService consumptionService,
+            ITimesheetService<ConsumptionStatistic> timesheetService)
         {
             this.consumptionService = consumptionService;
             this.timesheetService = timesheetService;
         }
-        
+
         public ActionResult Index()
         {
             return View();
@@ -30,19 +30,24 @@ namespace EasyERP.Web.Controllers
 
         public JsonResult Get(int page, int pageSize)
         {
-            var consumptions = this.consumptionService.GetConsumptionCategories(page, pageSize);
+            var consumptions = consumptionService.GetConsumptionCategories(page, pageSize);
 
             if (consumptions == null)
+            {
                 return null;
+            }
 
-            List<ConsumptionModel> models = consumptions.Select(Mapper.Map<Consumption, ConsumptionModel>).Where(model => model != null).ToList();
+            var models =
+                Enumerable.Where(consumptions.Select(Mapper.Map<Consumption, ConsumptionModel>), model => model != null)
+                          .ToList();
 
             return Json(
                 new
                 {
                     total = consumptions.TotalRecords,
                     data = models
-                }, JsonRequestBehavior.AllowGet);
+                },
+                JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
@@ -51,7 +56,7 @@ namespace EasyERP.Web.Controllers
             var consumption = Mapper.Map<ConsumptionModel, Consumption>(model);
             if (consumption != null)
             {
-                this.consumptionService.UpdateConsumptionCategory(consumption);
+                consumptionService.UpdateConsumptionCategory(consumption);
             }
 
             return Json(model);
@@ -63,7 +68,7 @@ namespace EasyERP.Web.Controllers
             var consumption = Mapper.Map<ConsumptionModel, Consumption>(model);
             if (consumption != null)
             {
-                this.consumptionService.AddConsumptionCategory(consumption);
+                consumptionService.AddConsumptionCategory(consumption);
             }
 
             return Json(model);
@@ -75,7 +80,7 @@ namespace EasyERP.Web.Controllers
             var consumption = Mapper.Map<ConsumptionModel, Consumption>(model);
             if (consumption != null)
             {
-                this.consumptionService.DeleteConsumptionCategory(consumption);
+                consumptionService.DeleteConsumptionCategory(consumption);
             }
             return Json(model);
         }
@@ -94,11 +99,19 @@ namespace EasyERP.Web.Controllers
                 return null;
             }
 
-            IEnumerable<Timesheet> timesheet = this.timesheetService.GetTimesheetByDate(page, pageSize, selectedDate);
+            var timesheet = timesheetService.GetTimesheetByDate(page, pageSize, selectedDate);
 
-            List<TimesheetModel> result = timesheet.Select(Mapper.Map<Timesheet, TimesheetModel>).Where(model => model != null).ToList();
+            var result =
+                Enumerable.Where(timesheet.Select(Mapper.Map<Timesheet, TimesheetModel>), model => model != null)
+                          .ToList();
 
-            return Json(new { data = result, total = result.Count }, JsonRequestBehavior.AllowGet);
+            return Json(
+                new
+                {
+                    data = result,
+                    total = result.Count
+                },
+                JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
@@ -110,9 +123,9 @@ namespace EasyERP.Web.Controllers
             {
                 return null;
             }
-            Timesheet timesheet =  Mapper.Map<TimesheetModel, Timesheet>(model);
-            this.timesheetService.UpdateTimesheet(selectedDate, timesheet);
+            var timesheet = Mapper.Map<TimesheetModel, Timesheet>(model);
+            timesheetService.UpdateTimesheet(selectedDate, timesheet);
             return Json(model);
         }
-	}
+    }
 }

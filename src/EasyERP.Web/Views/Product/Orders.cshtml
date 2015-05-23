@@ -1,0 +1,56 @@
+﻿@section SectionTitle
+{
+    订单
+}
+
+@Html.AntiForgeryToken()
+@using (Html.BeginForm())
+{
+    <div id="tabstrip">
+        <ul>
+            <li>Grid</li>
+            <li>Tab 2</li>
+            <li>Tab 3</li>
+        </ul>
+        <div>
+            <div id="grid"></div>
+        </div>
+        <div>
+            <div id="tab2"></div>
+        </div>
+        <div>
+            <div id="tab3"></div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var tabstrip = $("#tabstrip").kendoTabStrip().data("kendoTabStrip");
+            tabstrip.select(0);
+
+            $("#grid").kendoGrid({
+                columns: [
+                    { field: "FirstName", title: "First Name" },
+                    { field: "LastName", title: "Last Name" }
+                ],
+                dataSource: {
+                    data: [
+                        { FirstName: "Joe", LastName: "Smith" },
+                        { FirstName: "Jane", LastName: "Smith" }
+                    ]
+                }
+            });
+            $("#tab2").kendoGrid({
+                columns: [
+                    { field: "FirstName", title: "Firstdf Name" },
+                    { field: "LastName", title: "Lastdf  Name" }
+                ],
+                dataSource: {
+                    data: [
+                        { FirstName: "Joe", LastName: "Smith" },
+                        { FirstName: "Jane", LastName: "Smith" }
+                    ]
+                }
+            });
+        });
+    </script>
+}

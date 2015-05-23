@@ -1,8 +1,6 @@
-﻿@model String
-@using Doamin.Service.Security
-@using EasyErp.Core
-@using EasyErp.Core.Infrastructure
+﻿@using EasyErp.Core
 @using EasyERP.Web.Framework.UI
+@model string
 @{
     //we do not bundle this script file (does not work for some reasons in bundle)
     Html.AddScriptParts("~/Scripts/tinymce/tinymce.min.js", true);
@@ -23,14 +21,13 @@
     var enableFullPage = Convert.ToBoolean(ViewData["nop.RichEditor.EnableFullPage"] ?? false);
 }
 <script>
-    $(document).ready(function () {
+    $(document).ready(function() {
         @* wooncherk contribution *@
         function RoxyFileBrowser@(random)(field_name, url, type, win) {
             var roxyFileman = '@Url.Content("~/Content/Roxy_Fileman/index.html")';
             if (roxyFileman.indexOf("?") < 0) {
                 roxyFileman += "?type=" + type;
-            }
-            else {
+            } else {
                 roxyFileman += "&type=" + type;
             }
             roxyFileman += '&input=' + field_name + '&value=' + document.getElementById(field_name).value;
@@ -60,12 +57,14 @@
             toolbar: "insertfile undo redo | styleselect | fontselect | fontsizeselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image@(AllowJbimages ? " jbimages" : null)",
             //"relative_urls" required by jbimages plugin to be set to "false"
             relative_urls: false,
-            @if (AllowJavaScript){
+            @if (AllowJavaScript)
+            {
                 <text>
             valid_elements: "*[*]",
             </text>
             }
-            @if (AllowRoxyFileman){
+            @if (AllowRoxyFileman)
+            {
                 <text>
             //picture manager
             file_browser_callback: RoxyFileBrowser@(random),
@@ -77,7 +76,7 @@
         };
 
         function getAdditionalEditorSettings@(random)(settings) {
-            @Html.Raw(additionalEditorSettings)
+            @Html.Raw(additionalEditorSettings);
             return settings;
         }
 
@@ -85,5 +84,5 @@
     });
 </script>
 @Html.TextArea(string.Empty, /* Name suffix */
-    ViewData.TemplateInfo.FormattedModelValue /* Initial value */
-)
+               ViewData.TemplateInfo.FormattedModelValue /* Initial value */
+     )

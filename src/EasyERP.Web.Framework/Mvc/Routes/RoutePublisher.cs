@@ -1,10 +1,10 @@
 ﻿namespace EasyERP.Web.Framework.Mvc.Routes
 {
-    using EasyErp.Core.Infrastructure;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Web.Routing;
+    using EasyErp.Core.Infrastructure;
 
     public class RoutePublisher : IRoutePublisher
     {

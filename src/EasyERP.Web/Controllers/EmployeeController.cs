@@ -1,17 +1,15 @@
-﻿using System.Web.Mvc;
-
-namespace EasyERP.Web.Controllers
+﻿namespace EasyERP.Web.Controllers
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
+    using System.Web.Mvc;
     using AutoMapper;
     using Doamin.Service.Factory;
     using Domain.Model;
     using Domain.Model.Factory;
-    using EasyERP.Web.Models;
     using EasyERP.Web.Models.Employee;
-    using Infrastructure.Utility;
-    using System.Collections.Generic;
+    using Infrastructure;
 
     public class EmployeeController : Controller
     {
@@ -19,7 +17,9 @@ namespace EasyERP.Web.Controllers
 
         private readonly ITimesheetService<WorkTimeStatistic> timesheetService;
 
-        public EmployeeController(IEmployeeService employeeService, ITimesheetService<WorkTimeStatistic> timesheetService)
+        public EmployeeController(
+            IEmployeeService employeeService,
+            ITimesheetService<WorkTimeStatistic> timesheetService)
         {
             this.employeeService = employeeService;
             this.timesheetService = timesheetService;
@@ -43,7 +43,7 @@ namespace EasyERP.Web.Controllers
 
         public ActionResult Edit(int id)
         {
-            Employee e = this.employeeService.GetEmployeeById(id);
+            var e = employeeService.GetEmployeeById(id);
             if (e != null)
             {
                 var model = Mapper.Map<Employee, EmployeeModel>(e);
@@ -58,7 +58,7 @@ namespace EasyERP.Web.Controllers
             var e = Mapper.Map<EmployeeModel, Employee>(model);
             if (e != null)
             {
-                this.employeeService.UpdateEmployee(e);
+                employeeService.UpdateEmployee(e);
             }
             return RedirectToAction("Index");
         }
@@ -66,10 +66,10 @@ namespace EasyERP.Web.Controllers
         [HttpPost]
         public ActionResult Create(EmployeeModel employee)
         {
-            Employee e = Mapper.Map<EmployeeModel, Employee>(employee);
+            var e = Mapper.Map<EmployeeModel, Employee>(employee);
             if (e != null)
             {
-                this.employeeService.AddEmployee(e);
+                employeeService.AddEmployee(e);
             }
 
             return RedirectToAction("Index");
@@ -80,21 +80,21 @@ namespace EasyERP.Web.Controllers
         {
             if (ids != null)
             {
-                this.employeeService.DeleteEmployeeByIds(ids);
+                employeeService.DeleteEmployeeByIds(ids);
             }
             return Json(null);
         }
 
         public JsonResult EmployeeList(int skip, int take, int page, int pageSize)
         {
-            PagedResult<Employee> employees = this.employeeService.GetEmployees(page, pageSize);
+            var employees = employeeService.GetEmployees(page, pageSize);
             if (employees != null)
             {
-                List<EmployeeListModel> employeesList = new List<EmployeeListModel>();
+                var employeesList = new List<EmployeeListModel>();
 
                 foreach (var employee in employees)
                 {
-                    EmployeeListModel model = Mapper.Map<Employee, EmployeeListModel>(employee);
+                    var model = Mapper.Map<Employee, EmployeeListModel>(employee);
                     model.Sex = employee.Male ? "男" : "女";
                     employeesList.Add(model);
                 }
@@ -109,7 +109,7 @@ namespace EasyERP.Web.Controllers
             }
             return Json(null);
         }
-                          
+
         public JsonResult GetTimeSheetByDate(string date, int page, int pageSize)
         {
             DateTime selectedDate;
@@ -119,11 +119,20 @@ namespace EasyERP.Web.Controllers
                 return null;
             }
 
-            IEnumerable<Timesheet> timesheet = this.timesheetService.GetTimesheetByDate(page, pageSize, selectedDate);
+            var timesheet = timesheetService.GetTimesheetByDate(page, pageSize, selectedDate);
 
-            List<TimesheetModel> result = timesheet.Select(Mapper.Map<Timesheet, TimesheetModel>).Where(model => model != null).ToList();
+            var result =
+                timesheet.IfNotNull(
+                    t =>
+                    Enumerable.Where(t.Select(Mapper.Map<Timesheet, TimesheetModel>), model => model != null).ToList());
 
-            return Json(new { data = result, total = result.Count }, JsonRequestBehavior.AllowGet);
+            return Json(
+                new
+                {
+                    data = result,
+                    total = result.Count
+                },
+                JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
@@ -135,8 +144,8 @@ namespace EasyERP.Web.Controllers
             {
                 return null;
             }
-            Timesheet timesheet = Mapper.Map<TimesheetModel, Timesheet>(model);
-            this.timesheetService.UpdateTimesheet(selectedDate, timesheet);
+            var timesheet = Mapper.Map<TimesheetModel, Timesheet>(model);
+            timesheetService.UpdateTimesheet(selectedDate, timesheet);
             return Json(model);
         }
     }

@@ -18,7 +18,7 @@
         </div>
         <div class="options">
             <a href="@Url.Action("Create")" class="k-button">添加门店</a>
-            <input type="button" id="delete-selected" class="k-button" value="删除" />
+            <input type="button" id="delete-selected" class="k-button" value="删除"/>
         </div>
     </div>
     <div id="stores-grid"></div>
@@ -118,7 +118,7 @@
                     cache: false,
                     type: "POST",
                     url: "@(Url.Action("DeleteSelected", "Store" +
-                                                          "e"))",
+                                                         "e"))",
                     data: postData,
                     complete: function(data) {
                         //reload grid
