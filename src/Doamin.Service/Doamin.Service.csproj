@@ -50,6 +50,10 @@
     <Compile Include="Events\IEventPublisher.cs" />
     <Compile Include="Events\ISubscriptionService.cs" />
     <Compile Include="Events\SubscriptionService.cs" />
+    <Compile Include="ExportImport\ExportManager.cs" />
+    <Compile Include="ExportImport\IExportManager.cs" />
+    <Compile Include="ExportImport\IImportManager.cs" />
+    <Compile Include="ExportImport\ImportManager.cs" />
     <Compile Include="Factory\AttritionService.cs" />
     <Compile Include="Factory\DaliyStatisticService.cs" />
     <Compile Include="Factory\EmployeeService.cs" />
@@ -76,6 +80,8 @@
     <Compile Include="Products\IInventoryService.cs" />
     <Compile Include="Products\IManufacturerService.cs" />
     <Compile Include="Products\InventoryService.cs" />
+    <Compile Include="Products\ProductPriceService.cs" />
+    <Compile Include="Products\IProductPriceService.cs" />
     <Compile Include="Products\IProductService.cs" />
     <Compile Include="Products\ManufacturerExtensions.cs" />
     <Compile Include="Products\ManufacturerService.cs" />

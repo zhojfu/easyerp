@@ -9,6 +9,8 @@
 
         public string Description { get; set; }
 
+        public string ItemNo { get; set; }
+
         public bool Published { get; set; }
 
         public bool Deleted { get; set; }

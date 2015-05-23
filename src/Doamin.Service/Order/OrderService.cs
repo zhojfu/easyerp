@@ -1,22 +1,27 @@
 ﻿namespace Doamin.Service.Order
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
     using Domain.Model.Orders;
     using EasyErp.Core;
     using Infrastructure.Domain;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
 
     public class OrderService : IOrderService
     {
         private readonly IRepository<Order> orderRepository;
 
         private readonly IUnitOfWork unitOfWork;
+        private readonly IWorkContext workContext;
 
-        public OrderService(IRepository<Order> orderRepository, IUnitOfWork unitOfWork)
+        public OrderService(IRepository<Order> orderRepository,
+            IUnitOfWork unitOfWork,
+            IWorkContext workContext
+            )
         {
             this.orderRepository = orderRepository;
             this.unitOfWork = unitOfWork;
+            this.workContext = workContext;
         }
 
         public IPagedList<Order> SearchOrders(
@@ -24,7 +29,6 @@
             int productId = 0,
             OrderStatus? os = null,
             PaymentStatus? ps = null,
-            ShippingStatus? ss = null,
             int pageIndex = 0,
             int pageSize = Int32.MaxValue)
         {
@@ -39,13 +43,6 @@
             {
                 paymentStatusId = (int)ps.Value;
             }
-
-            int? shippingStatusId = null;
-            if (ss.HasValue)
-            {
-                shippingStatusId = (int)ss.Value;
-            }
-
             var orders = orderRepository.FindAll(x => x.Id > 0);
             if (customerId > 0)
             {
@@ -64,11 +61,8 @@
             {
                 orders = orders.Where(o => o.PaymentStatusId == paymentStatusId.Value);
             }
-            if (shippingStatusId.HasValue)
-            {
-                orders = orders.Where(o => o.ShippingStatusId == shippingStatusId);
-            }
-            orders = orders.Where(o => o.Deleted);
+
+            orders = orders.Where(o => !o.Deleted);
             orders = orders.OrderByDescending(o => o.CreatedOnUtc);
 
             //database layer paging
@@ -77,12 +71,12 @@
 
         public Order GetOrderById(int orderId)
         {
-            if (orderId == 0)
-            {
-                return null;
-            }
+            return orderId == 0 ? null : orderRepository.GetByKey(orderId);
+        }
 
-            return orderRepository.GetByKey(orderId);
+        public Order GetOrderByGuid(Guid guid)
+        {
+            return guid == Guid.Empty ? null : orderRepository.FindAll(o => o.OrderGuid == guid).FirstOrDefault();
         }
 
         public virtual IList<Order> GetOrdersByIds(int[] orderIds)
@@ -98,6 +92,35 @@
 
             //sort by passed identifiers
             return orderIds.Select(id => orders.Find(x => x.Id == id)).Where(order => order != null).ToList();
+        }
+
+        public void InsertOrder(Order order)
+        {
+            if (order == null)
+            {
+                throw new ArgumentNullException("order");
+            }
+
+            orderRepository.Add(order);
+            unitOfWork.Commit();
+        }
+
+        public void CreateOrderByOrderItems(IEnumerable<OrderItem> orderItems)
+        {
+            if (orderItems == null)
+            {
+                throw new ArgumentNullException("orderItems");
+            }
+
+            var order = new Order()
+            {
+                OrderGuid = Guid.NewGuid(),
+                OrderStatus = OrderStatus.Pending,
+                CreatedOnUtc = DateTime.Now,
+                CustomerId = workContext.CurrentUser.StoreId,
+                PaymentStatus = PaymentStatus.Pending
+            };
+            orderRepository.Add(order);
         }
     }
 }

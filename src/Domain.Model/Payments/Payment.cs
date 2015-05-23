@@ -1,15 +1,29 @@
-﻿namespace Domain.Model.Payment
+﻿namespace Domain.Model.Payments
 {
-    using System;
+    using Domain.Model.Orders;
     using Domain.Model.Products;
     using Infrastructure.Domain.Model;
+    using System;
+    using System.Collections.Generic;
 
     public class Payment : BaseEntity, IAggregateRoot
     {
+        public Payment()
+        {
+            Items = new List<PayItem>();
+        }
         public DateTime DueDateTime { get; set; }
-        public float Payables { get; set; }
-        public float Paid { get; set; }
+
+        public double TotalAmount { get; set; }
+
         public int InventoryId { get; set; }
-        public Inventory Inventory { get; set; }
+
+        public virtual Inventory Inventory { get; set; }
+
+        public int OrderId { get; set; }
+
+        public virtual Order Order { get; set; }
+
+        public virtual ICollection<PayItem> Items { get; set; }
     }
 }

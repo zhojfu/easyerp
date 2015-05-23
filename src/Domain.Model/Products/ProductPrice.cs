@@ -1,15 +1,14 @@
 ﻿namespace Domain.Model.Products
 {
-    using Domain.Model.Company;
     using Domain.Model.Stores;
     using Infrastructure.Domain.Model;
     using System;
 
-    public class ProductPriceHistory : BaseEntity
+    public class ProductPrice : BaseEntity, IAggregateRoot
     {
         public DateTime DateTime { get; set; }
 
-        public float Cost { get; set; }
+        public decimal Price { get; set; }
 
         public int StoreId { get; set; }
 

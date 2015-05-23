@@ -1,5 +1,6 @@
 ﻿namespace Doamin.Service.Products
 {
+    using System.Collections;
     using Domain.Model.Products;
     using EasyErp.Core;
 

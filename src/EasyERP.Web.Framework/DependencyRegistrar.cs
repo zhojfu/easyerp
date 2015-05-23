@@ -26,6 +26,7 @@ namespace EasyERP.Web.Framework
     using System.Linq;
     using System.Reflection;
     using System.Web;
+    using Doamin.Service.ExportImport;
 
     public class DependencyRegistrar : IDependencyRegistrar
     {
@@ -64,9 +65,13 @@ namespace EasyERP.Web.Framework
             var dataContext = new EntityFrameworkDbContext(ConnectionString);
 
             //builder.Register<IEntityFrameworkDbContext>(c => dataContext).InstancePerLifetimeScope();
-            builder.RegisterInstance(dataContext).As<IEntityFrameworkDbContext>();
-            builder.Register<IUnitOfWork>(i => new EntityFrameworkUnitOfWork(dataContext))
+            //builder.RegisterInstance<string>()
+            builder.Register(d => new EntityFrameworkDbContext("easyerp_db")).AsSelf().As<IEntityFrameworkDbContext>()
                    .InstancePerLifetimeScope();
+            //builder.RegisterInstance(dataContext).As<IEntityFrameworkDbContext>().SingleInstance();
+            //builder.Register<IUnitOfWork>(i => new EntityFrameworkUnitOfWork(dataContext)) .InstancePerLifetimeScope();
+            builder.RegisterType<EntityFrameworkUnitOfWork>().As<IUnitOfWork>().InstancePerLifetimeScope();
+
 
             builder.RegisterGeneric(typeof(EntityFrameworkRepository<>))
                    .As(typeof(IRepository<>))
@@ -89,11 +94,13 @@ namespace EasyERP.Web.Framework
             builder.RegisterType<EncryptionService>().As<IEncryptionService>().InstancePerLifetimeScope();
             builder.RegisterType<StandardPermissionProvider>().As<IPermissionProvider>().InstancePerLifetimeScope();
             builder.RegisterType<ProductService>().As<IProductService>().InstancePerLifetimeScope();
+            builder.RegisterType<ProductPriceService>().As<IProductPriceService>().InstancePerLifetimeScope();
 
             builder.RegisterType<PermissionService>().As<IPermissionService>().InstancePerLifetimeScope();
             builder.RegisterType<AclService>().As<IAclService>().InstancePerLifetimeScope();
 
             builder.RegisterType<StoreService>().As<IStoreService>().InstancePerLifetimeScope();
+            builder.RegisterType<ExportManager>().As<IExportManager>().InstancePerLifetimeScope();
 
             builder.RegisterType<FormsAuthenticationService>().As<IAuthenticationService>().InstancePerLifetimeScope();
 

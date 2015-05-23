@@ -1,80 +1,100 @@
 ﻿@using EasyErp.Core.Configuration.Settings
 @using EasyErp.Core.Infrastructure
-@using EasyERP.Web.Framework
 @model EasyERP.Web.Models.Products.ProductListModel
 @section SectionTitle
 {
     产品管理
 }
 @{
-    ViewBag.Title = "产品管理";
     var defaultGridPageSize = EngineContext.Current.Resolve<AreaSettings>().DefaultGridPageSize;
     var gridPageSizes = EngineContext.Current.Resolve<AreaSettings>().GridPageSizes;
 }
+
+<div class="options">
+    @*export selected (Excel). We don't use GET approach because it's limited to 2K-4K chars and won't work for large number of entities*@
+    @using (Html.BeginForm("ExportProducts", "Product", FormMethod.Post, new
+    {
+        id = "export-product"
+    }))
+    {
+        @Html.AntiForgeryToken()
+        <input type="hidden" id="selectedIds" name="selectedIds" value=""/>
+    }
+    <button id="export-product-button">导出产品</button>
+</div>
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    <div class="section-header">
-        <div class="title">
-            <label>产品管理</label>
-        </div>
-        <div class="options">
-            <a href="@Url.Action("Create")" class="k-button">添加产品</a>
-            <a href="@Url.Action("Inventory")" class="k-button">入库</a>
-            <input type="button" id="delete-selected" class="k-button" value="删除" />
-        </div>
-    </div>
     <div class="form-group">
         @Html.ValidationMessageFor(m => m.SearchProductName, "", new
         {
             @class = "text-danger"
         })
         @Html.LabelFor(m => m.SearchProductName)
-        @Html.EditorFor(model => model.SearchProductName)
+        @Html.TextBoxFor(model => model.SearchProductName, new
+        {
+            id = "search-product-name"
+        })
     </div>
     <div class="form-group">
         @Html.LabelFor(m => m.SearchCategoryId)
         @Html.DropDownList("SearchCategoryId", Model.AvailableCategories, new
         {
-            id = "select-category"
+            id = "selected-category",
+            @onchange="var grid = $(\"#products-grid\").data(\"kendoGrid\"); grid.dataSource.page(1);" 
         })
     </div>
     <div class="form-group">
         @Html.LabelFor(m => m.SearchStoreId)
         @Html.DropDownList("SearchStoreId", Model.AvailableStores, new
         {
-            id = "select-store"
+            id = "selected-store",
+            @onchange="var grid = $(\"#products-grid\").data(\"kendoGrid\"); grid.dataSource.page(1);" 
         })
     </div>
     <div>
-        <input type="button" id="search-products" class="k-button" value="搜索" />
+        <input type="button" id="search-products" class="k-button" value="搜索"/>
     </div>
-    <div id="products-grid"></div>
+    <div>
+        <div id="products-grid"></div>
+    </div>
     <script type="text/javascript">
-
-        var selectedIds = [];
+        function additionalData() {
+            var data = {
+                SearchProductName: $("#search-product-name").val(),
+                SearchStoreId: $("#selected-store").val(),
+                SearchCategoryId: $("#selected-category").val()
+            };
+            addAntiForgeryToken(data);
+            return data;
+        }
 
         $(document).ready(function() {
 
             $("#products-grid").kendoGrid({
                 dataSource: {
-                    type: "json",
+                    autoSync: true,
                     transport: {
                         read: {
-                            url: "@Html.Raw(Url.Action("ProductList", "Product"))",
+                            url: "/Product/ProductList",
                             type: "POST",
                             dataType: "json",
                             data: additionalData
+                        },
+                        destroy: {
+                            url: "/Product/Destroy",
+                            type: "POST",
+                            dataType: "json"
                         }
                     },
                     schema: {
+                        model: { id: "Id" },
                         data: "Data",
                         total: "Total",
                         errors: "Errors"
                     },
                     error: function(e) {
                         display_kendoui_grid_error(e);
-                        // Cancel the changes
                         this.cancelChanges();
                     },
                     pageSize: @(defaultGridPageSize),
@@ -86,92 +106,42 @@
                     refresh: true,
                     pageSizes: [@(gridPageSizes)]
                 },
+                batch: false,
                 editable: {
-                    confirmation: false,
-                    mode: "inline"
+                    confirmation: true,
+                    mode: "inline",
+                    destroy: true
                 },
                 scrollable: false,
-                dataBound: onDataBound,
                 columns: [
-                    {
-                        field: "Id",
-                        headerTemplate: "<input id='mastercheckbox' type='checkbox' />",
-                        headerAttributes: { style: "text-align:center" },
-                        attributes: { style: "text-align:center" },
-                        template: "<input type='checkbox' value='#=Id#' class='checkboxGroups' />",
-                        width: 50
-                    },
-                    {
-                        field: "Name",
-                        title: "产品名",
-                        width: 300
-                    },
-                    {
-                        field: "CategoryName",
-                        title: "产品目录",
-                        width: 300
-                    },
-                    {
-                        field: "StockQuantity",
-                        title: "库存",
-                        width: 100
-                    },
-                    {
-                        field: "Price",
-                        title: "价格",
-                        width: 100
-                    },
-                    {
-                        field: "ProductCost",
-                        title: "成本",
-                        width: 100
-                    },
-                    {
-                        field: "Sku",
-                        title: "条码",
-                        width: 100
-                    },
-                    {
-                        field: "Id",
-                        title: "查看入库记录",
-                        width: 100,
-                        template: "<a href=\"Records/#=Id#\">编辑</a>"
-                    },
-                    {
-                        field: "Id",
-                        title: "修改",
-                        width: 100,
-                        template: "<a href=\"Edit/#=Id#\">编辑</a>"
-                    }
+                    { field: "Name", title: "产品名", width: 100 },
+                    { field: "ItemNo", title: "产品编码", width: 100 },
+                    { field: "CategoryName", title: "产品目录", width: 100 },
+                    { field: "StockQuantity", title: "库存", width: 100 },
+                    { field: "Price", title: "价格", width: 100 },
+                    { field: "ProductCost", title: "成本", width: 100 },
+                    { field: "Gtin", title: "条码", width: 100 },
+                    { field: "Id", title: "&nbsp;", width: 100, template: "<a href=\"Edit/#=Id#\">修改</a>" },
+                    { field: "Id", title: "&nbsp;", width: 100, template: "<a href=\"Price/#=Id#\">修改价格</a>" },
+                    { command: "destroy", text: "删除", title: "&nbsp;", width: 100 }
                 ]
             });
-
             //search button
             $("#search-products").click(function() {
-                //search
                 var grid = $("#products-grid").data("kendoGrid");
-                grid.dataSource.page(1); //new search. Set page size to 1
-                //grid.dataSource.read(); we already loaded the grid above using "page" function
-                //clear selected checkboxes
-                $(".checkboxGroups").attr("checked", false).change();
-                selectedIds = [];
+                grid.dataSource.page(1);
                 return false;
             });
 
-            $("#@Html.FieldIdFor(model => model.SearchProductName)").keydown(function(event) {
-                if (event.keyCode == 13) {
+            $("#search-product-name").keydown(function(event) {
+                if (event.keyCode === 13) {
                     $("#search-products").click();
                     return false;
                 }
             });
 
-            //$("#select-category").onchange(function(event) {
-            //    $("#search-products").click();
-            //});
-
             //delete selected
             $("#delete-selected").click(function(e) {
-
                 e.preventDefault();
 
                 var postData = {
@@ -197,55 +167,12 @@
                 return false;
             });
 
-            $("#mastercheckbox").click(function() {
-                $(".checkboxGroups").attr("checked", $(this).is(":checked")).change();
-            });
-
-            //wire up checkboxes.
-            $("#products-grid").on("change", "input[type=checkbox][id!=mastercheckbox]", function(e) {
-                var $check = $(this);
-                if ($check.is(":checked") == true) {
-                    var checked = jQuery.inArray($check.val(), selectedIds);
-                    if (checked == -1) {
-                        //add id to selectedIds.
-                        selectedIds.push($check.val());
-                    }
-                } else {
-                    var checked = jQuery.inArray($check.val(), selectedIds);
-                    if (checked > -1) {
-                        //remove id from selectedIds.
-                        selectedIds = $.grep(selectedIds, function(item, index) {
-                            return item != $check.val();
-                        });
-                    }
-                }
-                updateMasterCheckbox();
+            $('#export-product-button').click(function(e) {
+                e.preventDefault();
+                $('#export-product').submit();
+                return false;
             });
         });
 
-        function additionalData() {
-            var data = {
-                SearchProductName: $("#@Html.FieldIdFor(model => model.SearchProductName)").val(),
-            };
-            addAntiForgeryToken(data);
-            return data;
-        }
-
-        function onDataBound(e) {
-            $("#products-grid input[type=checkbox][id!=mastercheckbox]").each(function() {
-                var currentId = $(this).val();
-                var checked = jQuery.inArray(currentId, selectedIds);
-                //set checked based on if current checkbox's value is in selectedIds.
-                $(this).attr("checked", checked > -1);
-            });
-
-            updateMasterCheckbox();
-        }
-
-        function updateMasterCheckbox() {
-            var numChkBoxes = $("#products-grid input[type=checkbox][id!=mastercheckbox]").length;
-            var numChkBoxesChecked = $("#products-grid input[type=checkbox][id!=mastercheckbox]:checked").length;
-            $("#mastercheckbox").attr("checked", numChkBoxes == numChkBoxesChecked && numChkBoxes > 0);
-        }
     </script>
 }
