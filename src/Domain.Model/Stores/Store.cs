@@ -15,8 +15,6 @@ namespace Domain.Model.Stores
             Products = new List<Product>();
         }
 
-        public string Name { get; set; }
-
         public string ShortDescription { get; set; }
 
         public string FullDescription { get; set; }

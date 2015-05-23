@@ -14,8 +14,6 @@
             ProductPrices = new List<ProductPrice>();
         }
 
-        public string Name { get; set; }
-
         public string ItemNo { get; set; }
 
         public string ShortDescription { get; set; }
@@ -25,6 +23,7 @@
         public int StockQuantity { get; set; }
 
         public string Gtin { get; set; }
+        public string Origin { get; set; }
 
         public decimal Price { get; set; }
 

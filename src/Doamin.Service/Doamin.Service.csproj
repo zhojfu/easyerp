@@ -42,8 +42,6 @@
   <ItemGroup>
     <Compile Include="Authentication\FormsAuthenticationService.cs" />
     <Compile Include="Authentication\IAuthenticationService.cs" />
-    <Compile Include="Directory\IMeasureService.cs" />
-    <Compile Include="Directory\MeasureService.cs" />
     <Compile Include="Events\EventPublisher.cs" />
     <Compile Include="Events\EventPublisherExtensions.cs" />
     <Compile Include="Events\IConsumer.cs" />
@@ -71,8 +69,6 @@
     <Compile Include="Installation\CodeFirstInstallationService.cs" />
     <Compile Include="Installation\IInstallationService.cs" />
     <Compile Include="Installation\SqlFileInstallationService.cs" />
-    <Compile Include="Order\IShoppingCartService.cs" />
-    <Compile Include="Order\ShoppingCartService.cs" />
     <Compile Include="Order\IOrderService.cs" />
     <Compile Include="Order\OrderService.cs" />
     <Compile Include="Payments\PaymentService.cs" />

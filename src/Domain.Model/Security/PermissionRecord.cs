@@ -8,8 +8,6 @@
     {
         private ICollection<UserRole> userRoles;
 
-        public string Name { get; set; }
-
         public string SystemName { get; set; }
 
         public string Category { get; set; }

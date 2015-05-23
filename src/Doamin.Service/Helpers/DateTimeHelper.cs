@@ -9,16 +9,6 @@ namespace Doamin.Service.Helpers
     /// </summary>
     public class DateTimeHelper : IDateTimeHelper
     {
-        public TimeZoneInfo FindTimeZoneById(string id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public ReadOnlyCollection<TimeZoneInfo> GetSystemTimeZones()
-        {
-            throw new NotImplementedException();
-        }
-
         public DateTime ConvertToUserTime(DateTime dt)
         {
             return ConvertToUserTime(dt, dt.Kind);

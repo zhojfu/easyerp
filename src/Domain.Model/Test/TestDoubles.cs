@@ -4,6 +4,5 @@
 
     public class TestDoubles : BaseEntity, IAggregateRoot
     {
-        public string Name { get; set; }
     }
 }

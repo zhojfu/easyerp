@@ -8,11 +8,6 @@ namespace Domain.Model.Directory
     public class MeasureDimension : BaseEntity
     {
         /// <summary>
-        /// Gets or sets the name
-        /// </summary>
-        public string Name { get; set; }
-
-        /// <summary>
         /// Gets or sets the system keyword
         /// </summary>
         public string SystemKeyword { get; set; }
