@@ -8,8 +8,6 @@
 
         public int AssociatedProductId { get; set; }
 
-        public string Name { get; set; }
-
         public string ColorSquaresRgb { get; set; }
 
         public decimal PriceAdjustment { get; set; }

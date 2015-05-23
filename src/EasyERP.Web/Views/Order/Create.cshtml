@@ -201,12 +201,6 @@
         <button id="buy-confirm" type="button">购买</button>
     </div>
 </script>
-<script id="fieldsTemplate" type="text/x-kendo-template">
-    <li>
-        <label data-bind="attr: { for: name}, text: label"></label>
-        <input data-bind="attr: { type: type, name: name, class: css}" # if (get("required")) {# required #} # />
-    </li>
-</script>
 <script>
     $("#order-now").click(function(e) {
         e.preventDefault();

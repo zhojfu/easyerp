@@ -8,7 +8,6 @@
     {
         private ICollection<PermissionRecord> permissionRecords;
 
-        public string Name { get; set; }
 
         public bool Active { get; set; }
 
