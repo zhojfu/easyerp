@@ -39,7 +39,7 @@ $(document).ready(function () {
         dataSource: dataSource,
         selectable: "multiple",
         pageable: {
-            refresh: true,
+            refresh: true
         },
         columns: [
             { field: "FullName", title: "姓名", template: '<a href="/Employee/Edit/${Id}" target="_blank">${FullName}</a>' },

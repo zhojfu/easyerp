@@ -65,9 +65,9 @@ namespace EasyERP.Web.Controllers
             {
                 object o = new
                 {
-                    Id = customer.Id,
-                    Name = customer.Name,
-                    Address = customer.Address
+                    customer.Id,
+                    customer.Name,
+                    customer.Address
                 };
 
                 jsons.Add(o);
@@ -81,7 +81,7 @@ namespace EasyERP.Web.Controllers
         {
             var products = this.productService.GetAutoCompleteProducts(name);
 
-            List<object> jsons = new List<object> { 
+            /*List<object> jsons = new List<object> { 
                 new {Id = 1, Name="米", Price = 10},
                 new {Id = 1, Name="盐", Price = 15},
                 new {Id = 1, Name="油1", Price = 11},
@@ -92,21 +92,27 @@ namespace EasyERP.Web.Controllers
                 new {Id = 1, Name="酱", Price = 90},
                 new {Id = 1, Name="醋", Price = 50},
                 new {Id = 1, Name="茶", Price = 10}
-            };
-
+            };*/
+            List<object> jsons = new List<object>();
             foreach (var product in products)
             {
                 object o = new
                 {
-                    Id = product.Id,
-                    Name = product.Name,
-                    Price = product.Price,
+                    product.Id,
+                    product.Name,
+                    product.Price,
                 };
 
                 jsons.Add(o);
             }
 
             return Json(jsons, JsonRequestBehavior.AllowGet);
+        }
+
+
+        public ActionResult Retail()
+        {
+            return View();
         }
 
         [HttpPost]
@@ -133,6 +139,12 @@ namespace EasyERP.Web.Controllers
                     OrderItemGuid = Guid.NewGuid()
                 };
                 var product = productService.GetProductById(item.ProductId);
+
+                if (product == null)
+                {
+                    return Json(null);
+                }
+
                 orderItem.OriginalProductCost = product.ProductCost;
                 
                 orderItems.Add(orderItem);

@@ -1,5 +1,4 @@
 ﻿function OrderGrid() {
-    // var baseUrl = "";
     var dataSource = new kendo.data.DataSource({
         transport: {
             read: {
@@ -35,6 +34,7 @@
                 id: "Id",
                 fields: {
                     Id: { editable: false, nullable: true },
+                    ProductId: { type: "number", validation: {require: true} },
                     Name: { type: "string", validation: { required: true } },
                     Quantity: { type: "number", validation: { required: true, min: 1 } },
                     TotalPrice: { type: "number", validation: {required: true, min: 1} },
@@ -44,8 +44,8 @@
         }
     });
 
-    this.initiOrderGrid = function () {
-        //var that = this;
+    this.initiOrderGrid = function ()
+    {
         function productAutoCompleteEditor(container, options) {
             $("<input data-text-field='Name' data-value-field='Name' data-bind='value:" + options.field + "'/>")
             .appendTo(container)
@@ -59,20 +59,18 @@
                    
                     var dataSource = grid.dataSource;
                     var selectedRowIndex = grid.select().index();
-                    //var selectedRowIndex = selectedRow.index();
-                    //console.log(selectedRowIndex);
                     var gridRow = null;
-                    if (selectedRowIndex == -1) {
+                    if (selectedRowIndex === -1) {
                         gridRow = dataSource.data()[0];
                     }
                     else {
                         gridRow = dataSource.data()[selectedRowIndex];
                     }
-                    gridRow.set("Id", dataItem.Id);
+                    gridRow.set("ProductId", dataItem.Id);
                     gridRow.set("PriceOfUnit", dataItem.Price);
                     gridRow.set("TotalPrice", dataItem.Price * gridRow.get("Quantity"));
 
-                    console.log(gridRow.get("Quantity"));
+                    console.log(gridRow);
                 },
                 dataSource: {
                     serverFiltering: true,
@@ -102,9 +100,7 @@
             });
         }
 
-        dataSource.bind("change", dataSource_change);
-
-        function dataSource_change() {
+        function dataSourceChange() {
 
             var orderItems = $("#order").data("kendoGrid").dataSource.data();
             var totalCost = 0;
@@ -114,6 +110,8 @@
 
             $("#totalcost").val(totalCost);
         }
+
+        dataSource.bind("change", dataSourceChange);
 
         $("#order").kendoGrid({
             dataSource: dataSource,
@@ -126,7 +124,7 @@
                 { field: "PriceOfUnit", title: "单价", editor: function (container, options) { $("#order").data("kendoGrid").closeCell(); } },
                 { field: "Quantity", title: "数量" },
                 { field: "TotalPrice", title: "总价", editor: function (container, options) { $("#order").data("kendoGrid").closeCell(); } },
-                { command: ["edit", "destroy"] }
+                { command: [ "destroy"] }
             ],
             editable: true,
             save: function (data) {
@@ -189,24 +187,17 @@ function CustomerAutoComplete() {
 }
 
 
-$(document).ready(function() {
-    //create order
+$(document).ready(function ()
+{
     var grid = new OrderGrid();
     grid.initiOrderGrid();
-
 
     var cAutoComplete = new CustomerAutoComplete();
     cAutoComplete.initalCustomerAutoComplete();
 
-
-
     $("#submitOrder").click(function () {
 
-       // console.log(orderItems);
-
         var order = new Object();
-        //order.owner = $("#orderOwner").val();
-        //order.address = $("#address").val();
         order.customerId = $("#customerId").val();
         order.orderTitle = $("#orderTitle").val();
         order.orderItems = new Array();
@@ -217,6 +208,7 @@ $(document).ready(function() {
             item.Name = orderItems[i].Name;
             item.PriceOfUnit = orderItems[i].PriceOfUnit;
             item.Quantity = orderItems[i].Quantity;
+            item.ProductId = orderItems[i].ProductId;
             order.orderItems.push(item);
         }
 
@@ -230,8 +222,6 @@ $(document).ready(function() {
                 //$('#customerList').data('kendoGrid').dataSource.read();
             }
         });
-
-        console.log(order);
 
     });
 
