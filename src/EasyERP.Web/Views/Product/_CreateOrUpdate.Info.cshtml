@@ -25,7 +25,10 @@
 <div class="form-group">
     @Html.LabelFor(model => model.FullDescription):
     @Html.EditorFor(x => x.FullDescription, "RichEditor")
-    @Html.ValidationMessageFor(model => model.FullDescription)
+    @Html.ValidationMessageFor(model => model.FullDescription, "", new
+    {
+        @class = "text-danger"
+    })
 </div>
 
 <div class="form-group">
@@ -33,7 +36,11 @@
     @Html.LabelFor(model => model.ItemNo):
 
     @Html.EditorFor(model => model.ItemNo)
-    @Html.ValidationMessageFor(model => model.ItemNo)
+    @Html.ValidationMessageFor(model => model.ItemNo, "", new
+    {
+        @class = "text-danger"
+    })
+
 </div>
 
 <div class="form-group">
@@ -41,7 +48,10 @@
     @Html.LabelFor(model => model.Gtin):
 
     @Html.EditorFor(model => model.Gtin)
-    @Html.ValidationMessageFor(model => model.Gtin)
+    @Html.ValidationMessageFor(model => model.Gtin, "", new
+    {
+        @class = "text-danger"
+    })
 </div>
 
 
@@ -50,7 +60,11 @@
     @Html.LabelFor(model => model.Price):
 
     @Html.EditorFor(model => model.Price)
-    @Html.ValidationMessageFor(model => model.Price)
+    @Html.ValidationMessageFor(model => model.Price, "", new
+    {
+        @class = "text-danger"
+    })
+
 </div>
 
 <div class="form-group">
@@ -58,31 +72,61 @@
     @Html.LabelFor(model => model.ProductCost):
 
     @Html.EditorFor(model => model.ProductCost)
-    @Html.ValidationMessageFor(model => model.ProductCost)
+    @Html.ValidationMessageFor(model => model.ProductCost, "", new
+    {
+        @class = "text-danger"
+    })
+
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Origin):
+    @Html.EditorFor(model => model.Origin)
+    @Html.ValidationMessageFor(model => model.Origin, "", new
+    {
+        @class = "text-danger"
+    })
+
 </div>
 
 <div class="form-group">
     @Html.LabelFor(model => model.Weight):
     @Html.EditorFor(model => model.Weight)
-    @Html.ValidationMessageFor(model => model.Weight)
+    @Html.ValidationMessageFor(model => model.Weight, "", new
+    {
+        @class = "text-danger"
+    })
+
 </div>
 
 <div class="form-group">
     @Html.LabelFor(model => model.Length):
     @Html.EditorFor(model => model.Length)
-    @Html.ValidationMessageFor(model => model.Length)
+    @Html.ValidationMessageFor(model => model.Length, "", new
+    {
+        @class = "text-danger"
+    })
+   
 </div>
 
 <div class="form-group">
     @Html.LabelFor(model => model.Width):
     @Html.EditorFor(model => model.Width)
-    @Html.ValidationMessageFor(model => model.Width)
+    @Html.ValidationMessageFor(model => model.Width, "", new
+    {
+        @class = "text-danger"
+    })
+
 </div>
 
 <div class="form-group">
     @Html.LabelFor(model => model.Height):
     @Html.EditorFor(model => model.Height)
-    @Html.ValidationMessageFor(model => model.Height)
+    @Html.ValidationMessageFor(model => model.Height, "", new
+    {
+        @class = "text-danger"
+    })
+
 </div>
 
 @if (Model.CreatedOn.HasValue)

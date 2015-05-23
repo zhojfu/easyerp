@@ -17,40 +17,46 @@
         }
 
         [AllowHtml]
-        [DisplayName("产品名称:")]
+        [DisplayName("产品名称")]
         public string Name { get; set; }
 
-        [DisplayName("产品编号:")]
+        [DisplayName("产品编号")]
         public string ItemNo { get; set; }
 
         [AllowHtml]
-        [DisplayName("简介:")]
+        [DisplayName("简介")]
         public string ShortDescription { get; set; }
 
         [AllowHtml]
-        [DisplayName("详情描述:")]
+        [DisplayName("详情描述")]
         public string FullDescription { get; set; }
 
         [AllowHtml]
-        [DisplayName("条码:")]
-        public virtual string Gtin { get; set; }
+        [DisplayName("条码")]
+        public string Gtin { get; set; }
 
-        [DisplayName("库存量:")]
+        [DisplayName("产地")]
+        public string Origin { get; set; }
+
+        [DisplayName("库存量")]
         public int StockQuantity { get; set; }
 
-        [DisplayName("当前价格:")]
+        [DisplayName("当前价格")]
         public decimal Price { get; set; }
 
-        [DisplayName("成本:")]
+        [DisplayName("成本")]
         public decimal ProductCost { get; set; }
 
-        [DisplayName("重量:")]
+        [DisplayName("重量")]
         public decimal Weight { get; set; }
 
+        [DisplayName("重量")]
         public decimal Length { get; set; }
 
+        [DisplayName("宽度")]
         public decimal Width { get; set; }
 
+        [DisplayName("高度")]
         public decimal Height { get; set; }
 
         public bool Published { get; set; }

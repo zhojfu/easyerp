@@ -131,7 +131,7 @@
                     OrderGuid = Guid.NewGuid(),
                     OrderStatus = OrderStatus.Pending,
                     CreatedOnUtc = DateTime.Now,
-                    CustomerId = workContext.CurrentUser.StoreId,
+                    StoreId = workContext.CurrentUser.StoreId,
                     PaymentStatus = PaymentStatus.Pending
                 };
                 order.OrderItems = cartItems.Select(
@@ -170,7 +170,7 @@
         {
             var status = orderStatus > 0 ? (OrderStatus?)orderStatus : null;
             var storeId = workContext.CurrentUser.StoreId;
-            var orders = orderService.SearchOrders(storeId, 0, status).ToList();
+            var orders = orderService.SearchOrders(storeId, 0, 0, status).ToList();
             var dataSourceResult = new DataSourceResult
             {
                 Data = orders.Select(
@@ -213,6 +213,7 @@
             //load orders
             var orders = orderService.SearchOrders(
                 model.StoreId,
+                0,
                 0,
                 orderStatus,
                 payStatus,
@@ -260,7 +261,7 @@
             {
                 Id = order.Id,
                 OrderGuid = order.OrderGuid,
-                StoreName = order.Customer.Name,
+                StoreName = order.Store.Name,
                 OrderTotal = order.OrderTotal,
                 OrderStatus = (int)order.OrderStatus,
                 PaymentStatus = order.PaymentStatus.ToString(),
