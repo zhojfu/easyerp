@@ -22,7 +22,7 @@
         <ul data-role="listview" data-bind="source: cart.contents" data-template="cart-item"></ul>
         <p id="total-checkout"><em>total:</em><span data-bind="text: totalPrice"></span></p>
         <a class="cancel-order" href="#" data-bind="click: emptyCart">cancel order</a>
-        <button class="order-now" data-bind="click: proceed">购买</button>
+        <button class="order-now" id="order-now" data-bind="click: proceed">购买</button>
     </div>
     <script type="text/x-kendo-template" id="cart-item">
         <ul>
@@ -107,7 +107,7 @@
                     price += parseInt(contents[i].item.price) * contents[i].quantity;
                 }
 
-                return kendo.format("{0:c}", price);
+                return price;
             }
         });
 
@@ -136,7 +136,13 @@
             },
 
             totalPrice: function () {
-                return this.get("cart").total();
+                var price = this.get("cart").total();
+                return kendo.format("{0:c}", price);
+            },
+
+            prePayAmount: function () {
+                var price = this.get("cart").total() * 0.3;
+                return kendo.format("{0:c}", price);
             },
 
             proceed: function (e) {
@@ -145,13 +151,7 @@
                     data.push({ "ProductId": item.item.id, "Name": item.item.name, "Price": item.item.price, "Quantity": item.quantity });
                 });
 
-                $.post("/Order/OrderUpdate", { "": data });
-                //$.ajax({
-                //    url: "/Order/OrderUpdate",
-                //    data: { "": data },
-                //    type:"POST"
-                //});
-
+                //$.post("/Order/OrderUpdate", { "": data });
             }
         });
 
@@ -184,3 +184,60 @@
         kendo.bind($("#cart"), cartPreviewModel);
     </script>
 }
+<div id="confirm-window"></div>
+<script type="text/x-kendo-template" id="cart-confirm">
+    <div>
+        <ul>
+            <li>产品</li>
+            <li>数量</li>
+            <li>价格</li>
+        </ul>
+        <ul data-role="listview" data-bind="source: cart.contents" data-template="cart-item"></ul>
+        <p><em>总金额:</em><span data-bind="text: totalPrice"></span></p>
+        <p><em>预付额:</em><span data-bind="text: prePayAmount"></span></p>
+        <p><em>留言:</em><input type="text"></p>
+        <a class="cancel-order" href="\#" data-bind="click: emptyCart">cancel order</a>
+        <button id="buy-confirm" type="button">购买</button>
+    </div>
+</script>
+<script id="fieldsTemplate" type="text/x-kendo-template">
+    <li>
+        <label data-bind="attr: { for: name}, text: label"></label>
+        <input data-bind="attr: { type: type, name: name, class: css}" # if (get("required")) {# required #} # />
+    </li>
+</script>
+<script>
+    $("#order-now").click(function (e) {
+        e.preventDefault();
+        var confirmWindow = $("#confirm-window").kendoWindow({
+            title: "购买",
+            width: 800,
+            height: 600,
+            resizeable: false,
+            actions: ["Close"],
+            modal: true,
+            visiable: false,
+            content: { template: $("#cart-confirm").html() }
+        }).data("kendoWindow");
+        kendo.bind(confirmWindow.element, cartPreviewModel);
+        confirmWindow.open().center();
+
+        $("#buy-confirm").click(function () {
+            var data = new Array();
+            cart.contents.forEach(function (item) {
+                data.push({ "ProductId": item.item.id, "Name": item.item.name, "Price": item.item.price, "Quantity": item.quantity });
+            });
+
+            $.ajax({
+                type: "POST",
+                url: "/Order/OrderUpdate",
+                data: { "": data },
+                dataType: "json",
+                success: function (data) {
+                    window.location.href = data;
+                }
+            });
+
+        });
+    });
+</script>

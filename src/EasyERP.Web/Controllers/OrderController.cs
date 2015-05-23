@@ -146,18 +146,18 @@
                     }).ToList();
 
                 order.OrderTotal = order.OrderItems.Sum(o => o.Price * (decimal)o.Quantity);
-                //order.Payment = new Payment
-                //{
-                //    DueDateTime = DateTime.Now.AddDays(45),
-                //    Order = order,
-                //    TotalAmount = (double)order.OrderTotal
-                //};
+                order.Payment = new Payment
+                {
+                    DueDateTime = DateTime.Now.AddDays(45),
+                    Order = order,
+                    TotalAmount = (double)order.OrderTotal
+                };
 
                 orderService.InsertOrder(order);
-                return RedirectToAction("MyOrder", "Order");
+                return Json(Url.Action("MyOrder", "Order"));
             }
 
-            return RedirectToAction("Create", "Order");
+            return Json(Url.Action("Create", "Order"));
         }
 
         public ActionResult MyOrder()
