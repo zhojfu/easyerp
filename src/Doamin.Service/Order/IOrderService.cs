@@ -9,6 +9,7 @@
     {
         IPagedList<Order> SearchOrders(
             int storeId = 0,
+            int customer = 0,
             int productId = 0,
             OrderStatus? os = null,
             PaymentStatus? ps = null,

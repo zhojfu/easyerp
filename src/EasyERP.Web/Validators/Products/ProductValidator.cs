@@ -9,7 +9,7 @@
         public ProductValidator()
         {
             RuleFor(x => x.Name).NotEmpty().WithMessage("产品名不能为空");
-            RuleFor(x => x.ItemNo).Length(6, 6).WithMessage("产品编号长度为6");
+            RuleFor(x => x.ItemNo).Length(4, 4).WithMessage("产品编号长度为4");
             RuleFor(x => x.Gtin).NotEmpty().WithMessage("条码不能为空").Matches(@"^\d{13}$").WithMessage("条码不符合规范");
         }
     }

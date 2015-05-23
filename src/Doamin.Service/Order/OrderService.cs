@@ -27,6 +27,7 @@
         }
 
         public IPagedList<Order> SearchOrders(
+            int storeId = 0,
             int customerId = 0,
             int productId = 0,
             OrderStatus? os = null,
@@ -46,10 +47,17 @@
                 paymentStatusId = (int)ps.Value;
             }
             var orders = orderRepository.FindAll(x => x.Id > 0);
+
+            if (storeId > 0)
+            {
+                orders = orders.Where(o => o.StoreId == storeId);
+            }
+
             if (customerId > 0)
             {
                 orders = orders.Where(o => o.CustomerId == customerId);
             }
+
             if (productId > 0)
             {
                 orders = orders.Where(o => o.OrderItems.Any(item => item.Product.Id == productId));

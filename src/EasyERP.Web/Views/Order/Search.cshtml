@@ -45,7 +45,12 @@
                         read: {
                             dataType: "json",
                             type: "POST",
-                            url: "/Store/StoreList"
+                            url: "/Store/StoreList",
+                            data: function() {
+                                var data = {};
+                                addAntiForgeryToken(data);
+                                return data;
+                            }
                         }
 
                     },

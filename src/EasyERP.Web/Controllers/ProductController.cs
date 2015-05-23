@@ -371,6 +371,8 @@
                 var product = model.ToEntity();
                 product.CreatedOnUtc = DateTime.UtcNow;
                 product.UpdatedOnUtc = DateTime.UtcNow;
+                var category = categoryService.GetCategoryById(product.CategoryId);
+                product.ItemNo = category.ItemNo + product.ItemNo;
 
                 productService.InsertProduct(product);
 
@@ -434,6 +436,8 @@
             {
                 //product
                 product = model.ToEntity(product);
+                var category = categoryService.GetCategoryById(product.CategoryId);
+                product.ItemNo = category.ItemNo + product.ItemNo;
                 productService.UpdateProduct(product);
 
                 if (continueEditing)
@@ -633,6 +637,8 @@
             {
                 throw new ArgumentNullException("model");
             }
+
+            model.ItemNo.DoIfNotNull(a=>model.ItemNo=a.Substring(2));
 
             var allCategories = categoryService.GetAllCategories();
             foreach (var category in allCategories)

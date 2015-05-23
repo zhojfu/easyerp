@@ -45,7 +45,12 @@
                 read: {
                     url: "/Order/ProductList",
                     type: "POST",
-                    dataType: "json"
+                    dataType: "json",
+                    data: function() {
+                        var data = {};
+                        addAntiForgeryToken(data);
+                        return data;
+                    }
                 }
             }
         });
@@ -223,10 +228,13 @@
                 data.push({ "ProductId": item.item.id, "Name": item.item.name, "Price": item.item.price, "Quantity": item.quantity });
             });
 
+            var pushdata = addAntiForgeryToken({"":data});
+            
+
             $.ajax({
                 type: "POST",
                 url: "/Order/OrderUpdate",
-                data: { "": data },
+                data: pushdata,
                 dataType: "json",
                 success: function(data) {
                     window.location.href = data;

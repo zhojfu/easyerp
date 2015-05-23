@@ -1,6 +1,6 @@
 ﻿@model EasyERP.Web.Models.Products.ProductModel
 @section SectionTitle{
-    ViewBag.Title = "ProductCreate";
+    添加新产品
 }
 @using (Html.BeginForm(null, null, FormMethod.Post, new
 {
@@ -9,17 +9,10 @@
 {
     @Html.AntiForgeryToken()
     <div class="section-header">
-
-        <div class="title">
-
-            <label>Product Create</label>
-        </div>
-
         <div class="options">
 
             <input type="submit" name="save" class="k-button" value="Save"/>
 
-            <input type="submit" name="save-continue" class="k-button" value="Save Contine"/>
         </div>
     </div>
     @Html.Partial("_CreateOrUpdate", Model)
