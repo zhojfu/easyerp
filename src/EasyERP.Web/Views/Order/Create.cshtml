@@ -1,0 +1,244 @@
+﻿@using EasyErp.Core.Configuration.Settings
+@using EasyErp.Core.Infrastructure
+@section SectionTitle
+{
+    新建订单
+}
+@{
+    var defaultGridPageSize = EngineContext.Current.Resolve<AreaSettings>().DefaultGridPageSize;
+    var gridPageSizes = EngineContext.Current.Resolve<AreaSettings>().GridPageSizes;
+}
+@Html.AntiForgeryToken()
+@using (Html.BeginForm())
+{
+    <div id="product-list"></div>
+    <div id="cart" data-bind="visible: cartContentsClass">
+        <h1>Order Details</h1>
+        <ul>
+            <li>产品</li>
+            <li>数量</li>
+            <li>价格</li>
+        </ul>
+        <ul data-role="listview" data-bind="source: cart.contents" data-template="cart-item"></ul>
+        <p id="total-checkout">
+            <em>total:</em><span data-bind="text: totalPrice"></span></p>
+        <a class="cancel-order" href="#" data-bind="click: emptyCart">cancel order</a>
+        <button class="order-now" id="order-now" data-bind="click: proceed">购买</button>
+    </div>
+    <script type="text/x-kendo-template" id="cart-item">
+        <ul>
+            <li><span class="product-name" data-bind="text: item.name"></span></li>
+            <li><input type="text" data-role="numerictextbox" data-min="0" data-decimals="0" data-format="\\#" data-bind="value: quantity"></li>
+            <li><p class="table-price" data-bind="text: itemPrice"><p></li>
+            @*<li><button class="delet" data-bind="click: deleted">删除</button></li>*@
+        </ul>
+    </script>
+    <script type="text/javascript">
+        var products = new kendo.data.DataSource({
+            schema: {
+                model: { id: "id" },
+                data: "Data",
+                total: "Total",
+                errors: "Errors"
+            },
+            transport: {
+                read: {
+                    url: "/Order/ProductList",
+                    type: "POST",
+                    dataType: "json"
+                }
+            }
+        });
+
+        var cart = kendo.observable({
+            contents: [],
+            cleared: false,
+
+            contentsCount: function() {
+                return this.get("contents").length;
+            },
+
+            add: function(item) {
+                var found = false;
+
+                this.set("cleared", false);
+
+                for (var i = 0; i < this.contents.length; i++) {
+                    var current = this.contents[i];
+                    if (current.item === item) {
+                        current.set("quantity", current.get("quantity") + 1);
+                        found = true;
+                        break;
+                    }
+                }
+
+                if (!found) {
+                    this.contents.push({ item: item, quantity: 1 });
+                }
+            },
+
+            remove: function(item) {
+                for (var i = 0; i < this.contents.length; i++) {
+                    var current = this.contents[i];
+                    if (current === item) {
+                        this.contents.splice(i, 1);
+                        break;
+                    }
+                }
+            },
+
+            empty: function() {
+                var contents = this.get("contents");
+                contents.splice(0, contents.length);
+            },
+
+            clear: function() {
+                var contents = this.get("contents");
+                contents.splice(0, contents.length);
+                this.set("cleared", true);
+            },
+
+            total: function() {
+                var price = 0,
+                    contents = this.get("contents"),
+                    length = contents.length,
+                    i = 0;
+
+                for (; i < length; i++) {
+                    price += parseInt(contents[i].item.price) * contents[i].quantity;
+                }
+
+                return price;
+            }
+        });
+
+        var cartPreviewModel = kendo.observable({
+            cart: cart,
+            isVisible: false,
+
+            cartContentsClass: function() {
+                return this.cart.contentsCount() > 0 ? true : false;
+            },
+
+            removeFromCart: function(e) {
+                this.get("cart").remove(e.data);
+                if (this.cart.contents.length === 0) {
+                    this.isVisible = false;
+                }
+            },
+
+            emptyCart: function() {
+                cart.empty();
+                this.isVisible = false;
+            },
+
+            itemPrice: function(cartItem) {
+                return kendo.format("{0:c}", cartItem.item.price);
+            },
+
+            totalPrice: function() {
+                var price = this.get("cart").total();
+                return kendo.format("{0:c}", price);
+            },
+
+            prePayAmount: function() {
+                var price = this.get("cart").total() * 0.3;
+                return kendo.format("{0:c}", price);
+            },
+
+            proceed: function(e) {
+                var data = new Array();
+                this.cart.contents.forEach(function(item) {
+                    data.push({ "ProductId": item.item.id, "Name": item.item.name, "Price": item.item.price, "Quantity": item.quantity });
+                });
+
+                //$.post("/Order/OrderUpdate", { "": data });
+            }
+        });
+
+        $(document).ready(function() {
+            $("#product-list").kendoGrid({
+                dataSource: products,
+                pageable: {
+                    refresh: true,
+                    pageSizes: [@(gridPageSizes)]
+                },
+                batch: false,
+                editable: false,
+                scrollable: false,
+                columns: [
+                    { field: "name", title: "产品名", width: 100 },
+                    { field: "price", title: "价格", width: 100 },
+                    { command: { text: "购买", click: addToCart }, title: "&nbsp;", width: 100 }
+                ]
+
+            });
+        });
+
+        function addToCart(e) {
+            e.preventDefault();
+            var item = this.dataItem($(e.currentTarget).closest("tr"));
+            cartPreviewModel.isVisible = true;
+            cart.add(item);
+        }
+
+        kendo.bind($("#cart"), cartPreviewModel);
+    </script>
+}
+<div id="confirm-window"></div>
+<script type="text/x-kendo-template" id="cart-confirm">
+    <div>
+        <ul>
+            <li>产品</li>
+            <li>数量</li>
+            <li>价格</li>
+        </ul>
+        <ul data-role="listview" data-bind="source: cart.contents" data-template="cart-item"></ul>
+        <p><em>总金额:</em><span data-bind="text: totalPrice"></span></p>
+        <p><em>预付额:</em><span data-bind="text: prePayAmount"></span></p>
+        <p><em>留言:</em><input type="text"></p>
+        <a class="cancel-order" href="\#" data-bind="click: emptyCart">cancel order</a>
+        <button id="buy-confirm" type="button">购买</button>
+    </div>
+</script>
+<script id="fieldsTemplate" type="text/x-kendo-template">
+    <li>
+        <label data-bind="attr: { for: name}, text: label"></label>
+        <input data-bind="attr: { type: type, name: name, class: css}" # if (get("required")) {# required #} # />
+    </li>
+</script>
+<script>
+    $("#order-now").click(function(e) {
+        e.preventDefault();
+        var confirmWindow = $("#confirm-window").kendoWindow({
+            title: "购买",
+            width: 800,
+            height: 600,
+            resizeable: false,
+            actions: ["Close"],
+            modal: true,
+            visiable: false,
+            content: { template: $("#cart-confirm").html() }
+        }).data("kendoWindow");
+        kendo.bind(confirmWindow.element, cartPreviewModel);
+        confirmWindow.open().center();
+
+        $("#buy-confirm").click(function() {
+            var data = new Array();
+            cart.contents.forEach(function(item) {
+                data.push({ "ProductId": item.item.id, "Name": item.item.name, "Price": item.item.price, "Quantity": item.quantity });
+            });
+
+            $.ajax({
+                type: "POST",
+                url: "/Order/OrderUpdate",
+                data: { "": data },
+                dataType: "json",
+                success: function(data) {
+                    window.location.href = data;
+                }
+            });
+
+        });
+    });
+</script>

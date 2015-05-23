@@ -1,10 +1,10 @@
 namespace Doamin.Service.Stores
 {
-    using Domain.Model.Stores;
-    using Infrastructure.Domain;
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Domain.Model.Stores;
+    using Infrastructure.Domain;
 
     /// <summary>
     /// Store service
@@ -47,7 +47,9 @@ namespace Doamin.Service.Stores
 
         public IList<Store> GetStoresByProductId(int productId)
         {
-            return productId < 0 ? new List<Store>() : storeRepository.FindAll(i => i.Products.Any(p => p.Id == productId)).ToList();
+            return productId < 0
+                       ? new List<Store>()
+                       : storeRepository.FindAll(i => i.Products.Any(p => p.Id == productId)).ToList();
         }
 
         public void InsertStore(Store store)

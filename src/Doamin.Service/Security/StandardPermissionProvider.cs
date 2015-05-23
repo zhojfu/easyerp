@@ -1,8 +1,8 @@
 ﻿namespace Doamin.Service.Security
 {
+    using System.Collections.Generic;
     using Doamin.Service.Users;
     using Domain.Model.Security;
-    using System.Collections.Generic;
 
     public class StandardPermissionProvider : IPermissionProvider
     {
@@ -10,6 +10,13 @@
         {
             Name = "Admin area. Manage Products",
             SystemName = "ManageProducts",
+            Category = "Catalog"
+        };
+
+        public static readonly PermissionRecord GetCategoryList = new PermissionRecord
+        {
+            Name = "GetCategoryList",
+            SystemName = "GetCategoryList",
             Category = "Catalog"
         };
 
@@ -60,7 +67,8 @@
                 new DefaultPermissionRecord
                 {
                     UserRoleSystemName = SystemUserRoleNames.Administrators,
-                    PermissionRecords = new[] { ManageProducts, ManageStores, ManageOrders, AccessAdminPanel }
+                    PermissionRecords =
+                        new[] { ManageProducts, ManageStores, ManageOrders, AccessAdminPanel, GetCategoryList }
                 },
                 new DefaultPermissionRecord
                 {

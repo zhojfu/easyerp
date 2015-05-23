@@ -1,6 +1,4 @@
-﻿@using System.Web.Mvc.Html
-@using EasyErp.Core.Infrastructure
-@using EasyERP.Web.Framework
+﻿@using EasyERP.Web.Framework
 @model EasyERP.Web.Models.Orders.OrderListModel
 @{
     var defaultGridPageSize = 10;
@@ -59,11 +57,15 @@
                 @Html.LabelFor(model => model.ProductId):
             </td>
             <td class="adminData">
-                <input type="text" id="search-product-name" autocomplete="off" />
+                <input type="text" id="search-product-name" autocomplete="off"/>
                 <span id="search-product-friendly-name"></span>
-                <input type="button" id="search-product-clear" class="k-button" value="Clear" />
+                <input type="button" id="search-product-clear" class="k-button" value="Clear"/>
 
-                @Html.TextBoxFor(model => model.ProductId, new { autocomplete = "off", style = "display:none;" })
+                @Html.TextBoxFor(model => model.ProductId, new
+                {
+                    autocomplete = "off",
+                    style = "display:none;"
+                })
                 <script type="text/javascript">
                     $(function() {
                         $('#search-product-name').autocomplete({
@@ -80,7 +82,7 @@
                         });
 
                         //remove button
-                        $('#search-product-clear').click(function () {
+                        $('#search-product-clear').click(function() {
                             $('#@Html.FieldIdFor(model => model.ProductId)').val('0');
                             $('#search-product-friendly-name').text('');
                             $('#search-product-clear').hide();
@@ -100,7 +102,7 @@
         </tr>
         <tr>
             <td colspan="2">
-                <input type="button" id="search-orders" class="k-button" value="Search" />
+                <input type="button" id="search-orders" class="k-button" value="Search"/>
             </td>
         </tr>
     </table>
@@ -127,7 +129,7 @@
                                     total: "Total",
                                     errors: "Errors"
                                 },
-                                requestEnd: function (e) {
+                                requestEnd: function(e) {
                                     if (e.type == "read") {
                                         var response = e.response;
                                         if (response) {
@@ -170,39 +172,37 @@
                                     title: "ID",
                                     width: 50
                                 },
-                                    {
-                                        field: "OrderStatus",
-                                        title: "OrderStatus",
-                                        width: 200
-                                    },
-
+                                {
+                                    field: "OrderStatus",
+                                    title: "OrderStatus",
+                                    width: 200
+                                },
                                 {
                                     field: "PaymentStatus",
                                     title: "PaymentStatus",
                                     width: 200
                                 },
-
-                               {
-                                   field: "ShippingStatus",
-                                   title: "ShippingStatus",
-                                   width: 200
-                               },
-                                 {
-                                     field: "CreatedOn",
-                                     title: "CreatedOn",
-                                     width: 200,
-                                     type: "date",
-                                     format: "{0:G}"
-                                 },
+                                {
+                                    field: "ShippingStatus",
+                                    title: "ShippingStatus",
+                                    width: 200
+                                },
+                                {
+                                    field: "CreatedOn",
+                                    title: "CreatedOn",
+                                    width: 200,
+                                    type: "date",
+                                    format: "{0:G}"
+                                },
                                 {
                                     field: "OrderTotal",
                                     title: "OrderTotal",
                                     width: 200,
                                     footerTemplate: '<div><strong>"Summary":</strong></div>' +
-                                                         '<div>"Profit": <span id=\"aggregator-profit-block\"></span></div>' +
-                                                         '<div>"Shipping": <span id=\"aggregator-shipping-block\"></span></div>' +
-                                                         '<div>"Tax"): <span id=\"aggregator-tax-block\"></span></div>' +
-                                                         '<div>"Total": <span id=\"aggregator-total-block\"></span></div>'
+                                        '<div>"Profit": <span id=\"aggregator-profit-block\"></span></div>' +
+                                        '<div>"Shipping": <span id=\"aggregator-shipping-block\"></span></div>' +
+                                        '<div>"Tax"): <span id=\"aggregator-tax-block\"></span></div>' +
+                                        '<div>"Total": <span id=\"aggregator-total-block\"></span></div>'
                                 },
                                 {
                                     field: "Id",
@@ -211,7 +211,7 @@
                                     template: '<a href="Edit/#=Id#">"Edit"</a>'
                                 }
                             ]
-                        } );
+                        });
                     });
                 </script>
 
@@ -220,10 +220,10 @@
                     var selectedIds = [];
                     var reportAggregates = "";
 
-                    $(document).ready(function () {
+                    $(document).ready(function() {
 
                         //search button
-                        $('#search-orders').click(function () {
+                        $('#search-orders').click(function() {
                             //search
                             var grid = $('#orders-grid').data('kendoGrid');
                             grid.dataSource.page(1); //new search. Set page size to 1
@@ -234,12 +234,12 @@
                             return false;
                         });
 
-                        $('#mastercheckbox').click(function () {
+                        $('#mastercheckbox').click(function() {
                             $('.checkboxGroups').attr('checked', $(this).is(':checked')).change();
                         });
 
                         //wire up checkboxes.
-                        $('#orders-grid').on('change', 'input[type=checkbox][id!=mastercheckbox]', function (e) {
+                        $('#orders-grid').on('change', 'input[type=checkbox][id!=mastercheckbox]', function(e) {
                             var $check = $(this);
                             if ($check.is(":checked") == true) {
                                 var checked = jQuery.inArray($check.val(), selectedIds);
@@ -247,12 +247,11 @@
                                     //add id to selectedIds.
                                     selectedIds.push($check.val());
                                 }
-                            }
-                            else {
+                            } else {
                                 var checked = jQuery.inArray($check.val(), selectedIds);
                                 if (checked > -1) {
                                     //remove id from selectedIds.
-                                    selectedIds = $.grep(selectedIds, function (item, index) {
+                                    selectedIds = $.grep(selectedIds, function(item, index) {
                                         return item != $check.val();
                                     });
                                 }
@@ -275,7 +274,7 @@
 
                     function onDataBound(e) {
 
-                        $('#orders-grid input[type=checkbox][id!=mastercheckbox]').each(function () {
+                        $('#orders-grid input[type=checkbox][id!=mastercheckbox]').each(function() {
                             var currentId = $(this).val();
                             var checked = jQuery.inArray(currentId, selectedIds);
                             //set checked based on if current checkbox's value is in selectedIds.
@@ -307,15 +306,18 @@
 }
 
 @*export selected (XML). We don't use GET approach because it's limited to 2K-4K chars and won't work for large number of entities*@
-@using (Html.BeginForm("ExportXmlSelected", "Order", FormMethod.Post, new { id = "export-xml-selected-form" }))
+@using (Html.BeginForm("ExportXmlSelected", "Order", FormMethod.Post, new
+{
+    id = "export-xml-selected-form"
+}))
 {
     @Html.AntiForgeryToken()
-    <input type="hidden" id="selectedIds" name="selectedIds" value="" />
+    <input type="hidden" id="selectedIds" name="selectedIds" value=""/>
 }
 <script type="text/javascript">
 
-    $(document).ready(function () {
-        $('#exportxml-selected').click(function (e) {
+    $(document).ready(function() {
+        $('#exportxml-selected').click(function(e) {
             e.preventDefault();
             var ids = selectedIds.join(",");
             $('#export-xml-selected-form #selectedIds').val(ids);
@@ -326,15 +328,18 @@
 </script>
 
 @*export selected (Excel). We don't use GET approach because it's limited to 2K-4K chars and won't work for large number of entities*@
-@using (Html.BeginForm("ExportExcelSelected", "Order", FormMethod.Post, new { id = "export-excel-selected-form" }))
+@using (Html.BeginForm("ExportExcelSelected", "Order", FormMethod.Post, new
+{
+    id = "export-excel-selected-form"
+}))
 {
     @Html.AntiForgeryToken()
-    <input type="hidden" id="selectedIds" name="selectedIds" value="" />
+    <input type="hidden" id="selectedIds" name="selectedIds" value=""/>
 }
 <script type="text/javascript">
 
-    $(document).ready(function () {
-        $('#exportexcel-selected').click(function (e) {
+    $(document).ready(function() {
+        $('#exportexcel-selected').click(function(e) {
             e.preventDefault();
             var ids = selectedIds.join(",");
             $('#export-excel-selected-form #selectedIds').val(ids);
@@ -345,15 +350,18 @@
 </script>
 
 @*Print packaging slips selected (XML). We don't use GET approach because it's limited to 2K-4K chars and won't work for large number of entities*@
-@using (Html.BeginForm("PdfInvoiceSelected", "Order", FormMethod.Post, new { id = "pdf-invoice-selected-form" }))
+@using (Html.BeginForm("PdfInvoiceSelected", "Order", FormMethod.Post, new
+{
+    id = "pdf-invoice-selected-form"
+}))
 {
     @Html.AntiForgeryToken()
-    <input type="hidden" id="selectedIds" name="selectedIds" value="" />
+    <input type="hidden" id="selectedIds" name="selectedIds" value=""/>
 }
 <script type="text/javascript">
 
-    $(document).ready(function () {
-        $('#pdf-invoice-selected').click(function (e) {
+    $(document).ready(function() {
+        $('#pdf-invoice-selected').click(function(e) {
             e.preventDefault();
             var ids = selectedIds.join(",");
             $('#pdf-invoice-selected-form #selectedIds').val(ids);

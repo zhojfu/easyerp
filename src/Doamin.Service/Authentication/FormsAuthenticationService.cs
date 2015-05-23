@@ -102,7 +102,7 @@ namespace Doamin.Service.Authentication
 
             var username = ticket.UserData;
 
-            if (String.IsNullOrWhiteSpace(username))
+            if (string.IsNullOrWhiteSpace(username))
             {
                 return null;
             }

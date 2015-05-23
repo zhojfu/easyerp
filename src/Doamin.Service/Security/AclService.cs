@@ -1,10 +1,10 @@
 ﻿namespace Doamin.Service.Security
 {
+    using System;
+    using System.Collections.Generic;
     using Domain.Model.Security;
     using Domain.Model.Users;
     using Infrastructure.Domain.Model;
-    using System;
-    using System.Collections.Generic;
 
     public class AclService : IAclService
     {

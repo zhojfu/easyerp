@@ -1,12 +1,6 @@
-﻿@using EasyERP.Web.Framework.UI
-@model EasyERP.Web.Models.Products.ProductModel
-@{
-    //resources for product tags input
-    Html.AppendCssFileParts("~/Content/tagit/jquery.tagit.css");
-    Html.AppendScriptParts("~/Scripts/tag-it.min.js");
-}
-@Html.HiddenFor(m => m.Id)
+﻿@model EasyERP.Web.Models.Products.ProductModel
 
+@Html.HiddenFor(m => m.Id)
 <div class="form-group">
     @Html.LabelFor(model => model.Name):
     @Html.EditorFor(model => model.Name)
@@ -23,7 +17,7 @@
     @Html.LabelFor(model => model.ShortDescription):
     @Html.TextAreaFor(x => x.ShortDescription, new
     {
-        style = "Width: 250px; Height: 150px;"
+        style = "Height:150px;Width:250px;"
     })
     @Html.ValidationMessageFor(model => model.ShortDescription)
 </div>
@@ -36,10 +30,10 @@
 
 <div class="form-group">
 
-    @Html.LabelFor(model => model.Sku):
+    @Html.LabelFor(model => model.ItemNo):
 
-    @Html.EditorFor(model => model.Sku)
-    @Html.ValidationMessageFor(model => model.Sku)
+    @Html.EditorFor(model => model.ItemNo)
+    @Html.ValidationMessageFor(model => model.ItemNo)
 </div>
 
 <div class="form-group">
@@ -49,6 +43,7 @@
     @Html.EditorFor(model => model.Gtin)
     @Html.ValidationMessageFor(model => model.Gtin)
 </div>
+
 
 <div class="form-group">
 

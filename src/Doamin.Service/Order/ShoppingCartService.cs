@@ -1,14 +1,14 @@
 ﻿namespace Doamin.Service.Order
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using Doamin.Service.Users;
     using Domain.Model.Orders;
     using Domain.Model.Products;
     using Domain.Model.Users;
     using EasyErp.Core;
     using Infrastructure.Domain;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
 
     public class ShoppingCartService : IShoppingCartService
     {

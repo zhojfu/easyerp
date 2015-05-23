@@ -44,7 +44,7 @@ namespace EasyErp.Core
         /// <returns>true if the string is a valid e-mail address and false if it's not</returns>
         public static bool IsValidEmail(string email)
         {
-            if (String.IsNullOrEmpty(email))
+            if (string.IsNullOrEmpty(email))
             {
                 return false;
             }
@@ -68,7 +68,7 @@ namespace EasyErp.Core
             var str = string.Empty;
             for (var i = 0; i < length; i++)
             {
-                str = String.Concat(str, random.Next(10).ToString());
+                str = string.Concat(str, random.Next(10).ToString());
             }
             return str;
         }
@@ -95,7 +95,7 @@ namespace EasyErp.Core
         /// <returns>Input string if its lengh is OK; otherwise, truncated input string</returns>
         public static string EnsureMaximumLength(string str, int maxLength, string postfix = null)
         {
-            if (String.IsNullOrEmpty(str))
+            if (string.IsNullOrEmpty(str))
             {
                 return str;
             }
@@ -103,7 +103,7 @@ namespace EasyErp.Core
             if (str.Length > maxLength)
             {
                 var result = str.Substring(0, maxLength);
-                if (!String.IsNullOrEmpty(postfix))
+                if (!string.IsNullOrEmpty(postfix))
                 {
                     result += postfix;
                 }
@@ -120,7 +120,7 @@ namespace EasyErp.Core
         /// <returns>Input string with only numeric values, empty string if input is null/empty</returns>
         public static string EnsureNumericOnly(string str)
         {
-            if (String.IsNullOrEmpty(str))
+            if (string.IsNullOrEmpty(str))
             {
                 return string.Empty;
             }
@@ -128,7 +128,7 @@ namespace EasyErp.Core
             var result = new StringBuilder();
             foreach (var c in str)
             {
-                if (Char.IsDigit(c))
+                if (char.IsDigit(c))
                 {
                     result.Append(c);
                 }

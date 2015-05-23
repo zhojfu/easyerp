@@ -1,6 +1,5 @@
 ﻿/*客户信息*/
-$(document).ready(function ()
-{
+$(document).ready(function() {
     var dataSource = new kendo.data.DataSource({
         transport: {
             read: {
@@ -66,4 +65,3 @@ $(document).ready(function ()
         });
     });*/
 });
-

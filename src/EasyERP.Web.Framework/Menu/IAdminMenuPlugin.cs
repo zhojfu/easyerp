@@ -3,7 +3,6 @@
     public interface IAdminMenuPlugin
     {
         bool Authenticate();
-
         SiteMapNode BuildMenuItem();
     }
 }

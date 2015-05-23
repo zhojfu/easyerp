@@ -1,7 +1,7 @@
 ﻿function Timesheet(getUrl, editUrl) {
 
     var currentDate = new Date();
-    
+
     var readUrl = getUrl;
 
     var updateUrl = editUrl;
@@ -23,9 +23,9 @@
 
         return getSelectedWeek(selDay);
     }
-   
+
     function generateDataSource(selectedDate) {
-        
+
         return new kendo.data.DataSource({
             transport: {
                 read: {
@@ -83,8 +83,7 @@
     };
 
 
-    function setupTimesheetGrid()
-    {
+    function setupTimesheetGrid() {
         $("#timesheet").empty();
         $("#timesheet").kendoGrid({
             dataSource: generateDataSource(currentDate),
@@ -98,23 +97,22 @@
         });
     }
 
-    this.setSelectedDate = function (date) {
+    this.setSelectedDate = function(date) {
         currentDate.setDate(date.getDate());
     };
 
-    this.InitialTimesheetGrid = function () {
+    this.InitialTimesheetGrid = function() {
 
-        $("#timesheet").before('<a href="#" id="preWeek">上一周</a><a href="#" id="nextWeek">下一周</a>');
+        $("#timesheet").before("<a href=\"#\" id=\"preWeek\">上一周</a><a href=\"#\" id=\"nextWeek\">下一周</a>");
 
-        $("#preWeek").bind("click", function () {
+        $("#preWeek").bind("click", function() {
             movePrevWeek();
         });
 
-        $("#nextWeek").bind("click", function () {
+        $("#nextWeek").bind("click", function() {
             moveNextWeek();
         });
 
         setupTimesheetGrid();
     };
 }
-

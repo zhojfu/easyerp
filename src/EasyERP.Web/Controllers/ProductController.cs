@@ -1,18 +1,21 @@
 ﻿namespace EasyERP.Web.Controllers
 {
-    using Doamin.Service.Helpers;
-    using Doamin.Service.Products;
-    using Doamin.Service.Security;
-    using Doamin.Service.Stores;
-    using Domain.Model.Payment;
-    using Domain.Model.Products;
-    using EasyERP.Web.Extensions;
-    using EasyERP.Web.Framework.Kendoui;
-    using EasyERP.Web.Models.Products;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Web.Mvc;
+    using Doamin.Service.ExportImport;
+    using Doamin.Service.Helpers;
+    using Doamin.Service.Products;
+    using Doamin.Service.Security;
+    using Doamin.Service.Stores;
+    using Domain.Model.Payments;
+    using Domain.Model.Products;
+    using EasyERP.Web.Extensions;
+    using EasyERP.Web.Framework.Kendoui;
+    using EasyERP.Web.Framework.Mvc;
+    using EasyERP.Web.Models.Products;
+    using Infrastructure;
 
     public class ProductController : BaseAdminController
     {
@@ -20,9 +23,13 @@
 
         private readonly IDateTimeHelper dateTimeHelper;
 
+        private readonly IExportManager exportManager;
+
         private readonly IInventoryService inventoryService;
 
         private readonly IPermissionService permissionService;
+
+        private readonly IProductPriceService productPriceService;
 
         private readonly IProductService productService;
 
@@ -33,16 +40,20 @@
             ICategoryService categoryService,
             IProductService productService,
             IStoreService storeService,
+            IProductPriceService productPriceService,
             IInventoryService inventoryService,
             IDateTimeHelper dateTimeHelper,
-            IAclService aclService)
+            IAclService aclService,
+            IExportManager exportManager)
         {
             this.permissionService = permissionService;
             this.categoryService = categoryService;
             this.productService = productService;
             this.storeService = storeService;
+            this.productPriceService = productPriceService;
             this.inventoryService = inventoryService;
             this.dateTimeHelper = dateTimeHelper;
+            this.exportManager = exportManager;
         }
 
         // GET: Product
@@ -228,14 +239,107 @@
                 var payment = new Payment
                 {
                     DueDateTime = model.DueDateTime,
-                    Paid = model.Paid,
-                    Payables = model.Payables
+                    TotalAmount = model.TotalAmount
                 };
+
+                if (model.Paid > 0)
+                {
+                    payment.Items.Add(
+                        new PayItem
+                        {
+                            Paid = model.Paid,
+                            PayDataTime = DateTime.Now
+                        });
+                }
+                inventory.Payment = payment;
 
                 inventoryService.InsertInventory(inventory, payment);
             }
 
             return RedirectToAction("List");
+        }
+
+        public ActionResult InventoryRecords()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult InventoryRecords(int productId, bool showUnPaidOnly)
+        {
+            if (!permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            {
+                return AccessDeniedView();
+            }
+
+            var inventories = inventoryService.GetAllInventoriesForProduct(productId);
+
+            if (inventories == null ||
+                !inventories.Any())
+            {
+                return Json(new DataSourceResult());
+            }
+
+            var inventoryDataSource = inventories.Select(
+                i => new
+                {
+                    i.Id,
+                    i.PaymentId,
+                    ProductName = i.Product.Name,
+                    i.Quantity,
+                    InventoryTime = i.InStockTime,
+                    Payment = new
+                    {
+                        Total = i.Payment.TotalAmount,
+                        DueDate = i.Payment.DueDateTime,
+                        Items = i.Payment.Items.Select(
+                            p => new
+                            {
+                                PayDate = p.PayDataTime,
+                                p.Paid
+                            })
+                    },
+                    UnPaid = i.Payment.TotalAmount - i.Payment.Items.Sum(iii => iii.Paid),
+                    IsPaid = (i.Payment.TotalAmount - i.Payment.Items.Sum(iii => iii.Paid)).Equals(0)
+                }).ToList();
+
+            if (showUnPaidOnly)
+            {
+                inventoryDataSource = inventoryDataSource.Where(i => !i.IsPaid).ToList();
+            }
+            var gridModel = new DataSourceResult
+            {
+                Data = inventoryDataSource,
+                Total = inventoryDataSource.Count
+            };
+
+            return Json(gridModel);
+        }
+
+        [HttpPost]
+        public ActionResult Categories()
+        {
+            if (!permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            {
+                return AccessDeniedView();
+            }
+
+            var categories = categoryService.GetAllCategories();
+
+            if (categories == null ||
+                !categories.Any())
+            {
+                return new JsonResult();
+            }
+
+            var data = categories.Select(
+                i => new
+                {
+                    i.Id,
+                    i.Name
+                });
+
+            return Json(data);
         }
 
         //create product
@@ -356,42 +460,25 @@
             return View();
         }
 
-        [NonAction]
-        protected virtual void PrepareProductModel(
-            ProductModel model,
-            Product product,
-            bool setPredefinedValues,
-            bool excludeProperties)
+        [HttpPost]
+        public ActionResult Destroy(DataSourceRequest request, ProductModel model)
         {
-            if (model == null)
+            if (!permissionService.Authorize(StandardPermissionProvider.ManageProducts))
             {
-                throw new ArgumentNullException("model");
+                return AccessDeniedView();
             }
 
-            var allCategories = categoryService.GetAllCategories();
-            foreach (var category in allCategories)
+            if (model != null &&
+                model.Id > 0)
             {
-                model.AvailableCategories.Add(
-                    new SelectListItem
-                    {
-                        Text = category.Name,
-                        Value = category.Id.ToString()
-                    });
+                var product = productService.GetProductById(model.Id);
+                product.DoIfNotNull(p => productService.DeleteProduct(p));
             }
-
-            if (product != null)
-            {
-                model.CreatedOn = dateTimeHelper.ConvertToUserTime(product.CreatedOnUtc, DateTimeKind.Utc);
-                model.UpdatedOn = dateTimeHelper.ConvertToUserTime(product.UpdatedOnUtc, DateTimeKind.Utc);
-            }
-
-            //default values
-            if (setPredefinedValues)
-            {
-                model.StockQuantity = 10000;
-
-                model.Published = true;
-            }
+            return Json(
+                new
+                {
+                    Result = true
+                });
         }
 
         [HttpPost]
@@ -440,6 +527,137 @@
                 {
                     Result = true
                 });
+        }
+
+        public ActionResult Price(int id)
+        {
+            var model = new PriceListModel
+            {
+                ProductId = id
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult PriceList(DataSourceRequest command, PriceListModel model)
+        {
+            if (!permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            {
+                return AccessDeniedView();
+            }
+
+            var stores = storeService.GetStoresByProductId(model.ProductId).ToList();
+
+            var product = productService.GetProductById(model.ProductId);
+
+            if (product == null)
+            {
+                return new JsonResult();
+            }
+
+            var gridModel = new DataSourceResult
+            {
+                Data = stores.Select(
+                    x =>
+                    {
+                        var priceModel = new PriceModel
+                        {
+                            StoreName = x.Name,
+                            ProductId = product.Id,
+                            ProductName = product.Name,
+                            Cost = product.ProductCost,
+                            Price = product.Price,
+                            StoreId = x.Id
+                        };
+
+                        return priceModel;
+                    }),
+                Total = stores.Count
+            };
+
+            return Json(gridModel);
+        }
+
+        [HttpPost]
+        public ActionResult PriceUpdate(
+            DataSourceRequest request,
+            [Bind(Prefix = "models")] IEnumerable<PriceModel> priceModels)
+        {
+            if (priceModels != null &&
+                ModelState.IsValid)
+            {
+                foreach (var priceModel in priceModels)
+                {
+                    var price = priceModel.ToEntity();
+                    price.DateTime = DateTime.Now;
+                    productPriceService.InsertPrice(price);
+                }
+            }
+
+            var gridModel = new DataSourceResult
+            {
+                Data = priceModels,
+                Total = priceModels.Count()
+            };
+
+            return Json(gridModel);
+        }
+
+        public ActionResult Orders()
+        {
+            return View();
+        }
+
+        public ActionResult ExportProducts()
+        {
+            if (!permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            {
+                return AccessDeniedView();
+            }
+
+            var products = productService.GetAllProducts();
+
+            var xml = exportManager.ExportProductsToXml(products);
+            return new XmlDownloadResult(xml, "products.xml");
+        }
+
+        [NonAction]
+        protected virtual void PrepareProductModel(
+            ProductModel model,
+            Product product,
+            bool setPredefinedValues,
+            bool excludeProperties)
+        {
+            if (model == null)
+            {
+                throw new ArgumentNullException("model");
+            }
+
+            var allCategories = categoryService.GetAllCategories();
+            foreach (var category in allCategories)
+            {
+                model.AvailableCategories.Add(
+                    new SelectListItem
+                    {
+                        Text = category.Name,
+                        Value = category.Id.ToString()
+                    });
+            }
+
+            if (product != null)
+            {
+                model.CreatedOn = dateTimeHelper.ConvertToUserTime(product.CreatedOnUtc, DateTimeKind.Utc);
+                model.UpdatedOn = dateTimeHelper.ConvertToUserTime(product.UpdatedOnUtc, DateTimeKind.Utc);
+            }
+
+            //default values
+            if (setPredefinedValues)
+            {
+                model.StockQuantity = 10000;
+
+                model.Published = true;
+            }
         }
 
         [NonAction]

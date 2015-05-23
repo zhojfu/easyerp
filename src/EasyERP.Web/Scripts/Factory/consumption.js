@@ -44,7 +44,7 @@ function ConsumptionGrid() {
             }
         }
     });
-    
+
     this.initiConsumptionGrid = function() {
         $("#consumptionList").kendoGrid({
             dataSource: dataSource,
@@ -53,10 +53,10 @@ function ConsumptionGrid() {
                 refresh: true,
             },
             columns: [
-                { field: "Name", title: "类名", editable : false },
+                { field: "Name", title: "类名", editable: false },
                 { field: "Unit", title: "单位" },
                 { field: "PriceOfUnit", title: "单价" },
-                { command: ["edit", "destroy"]}
+                { command: ["edit", "destroy"] }
             ],
             editable: "popup",
             toolbar: ["create"]
@@ -65,7 +65,7 @@ function ConsumptionGrid() {
 }
 
 
-$(document).ready(function () {
+$(document).ready(function() {
     var grid = new ConsumptionGrid();
     grid.initiConsumptionGrid();
 

@@ -1,25 +1,26 @@
-﻿using System.Web.Mvc;
-
-namespace EasyERP.Web.Controllers
+﻿namespace EasyERP.Web.Controllers
 {
     using System;
     using System.Collections.Generic;
+    using System.Web.Mvc;
     using Doamin.Service.Customer;
     using Doamin.Service.Products;
     using Doamin.Service.StoreSale;
     using Domain.Model.Orders;
     using EasyERP.Web.Models.StoreSale;
-    using Infrastructure.Utility;
 
     public class StoreSaleController : Controller
     {
-        private readonly IStoreSaleService storeSaleService;
+        private readonly ICustomerService customerService;
 
         private readonly IProductService productService;
 
-        private readonly ICustomerService customerService;
+        private readonly IStoreSaleService storeSaleService;
 
-        public StoreSaleController(IStoreSaleService storeSaleService, IProductService productService, ICustomerService customerService)
+        public StoreSaleController(
+            IStoreSaleService storeSaleService,
+            IProductService productService,
+            ICustomerService customerService)
         {
             this.storeSaleService = storeSaleService;
             this.productService = productService;
@@ -31,7 +32,7 @@ namespace EasyERP.Web.Controllers
         {
             return View();
         }
-        
+
         public ActionResult Create()
         {
             return View();
@@ -58,9 +59,9 @@ namespace EasyERP.Web.Controllers
         [HttpGet]
         public JsonResult AutoCompleteCustomers(string name)
         {
-            var customers = this.customerService.GetCustomersByName(name);
-            
-            List<object> jsons = new List<object>();
+            var customers = customerService.GetCustomersByName(name);
+
+            var jsons = new List<object>();
             foreach (var customer in customers)
             {
                 object o = new
@@ -79,7 +80,7 @@ namespace EasyERP.Web.Controllers
         [HttpGet]
         public JsonResult AutoCompleteProducts(string name)
         {
-            var products = this.productService.GetAutoCompleteProducts(name);
+            var products = productService.GetAutoCompleteProducts(name);
 
             /*List<object> jsons = new List<object> { 
                 new {Id = 1, Name="米", Price = 10},
@@ -93,14 +94,14 @@ namespace EasyERP.Web.Controllers
                 new {Id = 1, Name="醋", Price = 50},
                 new {Id = 1, Name="茶", Price = 10}
             };*/
-            List<object> jsons = new List<object>();
+            var jsons = new List<object>();
             foreach (var product in products)
             {
                 object o = new
                 {
                     product.Id,
                     product.Name,
-                    product.Price,
+                    product.Price
                 };
 
                 jsons.Add(o);
@@ -108,7 +109,6 @@ namespace EasyERP.Web.Controllers
 
             return Json(jsons, JsonRequestBehavior.AllowGet);
         }
-
 
         public ActionResult Retail()
         {
@@ -118,7 +118,7 @@ namespace EasyERP.Web.Controllers
         [HttpPost]
         public JsonResult Create(OrderModel model)
         {
-            Order order = new Order
+            var order = new Order
             {
                 CustomerId = model.CustomerId,
                 Name = model.Title,
@@ -126,7 +126,7 @@ namespace EasyERP.Web.Controllers
             };
 
             decimal totalPrice = 0;
-            List<OrderItem> orderItems = new List<OrderItem>();
+            var orderItems = new List<OrderItem>();
             foreach (var item in model.OrderItems)
             {
                 totalPrice += item.PriceOfUnit * (decimal)item.Quantity;
@@ -146,28 +146,28 @@ namespace EasyERP.Web.Controllers
                 }
 
                 orderItem.OriginalProductCost = product.ProductCost;
-                
+
                 orderItems.Add(orderItem);
             }
 
             order.OrderTotal = totalPrice;
             order.OrderItems = orderItems;
-            
-            this.storeSaleService.AddOrder(order);
+
+            storeSaleService.AddOrder(order);
 
             return Json(null);
         }
 
         public JsonResult OrderList(int skip, int take, int page, int pageSize)
         {
-            PagedResult<Order> orders = this.storeSaleService.GetOrders(page, pageSize);
+            var orders = storeSaleService.GetOrders(page, pageSize);
             if (orders != null)
             {
-                List<OrderListModel> orderList = new List<OrderListModel>();
+                var orderList = new List<OrderListModel>();
 
                 foreach (var order in orders)
                 {
-                    OrderListModel model = new OrderListModel
+                    var model = new OrderListModel
                     {
                         Address = order.Customer.Address,
                         CreatedOn = string.Format("{0:yy-MMM-dd ddd}", order.CreatedOnUtc),
@@ -188,6 +188,5 @@ namespace EasyERP.Web.Controllers
             }
             return Json(null);
         }
-
-	}
+    }
 }

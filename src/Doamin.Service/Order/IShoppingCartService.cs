@@ -1,9 +1,9 @@
 ﻿namespace Doamin.Service.Order
 {
+    using System.Collections.Generic;
     using Domain.Model.Orders;
     using Domain.Model.Products;
     using Domain.Model.Users;
-    using System.Collections.Generic;
 
     public interface IShoppingCartService
     {

@@ -1,7 +1,7 @@
 ﻿namespace EasyErp.StoreAdmin.Models
 {
-    using Infrastructure.Domain.Model;
     using System.Web.Routing;
+    using Infrastructure.Domain.Model;
 
     public class RenderWidgetModel : BaseEntity
     {

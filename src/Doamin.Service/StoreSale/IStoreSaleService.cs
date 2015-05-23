@@ -1,6 +1,5 @@
 ﻿namespace Doamin.Service.StoreSale
 {
-    using System.Collections.Generic;
     using Domain.Model.Orders;
     using Infrastructure.Utility;
 

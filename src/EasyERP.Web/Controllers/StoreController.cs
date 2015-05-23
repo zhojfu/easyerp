@@ -1,14 +1,14 @@
 ﻿namespace EasyERP.Web.Controllers
 {
+    using System;
+    using System.Linq;
+    using System.Web.Mvc;
     using Doamin.Service.Security;
     using Doamin.Service.Stores;
     using EasyERP.Web.Extensions;
     using EasyERP.Web.Framework.Kendoui;
     using EasyERP.Web.Models.Products;
     using EasyERP.Web.Models.Stores;
-    using System;
-    using System.Linq;
-    using System.Web.Mvc;
 
     public class StoreController : BaseAdminController
     {

@@ -1,16 +1,16 @@
 ﻿namespace EasyERP.Web.Models.Customer
 {
-    using EasyERP.Web.Framework.Mvc;
     using System;
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
+    using EasyERP.Web.Framework.Mvc;
 
     public class CustomerModel : BaseEntityModel
     {
         [DisplayName("名称")]
         [StringLength(20, ErrorMessage = "不能超过20个字符")]
         [Required]
-        public string Name{ get; set; }
+        public string Name { get; set; }
 
         [DisplayName("身份证号")]
         [Required]

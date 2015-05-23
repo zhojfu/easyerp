@@ -1,10 +1,10 @@
-﻿
-namespace Domain.Model.Factory
+﻿namespace Domain.Model.Factory
 {
     using System.Collections.Generic;
     using Infrastructure.Domain.Model;
 
     /*water, power...*/
+
     public class Consumption : BaseEntity, IAggregateRoot
     {
         public override string Name { get; set; }

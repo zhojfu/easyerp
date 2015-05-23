@@ -1,6 +1,5 @@
 namespace EasyErp.Core.Caching
 {
-    using System;
     using System.Collections;
     using System.Collections.Generic;
     using System.Text.RegularExpressions;
@@ -111,7 +110,7 @@ namespace EasyErp.Core.Caching
 
             var enumerator = items.GetEnumerator();
             var regex = new Regex(pattern, RegexOptions.Singleline | RegexOptions.Compiled | RegexOptions.IgnoreCase);
-            var keysToRemove = new List<String>();
+            var keysToRemove = new List<string>();
             while (enumerator.MoveNext())
             {
                 if (regex.IsMatch(enumerator.Key.ToString()))
@@ -138,7 +137,7 @@ namespace EasyErp.Core.Caching
             }
 
             var enumerator = items.GetEnumerator();
-            var keysToRemove = new List<String>();
+            var keysToRemove = new List<string>();
             while (enumerator.MoveNext())
             {
                 keysToRemove.Add(enumerator.Key.ToString());

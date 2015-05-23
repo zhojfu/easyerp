@@ -1,20 +1,17 @@
 ﻿namespace EasyERP.Web.Models.Employee
 {
-    using EasyERP.Web.Framework.Mvc;
-    using EasyERP.Web.Validators.Employees;
-    using FluentValidation.Attributes;
     using System;
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
+    using EasyERP.Web.Framework.Mvc;
 
     //[Validator(typeof(EmployeeValidator))]
     public class EmployeeModel : BaseEntityModel
     {
-       
         [DisplayName("名称")]
         [StringLength(20, ErrorMessage = "不能超过20个字符")]
         [Required]
-        public string Name{ get; set; }
+        public string Name { get; set; }
 
         [DisplayName("身份证号")]
         [Required]

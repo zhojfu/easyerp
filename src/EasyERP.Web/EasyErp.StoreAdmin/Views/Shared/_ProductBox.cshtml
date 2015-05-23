@@ -22,7 +22,7 @@
                 <span class="price actual-price">@Model.ProductPrice.Price</span>
             </div>
             <div class="buttons">
-                <input type="button" value="加入购物车" class="button-2 product-box-add-to-cart-button" onclick=" ajaxcart.addproducttocart_catalog('@addtocartlink ');return false; " />
+                <input type="button" value="加入购物车" class="button-2 product-box-add-to-cart-button" onclick=" ajaxcart.addproducttocart_catalog('@addtocartlink ');return false; "/>
             </div>
             @Html.Widget("productbox_add_info", Model.Id)
         </div>

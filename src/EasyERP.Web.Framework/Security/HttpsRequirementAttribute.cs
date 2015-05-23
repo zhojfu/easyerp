@@ -30,7 +30,7 @@
 
             // only redirect for GET requests,
             // otherwise the browser might not propagate the verb and request body correctly.
-            if (!String.Equals(filterContext.HttpContext.Request.HttpMethod, "GET", StringComparison.OrdinalIgnoreCase))
+            if (!string.Equals(filterContext.HttpContext.Request.HttpMethod, "GET", StringComparison.OrdinalIgnoreCase))
             {
                 return;
             }

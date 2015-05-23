@@ -9,7 +9,6 @@
         Customer GetCustomerById(int id);
         IEnumerable<Customer> GetCustomersByName(string name);
         void AddCustomer(Customer customer);
-
         void DeleteCustomerByIds(List<int> ids);
         void UpdateCustomer(Customer customer);
         PagedResult<Customer> GetCustomers(int pageNumber, int pageSize);

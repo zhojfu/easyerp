@@ -1,11 +1,11 @@
 namespace Domain.Model.Stores
 {
+    using System;
+    using System.Collections.Generic;
     using Domain.Model.Company;
     using Domain.Model.Orders;
     using Domain.Model.Products;
     using Infrastructure.Domain.Model;
-    using System;
-    using System.Collections.Generic;
 
     public class Store : BaseEntity, IAggregateRoot
     {

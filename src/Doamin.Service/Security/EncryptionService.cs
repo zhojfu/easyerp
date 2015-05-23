@@ -21,11 +21,11 @@
 
         public virtual string CreatePasswordHash(string password, string saltkey, string passwordFormat = "SHA1")
         {
-            if (String.IsNullOrEmpty(passwordFormat))
+            if (string.IsNullOrEmpty(passwordFormat))
             {
                 passwordFormat = "SHA1";
             }
-            var saltAndPassword = String.Concat(password, saltkey);
+            var saltAndPassword = string.Concat(password, saltkey);
 
             var algorithm = HashAlgorithm.Create(passwordFormat);
             if (algorithm == null)
@@ -44,7 +44,7 @@
                 return plainText;
             }
 
-            if (String.IsNullOrEmpty(encryptionPrivateKey))
+            if (string.IsNullOrEmpty(encryptionPrivateKey))
             {
                 encryptionPrivateKey = _securitySettings.EncryptionKey;
             }
@@ -59,12 +59,12 @@
 
         public virtual string DecryptText(string cipherText, string encryptionPrivateKey = "")
         {
-            if (String.IsNullOrEmpty(cipherText))
+            if (string.IsNullOrEmpty(cipherText))
             {
                 return cipherText;
             }
 
-            if (String.IsNullOrEmpty(encryptionPrivateKey))
+            if (string.IsNullOrEmpty(encryptionPrivateKey))
             {
                 encryptionPrivateKey = _securitySettings.EncryptionKey;
             }

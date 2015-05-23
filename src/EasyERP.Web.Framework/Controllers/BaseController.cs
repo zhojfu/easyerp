@@ -1,10 +1,10 @@
 ﻿namespace EasyERP.Web.Framework.Controllers
 {
-    using EasyERP.Web.Framework.UI;
     using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Web.Mvc;
+    using EasyERP.Web.Framework.UI;
 
     public abstract class BaseController : Controller
     {

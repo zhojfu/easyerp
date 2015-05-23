@@ -14,26 +14,18 @@
         protected TimesheetService(IUnitOfWork unitOfWork)
         {
             this.unitOfWork = unitOfWork;
-        } 
-
-        protected abstract PagedResult<T> GetCategories(int page, int pageSize);
-
-        protected abstract IEnumerable<TS> GetTimesheetOfWeekByCategory(int categoryId, DateTime dateOfWeek);
-
-        protected abstract TS FindSpecificDataOfDateTime(int categoryId, DateTime date);
-
-        protected abstract void UpdateDataOfTime(TS s);
-
-        protected abstract void AddNewDataForTime(int categoryId, double value, DateTime date);
+        }
 
         public IEnumerable<Timesheet> GetTimesheetByDate(int page, int pageSize, DateTime selectedDate)
         {
             var categories = GetCategories(page, pageSize);
 
             if (categories == null)
+            {
                 return null;
+            }
 
-            List<Timesheet> timesheets = new List<Timesheet>();
+            var timesheets = new List<Timesheet>();
 
             foreach (var category in categories)
             {
@@ -47,7 +39,6 @@
                 };
                 foreach (var timeSheet in timeSheets)
                 {
-
                     switch (timeSheet.Date.DayOfWeek)
                     {
                         case DayOfWeek.Monday:
@@ -79,37 +70,6 @@
             return timesheets;
         }
 
-        protected void UpdateTimesheet(int categoryId, Dictionary<DateTime, double> valueOfWeek)
-        {
-            const double Tolerance = 0.001;
-
-            foreach (var valueOfDay in valueOfWeek)
-            {
-                double data = valueOfDay.Value;
-                DateTime date = valueOfDay.Key;
-
-                if (Math.Abs(data) < Tolerance)
-                {
-                    continue;
-                }
-
-                TS dataOfTime = FindSpecificDataOfDateTime(categoryId, date);
-                if (dataOfTime != null)
-                {
-                    if (Math.Abs(data - dataOfTime.Value) < Tolerance)
-                        continue;
-                    dataOfTime.Value = data;
-                    UpdateDataOfTime(dataOfTime);
-                }
-                else
-                {
-                    AddNewDataForTime(categoryId, data, date);
-                }
-            }
-
-            this.unitOfWork.Commit();
-        }
-       
         public void UpdateTimesheet(DateTime dayOfWeek, Timesheet timesheet)
         {
             var dateRange = DateHelper.GetWeekRangeOfCurrentDate(dayOfWeek);
@@ -126,6 +86,45 @@
             };
 
             UpdateTimesheet(timesheet.Id, valueOfWeek);
+        }
+
+        protected abstract PagedResult<T> GetCategories(int page, int pageSize);
+        protected abstract IEnumerable<TS> GetTimesheetOfWeekByCategory(int categoryId, DateTime dateOfWeek);
+        protected abstract TS FindSpecificDataOfDateTime(int categoryId, DateTime date);
+        protected abstract void UpdateDataOfTime(TS s);
+        protected abstract void AddNewDataForTime(int categoryId, double value, DateTime date);
+
+        protected void UpdateTimesheet(int categoryId, Dictionary<DateTime, double> valueOfWeek)
+        {
+            const double Tolerance = 0.001;
+
+            foreach (var valueOfDay in valueOfWeek)
+            {
+                var data = valueOfDay.Value;
+                var date = valueOfDay.Key;
+
+                if (Math.Abs(data) < Tolerance)
+                {
+                    continue;
+                }
+
+                var dataOfTime = FindSpecificDataOfDateTime(categoryId, date);
+                if (dataOfTime != null)
+                {
+                    if (Math.Abs(data - dataOfTime.Value) < Tolerance)
+                    {
+                        continue;
+                    }
+                    dataOfTime.Value = data;
+                    UpdateDataOfTime(dataOfTime);
+                }
+                else
+                {
+                    AddNewDataForTime(categoryId, data, date);
+                }
+            }
+
+            unitOfWork.Commit();
         }
     }
 }

@@ -17,6 +17,7 @@
         public int Type { get; set; }
 
         public long UomCategoryId { get; set; }
+
         public virtual ProductUomCategory Category { get; set; }
     }
 

@@ -93,8 +93,11 @@
         }
 
         public OperationType Type { get; set; }
+
         public IAggregateRoot AggregateRoot { get; set; }
+
         public DateTime ProcessDate { get; set; }
+
         public IUnitOfWorkRepository Repository { get; set; }
     }
 }

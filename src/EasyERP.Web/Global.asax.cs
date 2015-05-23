@@ -1,16 +1,16 @@
 ﻿namespace EasyERP.Web
 {
-    using EasyErp.Core;
-    using EasyErp.Core.Infrastructure;
-    using EasyERP.Web.Framework;
-    using EasyERP.Web.Framework.Themes;
-    using FluentValidation.Mvc;
     using System;
     using System.Globalization;
     using System.Threading;
     using System.Web;
     using System.Web.Mvc;
     using System.Web.Routing;
+    using EasyErp.Core;
+    using EasyErp.Core.Infrastructure;
+    using EasyERP.Web.Framework;
+    using EasyERP.Web.Framework.Themes;
+    using FluentValidation.Mvc;
 
     public class MvcApplication : HttpApplication
     {

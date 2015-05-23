@@ -1,5 +1,5 @@
 ﻿/*客户信息*/
-$(document).ready(function () {
+$(document).ready(function() {
 
     var dataSource = new kendo.data.DataSource({
         transport: {
@@ -40,7 +40,7 @@ $(document).ready(function () {
             refresh: true,
         },
         columns: [
-            { field: "Title", title: "订单名称", template: '<a href="/StoreSale/Order/${Id}" target="_blank">${Name}</a>' },
+            { field: "Title", title: "订单名称", template: "<a href=\"/StoreSale/Order/${Id}\" target=\"_blank\">${Name}</a>" },
             { field: "Owner", title: "收货人" },
             { field: "TotalPrice", title: "总价" },
             { field: "Address", title: "送货地址" },
@@ -55,21 +55,18 @@ $(document).ready(function () {
         }
     });
 
-    $("#deleteOrder").click(function () {
+    $("#deleteOrder").click(function() {
         $.ajax({
             type: "post",
             url: "/StoreSale/Delete",
             data: JSON.stringify({ ids: selectedItems }),
             dataType: "json",
             contentType: "application/json; charset=utf-8",
-            success : function() {
-                $('#orderList').data('kendoGrid').dataSource.read();
+            success: function() {
+                $("#orderList").data("kendoGrid").dataSource.read();
             }
         });
     });
 
 
-  
-
 });
-

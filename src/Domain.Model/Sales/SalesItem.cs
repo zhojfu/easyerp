@@ -1,10 +1,7 @@
 ﻿namespace Domain.Model.Sales
 {
-    using Domain.Model.Factory;
     using Domain.Model.Products;
     using Infrastructure.Domain.Model;
-    using System;
-    using System.Collections.Generic;
 
     public class SalesItem : BaseEntity, IAggregateRoot
     {

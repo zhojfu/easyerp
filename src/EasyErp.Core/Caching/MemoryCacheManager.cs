@@ -70,7 +70,7 @@ namespace EasyErp.Core.Caching
         public virtual void RemoveByPattern(string pattern)
         {
             var regex = new Regex(pattern, RegexOptions.Singleline | RegexOptions.Compiled | RegexOptions.IgnoreCase);
-            var keysToRemove = new List<String>();
+            var keysToRemove = new List<string>();
 
             foreach (var item in Cache)
             {

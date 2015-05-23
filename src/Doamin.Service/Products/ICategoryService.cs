@@ -13,9 +13,7 @@
             int pageSize = int.MaxValue);
 
         Category GetCategoryById(int categoryId);
-
         void InsertCategory(Category category);
-
         void UpdateCategory(Category category);
     }
 }

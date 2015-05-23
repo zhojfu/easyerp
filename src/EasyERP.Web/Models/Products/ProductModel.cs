@@ -1,13 +1,12 @@
 ﻿namespace EasyERP.Web.Models.Products
 {
-    using EasyERP.Web.Framework.Mvc;
-    using EasyERP.Web.Validators.Products;
-    using FluentValidation.Attributes;
-    using Infrastructure.Domain.Model;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Web.Mvc;
+    using EasyERP.Web.Framework.Mvc;
+    using EasyERP.Web.Validators.Products;
+    using FluentValidation.Attributes;
 
     [Validator(typeof(ProductValidator))]
     public class ProductModel : BaseEntityModel
@@ -17,11 +16,12 @@
             AvailableCategories = new List<SelectListItem>();
         }
 
-        public override int Id { get; set; }
-
         [AllowHtml]
         [DisplayName("产品名称:")]
         public string Name { get; set; }
+
+        [DisplayName("产品编号:")]
+        public string ItemNo { get; set; }
 
         [AllowHtml]
         [DisplayName("简介:")]
@@ -30,10 +30,6 @@
         [AllowHtml]
         [DisplayName("详情描述:")]
         public string FullDescription { get; set; }
-
-        [AllowHtml]
-        [DisplayName("条码:")]
-        public string Sku { get; set; }
 
         [AllowHtml]
         [DisplayName("条码:")]
@@ -63,10 +59,9 @@
 
         public DateTime? UpdatedOn { get; set; }
 
-        [DisplayName("目录名称：")]
         public string CategoryName { get; set; }
 
-        [DisplayName("目录名称：")]
+        [DisplayName("目录名称:")]
         public string CategoryId { get; set; }
 
         //categories

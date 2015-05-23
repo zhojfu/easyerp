@@ -1,12 +1,11 @@
 ﻿namespace EasyERP.Web.Models.Stores
 {
-    using EasyERP.Web.Framework.Mvc;
-    using EasyERP.Web.Validators.Stores;
-    using FluentValidation.Attributes;
-    using Infrastructure.Domain.Model;
     using System;
     using System.ComponentModel;
     using System.Web.Mvc;
+    using EasyERP.Web.Framework.Mvc;
+    using EasyERP.Web.Validators.Stores;
+    using FluentValidation.Attributes;
 
     [Validator(typeof(StoreValidator))]
     public class StoreModel : BaseEntityModel

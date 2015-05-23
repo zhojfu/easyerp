@@ -8,6 +8,7 @@
         public InventoryConfiguration()
         {
             HasRequired(i => i.Product).WithMany().HasForeignKey(i => i.ProductId);
+            Property(i => i.PaymentId).IsRequired();
         }
     }
 }
