@@ -288,5 +288,27 @@
 
             return null;
         }
+
+
+        [HttpPost]
+        public ActionResult Approve(Guid orderGuid)
+        {
+            if (!permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            {
+                return AccessDeniedView();
+            }
+            
+            var order = orderService.GetOrderByGuid(orderGuid);
+            if (order == null)
+            {
+                return RedirectToAction("MyOrder");
+            }
+
+            order.OrderStatus = OrderStatus.Approved;
+            order.ApproveTime = DateTime.Now;
+            orderService.UpdateOrder(order);
+
+            return Json(new {OrderStatus = order.OrderStatus});
+        }
     }
 }

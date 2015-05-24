@@ -20,6 +20,7 @@
         Order GetOrderByGuid(Guid guid);
         IList<Order> GetOrdersByIds(int[] orderIds);
         void InsertOrder(Order order);
+        void UpdateOrder(Order order);
         void CreateOrderByOrderItems(IEnumerable<OrderItem> orderItems);
     }
 }

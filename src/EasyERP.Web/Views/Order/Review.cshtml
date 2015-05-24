@@ -20,9 +20,11 @@
     <div class="form-group">
         <button class="k-button" id="approve">批准</button>
     </div>
+    <div class="form-group">
+        <button class="k-button" id="reject">取消</button>
+    </div>
     <div class="details">
         <div id="product-list">
-
         </div>
     </div>
     <div class="order-info">
@@ -50,5 +52,19 @@
                 { field: "price", title: "价格", width: 100 }
             ]
         });
+
+        $("#approve").click(function(e) {
+            e.preventDefault();
+            $.ajax({
+                url: "/Order/Approve",
+                method:"POST",
+                dateType:"json",
+                data:addAntiForgeryToken({orderGuid: s.orderGuid}),
+                success: function(data) {
+                    $("#order-status").val(data.OrderStatus);
+                }
+            });
+        });
+
     </script>
 }

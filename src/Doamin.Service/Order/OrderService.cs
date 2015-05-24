@@ -132,5 +132,17 @@
             };
             orderRepository.Add(order);
         }
+
+
+        public void UpdateOrder(Order order)
+        {
+            if (order == null)
+            {
+                throw new ArgumentNullException("order");
+            }
+
+            orderRepository.Update(order);
+            unitOfWork.Commit();
+        }
     }
 }
