@@ -3,9 +3,9 @@ $(document).ready(function() {
     var dataSource = new kendo.data.DataSource({
         transport: {
             read: {
-                url: "storesale/orderList",
+                url: "/StoreSale/RetailList",
                 dataType: "json",
-                contentType: "application/json; charset=utf-8",
+                contentType: "application/json; charset=utf-8"
             },
             schema: {
                 data: "data",
@@ -13,55 +13,37 @@ $(document).ready(function() {
             }
         },
         serverPaging: true,
-        pageSize: 2,
+        pageSize: 10,
         schema: {
             data: "data",
             total: "total",
             model: {
                 fields: {
                     Id: { editable: false, nullable: true },
-                    Product: { type: "string" },
+                    ProductName: {type: "string"},
                     Price: { type: "number" },
                     Quantity: { type: "number" },
-                    CreatedOn: { type: "string" }
+                    Date: { type: "string" },
+                    TotalAmount:{type:"number"}
                 }
             }
         }
     });
 
-    var selectedItems;
+    //var selectedItems;
 
     $("#retailRecords").kendoGrid({
         dataSource: dataSource,
         selectable: "single",
         pageable: {
-            refresh: true,
+            refresh: true
         },
         columns: [
-            { field: "Product", title: "商品" },
+            { field: "ProductName", title: "商品" },
             { field: "Price", title: "售价" },
             { field: "Quantity", title: "数量" },
-            { field: "CreatedOn", title: "日期" }
-        ],
-        change: function() {
-            selectedItems = new Array();
-            var selects = this.select();
-            for (var i = 0; i < selects.length; ++i) {
-                selectedItems.push(this.dataItem(selects[i]).Id);
-            }
-        }
+            { field: "Date", title: "日期" },
+            { field: "TotalAmount", title: "总价" }
+        ]
     });
-
-    /*$("#deleteOrder").click(function () {
-        $.ajax({
-            type: "post",
-            url: "/StoreSale/Delete",
-            data: JSON.stringify({ ids: selectedItems }),
-            dataType: "json",
-            contentType: "application/json; charset=utf-8",
-            success : function() {
-                $('#orderList').data('kendoGrid').dataSource.read();
-            }
-        });
-    });*/
 });

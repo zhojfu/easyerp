@@ -67,13 +67,9 @@ namespace EasyERP.Web.Framework
             const string ConnectionString = "easyerp_db";
             var dataContext = new EntityFrameworkDbContext(ConnectionString);
 
-            //builder.Register<IEntityFrameworkDbContext>(c => dataContext).InstancePerLifetimeScope();
-            //builder.RegisterInstance<string>()
             builder.Register(d => new EntityFrameworkDbContext("easyerp_db")).AsSelf().As<IEntityFrameworkDbContext>()
                    .InstancePerLifetimeScope();
 
-            //builder.RegisterInstance(dataContext).As<IEntityFrameworkDbContext>().SingleInstance();
-            //builder.Register<IUnitOfWork>(i => new EntityFrameworkUnitOfWork(dataContext)) .InstancePerLifetimeScope();
             builder.RegisterType<EntityFrameworkUnitOfWork>().As<IUnitOfWork>().InstancePerLifetimeScope();
 
             builder.RegisterGeneric(typeof(EntityFrameworkRepository<>))
@@ -83,7 +79,7 @@ namespace EasyERP.Web.Framework
             //work context
             builder.RegisterType<WebWorkContext>().As<IWorkContext>().InstancePerLifetimeScope();
 
-            //
+            // Services
             builder.RegisterType<EmployeeService>().As<IEmployeeService>().InstancePerLifetimeScope();
             builder.RegisterType<ConsumptionService>().As<IConsumptionService>().InstancePerLifetimeScope();
             builder.RegisterType<EmployeeTimesheetService>()
@@ -94,8 +90,8 @@ namespace EasyERP.Web.Framework
                    .InstancePerLifetimeScope();
             builder.RegisterType<CustomerService>().As<ICustomerService>().InstancePerLifetimeScope();
             builder.RegisterType<StoreSaleService>().As<IStoreSaleService>().InstancePerLifetimeScope();
+            builder.RegisterType<PostRetailService>().As<IPostRetailService>().InstancePerLifetimeScope();
 
-            // Services
             builder.RegisterType<CategoryService>().As<ICategoryService>().InstancePerLifetimeScope();
             builder.RegisterType<InventoryService>().As<IInventoryService>().InstancePerLifetimeScope();
             builder.RegisterType<PaymentService>().As<IPaymentService>().InstancePerLifetimeScope();

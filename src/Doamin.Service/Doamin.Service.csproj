@@ -95,7 +95,9 @@
     <Compile Include="Security\StandardPermissionProvider.cs" />
     <Compile Include="StoreSale\StoreSaleService.cs" />
     <Compile Include="StoreSale\IStoreSaleService.cs" />
+    <Compile Include="Stores\IPostRetilService.cs" />
     <Compile Include="Stores\IStoreService.cs" />
+    <Compile Include="Stores\PostRetailService.cs" />
     <Compile Include="Stores\StoreService.cs" />
     <Compile Include="Users\SystemUserRoleNames.cs" />
     <Compile Include="Users\UserService.cs" />
