@@ -17,11 +17,14 @@
     <div class="order-info">
         <label>订单状态:</label><label id="order-status">@Model.OrderStatus</label>
     </div>
-    <div class="form-group">
+    <div class="form-group" id="approve-group">
         <button class="k-button" id="approve">批准</button>
     </div>
-    <div class="form-group">
+    <div class="form-group" id="reject-group">
         <button class="k-button" id="reject">取消</button>
+    </div>
+    <div class="form-group" id="payment-group">
+        <button class="k-button" id="payment">付款</button>
     </div>
     <div class="details">
         <div id="product-list">
@@ -43,7 +46,39 @@
     </script>
 
     <script type="text/javascript">
+        function ToStatusString(status){
+            switch (status) {
+            case 1:
+                return "订单未批准";
+                case 2:
+                    return "订单被批准";
+                case 3:
+                    return "送货中";
+                case 4:
+                    return "订单已完成";
+                case 5:
+                    return "订单被取消";
+                default:
+                    return "订单状态错误";
+            }
+        };
         var s = @(Html.ToJson(Model));
+        $("#order-status").text(ToStatusString(s.orderStatus));
+
+        $(Document).ready(function() {
+
+            $("#approve-group").hide(true);
+            $("#reject-group").hide(true);
+            $("#payment-group").hide(true);
+            if (s.orderStatus === 1) {
+                $("#approve-group").show(true);
+                $("#reject-group").show(true);
+            }
+            if (s.orderStatus === 2) {
+                $("#payment-group").show(true);
+            }
+        });
+
         $("#product-list").kendoGrid({
             dataSource: s.items,
             columns: [
@@ -56,12 +91,25 @@
         $("#approve").click(function(e) {
             e.preventDefault();
             $.ajax({
-                url: "/Order/Approve",
+                url: "/Order/ChangeStatus",
                 method:"POST",
                 dateType:"json",
-                data:addAntiForgeryToken({orderGuid: s.orderGuid}),
+                data:addAntiForgeryToken({orderGuid: s.orderGuid, status: 2}),
                 success: function(data) {
-                    $("#order-status").val(data.OrderStatus);
+                    $("#order-status").text(ToStatusString(data));
+                }
+            });
+        });
+        
+        $("#reject").click(function(e) {
+            e.preventDefault();
+            $.ajax({
+                url: "/Order/ChangeStatus",
+                method:"POST",
+                dateType:"json",
+                data:addAntiForgeryToken({orderGuid: s.orderGuid, status: 5}),
+                success: function(data) {
+                    $("#order-status").text(ToStatusString(data));
                 }
             });
         });

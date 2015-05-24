@@ -291,11 +291,16 @@
 
 
         [HttpPost]
-        public ActionResult Approve(Guid orderGuid)
+        public ActionResult ChangeStatus(Guid orderGuid, int status)
         {
             if (!permissionService.Authorize(StandardPermissionProvider.ManageProducts))
             {
                 return AccessDeniedView();
+            }
+
+            if (status < 1 && status > 5)
+            {
+                return HttpNotFound();
             }
             
             var order = orderService.GetOrderByGuid(orderGuid);
@@ -304,11 +309,11 @@
                 return RedirectToAction("MyOrder");
             }
 
-            order.OrderStatus = OrderStatus.Approved;
+            order.OrderStatus = (OrderStatus)status;
             order.ApproveTime = DateTime.Now;
             orderService.UpdateOrder(order);
 
-            return Json(new {OrderStatus = order.OrderStatus});
+            return Json(order.OrderStatus);
         }
     }
 }
