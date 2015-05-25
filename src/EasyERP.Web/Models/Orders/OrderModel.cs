@@ -24,7 +24,7 @@
 
         public string Profit { get; set; }
 
-        public int OrderStatus { get; set; }
+        public string OrderStatus { get; set; }
 
         public int OrderStatusId { get; set; }
 

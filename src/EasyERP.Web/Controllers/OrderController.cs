@@ -228,7 +228,7 @@
                             OrderGuid = x.OrderGuid,
                             StoreName = store != null ? store.Name : "Unknown",
                             OrderTotal = x.OrderTotal,
-                            OrderStatus = (int)x.OrderStatus,
+                            OrderStatus = ToOrderString(x.OrderStatus),
                             CreatedOn = x.CreatedOnUtc
                         };
                     }),
@@ -239,6 +239,26 @@
             {
                 Data = gridModel
             };
+        }
+
+        [NonAction]
+        private string ToOrderString(OrderStatus status)
+        {
+            switch (status)
+            {
+                case OrderStatus.Pending:
+                    return "订单未批准";
+                   case OrderStatus.Approved:
+                    return "订单已批准";
+                case OrderStatus.Shipped:
+                    return "送货中";
+                case OrderStatus.Complete:
+                    return "订单已完成";
+                case OrderStatus.Cancelled:
+                    return "订单被取消";
+                default:
+                    return "订单状态错误";
+            }
         }
 
         public ActionResult Review(Guid orderGuid)
@@ -259,7 +279,7 @@
                 OrderGuid = order.OrderGuid,
                 StoreName = order.Store.Name,
                 OrderTotal = order.OrderTotal,
-                OrderStatus = (int)order.OrderStatus,
+                OrderStatus = ToOrderString(order.OrderStatus),
                 CreatedOn = order.CreatedOnUtc,
                 Items = order.OrderItems.Select(
                     i => new OrderItemModel
@@ -309,7 +329,7 @@
             order.ApproveTime = DateTime.Now;
             orderService.UpdateOrder(order);
 
-            return Json(order.OrderStatus);
+            return Json(ToOrderString(order.OrderStatus));
         }
     }
 }

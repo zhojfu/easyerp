@@ -51,39 +51,9 @@
     </script>
 
     <script type="text/javascript">
-        function ToStatusString(status){
-            switch (status) {
-                case 1:
-                    return "订单未批准";
-                case 2:
-                    return "订单被批准";
-                case 3:
-                    return "送货中";
-                case 4:
-                    return "订单已完成";
-                case 5:
-                    return "订单被取消";
-                default:
-                    return "订单状态错误";
-            }
-        };
-
-        function ToPaymentStatusString(status){
-            switch (status) {
-                case 1:
-                    return "未付款";
-                case 2:
-                    return "部分付款";
-                case 3:
-                    return "已付款";
-                default:
-                    return "状态错误";
-            }
-        };
-        var s = @(Html.ToJson(Model));
-        $("#order-status").text(ToStatusString(s.orderStatus));
-
         $(Document).ready(function() {
+            var s = @(Html.ToJson(Model));
+            $("#order-status").text(s.orderStatus);
             var paymentStatus = function() {
                 if (s.paidAmount === s.orderTotal) {
                     return "已付款";
@@ -114,45 +84,46 @@
                 window.location.href = "/Payment/PayInfo/" + s.paymentId;
             });
             $("#payment-detail").attr("href", "/Payment/PayInfo/" + s.paymentId);
-        });
 
-        $("#product-list").kendoGrid({
-            dataSource: s.items,
-            columns: [
-                { field: "productName", title: "产品名", width: 100 },
-                { field: "quantity", title: "数量", width: 100 },
-                { field: "price", title: "价格", width: 100 }
-            ]
-        });
-
-        $("#approve").click(function(e) {
-            e.preventDefault();
-            $.ajax({
-                url: "/Order/ChangeStatus",
-                method:"POST",
-                dateType:"json",
-                data:addAntiForgeryToken({orderGuid: s.orderGuid, status: 2}),
-                success: function(data) {
-                    $("#order-status").text(ToStatusString(data));
-                }
+            $("#product-list").kendoGrid({
+                dataSource: s.items,
+                columns: [
+                    { field: "productName", title: "产品名", width: 100 },
+                    { field: "quantity", title: "数量", width: 100 },
+                    { field: "price", title: "价格", width: 100 }
+                ]
             });
-            $("#approve-group").hide(true);
-            $("#reject-group").hide(true);
-        });
 
-        $("#reject").click(function(e) {
-            e.preventDefault();
-            $.ajax({
-                url: "/Order/ChangeStatus",
-                method:"POST",
-                dateType:"json",
-                data:addAntiForgeryToken({orderGuid: s.orderGuid, status: 5}),
-                success: function(data) {
-                    $("#order-status").text(ToStatusString(data));
-                }
+            $("#approve").click(function(e) {
+                e.preventDefault();
+                $.ajax({
+                    url: "/Order/ChangeStatus",
+                    method: "POST",
+                    dateType: "json",
+                    data: addAntiForgeryToken({ orderGuid: s.orderGuid, status: 2 }),
+                    success: function(data) {
+                        $("#order-status").text(data);
+                    }
+                });
+                $("#approve-group").hide(true);
+                $("#reject-group").hide(true);
+                $("#payment-group").show(true);
             });
-            $("#approve-group").hide(true);
-            $("#reject-group").hide(true);
+
+            $("#reject").click(function(e) {
+                e.preventDefault();
+                $.ajax({
+                    url: "/Order/ChangeStatus",
+                    method: "POST",
+                    dateType: "json",
+                    data: addAntiForgeryToken({ orderGuid: s.orderGuid, status: 5 }),
+                    success: function(data) {
+                        $("#order-status").text(data);
+                    }
+                });
+                $("#approve-group").hide(true);
+                $("#reject-group").hide(true);
+            });
         });
     </script>
 }
