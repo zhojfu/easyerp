@@ -1,0 +1,135 @@
+﻿@{
+    <div class="section-header">
+        <div class="title">订单管理</div>
+    </div>
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="form-group">
+        <input id="stores" value="0"/>
+    </div>
+    <div class="form-group">
+        <input id="order-status" value="0"/>
+    </div>
+
+    <div id="order-list"></div>
+    <script>
+        $(document).ready(function() {
+
+            var orderStatus = [
+                { text: "全部订单", value: "0" },
+                { text: "未处理", value: "1" },
+                { text: "交易成功", value: "2" },
+                { text: "交易取消", value: "3" },
+                { text: "交易结束", value: "4" }
+            ];
+
+            $("#order-status").kendoDropDownList({
+                dataTextField: "text",
+                dataValueField: "value",
+                dataSource: orderStatus,
+                index: 0,
+                change: function() {
+                    orders.read();
+                }
+            });
+            var status = $("#order-status").data("kendoDropDownList");
+            status.select(0);
+            $("#stores").kendoDropDownList({
+                dataTextField: "Name",
+                dataValueField: "Id",
+                dataSource: {
+                    transport: {
+                        read: {
+                            dataType: "json",
+                            type: "POST",
+                            url: "/Store/StoreList",
+                            data: function() {
+                                var data = {};
+                                addAntiForgeryToken(data);
+                                return data;
+                            }
+                        }
+
+                    },
+                    schema: {
+                        data: "Data"
+                    }
+                },
+
+                dataBound: function() {
+                    var dataSource = this.dataSource;
+                    var data = dataSource.data();
+
+                    if (!this._adding) {
+                        this._adding = true;
+
+                        data.splice(0, 0, {
+                            "Name": "所有",
+                            "Id": "0"
+                        });
+                        this._adding = false;
+                    }
+                },
+                change: function() {
+                    orders.read();
+                }
+            });
+
+            var stores = $("#stores").data("kendoDropDownList");
+            stores.value("0");
+
+            function additionalData() {
+                var data = {
+                    OrderStatus: $("#order-status").val(),
+                    StoreId: $("#stores").val()
+                };
+                addAntiForgeryToken(data);
+                return data;
+            }
+
+            var orders = new kendo.data.DataSource({
+                transport: {
+                    read: {
+                        url: "/Order/OrderList",
+                        type: "Post",
+                        data: additionalData
+                    }
+                },
+                schema: {
+                    data: function(data) {
+                        return data.Data;
+                    },
+                    model: {
+                        id: "Id",
+                        fileds: {
+                            OrderGuid: { editable: false },
+                            OrderStatus: { editable: false }
+                        }
+                    }
+                },
+                pageSize: 15,
+                serverPaging: true,
+                serverFiltering: true,
+                serverSorting: true
+            });
+
+            $("#order-list").kendoGrid({
+                dataSource: orders,
+                batch: false,
+                pageable: {
+                    refresh: true,
+                    pageSizes: [10, 15, 20, 50]
+                },
+                editable: false,
+                columns: [
+                    { field: "OrderGuid", title: "订单号" },
+                    { field: "OrderStatus", title: "订单状态" },
+                    { field: "OrderGuid", title: "操作", template: "<a href=\"/Order/Review/#=OrderGuid#\">审核/状态更新</a>" }
+                ]
+            });
+        });
+    </script>
+}

@@ -1,0 +1,129 @@
+﻿@using EasyERP.Web.Framework
+@model EasyERP.Web.Models.Orders.OrderModel
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="section-header">
+        <div class="title">我的订单</div>
+    </div>
+    <div class="order-info">
+        <label>订单号:</label>
+        @Html.DisplayTextFor(model => model.OrderGuid)
+    </div>
+    <div class="order-info">
+        <label>提交时间:</label>
+        @Html.DisplayTextFor(model => model.CreatedOn)
+    </div>
+    <div class="order-info">
+        <label>订单状态:</label><label id="order-status">@Model.OrderStatus</label>
+    </div>
+    <div class="form-group" id="approve-group">
+        <button class="k-button" id="approve">批准</button>
+    </div>
+    <div class="form-group" id="reject-group">
+        <button class="k-button" id="reject">取消</button>
+    </div>
+    <div class="form-group" id="payment-group">
+        <button class="k-button" id="payment">付款</button>
+    </div>
+    <div class="details">
+        <div id="product-list">
+        </div>
+    </div>
+    <div class="order-info">
+        <label>总金额:</label>
+        @Html.DisplayTextFor(model => model.OrderTotal)
+    </div>
+    <div class="pay-info">
+        <p>付款信息：<a href="#" id="payment-detail">（详细信息）</a></p>
+        <p><label>付款状态：</label><span id="pay-status"></span></p>
+        <p><label>付款金额：</label><span id="paid-amount"></span></p>
+    </div>
+    <script id="order-item-template" type="text/x-kendo-template">
+        <div>
+            <ul>
+                <li><em>产品名:</em><span data-bind="text: productName"></span></li>
+                <li><em>数量:</em><span data-bind="text: quantity"></span></li>
+                <li><em>单价:</em><span data-bind="text: itemPrice"></span></li>
+                <li><em>总计:</em><span data-bind="text: total"></span></li>
+            </ul>
+        </div>
+    </script>
+
+    <script type="text/javascript">
+        $(Document).ready(function() {
+            var s = @(Html.ToJson(Model));
+            $("#order-status").text(s.orderStatus);
+            var paymentStatus = function() {
+                if (s.paidAmount === s.orderTotal) {
+                    return "已付款";
+                } else if (s.paidAmount < s.orderTotal) {
+                    return "部分付款";
+                } else if (s.paidAmount === 0) {
+                    return "未付款";
+                } else {
+                    return "状态错误";
+                }
+            }();
+            $("#approve-group").hide(true);
+            $("#reject-group").hide(true);
+            $("#payment-group").hide(true);
+            if (s.orderStatus === 1) {
+                $("#approve-group").show(true);
+                $("#reject-group").show(true);
+            }
+            if (s.orderStatus === 2 && paymentStatus !== "已付款") {
+                $("#payment-group").show(true);
+            }
+
+            $("#pay-status").text(paymentStatus);
+            $("#paid-amount").text(s.paidAmount);
+
+            $("#payment-group #payment").click(function(e) {
+                e.preventDefault();
+                window.location.href = "/Payment/PayInfo/" + s.paymentId;
+            });
+            $("#payment-detail").attr("href", "/Payment/PayInfo/" + s.paymentId);
+
+            $("#product-list").kendoGrid({
+                dataSource: s.items,
+                columns: [
+                    { field: "productName", title: "产品名", width: 100 },
+                    { field: "quantity", title: "数量", width: 100 },
+                    { field: "price", title: "价格", width: 100 }
+                ]
+            });
+
+            $("#approve").click(function(e) {
+                e.preventDefault();
+                $.ajax({
+                    url: "/Order/ChangeStatus",
+                    method: "POST",
+                    dateType: "json",
+                    data: addAntiForgeryToken({ orderGuid: s.orderGuid, status: 2 }),
+                    success: function(data) {
+                        $("#order-status").text(data);
+                    }
+                });
+                $("#approve-group").hide(true);
+                $("#reject-group").hide(true);
+                $("#payment-group").show(true);
+            });
+
+            $("#reject").click(function(e) {
+                e.preventDefault();
+                $.ajax({
+                    url: "/Order/ChangeStatus",
+                    method: "POST",
+                    dateType: "json",
+                    data: addAntiForgeryToken({ orderGuid: s.orderGuid, status: 5 }),
+                    success: function(data) {
+                        $("#order-status").text(data);
+                    }
+                });
+                $("#approve-group").hide(true);
+                $("#reject-group").hide(true);
+            });
+        });
+    </script>
+}

@@ -1,10 +1,7 @@
-﻿
-namespace Doamin.Service.Factory
+﻿namespace Doamin.Service.Factory
 {
-    using System;
     using System.Collections.Generic;
     using Domain.Model;
-
     using Infrastructure.Domain;
     using Infrastructure.Utility;
 
@@ -20,40 +17,40 @@ namespace Doamin.Service.Factory
             this.unitOfWork = unitOfWork;
         }
 
-        public Employee GetEmployeeById(Guid id)
+        public Employee GetEmployeeById(int id)
         {
-            return this.repository.GetByKey(id);
+            return repository.GetByKey(id);
         }
 
         public void AddEmployee(Employee employee)
         {
-            this.repository.Add(employee);
-            this.unitOfWork.Commit();
+            repository.Add(employee);
+            unitOfWork.Commit();
         }
 
-        public void DeleteEmployeeByIds(List<string> ids)
+        public void DeleteEmployeeByIds(List<int> ids)
         {
             foreach (var id in ids)
             {
-                var e = this.repository.GetByKey(new Guid(id));
+                var e = repository.GetByKey(id);
                 if (e != null)
                 {
-                    this.repository.Remove(e);
+                    repository.Remove(e);
                 }
             }
 
-            this.unitOfWork.Commit();
+            unitOfWork.Commit();
         }
 
         public void UpdateEmployee(Employee employee)
         {
-            this.repository.Update(employee);
-            this.unitOfWork.Commit();
+            repository.Update(employee);
+            unitOfWork.Commit();
         }
 
         public PagedResult<Employee> GetEmployees(int pageNumber, int pageSize)
         {
-            return this.repository.FindAll(pageSize, pageNumber, e => true, m => m.LastName, SortOrder.Ascending);
+            return repository.FindAll(pageSize, pageNumber, e => true, m => m.Name, SortOrder.Ascending);
         }
     }
 }

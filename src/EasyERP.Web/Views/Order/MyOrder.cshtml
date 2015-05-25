@@ -1,0 +1,101 @@
+﻿@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="section-header">
+        <div class="title">我的订单</div>
+    </div>
+    <div class="form-group">
+        <input id="order-status" value="1"/>
+    </div>
+    <script id="order-template" type="text/x-kendo-template">
+        <div class="order-item">
+            <div class="order-header">
+                <p><em>订单号:</em><span data-bind="text: orderGuid"></span></p>
+                <p><em>提交时间:</em><span data-bind="text: createdTime"></span></p>
+                <a id="order-detail-info" href="\/Order/#: orderGuid#">详细信息</a>
+                <div class="orderitems" data-role="listview" data-bind="source: orderItems" data-template="order-item-template">
+                </div>
+                <p><em>状态:</em><span data-bind="text: orderStatus"></span></p>
+                <p><em>总计:</em><span data-bind="text: totalPrice"></span></p>
+            </div>
+        </div>
+    </script>
+    <script id="order-item-template" type="text/x-kendo-template">
+        <div>
+            <ul>
+                <li><em>产品名:</em><span data-bind="text: productName"></span></li>
+                <li><em>数量:</em><span data-bind="text: quantity"></span></li>
+                <li><em>单价:</em><span data-bind="text: itemPrice"></span></li>
+                <li><em>总计:</em><span data-bind="text: total"></span></li>
+            </ul>
+        </div>
+    </script>
+    <div id="order-list"></div>
+    <div id="view-model">
+        <div data-role="listview" data-bind="source: orders" data-template="order-template"></div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            var orderStatus = [
+                { text: "全部订单", value: "0" },
+                { text: "未处理", value: "1" },
+                { text: "交易成功", value: "2" },
+                { text: "已发货", value: "3" },
+                { text: "交易结束", value: "4" },
+                { text: "交易取消", value: "5" }
+            ];
+
+            $("#order-status").kendoDropDownList({
+                dataTextField: "text",
+                dataValueField: "value",
+                dataSource: orderStatus,
+                index: 0,
+                change: function() {
+                    orders.read();
+                }
+            });
+            var status = $("#order-status").data("kendoDropDownList");
+
+            status.select(0);
+
+            function additionalData() {
+                var data = {
+                    orderStatus: $("#order-status").val()
+                };
+                addAntiForgeryToken(data);
+                return data;
+            }
+
+            var orders = new kendo.data.DataSource({
+                transport: {
+                    read: {
+                        url: "/Order/MyOrder",
+                        type: "POST",
+                        dataType: "json",
+                        data: additionalData
+                    }
+                },
+                schema: {
+                    data: "Data",
+                    model: {
+                        fields: {
+                            createdTime: { type: "date" },
+                            orderStatus: function() { return "未处理"; }
+
+                        }
+                    }
+                }
+
+            });
+
+            var orderViewModel = kendo.observable({
+                orders: orders
+            });
+
+            kendo.bind("#view-model", orderViewModel);
+
+            $("#order-detail-info").click();
+        });
+    </script>
+}

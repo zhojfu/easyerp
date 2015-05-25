@@ -1,0 +1,40 @@
+﻿@using EasyERP.Web.Framework
+@model EasyERP.Web.Models.Stores.StoreModel
+@Html.ValidationSummary(false)
+@Html.HiddenFor(model => model.Id)
+<script>
+    $(document).ready(function() {
+        $("#store-edit").kendoTabStrip({
+            animation: {
+                open: {
+                    effects: "fadeIn"
+                }
+            },
+            select: tabstrip_on_tab_select
+        });
+    });
+</script>
+<div id="store-edit">
+    <ul>
+        <li @Html.RenderSelectedTabIndex(0, GetSelectedTabIndex())>
+            "门店信息"
+        </li>
+        <li @Html.RenderSelectedTabIndex(1, GetSelectedTabIndex())>
+            "员工表"
+        </li>
+    </ul>
+    <div>
+        @TabInfo()
+    </div>
+    <div>
+        @*@TabEmployees()*@
+    </div>
+</div>
+@*save selected tab index*@
+<input type="hidden" id="selected-tab-index" name="selected-tab-index" value="1">
+@helper TabInfo()
+{ @Html.Partial("_CreateOrUpdate.Info", Model)}
+  @helper TabEmployees()
+  {
+    @*@Html.Partial("_CreateOrUpdate.Emloyees", Model)*@
+  }

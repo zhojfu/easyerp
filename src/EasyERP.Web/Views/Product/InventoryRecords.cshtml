@@ -1,0 +1,160 @@
+﻿@using EasyErp.Core.Configuration.Settings
+@using EasyErp.Core.Infrastructure
+@model EasyERP.Web.Models.Products.ProductListModel
+@section SectionTitle
+{
+    产品入库信息
+}
+@{
+    var defaultGridPageSize = EngineContext.Current.Resolve<AreaSettings>().DefaultGridPageSize;
+    var gridPageSizes = EngineContext.Current.Resolve<AreaSettings>().GridPageSizes;
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="form-group">
+        <p>
+            <em>产品目录:</em>
+        </p>
+        <div id="selected-category"></div>
+    </div>
+    <div class="form-group">
+        <p>
+            <em>产品:</em>
+        </p>
+        <div id="selected-product"></div>
+    </div>
+    <div class="option">
+        <input type="checkbox" id="showUnPaidOnly" value="true">只显示未付款信息
+    </div>
+    <div id="inventory-list"></div>
+    <script type="text/javascript">
+        $(document).ready(function() {
+
+            function additionalData() {
+                var data = {
+                    SearchCategoryId: $("#selected-category").val()
+                };
+                addAntiForgeryToken(data);
+                return data;
+            }
+
+            var allCategories = new kendo.data.DataSource({
+                schema: {
+                    data: function(data) { return data; }
+                },
+                transport: {
+                    read: {
+                        url: "/Product/Categories",
+                        type: "POST",
+                        dataType: "json"
+                    }
+                }
+            });
+
+            var productsDataSource = new kendo.data.DataSource({
+                schema: {
+                    data: function(data) {
+                        return data.Data;
+                    }
+                },
+                transport: {
+                    read: {
+                        url: "/Product/ProductList",
+                        type: "POST",
+                        dataType: "json",
+                        data: additionalData
+                    }
+                }
+            });
+
+            var inventoryDataSource = new kendo.data.DataSource({
+                schema: {
+                    data: function(data) {
+                        return data.Data;
+                    },
+                    model: {
+                        fields: {
+                            "InventoryTime": { type: "date" }
+                        }
+                    }
+                },
+                transport: {
+                    read: {
+                        url: "/Product/InventoryRecords",
+                        type: "POST",
+                        dataType: "json",
+                        data: function() {
+                            var data = {
+                                productId: $("#selected-product").val(),
+                                showUnPaidOnly: $("#showUnPaidOnly").is(":checked")
+                            };
+                            addAntiForgeryToken(data);
+                            return data;
+                        }
+                    }
+                }
+            });
+
+            $("#selected-category").kendoDropDownList({
+                dataTextField: "Name",
+                dataValueField: "Id",
+                dataSource: allCategories,
+                index: 0,
+                dataBound: function() {
+                    var dataSource = this.dataSource;
+                    var data = dataSource.data();
+
+                    if (!this._adding) {
+                        this._adding = true;
+
+                        data.splice(0, 0, {
+                            "Name": "所有",
+                            "Id": "0"
+                        });
+                        this._adding = false;
+                    }
+
+                    productsDataSource.read();
+                },
+                change: function() {
+                    var value = this.value();
+                    if (value) {
+                        productsDataSource.read();
+                        products.enable();
+                    } else {
+                        products.enable(false);
+                    }
+                    products.select(0);
+                }
+            }).data("kendoDropDownList");
+
+            var products = $("#selected-product").kendoDropDownList({
+                dataTextField: "Name",
+                dataValueField: "Id",
+                dataSource: productsDataSource,
+                dataBound: function() {
+                    inventoryDataSource.read();
+                },
+                change: function() {
+                    var value = this.value();
+                    if (value) {
+                        inventoryGrid.dataSource.page(1);
+                        inventoryGrid.dataSource.read();
+                    }
+                }
+            }).data("kendoDropDownList");
+
+            var inventoryGrid = $("#inventory-list").kendoGrid({
+                dataSource: inventoryDataSource,
+                columns: [
+                    { field: "ProductName", title: "产品名", width: 100 },
+                    { field: "Quantity", title: "数量", width: 100 },
+                    { field: "InventoryTime", title: "入库日期", width: 100, template: '#= kendo.toString(InventoryTime, "MM/dd/yyyy" ) #' },
+                    { field: "PaymentId", title: "付款信息", width: 100, template: "<a href=\"/Payment/PayInfo/#=PaymentId#\"># if(IsPaid) {#已付全款#;} else{#部分付款#} #</a>" }
+                ]
+            }).data("kendoGrid");
+        });
+    </script>
+}

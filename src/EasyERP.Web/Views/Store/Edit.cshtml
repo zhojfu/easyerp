@@ -1,0 +1,25 @@
+﻿@using EasyERP.Web.Framework
+@model EasyERP.Web.Models.Stores.StoreModel
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/ProductLayout.cshtml";
+}
+@using (Html.BeginForm(null, null, FormMethod.Post, new
+{
+    id = "store-form"
+}))
+{
+    @Html.AntiForgeryToken()
+    <div class="section-header">
+        <div class="title">
+            <img src="@Url.Content("~/Administration/Content/images/ico-catalog.png")" alt=""/>
+            "门店修改" - @Model.Name @Html.ActionLink("BackToList", "List")
+        </div>
+        <div class="options">
+            <input type="submit" name="save" class="k-button" value="保存"/>
+            <span id="store-delete" class="k-button">删除</span>
+        </div>
+    </div>
+    @Html.Partial("_CreateOrUpdate", Model)
+}
+@Html.DeleteConfirmation("store-delete")

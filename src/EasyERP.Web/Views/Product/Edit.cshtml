@@ -1,0 +1,27 @@
+﻿@using EasyERP.Web.Framework
+@model EasyERP.Web.Models.Products.ProductModel
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/ProductLayout.cshtml";
+}
+@using (Html.BeginForm(null, null, FormMethod.Post, new
+{
+    id = "product-form"
+}))
+{
+    @Html.AntiForgeryToken()
+    <div class="section-header">
+        <div class="title">
+            编辑产品信息 - @Model.Name @Html.ActionLink("回到产品列表", "List")
+        </div>
+
+        <div class="options">
+
+            <input type="submit" name="save" class="k-button" value="保存"/>
+
+            <span id="product-delete" class="k-button">删除</span>
+        </div>
+    </div>
+    @Html.Partial("_CreateOrUpdate", Model)
+}
+@Html.DeleteConfirmation("product-delete")

@@ -1,0 +1,15 @@
+﻿@model EasyERP.Web.Framework.Mvc.DeleteConfirmationModel
+@using (Html.BeginForm(Model.ActionName, Model.ControllerName, new
+{
+    id = Model.Id
+}))
+{
+    @Html.AntiForgeryToken()
+    <div>
+        <p>确定删除？</p>
+        <div class="form-actions">
+            <span id="" class="k-button" onclick="$('#@Model.WindowId').data('kendoWindow').close();">取消</span>
+            <input type="submit" class="k-button" value="删除"/>
+        </div>
+    </div>
+}

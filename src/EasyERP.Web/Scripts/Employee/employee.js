@@ -1,5 +1,5 @@
 ﻿/*员工信息*/
-$(document).ready(function () {
+$(document).ready(function() {
 
     var dataSource = new kendo.data.DataSource({
         transport: {
@@ -7,6 +7,7 @@ $(document).ready(function () {
                 url: "employee/employeeList",
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
+                cache: false
             },
             schema: {
                 data: "data",
@@ -21,7 +22,7 @@ $(document).ready(function () {
             model: {
                 fields: {
                     Id: { editable: false, nullable: true },
-                    FullName: { type: "string" },
+                    Name: { type: "string" },
                     Sex: { type: "string" },
                     IdNumber: { type: "string" },
                     Address: { type: "string" },
@@ -37,13 +38,12 @@ $(document).ready(function () {
 
     $("#employeesList").kendoGrid({
         dataSource: dataSource,
-        height: 400,
         selectable: "multiple",
         pageable: {
-            refresh: true,
+            refresh: true
         },
         columns: [
-            { field: "FullName", title: "姓名", template: '<a href="/Employee/Edit/${Id}" target="_blank">${FullName}</a>' },
+            { field: "Name", title: "姓名", template: "<a href=\"/Employee/Edit/${Id}\" target=\"_blank\">${Name}</a>" },
             { field: "Sex", title: "性别" },
             { field: "CellPhone", title: "手机号" },
             { field: "NativePlace", title: "籍贯" },
@@ -69,10 +69,14 @@ $(document).ready(function () {
             data: JSON.stringify({ ids: selectedItems }),
             dataType: "json",
             contentType: "application/json; charset=utf-8",
-            success : function() {
-                $('#employeesList').data('kendoGrid').dataSource.read();
+            success: function() {
+                $("#employeesList").data("kendoGrid").dataSource.read();
+                $("#employeesList").data("kendoGrid").refresh();
             }
         });
     });
-       
+
+
+    var timesheet = new Timesheet("/Employee/GetTimeSheetByDate", "/Employee/UpdateTimesheet");
+    timesheet.InitialTimesheetGrid();
 });

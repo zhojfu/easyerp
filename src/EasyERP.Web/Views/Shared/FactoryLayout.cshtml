@@ -1,0 +1,41 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section SiderBar{
+    <div id="nav-wrapper">
+
+        <div id="nav" class="root">
+
+            <div id="root-nav">
+
+                <ul class="root-nav-categories">
+
+                    <li>
+
+                        <h3>@Html.ActionLink("费用目录", "Index", "Consumption")</h3>
+
+                    </li>
+
+                </ul>
+
+                <ul class="root-nav-categories">
+
+                    <li>
+
+                        <h3>@Html.ActionLink("日常费用统计", "Statistic", "Consumption")</h3>
+
+                    </li>
+
+                </ul>
+
+            </div>
+
+        </div>
+
+    </div>
+
+}
+<div id="section-title">@RenderSection("SectionTitle", false)</div>
+
+@RenderBody()
+@RenderSection("scripts", false)

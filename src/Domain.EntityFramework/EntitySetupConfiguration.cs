@@ -9,8 +9,6 @@
         public void SetupEntityConfiguration(DbModelBuilder modelBuilder)
         {
             modelBuilder.Configurations.Add(new TestDoublesConfiguration());
-            modelBuilder.Configurations.Add(new OrderConfiguration());
-            modelBuilder.Configurations.Add(new ProductConfiguration());
         }
     }
 }

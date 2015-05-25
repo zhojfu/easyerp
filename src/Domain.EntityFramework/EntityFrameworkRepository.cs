@@ -1,11 +1,9 @@
 ﻿namespace Domain.EntityFramework
 {
     using System;
-    using System.Collections.Generic;
     using System.Data.Entity;
     using System.Linq;
     using System.Linq.Expressions;
-
     using Infrastructure.Domain;
     using Infrastructure.Domain.EntityFramework;
     using Infrastructure.Domain.Model;
@@ -19,91 +17,73 @@
         public EntityFrameworkRepository(IEntityFrameworkDbContext dbcontext, IUnitOfWork unitOfWork)
             : base(unitOfWork)
         {
-            this.dbContext = dbcontext;
+            dbContext = dbcontext;
         }
 
-        public override TAggregateRoot GetByKey(Guid key)
+        public override TAggregateRoot GetByKey(long key)
         {
-            return this.dbContext.Set<TAggregateRoot>().FirstOrDefault(p => p.Id == key);
+            return dbContext.Set<TAggregateRoot>().FirstOrDefault(p => p.Id == key);
         }
 
-        public override IEnumerable<TAggregateRoot> FindAll(Expression<Func<TAggregateRoot, bool>> selectExp)
+        public override IQueryable<TAggregateRoot> FindAll(Expression<Func<TAggregateRoot, bool>> expression)
         {
-            return this.dbContext.Set<TAggregateRoot>().Where(selectExp);
-        }
-
-        public override IEnumerable<TAggregateRoot> FindAll()
-        {
-            return this.dbContext.Set<TAggregateRoot>();
+            return GenerateSelectLinq<object>(expression, null);
         }
 
         public override bool Exist(TAggregateRoot aggregateRoot)
         {
-            return this.dbContext.Set<TAggregateRoot>().Any(p => p.Id == aggregateRoot.Id);
+            return dbContext.Set<TAggregateRoot>().Any(p => p.Id == aggregateRoot.Id);
         }
 
         public override void PersistNewItem(IAggregateRoot entity)
         {
-            if (entity.Id == Guid.Empty)
-            {
-                entity.Id = Guid.NewGuid();
-            }
-
-            this.dbContext.Set<TAggregateRoot>().Add((TAggregateRoot)entity);
+            dbContext.Set<TAggregateRoot>().Add((TAggregateRoot)entity);
         }
 
         public override void PersistUpdateItem(IAggregateRoot entity)
         {
-            TAggregateRoot origion = this.GetByKey(entity.Id);
-            
+            var origion = GetByKey(entity.Id);
+
             var properties = typeof(TAggregateRoot).GetProperties();
-           
+
             foreach (var property in properties)
             {
                 if (property.GetValue(origion) != property.GetValue(entity))
                 {
-                   property.SetValue(origion, property.GetValue(entity));
+                    property.SetValue(origion, property.GetValue(entity));
                 }
             }
 
-            ((DbContext)this.dbContext).Entry((TAggregateRoot)origion).State = EntityState.Modified;
+            ((DbContext)dbContext).Entry(origion).State = EntityState.Modified;
         }
 
         public override void PersistRemoveItem(IAggregateRoot entity)
         {
-            this.dbContext.Set<TAggregateRoot>().Remove((TAggregateRoot)entity);
+            dbContext.Set<TAggregateRoot>().Remove((TAggregateRoot)entity);
         }
 
-        public override PagedResult<TAggregateRoot> FindAll(
+        public override PagedResult<TAggregateRoot> FindAll<TField>(
             int pageSize,
             int pageNumber,
             Expression<Func<TAggregateRoot, bool>> selectExp,
-            Expression<Func<TAggregateRoot, dynamic>> orderExp,
+            Expression<Func<TAggregateRoot, TField>> orderExp,
             SortOrder sortOrder)
         {
-            if (pageNumber <= 0 || pageSize <= 0)
+            if (pageNumber <= 0 ||
+                pageSize <= 0)
             {
                 throw new IndexOutOfRangeException("page size and page number is less than  zero");
             }
 
-            var query = this.dbContext.Set<TAggregateRoot>().Where(selectExp);
+            var query = GenerateSelectLinq(selectExp, orderExp, sortOrder);
 
-            switch (sortOrder)
-            {
-                case SortOrder.Descending:
-                    query = query.OrderByDescending(orderExp);
-                    break;
-                case SortOrder.Ascending:
-                    query = query.OrderBy(orderExp);
-                    break;
-                case SortOrder.Unspecified:
-                    break;
-            }
-
-            int skip = pageSize * (pageNumber - 1);
-            int take = pageSize;
+            var skip = pageSize * (pageNumber - 1);
+            var take = pageSize;
             var result = query.Skip(skip).Take(take).GroupBy(
-                         p => new { Total = query.Count() }).FirstOrDefault();
+                p => new
+                {
+                    Total = query.Count()
+                }).FirstOrDefault();
 
             if (result != null)
             {
@@ -118,21 +98,23 @@
             return null;
         }
 
-        private IQueryable<TAggregateRoot> GenerateSelectLinq(
+        private IQueryable<TAggregateRoot> GenerateSelectLinq<TCol>(
             Expression<Func<TAggregateRoot, bool>> selectExp,
-            Expression<Func<TAggregateRoot, dynamic>> orderExp,
+            Expression<Func<TAggregateRoot, TCol>> orderExp,
             SortOrder sortOrder = SortOrder.Unspecified)
         {
-            var query = this.dbContext.Set<TAggregateRoot>().Where(selectExp);
+            var query = dbContext.Set<TAggregateRoot>().Where(selectExp);
 
             switch (sortOrder)
             {
                 case SortOrder.Descending:
                     query = query.OrderByDescending(orderExp);
                     break;
+
                 case SortOrder.Ascending:
                     query = query.OrderBy(orderExp);
                     break;
+
                 case SortOrder.Unspecified:
                     break;
             }

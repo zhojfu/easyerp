@@ -10,6 +10,17 @@
             return (target != null) ? getValue(target) : default(TResult);
         }
 
+        public static void DoIfNotNull<T>(this T obj, Action<T> getter)
+            where T : class
+        {
+            if (obj == null)
+            {
+                return;
+            }
+
+            getter(obj);
+        }
+
         public static TSource MinBy1<TSource, TKey>(
             this IEnumerable<TSource> source,
             Func<TSource, TKey> selector)

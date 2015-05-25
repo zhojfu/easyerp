@@ -1,0 +1,187 @@
+﻿@using EasyErp.Core.Configuration.Settings
+@using EasyErp.Core.Infrastructure
+@section SectionTitle
+{
+    产品管理
+}
+@{
+    ViewBag.Title = "产品管理";
+    var defaultGridPageSize = EngineContext.Current.Resolve<AreaSettings>().DefaultGridPageSize;
+    var gridPageSizes = EngineContext.Current.Resolve<AreaSettings>().GridPageSizes;
+}
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="section-header">
+        <div class="title">
+            <label>门店管理</label>
+        </div>
+        <div class="options">
+            <a href="@Url.Action("Create")" class="k-button">添加门店</a>
+            <input type="button" id="delete-selected" class="k-button" value="删除"/>
+        </div>
+    </div>
+    <div id="stores-grid"></div>
+
+    <script type="text/javascript">
+
+        var selectedIds = [];
+
+        $(document).ready(function() {
+
+            $("#stores-grid").kendoGrid({
+                dataSource: {
+                    type: "json",
+                    transport: {
+                        read: {
+                            url: "@Html.Raw(Url.Action("StoreList", "Store"))",
+                            type: "POST",
+                            dataType: "json",
+                            data: additionalData
+                        }
+                    },
+                    schema: {
+                        data: "Data",
+                        total: "Total",
+                        errors: "Errors"
+                    },
+                    error: function(e) {
+                        display_kendoui_grid_error(e);
+                        // Cancel the changes
+                        this.cancelChanges();
+                    },
+                    pageSize: @(defaultGridPageSize),
+                    serverPaging: true,
+                    serverFiltering: true,
+                    serverSorting: true
+                },
+                pageable: {
+                    refresh: true,
+                    pageSizes: [@(gridPageSizes)]
+                },
+                editable: {
+                    confirmation: false,
+                    mode: "inline"
+                },
+                scrollable: false,
+                dataBound: onDataBound,
+                columns: [
+                    {
+                        field: "Id",
+                        headerTemplate: "<input id='mastercheckbox' type='checkbox' />",
+                        headerAttributes: { style: "text-align:center" },
+                        attributes: { style: "text-align:center" },
+                        template: "<input type='checkbox' value='#=Id#' class='checkboxGroups' />",
+                        width: 50
+                    },
+                    {
+                        field: "Name",
+                        title: "店名",
+                        width: 300
+                    },
+                    {
+                        field: "Address",
+                        title: "地址",
+                        width: 100
+                    },
+                    {
+                        field: "PhoneNumber",
+                        title: "电话",
+                        width: 100
+                    },
+                    {
+                        field: "Id",
+                        title: "员工",
+                        width: 100,
+                        template: "<a href=\"Records/#=Id#\">查看员工</a>"
+                    },
+                    {
+                        field: "Id",
+                        title: "修改",
+                        width: 100,
+                        template: "<a href=\"Edit/#=Id#\">编辑</a>"
+                    }
+                ]
+            });
+
+            //delete selected
+            $("#delete-selected").click(function(e) {
+
+                e.preventDefault();
+
+                var postData = {
+                    selectedIds: selectedIds
+                };
+                addAntiForgeryToken(postData);
+
+                $.ajax({
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("DeleteSelected", "Store" +
+                                                         "e"))",
+                    data: postData,
+                    complete: function(data) {
+                        //reload grid
+                        var grid = $("#stores-grid").data("kendoGrid");
+                        grid.dataSource.read();
+                    },
+                    error: function(xhr, ajaxOptions, thrownError) {
+                        alert(thrownError);
+                    },
+                    traditional: true
+                });
+                return false;
+            });
+
+            $("#mastercheckbox").click(function() {
+                $(".checkboxGroups").attr("checked", $(this).is(":checked")).change();
+            });
+
+            //wire up checkboxes.
+            $("#stores-grid").on("change", "input[type=checkbox][id!=mastercheckbox]", function(e) {
+                var $check = $(this);
+                if ($check.is(":checked") == true) {
+                    var checked = jQuery.inArray($check.val(), selectedIds);
+                    if (checked == -1) {
+                        //add id to selectedIds.
+                        selectedIds.push($check.val());
+                    }
+                } else {
+                    var checked = jQuery.inArray($check.val(), selectedIds);
+                    if (checked > -1) {
+                        //remove id from selectedIds.
+                        selectedIds = $.grep(selectedIds, function(item, index) {
+                            return item != $check.val();
+                        });
+                    }
+                }
+                updateMasterCheckbox();
+            });
+        });
+
+        function additionalData() {
+            var data = {
+
+            };
+            addAntiForgeryToken(data);
+            return data;
+        }
+
+        function onDataBound(e) {
+            $("#stores-grid input[type=checkbox][id!=mastercheckbox]").each(function() {
+                var currentId = $(this).val();
+                var checked = jQuery.inArray(currentId, selectedIds);
+                //set checked based on if current checkbox's value is in selectedIds.
+                $(this).attr("checked", checked > -1);
+            });
+
+            updateMasterCheckbox();
+        }
+
+        function updateMasterCheckbox() {
+            var numChkBoxes = $("#stores-grid input[type=checkbox][id!=mastercheckbox]").length;
+            var numChkBoxesChecked = $("#pstore-grid input[type=checkbox][id!=mastercheckbox]:checked").length;
+            $("#mastercheckbox").attr("checked", numChkBoxes == numChkBoxesChecked && numChkBoxes > 0);
+        }
+    </script>
+}

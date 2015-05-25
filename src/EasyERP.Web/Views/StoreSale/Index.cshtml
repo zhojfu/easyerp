@@ -1,0 +1,16 @@
+﻿@using System.Web.Optimization
+@section SectionTitle
+{
+    订单管理
+}
+
+@Html.ActionLink("创建订单", "Create")
+
+<a href="#" id="deleteOrder">删除订单</a>
+<div id="orderList"></div>
+
+
+@section scripts
+{
+    @Scripts.Render("~/Scripts/StoreSale/storesale.js")
+}

@@ -1,0 +1,22 @@
+﻿@model EasyERP.Web.Models.Stores.StoreModel
+@{
+    //page title
+    ViewBag.Title = "新增门店";
+}
+@using (Html.BeginForm(null, null, FormMethod.Post, new
+{
+    id = "store-form"
+}))
+{
+    @Html.AntiForgeryToken()
+    <div class="section-header">
+        <div class="title">
+            <label>新增门店</label>
+        </div>
+        <div class="options">
+            <input type="submit" name="save" class="k-button" value="Save"/>
+            <input type="submit" name="save-continue" class="k-button" value="Save Contine"/>
+        </div>
+    </div>
+    @Html.Partial("_CreateOrUpdate", Model)
+}

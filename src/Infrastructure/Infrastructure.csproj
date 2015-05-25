@@ -52,8 +52,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DependencyManagement\IDependencyRegistrar.cs" />
-    <Compile Include="DependencyManagement\ITypeFinder.cs" />
     <Compile Include="Domain\BaseRepository.cs" />
     <Compile Include="Domain\EntityFramework\ISetupConfiguration.cs" />
     <Compile Include="Domain\EntityFramework\IEntityFrameworkDbContext.cs" />

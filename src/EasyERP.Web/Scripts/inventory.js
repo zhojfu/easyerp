@@ -1,4 +1,4 @@
-﻿$(document).ready(function () {
+﻿$(document).ready(function() {
     $("#tabstrip").kendoTabStrip({
         animation: {
             open: {
@@ -34,10 +34,11 @@
         filterable: true,
         sortable: true,
         pageable: true,
-        columns: [{
-            field: "OrderID",
-            filterable: false
-        },
+        columns: [
+            {
+                field: "OrderID",
+                filterable: false
+            },
             "Freight",
             {
                 field: "OrderDate",
@@ -54,10 +55,4 @@
     });
 
 
-
-
-
-
 });
-
-

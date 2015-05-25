@@ -1,10 +1,11 @@
 ﻿namespace Infrastructure.Domain.Model
 {
-    using System;
-
     public abstract class BaseEntity : IEntity
     {
-        public Guid Id { get; set; }
+        //public virtual string DisplayName { get; set; }
+        public virtual string Name { get; set; }
+
+        public virtual int Id { get; set; }
 
         #region Equality
 
@@ -20,7 +21,7 @@
             }
 
             var entity = obj as BaseEntity;
-            return entity != null && this.Id.Equals(entity.Id);
+            return entity != null && Id.Equals(entity.Id);
         }
 
         public static bool operator ==(BaseEntity left, BaseEntity right)
@@ -40,7 +41,7 @@
 
         public override int GetHashCode()
         {
-            return this.Id.GetHashCode();
+            return Id.GetHashCode();
         }
 
         #endregion Equality
