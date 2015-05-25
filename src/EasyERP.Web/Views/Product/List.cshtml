@@ -2,8 +2,10 @@
 @using EasyErp.Core.Infrastructure
 @model EasyERP.Web.Models.Products.ProductListModel
 @section SectionTitle
-{
-    产品管理
+{  
+        <h1 id="crmTitle">
+            <strong>产品管理</strong>
+        </h1>   
 }
 @{
     var defaultGridPageSize = EngineContext.Current.Resolve<AreaSettings>().DefaultGridPageSize;
