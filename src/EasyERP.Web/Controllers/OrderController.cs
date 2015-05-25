@@ -1,9 +1,5 @@
 ﻿namespace EasyERP.Web.Controllers
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Web.Mvc;
     using Doamin.Service.Order;
     using Doamin.Service.Products;
     using Doamin.Service.Security;
@@ -13,6 +9,10 @@
     using EasyErp.Core;
     using EasyERP.Web.Framework.Kendoui;
     using EasyERP.Web.Models.Orders;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Web.Mvc;
 
     public class OrderController : BaseAdminController
     {
@@ -132,7 +132,6 @@
                     OrderStatus = OrderStatus.Pending,
                     CreatedOnUtc = DateTime.Now,
                     StoreId = workContext.CurrentUser.StoreId,
-                    PaymentStatus = PaymentStatus.Pending
                 };
                 order.OrderItems = cartItems.Select(
                     c => new OrderItem
@@ -208,7 +207,6 @@
             }
 
             var orderStatus = model.OrderStatus > 0 ? (OrderStatus?)(model.OrderStatus) : null;
-            var payStatus = model.PayStatus > 0 ? (PaymentStatus?)(model.OrderStatus) : null;
 
             //load orders
             var orders = orderService.SearchOrders(
@@ -216,7 +214,6 @@
                 0,
                 0,
                 orderStatus,
-                payStatus,
                 command.Page - 1,
                 command.PageSize);
             var gridModel = new DataSourceResult
@@ -232,7 +229,6 @@
                             StoreName = store != null ? store.Name : "Unknown",
                             OrderTotal = x.OrderTotal,
                             OrderStatus = (int)x.OrderStatus,
-                            PaymentStatus = x.PaymentStatus.ToString(),
                             CreatedOn = x.CreatedOnUtc
                         };
                     }),
@@ -264,7 +260,6 @@
                 StoreName = order.Store.Name,
                 OrderTotal = order.OrderTotal,
                 OrderStatus = (int)order.OrderStatus,
-                PaymentStatus = order.PaymentStatus.ToString(),
                 CreatedOn = order.CreatedOnUtc,
                 Items = order.OrderItems.Select(
                     i => new OrderItemModel
@@ -272,7 +267,9 @@
                         Price = i.Price,
                         Quantity = i.Quantity,
                         ProductName = i.Product.Name
-                    }).ToList()
+                    }).ToList(),
+                PaidAmount = order.Payment.Items.Sum(i => i.Paid),
+                PaymentId = order.PaymentId
             };
 
             return View(orderModel);
@@ -289,7 +286,6 @@
             return null;
         }
 
-
         [HttpPost]
         public ActionResult ChangeStatus(Guid orderGuid, int status)
         {
@@ -302,7 +298,7 @@
             {
                 return HttpNotFound();
             }
-            
+
             var order = orderService.GetOrderByGuid(orderGuid);
             if (order == null)
             {

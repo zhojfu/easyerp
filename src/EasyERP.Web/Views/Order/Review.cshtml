@@ -34,6 +34,11 @@
         <label>总金额:</label>
         @Html.DisplayTextFor(model => model.OrderTotal)
     </div>
+    <div class="pay-info">
+        <p>付款信息：<a href="#" id="payment-detail">（详细信息）</a></p>
+        <p><label>付款状态：</label><span id="pay-status"></span></p>
+        <p><label>付款金额：</label><span id="paid-amount"></span></p>
+    </div>
     <script id="order-item-template" type="text/x-kendo-template">
         <div>
             <ul>
@@ -48,8 +53,8 @@
     <script type="text/javascript">
         function ToStatusString(status){
             switch (status) {
-            case 1:
-                return "订单未批准";
+                case 1:
+                    return "订单未批准";
                 case 2:
                     return "订单被批准";
                 case 3:
@@ -62,11 +67,34 @@
                     return "订单状态错误";
             }
         };
+
+        function ToPaymentStatusString(status){
+            switch (status) {
+                case 1:
+                    return "未付款";
+                case 2:
+                    return "部分付款";
+                case 3:
+                    return "已付款";
+                default:
+                    return "状态错误";
+            }
+        };
         var s = @(Html.ToJson(Model));
         $("#order-status").text(ToStatusString(s.orderStatus));
 
         $(Document).ready(function() {
-
+            var paymentStatus = function() {
+                if (s.paidAmount === s.orderTotal) {
+                    return "已付款";
+                } else if (s.paidAmount < s.orderTotal) {
+                    return "部分付款";
+                } else if (s.paidAmount === 0) {
+                    return "未付款";
+                } else {
+                    return "状态错误";
+                }
+            }();
             $("#approve-group").hide(true);
             $("#reject-group").hide(true);
             $("#payment-group").hide(true);
@@ -74,9 +102,18 @@
                 $("#approve-group").show(true);
                 $("#reject-group").show(true);
             }
-            if (s.orderStatus === 2) {
+            if (s.orderStatus === 2 && paymentStatus !== "已付款") {
                 $("#payment-group").show(true);
             }
+
+            $("#pay-status").text(paymentStatus);
+            $("#paid-amount").text(s.paidAmount);
+
+            $("#payment-group #payment").click(function(e) {
+                e.preventDefault();
+                window.location.href = "/Payment/PayInfo/" + s.paymentId;
+            });
+            $("#payment-detail").attr("href", "/Payment/PayInfo/" + s.paymentId);
         });
 
         $("#product-list").kendoGrid({
@@ -99,8 +136,10 @@
                     $("#order-status").text(ToStatusString(data));
                 }
             });
+            $("#approve-group").hide(true);
+            $("#reject-group").hide(true);
         });
-        
+
         $("#reject").click(function(e) {
             e.preventDefault();
             $.ajax({
@@ -112,7 +151,8 @@
                     $("#order-status").text(ToStatusString(data));
                 }
             });
+            $("#approve-group").hide(true);
+            $("#reject-group").hide(true);
         });
-
     </script>
 }

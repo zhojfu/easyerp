@@ -1,11 +1,11 @@
 ﻿namespace Domain.Model.Orders
 {
-    using System;
-    using System.Collections.Generic;
     using Domain.Model.Customer;
     using Domain.Model.Payments;
     using Domain.Model.Stores;
     using Infrastructure.Domain.Model;
+    using System;
+    using System.Collections.Generic;
 
     public class Order : BaseEntity, IAggregateRoot
     {
@@ -58,12 +58,6 @@
             set { OrderStatusId = (int)value; }
         }
 
-        public PaymentStatus PaymentStatus
-        {
-            get { return (PaymentStatus)PaymentStatusId; }
-            set { PaymentStatusId = (int)value; }
-        }
-
         #endregion Custom properties
     }
 
@@ -78,14 +72,5 @@
         Complete = 4,
 
         Cancelled = 5
-    }
-
-    public enum PaymentStatus
-    {
-        Pending = 1,
-
-        Paid = 2,
-
-        PartiallyPaid = 3
     }
 }

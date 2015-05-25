@@ -1,10 +1,10 @@
 ﻿namespace EasyERP.Web.Models.Orders
 {
-    using System;
-    using System.Collections.Generic;
     using EasyERP.Web.Framework.Mvc;
     using EasyERP.Web.Validators.Orders;
     using FluentValidation.Attributes;
+    using System;
+    using System.Collections.Generic;
 
     [Validator(typeof(OrderValidator))]
     public class OrderModel : BaseEntityModel
@@ -28,7 +28,11 @@
 
         public int OrderStatusId { get; set; }
 
-        public string PaymentStatus { get; set; }
+        public int PaymentStatus { get; set; }
+
+        public double PaidAmount { get; set; }
+
+        public int PaymentId { get; set; }
 
         public IList<OrderItemModel> Items { get; set; }
 
