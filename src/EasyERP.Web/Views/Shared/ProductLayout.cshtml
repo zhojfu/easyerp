@@ -10,26 +10,16 @@
             <div id="root-nav">
 
                 <ul class="root-nav-categories">
-                    <li>
+                    <li class="active">
                         <h3>@Html.ActionLink("产品信息", "Index", "Product")</h3>
                     </li>
-                </ul>
 
-                <ul class="root-nav-categories">
                     <li>
                         <h3>@Html.ActionLink("添加产品", "Create", "Product")</h3>
                     </li>
-                </ul>
 
-                <ul class="root-nav-categories">
                     <li>
                         <h3>@Html.ActionLink("入库", "Inventory", "Product")</h3>
-                    </li>
-                </ul>
-
-                <ul class="root-nav-categories">
-                    <li>
-                        <h3>@Html.ActionLink("入库记录", "InventoryRecords", "Product")</h3>
                     </li>
                 </ul>
             </div>
@@ -38,7 +28,7 @@
 
 }
 
-<div id="section-title">@RenderSection("SectionTitle", false)</div>
+<div id="section-title" class="row">@RenderSection("SectionTitle", false)</div>
 
 @RenderBody()
 
