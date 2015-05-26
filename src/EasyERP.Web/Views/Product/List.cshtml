@@ -142,33 +142,6 @@
                 }
             });
 
-            //delete selected
-            $("#delete-selected").click(function(e) {
-                e.preventDefault();
-
-                var postData = {
-                    selectedIds: selectedIds
-                };
-                addAntiForgeryToken(postData);
-
-                $.ajax({
-                    cache: false,
-                    type: "POST",
-                    url: "@(Url.Action("DeleteSelected", "Product"))",
-                    data: postData,
-                    complete: function(data) {
-                        //reload grid
-                        var grid = $("#products-grid").data("kendoGrid");
-                        grid.dataSource.read();
-                    },
-                    error: function(xhr, ajaxOptions, thrownError) {
-                        alert(thrownError);
-                    },
-                    traditional: true
-                });
-                return false;
-            });
-
             $('#export-product-button').click(function(e) {
                 e.preventDefault();
                 $('#export-product').submit();

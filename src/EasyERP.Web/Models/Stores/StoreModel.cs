@@ -11,15 +11,15 @@
     public class StoreModel : BaseEntityModel
     {
         [AllowHtml]
-        [DisplayName("店名：")]
+        [DisplayName("店名")]
         public string Name { get; set; }
 
         [AllowHtml]
-        [DisplayName("描述：")]
+        [DisplayName("描述")]
         public string ShortDescription { get; set; }
 
         [AllowHtml]
-        [DisplayName("详细信息：")]
+        [DisplayName("详细信息")]
         public string FullDescription { get; set; }
 
         public int DisplayOrder { get; set; }
@@ -28,11 +28,12 @@
         public string CompanyName { get; set; }
 
         [AllowHtml]
-        [DisplayName("地址：")]
-        public string StoreAddress { get; set; }
+        [DisplayName("地址")]
+        public string Address { get; set; }
 
         [AllowHtml]
-        public string StorePhoneNumber { get; set; }
+        [DisplayName("电话号码")]
+        public string PhoneNumber { get; set; }
 
         public DateTime? CreatedOn { get; set; }
 

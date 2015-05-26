@@ -12,8 +12,7 @@
     @Html.AntiForgeryToken()
     <div class="section-header">
         <div class="title">
-            <img src="@Url.Content("~/Administration/Content/images/ico-catalog.png")" alt=""/>
-            "门店修改" - @Model.Name @Html.ActionLink("BackToList", "List")
+            门店修改 - @Model.Name @Html.ActionLink("回到门店列表", "List")
         </div>
         <div class="options">
             <input type="submit" name="save" class="k-button" value="保存"/>

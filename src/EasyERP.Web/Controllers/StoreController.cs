@@ -1,4 +1,6 @@
-﻿namespace EasyERP.Web.Controllers
+﻿using Infrastructure;
+
+namespace EasyERP.Web.Controllers
 {
     using System;
     using System.Linq;
@@ -124,12 +126,36 @@
 
             if (ModelState.IsValid)
             {
-                store = model.ToEntity();
+                store.Name = model.Name;
+                store.FullDescription = model.FullDescription;
+                store.Address = model.Address;
+                store.PhoneNumber = model.PhoneNumber;
                 store.UpdatedOn = DateTime.Now;
                 storeService.UpdateStore(store);
                 return RedirectToAction("List");
             }
             return View(model);
+        }
+        
+        [HttpPost]
+        public ActionResult Destroy(DataSourceRequest request, ProductModel model)
+        {
+            if (!permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            {
+                return AccessDeniedView();
+            }
+
+            if (model != null &&
+                model.Id > 0)
+            {
+                var store = storeService.GetStoreById(model.Id);
+                store.DoIfNotNull(s => storeService.DeleteStore(s));
+            }
+            return Json(
+                new
+                {
+                    Result = true
+                });
         }
     }
 }

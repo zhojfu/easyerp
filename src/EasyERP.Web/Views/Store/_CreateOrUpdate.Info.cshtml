@@ -24,14 +24,14 @@
     @Html.ValidationMessageFor(model => model.FullDescription)
 </div>
 <div class="form-group">
-    @Html.LabelFor(model => model):
-    @Html.EditorFor(model => model.StoreAddress)
-    @Html.ValidationMessageFor(model => model.StoreAddress)
+    @Html.LabelFor(model => model.Address):
+    @Html.EditorFor(model => model.Address)
+    @Html.ValidationMessageFor(model => model.Address)
 </div>
 <div class="form-group">
-    @Html.LabelFor(model => model.StorePhoneNumber):
-    @Html.EditorFor(model => model.StorePhoneNumber)
-    @Html.ValidationMessageFor(model => model.StorePhoneNumber)
+    @Html.LabelFor(model => model.PhoneNumber):
+    @Html.EditorFor(model => model.PhoneNumber)
+    @Html.ValidationMessageFor(model => model.PhoneNumber)
 </div>
 @if (Model.CreatedOn.HasValue)
 {
