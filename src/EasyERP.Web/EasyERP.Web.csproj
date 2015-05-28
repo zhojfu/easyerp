@@ -1112,7 +1112,6 @@
     <Content Include="Scripts\StoreSale\storesale.js" />
     <Content Include="Scripts\timesheet.js" />
     <Content Include="Scripts\Product\employee.js" />
-    <Content Include="Scripts\public.ajaxcart.js" />
     <Content Include="Scripts\public.common.js" />
     <Content Include="Web.config" />
   </ItemGroup>

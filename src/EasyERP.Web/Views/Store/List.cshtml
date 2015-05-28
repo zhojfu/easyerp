@@ -14,17 +14,19 @@
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    <div class="section-header">
-        <div class="title">
-            <label>门店管理</label>
-        </div>
-    </div>
+
     <div id="stores-grid"></div>
 
     <script type="text/javascript">
 
         $(document).ready(function() {
-            $("#stores-grid").kendoGrid({ 
+
+            function additionalRequestData(data) {
+                addAntiForgeryToken(data);
+                return data;
+            }
+
+            $("#stores-grid").kendoGrid({
                 autoSync: true,
                 dataSource: {
                     type: "json",
@@ -33,22 +35,31 @@
                             url: "@Html.Raw(Url.Action("StoreList", "Store"))",
                             type: "POST",
                             dataType: "json",
-                            data: additionalData
+                            data: function() {
+                                var data = {};
+                                addAntiForgeryToken(data);
+                                return data;
+                            }
                         },
                         destroy: {
                             url: "/Store/Destroy",
                             type: "POST",
-                            dataType: "json"
+                            dataType: "json",
+                            data: function(options) {
+                                var data = {id: options.Id};
+                                addAntiForgeryToken(data);
+                                return data;
+                            }
                         }
                     },
                     schema: {
+                        model: { id: "Id" },
                         data: "Data",
                         total: "Total",
                         errors: "Errors"
                     },
                     error: function(e) {
                         display_kendoui_grid_error(e);
-                        // Cancel the changes
                         this.cancelChanges();
                     },
                     pageSize: @(defaultGridPageSize),
@@ -60,6 +71,7 @@
                     refresh: true,
                     pageSizes: [@(gridPageSizes)]
                 },
+                batch: false,
                 editable: {
                     confirmation: true,
                     mode: "inline",
@@ -75,13 +87,5 @@
                 ]
             });
         });
-
-        function additionalData() {
-            var data = {
-
-            };
-            addAntiForgeryToken(data);
-            return data;
-        }
     </script>
 }

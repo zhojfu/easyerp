@@ -2,10 +2,10 @@
 @using EasyErp.Core.Infrastructure
 @model EasyERP.Web.Models.Products.ProductListModel
 @section SectionTitle
-{  
-        <h1 id="crmTitle">
-            <strong>产品管理</strong>
-        </h1>   
+{
+    <h1 id="crmTitle">
+        <strong>产品管理</strong>
+    </h1>
 }
 @{
     var defaultGridPageSize = EngineContext.Current.Resolve<AreaSettings>().DefaultGridPageSize;
@@ -20,7 +20,7 @@
     }))
     {
         @Html.AntiForgeryToken()
-        <input type="hidden" id="selectedIds" name="selectedIds" value=""/>
+        <input type="hidden" id="selectedIds" name="selectedIds" value="" />
     }
     <button id="export-product-button">导出产品</button>
 </div>
@@ -55,22 +55,12 @@
         })
     </div>
     <div>
-        <input type="button" id="search-products" class="k-button" value="搜索"/>
+        <input type="button" id="search-products" class="k-button" value="搜索" />
     </div>
     <div>
         <div id="products-grid"></div>
     </div>
     <script type="text/javascript">
-        function additionalData() {
-            var data = {
-                SearchProductName: $("#search-product-name").val(),
-                SearchStoreId: $("#selected-store").val(),
-                SearchCategoryId: $("#selected-category").val()
-            };
-            addAntiForgeryToken(data);
-            return data;
-        }
-
         $(document).ready(function() {
 
             $("#products-grid").kendoGrid({
@@ -81,12 +71,26 @@
                             url: "/Product/ProductList",
                             type: "POST",
                             dataType: "json",
-                            data: additionalData
+                            data: function() {
+                                var data = {
+                                    SearchProductName: $("#search-product-name").val(),
+                                    SearchStoreId: $("#selected-store").val(),
+                                    SearchCategoryId: $("#selected-category").val()
+                                };
+                                addAntiForgeryToken(data);
+                                return data;
+                            }
                         },
                         destroy: {
                             url: "/Product/Destroy",
                             type: "POST",
-                            dataType: "json"
+                            dataType: "json",
+                            data: function(options) {
+                                assert("hit")
+                                var data = { id: options.Id };
+                                addAntiForgeryToken(data);
+                                return data;
+                            }
                         }
                     },
                     schema: {
@@ -148,6 +152,5 @@
                 return false;
             });
         });
-
     </script>
 }

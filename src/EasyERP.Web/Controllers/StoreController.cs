@@ -2,15 +2,15 @@
 
 namespace EasyERP.Web.Controllers
 {
-    using System;
-    using System.Linq;
-    using System.Web.Mvc;
     using Doamin.Service.Security;
     using Doamin.Service.Stores;
     using EasyERP.Web.Extensions;
     using EasyERP.Web.Framework.Kendoui;
     using EasyERP.Web.Models.Products;
     using EasyERP.Web.Models.Stores;
+    using System;
+    using System.Linq;
+    using System.Web.Mvc;
 
     public class StoreController : BaseAdminController
     {
@@ -136,26 +136,24 @@ namespace EasyERP.Web.Controllers
             }
             return View(model);
         }
-        
+
         [HttpPost]
-        public ActionResult Destroy(DataSourceRequest request, ProductModel model)
+        public ActionResult Destroy(DataSourceRequest request, int id)
         {
             if (!permissionService.Authorize(StandardPermissionProvider.ManageProducts))
             {
                 return AccessDeniedView();
             }
 
-            if (model != null &&
-                model.Id > 0)
+            if (id < 1)
             {
-                var store = storeService.GetStoreById(model.Id);
-                store.DoIfNotNull(s => storeService.DeleteStore(s));
+                return Json(new { Result = false });
             }
-            return Json(
-                new
-                {
-                    Result = true
-                });
+
+            var store = storeService.GetStoreById(id);
+            store.DoIfNotNull(s => storeService.DeleteStore(s));
+
+            return Json(new { Result = true });
         }
     }
 }

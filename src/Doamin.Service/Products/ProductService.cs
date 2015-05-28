@@ -22,6 +22,7 @@
         public void DeleteProduct(Product product)
         {
             productRepository.Remove(product);
+            unitOfWork.Commit();
         }
 
         public Product GetProductById(long productId)

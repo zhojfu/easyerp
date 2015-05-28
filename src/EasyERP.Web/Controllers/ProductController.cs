@@ -465,24 +465,21 @@
         }
 
         [HttpPost]
-        public ActionResult Destroy(DataSourceRequest request, ProductModel model)
+        public ActionResult Destroy(DataSourceRequest request, int id)
         {
             if (!permissionService.Authorize(StandardPermissionProvider.ManageProducts))
             {
                 return AccessDeniedView();
             }
 
-            if (model != null &&
-                model.Id > 0)
+            if (id < 1)
             {
-                var product = productService.GetProductById(model.Id);
-                product.DoIfNotNull(p => productService.DeleteProduct(p));
+                return Json( new { Result = false });
             }
-            return Json(
-                new
-                {
-                    Result = true
-                });
+
+            var product = productService.GetProductById(id);
+            product.DoIfNotNull(p => productService.DeleteProduct(p));
+            return Json(new { Result = true });
         }
 
         [HttpPost]
