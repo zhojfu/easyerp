@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Xml.Linq;
+using Doamin.Service.Security;
 using Doamin.Service.Stores;
 using Domain.Model.Stores;
 
@@ -16,9 +17,10 @@ namespace EasyERP.Web.Controllers
     using Doamin.Service.StoreSale;
     using Domain.Model.Orders;
     using Domain.Model.Payments;
+    using EasyErp.Core;
     using EasyERP.Web.Models.StoreSale;
 
-    public class StoreSaleController : Controller
+    public class StoreSaleController : BaseAdminController 
     {
         private readonly ICustomerService customerService;
 
@@ -28,50 +30,88 @@ namespace EasyERP.Web.Controllers
 
         private readonly IPostRetailService retailService;
 
+        private readonly IPermissionService permissionService;
+
+        private readonly IWorkContext workContext;
+
         public StoreSaleController(
             IPostRetailService retailService,
             IStoreSaleService storeSaleService,
             IProductService productService,
-            ICustomerService customerService)
+            ICustomerService customerService,
+            IWorkContext workContext,
+            IPermissionService permissionService)
         {
             this.storeSaleService = storeSaleService;
             this.productService = productService;
             this.customerService = customerService;
             this.retailService = retailService;
+            this.permissionService = permissionService;
+            this.workContext = workContext;
         }
 
         // GET: /StoreSales/
         public ActionResult Index()
         {
+            if (!this.permissionService.Authorize(StandardPermissionProvider.ManageStores))
+            {
+                return AccessDeniedView();
+            }
+
             return View();
         }
 
         public ActionResult Create()
         {
+            if (!this.permissionService.Authorize(StandardPermissionProvider.ManageStores))
+            {
+                return AccessDeniedView();
+            }
+
             return View();
         }
 
         [HttpPost]
         public JsonResult AddOrderItem(OrderItemModel orderItem)
         {
+            if (!this.permissionService.Authorize(StandardPermissionProvider.ManageStores))
+            {
+                return AccessDeniedJson();
+            }
+
             return Json(orderItem);
         }
 
         [HttpPost]
         public JsonResult DeleteOrderItem(OrderItemModel orderItem)
         {
+            if (!this.permissionService.Authorize(StandardPermissionProvider.ManageStores))
+            {
+                return AccessDeniedJson();
+            }
+
             return Json(orderItem);
         }
 
         [HttpPost]
         public JsonResult UpdateOrderItem(OrderItemModel orderItem)
         {
+            if (!this.permissionService.Authorize(StandardPermissionProvider.ManageStores))
+            {
+                return AccessDeniedJson();
+            }
+
             return Json(orderItem);
         }
 
         [HttpGet]
         public JsonResult AutoCompleteCustomers(string name)
         {
+            if (!this.permissionService.Authorize(StandardPermissionProvider.ManageStores))
+            {
+                return AccessDeniedJson();
+            }
+
             var customers = customerService.GetCustomersByName(name);
 
             var jsons = new List<object>();
@@ -93,6 +133,11 @@ namespace EasyERP.Web.Controllers
         [HttpGet]
         public JsonResult AutoCompleteProducts(string name)
         {
+            if (!this.permissionService.Authorize(StandardPermissionProvider.ManageStores))
+            {
+                return AccessDeniedJson();
+            }
+
             var products = productService.GetAutoCompleteProducts(name);
 
             var jsons = new List<object>();
@@ -113,18 +158,34 @@ namespace EasyERP.Web.Controllers
 
         public ActionResult Retail()
         {
+            if (!this.permissionService.Authorize(StandardPermissionProvider.ManageStores))
+            {
+                return AccessDeniedJson();
+            }
+
+            if (this.permissionService.Authorize(StandardPermissionProvider.ManageStores))
+            {
+                return AccessDeniedView();
+            }
+
             return View();
         }
 
         [HttpPost]
         public JsonResult Create(OrderModel model)
         {
+            if (!this.permissionService.Authorize(StandardPermissionProvider.ManageStores))
+            {
+                return AccessDeniedJson();
+            }
+
             var order = new Order
             {
                 CustomerId = model.CustomerId,
                 Name = model.Title,
                 CreatedOnUtc = DateTime.Now,
                 OrderGuid = Guid.NewGuid(),
+                StoreId = workContext.CurrentUser.StoreId,
                 Payment = new Payment()
             };
 
@@ -165,6 +226,11 @@ namespace EasyERP.Web.Controllers
 
         public JsonResult OrderList(int skip, int take, int page, int pageSize)
         {
+            if (!this.permissionService.Authorize(StandardPermissionProvider.ManageStores))
+            {
+                return AccessDeniedJson();
+            }
+
             var orders = storeSaleService.GetOrders(page, pageSize);
             if (orders != null)
             {
@@ -198,6 +264,11 @@ namespace EasyERP.Web.Controllers
        [HttpPost]
         public JsonResult Delete(List<int> ids)
         {
+            if (!this.permissionService.Authorize(StandardPermissionProvider.ManageStores))
+            {
+                return AccessDeniedJson();
+            }
+
             if (ids != null)
             {
                 this.storeSaleService.DeleteOrderByIds(ids);
@@ -208,6 +279,11 @@ namespace EasyERP.Web.Controllers
         [HttpPost]
         public ActionResult UploadRetail()
         {
+            if (this.permissionService.Authorize(StandardPermissionProvider.ManageStores))
+            {
+                return AccessDeniedView();
+            }
+
             HttpPostedFileBase file = Request.Files["retialfile"];
             if (file != null)
             {
@@ -242,6 +318,11 @@ namespace EasyERP.Web.Controllers
         [HttpGet]
         public JsonResult RetailList(int skip, int take, int page, int pageSize)
         {
+            if (!this.permissionService.Authorize(StandardPermissionProvider.ManageStores))
+            {
+                return AccessDeniedJson();
+            }
+
             var retials = this.retailService.ShowPostRecord(page, pageSize);
             if (retials != null)
             {

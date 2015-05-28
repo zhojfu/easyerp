@@ -1,4 +1,7 @@
-﻿namespace EasyERP.Web.Controllers
+﻿using Doamin.Service.Security;
+using EasyErp.Core;
+
+namespace EasyERP.Web.Controllers
 {
     using System;
     using System.Linq;
@@ -9,27 +12,45 @@
     using EasyERP.Web.Models.Employee;
     using EasyERP.Web.Models.Factory;
 
-    public class ConsumptionController : Controller
+    public class ConsumptionController : BaseAdminController
     {
         private readonly IConsumptionService consumptionService;
 
         private readonly ITimesheetService<ConsumptionStatistic> timesheetService;
 
+        private readonly IPermissionService permissionService;
+
+        private readonly IWorkContext workContext;
+
         public ConsumptionController(
+            IPermissionService permissionService,
             IConsumptionService consumptionService,
-            ITimesheetService<ConsumptionStatistic> timesheetService)
+            ITimesheetService<ConsumptionStatistic> timesheetService,
+            IWorkContext workContext)
         {
             this.consumptionService = consumptionService;
             this.timesheetService = timesheetService;
+            this.permissionService = permissionService;
+            this.workContext = workContext;
         }
 
         public ActionResult Index()
         {
+            if (!this.permissionService.Authorize(StandardPermissionProvider.ManageStores))
+            {
+                return AccessDeniedView();
+            }
+
             return View();
         }
 
         public JsonResult Get(int page, int pageSize)
         {
+            if (!this.permissionService.Authorize(StandardPermissionProvider.ManageStores))
+            {
+                return AccessDeniedJson();
+            }
+
             var consumptions = consumptionService.GetConsumptionCategories(page, pageSize);
 
             if (consumptions == null)
@@ -53,6 +74,11 @@
         [HttpPost]
         public JsonResult Update(ConsumptionModel model)
         {
+            if (!this.permissionService.Authorize(StandardPermissionProvider.ManageStores))
+            {
+                return AccessDeniedJson();
+            }
+
             var consumption = Mapper.Map<ConsumptionModel, Consumption>(model);
             if (consumption != null)
             {
@@ -65,9 +91,15 @@
         [HttpPost]
         public JsonResult Create(ConsumptionModel model)
         {
+            if (!this.permissionService.Authorize(StandardPermissionProvider.ManageStores))
+            {
+                return AccessDeniedJson();
+            }
+
             var consumption = Mapper.Map<ConsumptionModel, Consumption>(model);
             if (consumption != null)
             {
+                consumption.StoreId = workContext.CurrentUser.StoreId;
                 consumptionService.AddConsumptionCategory(consumption);
             }
 
@@ -77,6 +109,11 @@
         [HttpPost]
         public JsonResult Delete(ConsumptionModel model)
         {
+            if (!this.permissionService.Authorize(StandardPermissionProvider.ManageStores))
+            {
+                return AccessDeniedJson();
+            }
+
             var consumption = Mapper.Map<ConsumptionModel, Consumption>(model);
             if (consumption != null)
             {
@@ -87,11 +124,21 @@
 
         public ActionResult Statistic()
         {
+            if (!this.permissionService.Authorize(StandardPermissionProvider.ManageStores))
+            {
+                return AccessDeniedView();
+            }
+
             return View();
         }
 
         public JsonResult GetStatistic(string date, int page, int pageSize)
         {
+            if (!this.permissionService.Authorize(StandardPermissionProvider.ManageStores))
+            {
+                return AccessDeniedJson();
+            }
+
             DateTime selectedDate;
 
             if (!DateTime.TryParse(date, out selectedDate))
@@ -117,6 +164,11 @@
         [HttpPost]
         public JsonResult UpdateStatistic(TimesheetModel model)
         {
+            if (!this.permissionService.Authorize(StandardPermissionProvider.ManageStores))
+            {
+                return AccessDeniedJson();
+            }
+
             DateTime selectedDate;
 
             if (!DateTime.TryParse(model.DateOfWeek, out selectedDate))
