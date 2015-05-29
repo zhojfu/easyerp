@@ -43,7 +43,6 @@
             IProductPriceService productPriceService,
             IInventoryService inventoryService,
             IDateTimeHelper dateTimeHelper,
-            IAclService aclService,
             IExportManager exportManager)
         {
             this.permissionService = permissionService;
@@ -56,7 +55,6 @@
             this.exportManager = exportManager;
         }
 
-        // GET: Product
         public ActionResult Index()
         {
             return RedirectToAction("List");
@@ -65,7 +63,7 @@
         [HttpPost]
         public ActionResult ProductList(DataSourceRequest command, ProductListModel model)
         {
-            if (!permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            if (!permissionService.Authorize(StandardPermissionProvider.GetProductList))
             {
                 return AccessDeniedView();
             }
@@ -98,24 +96,26 @@
                 pageSize: command.PageSize,
                 overridePublished: overridePublished
                 );
-            var gridModel = new DataSourceResult();
-            gridModel.Data = products.Select(
-                x =>
-                {
-                    var productModel = x.ToModel();
+            var gridModel = new DataSourceResult
+            {
+                Data = products.Select(
+                    x =>
+                    {
+                        var productModel = x.ToModel();
 
-                    productModel.FullDescription = "";
+                        productModel.FullDescription = "";
 
-                    return productModel;
-                });
-            gridModel.Total = products.TotalCount;
+                        return productModel;
+                    }),
+                Total = products.TotalCount
+            };
 
             return Json(gridModel);
         }
 
         public ActionResult List()
         {
-            if (!permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            if (!permissionService.Authorize(StandardPermissionProvider.GetProductList))
             {
                 return AccessDeniedView();
             }
@@ -182,7 +182,7 @@
 
         public ActionResult Inventory()
         {
-            if (!permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            if (!permissionService.Authorize(StandardPermissionProvider.InventoryProduct))
             {
                 return AccessDeniedView();
             }
@@ -228,7 +228,7 @@
         [HttpPost]
         public ActionResult Inventory(InventoryModel model)
         {
-            if (!permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            if (!permissionService.Authorize(StandardPermissionProvider.InventoryProduct))
             {
                 return AccessDeniedView();
             }
@@ -267,7 +267,7 @@
         [HttpPost]
         public ActionResult InventoryRecords(int productId, bool showUnPaidOnly)
         {
-            if (!permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            if (!permissionService.Authorize(StandardPermissionProvider.InventoryProduct))
             {
                 return AccessDeniedView();
             }
@@ -319,7 +319,7 @@
         [HttpPost]
         public ActionResult Categories()
         {
-            if (!permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            if (!permissionService.Authorize(StandardPermissionProvider.GetCategoryList))
             {
                 return AccessDeniedView();
             }
@@ -345,7 +345,7 @@
         //create product
         public ActionResult Create()
         {
-            if (!permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            if (!permissionService.Authorize(StandardPermissionProvider.CreateProduct))
             {
                 return AccessDeniedView();
             }
@@ -360,7 +360,7 @@
         [HttpPost, ParameterBasedOnFormName("save-continue", "continueEditing")]
         public ActionResult Create(ProductModel model, bool continueEditing)
         {
-            if (!permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            if (!permissionService.Authorize(StandardPermissionProvider.CreateProduct))
             {
                 return AccessDeniedView();
             }
@@ -395,7 +395,7 @@
 
         public ActionResult Edit(int id)
         {
-            if (!permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            if (!permissionService.Authorize(StandardPermissionProvider.UpdateProduct))
             {
                 return AccessDeniedView();
             }
@@ -419,7 +419,7 @@
         [HttpPost, ParameterBasedOnFormName("save-continue", "continueEditing")]
         public ActionResult Edit(ProductModel model, bool continueEditing)
         {
-            if (!permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            if (!permissionService.Authorize(StandardPermissionProvider.UpdateProduct))
             {
                 return AccessDeniedView();
             }
@@ -467,7 +467,7 @@
         [HttpPost]
         public ActionResult Destroy(DataSourceRequest request, int id)
         {
-            if (!permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            if (!permissionService.Authorize(StandardPermissionProvider.DeleteProduct))
             {
                 return AccessDeniedView();
             }
@@ -485,7 +485,7 @@
         [HttpPost]
         public ActionResult Delete(int id)
         {
-            if (!permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            if (!permissionService.Authorize(StandardPermissionProvider.DeleteProduct))
             {
                 return AccessDeniedView();
             }
@@ -505,7 +505,7 @@
         [HttpPost]
         public ActionResult DeleteSelected(ICollection<int> selectedIds)
         {
-            if (!permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            if (!permissionService.Authorize(StandardPermissionProvider.DeleteProduct))
             {
                 return AccessDeniedView();
             }
@@ -543,7 +543,7 @@
         [HttpPost]
         public ActionResult PriceList(DataSourceRequest command, PriceListModel model)
         {
-            if (!permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            if (!permissionService.Authorize(StandardPermissionProvider.SetProductPrice))
             {
                 return AccessDeniedView();
             }
@@ -612,7 +612,7 @@
 
         public ActionResult ExportProducts()
         {
-            if (!permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            if (!permissionService.Authorize(StandardPermissionProvider.ExportProduct))
             {
                 return AccessDeniedView();
             }

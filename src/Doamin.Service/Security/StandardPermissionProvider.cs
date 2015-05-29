@@ -6,11 +6,88 @@
 
     public class StandardPermissionProvider : IPermissionProvider
     {
-        public static readonly PermissionRecord ManageProducts = new PermissionRecord
+        public static readonly PermissionRecord CreateProduct = new PermissionRecord
         {
-            Name = "Admin area. Manage Products",
-            SystemName = "ManageProducts",
-            Category = "Catalog"
+            Name = "CreateProduct",
+            SystemName = "Create Product",
+            Category = "Product"
+        };
+
+        public static readonly PermissionRecord DeleteProduct = new PermissionRecord
+        {
+            Name = "Delete Product",
+            SystemName = "Delete Product",
+            Category = "Product"
+        };
+
+        public static readonly PermissionRecord InventoryProduct = new PermissionRecord
+        {
+            Name = "Inventory Product",
+            SystemName = "Inventory Product",
+            Category = "Product"
+        };
+
+        public static readonly PermissionRecord UpdateProduct = new PermissionRecord
+        {
+            Name = "Edit Product",
+            SystemName = "Edit Product",
+            Category = "Product"
+        };
+
+        public static readonly PermissionRecord ExportProduct = new PermissionRecord
+        {
+            Name = "Export Product",
+            SystemName = "Export Product",
+            Category = "Product"
+        };
+
+        public static readonly PermissionRecord GetProductList = new PermissionRecord
+        {
+            Name = "Get Product",
+            SystemName = "Get Product",
+            Category = "Product"
+        };
+
+        public static readonly PermissionRecord ManageStoreProducts = new PermissionRecord
+        {
+            Name = "Manage Store Products",
+            SystemName = "Manage Store Products",
+            Category = "Product"
+        };
+
+        public static readonly PermissionRecord SetProductPrice = new PermissionRecord
+        {
+            Name = "Set Product Price",
+            SystemName = "Set Product Price",
+            Category = "Product"
+        };
+
+        public static readonly PermissionRecord CreateStore = new PermissionRecord
+        {
+            Name = "Create Store",
+            SystemName = "Create Store",
+            Category = "Store",
+        };
+
+        public static readonly PermissionRecord DeleteStore = new PermissionRecord
+        {
+            Name = "Delete Store",
+            SystemName = "Delete   Store",
+            Category = "Store",
+        };
+
+        public static readonly PermissionRecord UpdateStore = new PermissionRecord
+        {
+            Name = "Update Store",
+            SystemName = "Update Store",
+            Category = "Store",
+        };
+
+        public static readonly PermissionRecord GetStoreList = new PermissionRecord
+        {
+            Name = "Get Store List",
+            SystemName = "Get Store List",
+            Category = "Store",
         };
 
         public static readonly PermissionRecord GetCategoryList = new PermissionRecord
@@ -20,32 +97,94 @@
             Category = "Catalog"
         };
 
-        public static readonly PermissionRecord AccessAdminPanel = new PermissionRecord
+        public static readonly PermissionRecord GetOrderList = new PermissionRecord
         {
-            Name = "AccessAdminPanel",
-            SystemName = "Admin",
-            Category = "Catalog"
+            Name = "Get Order List",
+            SystemName = "Get Order List",
+            Category = "Order"
         };
 
-        public static readonly PermissionRecord ManageStores = new PermissionRecord
+        public static readonly PermissionRecord CreateOrder = new PermissionRecord
         {
-            Name = "Admin area. Manage Stores",
-            SystemName = "ManageStores",
-            Category = "Catalog"
+            Name = "Create Order",
+            SystemName = "Create Order",
+            Category = "Order"
         };
 
-        public static readonly PermissionRecord ManageOrders = new PermissionRecord
+        public static readonly PermissionRecord ReviewOrder = new PermissionRecord
         {
-            Name = "Admin area. Manage Orders",
-            SystemName = "ManageOrders",
-            Category = "Catalog"
+            Name = "Review Order",
+            SystemName = "Review Order",
+            Category = "Order",
+        }; 
+        
+        public static readonly PermissionRecord ApproveOrder = new PermissionRecord
+        {
+            Name = "Approve Order",
+            SystemName = "Approve Order",
+            Category = "Order"
         };
 
-        public static readonly PermissionRecord EnableShoppingCart = new PermissionRecord
+        public static readonly PermissionRecord RejectOrder = new PermissionRecord
         {
-            Name = "Public store. Enable shopping cart",
-            SystemName = "EnableShoppingCart",
-            Category = "PublicStore"
+            Name = "Reject Order",
+            SystemName = "Reject Order",
+            Category = "Order"
+        };
+
+        public static readonly PermissionRecord ConfirmOrder = new PermissionRecord
+        {
+            Name = "Confirm Order",
+            SystemName = "Confirm Order",
+            Category = "Order"
+        };
+
+        public static readonly PermissionRecord DeleteOrder = new PermissionRecord
+        {
+            Name = "Delete Record",
+            SystemName = "Delete Order",
+            Category = "Order"
+        };
+
+        public static readonly PermissionRecord UpdateOrder = new PermissionRecord
+        {
+            Name = "Update Order",
+            SystemName = "Update Order",
+            Category = "Order"
+        };
+
+
+        public static readonly PermissionRecord ViewOrder = new PermissionRecord
+        {
+            Name = "View Order",
+            SystemName = "View Order",
+            Category = "Order"
+        };
+        
+        public static readonly PermissionRecord AddEmployee = new PermissionRecord
+        {
+            Name = "Add Employee",
+            SystemName = "Add Employee",
+            Category = "Employee"
+        };
+
+        public static readonly PermissionRecord DeleteEmployee = new PermissionRecord
+        {
+            Name = "Delete Employee",
+            SystemName = "Delete Employee",
+            Category = "Employee"
+        };
+        public static readonly PermissionRecord UpdateEmployee = new PermissionRecord
+        {
+            Name = "Update Employee",
+            SystemName = "Update Employee",
+            Category = "Employee"
+        };
+        public static readonly PermissionRecord GetEmployee = new PermissionRecord
+        {
+            Name = "Get Employee",
+            SystemName = "Get Employee",
+            Category = "Employee"
         };
 
         public static readonly PermissionRecord ViewProductList = new PermissionRecord
@@ -55,9 +194,22 @@
             Category = "StoreAdmin"
         };
 
+        public static readonly PermissionRecord AccessAdminPanel = new PermissionRecord
+        {
+            Name = "AccessAdminPanel",
+            SystemName = "Admin",
+            Category = "Catalog"
+        };
+
         public IEnumerable<PermissionRecord> GetPermissions()
         {
-            return new[] { ManageProducts, ManageStores, ManageOrders };
+            return new[]
+            {
+                CreateProduct, DeleteProduct, InventoryProduct, UpdateProduct, GetProductList, ManageStoreProducts,
+                SetProductPrice, CreateStore, DeleteStore, UpdateStore, GetStoreList, GetCategoryList, GetOrderList,
+                CreateOrder, ReviewOrder, ApproveOrder, RejectOrder, ConfirmOrder, DeleteOrder, UpdateOrder, AddEmployee,
+                DeleteEmployee, UpdateEmployee, GetEmployee, ViewProductList, AccessAdminPanel
+            };
         }
 
         public IEnumerable<DefaultPermissionRecord> GetDefaultPermissions()
@@ -67,13 +219,12 @@
                 new DefaultPermissionRecord
                 {
                     UserRoleSystemName = SystemUserRoleNames.Administrators,
-                    PermissionRecords =
-                        new[] { ManageProducts, ManageStores, ManageOrders, AccessAdminPanel, GetCategoryList }
+                    PermissionRecords = this.GetPermissions()
                 },
                 new DefaultPermissionRecord
                 {
                     UserRoleSystemName = SystemUserRoleNames.StoreAdmin,
-                    PermissionRecords = new[] { ManageStores }
+                    PermissionRecords = this.GetPermissions()
                 },
                 new DefaultPermissionRecord
                 {

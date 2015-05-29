@@ -87,7 +87,7 @@
                             <a href="#">Link</a>
                         </li>
                         <li>
-                            <a href="#">
+                            <a href="/user/logout">
                                 <i class="fa fa-sign-out"></i>退出系统
                             </a>
                         </li>
@@ -111,6 +111,19 @@
         $("#subnav a").each(function(index) {
             if (this.pathname.split("/")[1] === controllerName) {
                 $(this).parent().addClass("active");
+            }
+        });
+        var actionName = "@ViewContext.RouteData.Values["Action"].ToString()";
+        if (actionName === "Index") {
+            actionName = "List";
+        }
+        $("#nav-wrapper a").each(function(index) {
+            var action = this.pathname.split("/")[2];
+            if (!action || action === "index") {
+                action = "List";
+            }
+            if (action === actionName) {
+                $(this).parent().parent().addClass("active");
             }
         });
     });

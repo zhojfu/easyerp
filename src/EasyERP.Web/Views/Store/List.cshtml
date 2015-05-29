@@ -7,7 +7,7 @@
     </h1>
 }
 @{
-    ViewBag.Title = "产品管理";
+    ViewBag.Title = "门店管理";
     var defaultGridPageSize = EngineContext.Current.Resolve<AreaSettings>().DefaultGridPageSize;
     var gridPageSizes = EngineContext.Current.Resolve<AreaSettings>().GridPageSizes;
 }
@@ -27,7 +27,6 @@
             }
 
             $("#stores-grid").kendoGrid({
-                autoSync: true,
                 dataSource: {
                     type: "json",
                     transport: {

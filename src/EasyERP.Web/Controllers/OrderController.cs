@@ -79,7 +79,7 @@
         [HttpPost]
         public ActionResult ProductList(DataSourceRequest data, OrderModel model)
         {
-            if (!permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            if (!permissionService.Authorize(StandardPermissionProvider.GetProductList))
             {
                 return AccessDeniedView();
             }
@@ -102,7 +102,7 @@
 
         public ActionResult Detail(Guid guid)
         {
-            if (!permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            if (!permissionService.Authorize(StandardPermissionProvider.ViewOrder))
             {
                 return AccessDeniedView();
             }
@@ -114,7 +114,7 @@
         [HttpPost]
         public ActionResult OrderUpdate(DataSourceRequest request, IEnumerable<CartItemModel> cartItems)
         {
-            if (!permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            if (!permissionService.Authorize(StandardPermissionProvider.UpdateOrder))
             {
                 return AccessDeniedView();
             }
@@ -201,7 +201,7 @@
         [HttpPost]
         public ActionResult OrderList(DataSourceRequest command, SearchModel model)
         {
-            if (!permissionService.Authorize(StandardPermissionProvider.ManageOrders))
+            if (!permissionService.Authorize(StandardPermissionProvider.GetOrderList))
             {
                 return AccessDeniedView();
             }
@@ -263,7 +263,7 @@
 
         public ActionResult Review(Guid orderGuid)
         {
-            if (!permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            if (!permissionService.Authorize(StandardPermissionProvider.ReviewOrder))
             {
                 return AccessDeniedView();
             }
@@ -298,7 +298,7 @@
         [HttpPost]
         public ActionResult Review(OrderModel orderModel)
         {
-            if (!permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            if (!permissionService.Authorize(StandardPermissionProvider.ReviewOrder))
             {
                 return AccessDeniedView();
             }
@@ -309,7 +309,7 @@
         [HttpPost]
         public ActionResult ChangeStatus(Guid orderGuid, int status)
         {
-            if (!permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            if (!permissionService.Authorize(StandardPermissionProvider.ReviewOrder))
             {
                 return AccessDeniedView();
             }

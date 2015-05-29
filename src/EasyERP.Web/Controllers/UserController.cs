@@ -33,7 +33,7 @@
         }
 
         [HttpPost]
-        public ActionResult Login(LoginModel model)
+        public ActionResult Login(LoginModel model, string returnUrl)
         {
             //if (captchaSettings.Enabled && !captchaValid)
             //{
@@ -50,8 +50,14 @@
                         var user = userService.GetUserByName(model.Username);
                         authenticationService.SignIn(user, false);
 
-                        // TODO:redirection to page according user type
-                        return RedirectToAction("List", "Product");
+
+                        if (string.IsNullOrEmpty(returnUrl) || !Url.IsLocalUrl(returnUrl))
+                        {
+                            // TODO:redirection to page according user typer
+                            return RedirectToAction("List", "Product");
+                        }
+
+                        return Redirect(returnUrl);
                     }
                     case UserLoginResults.UserNotExist:
                         ModelState.AddModelError("", "用户不存在");
@@ -79,7 +85,7 @@
         public ActionResult Logout()
         {
             authenticationService.SignOut();
-            return RedirectToRoute("Home");
+            return RedirectToAction("Login");
         }
     }
 }

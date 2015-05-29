@@ -11,7 +11,7 @@
     using Domain.Model.Users;
     using EasyErp.Core.Infrastructure;
 
-    public class DatabaseInitializer : DropCreateDatabaseAlways<EntityFrameworkDbContext>
+    public class DatabaseInitializer : DropCreateDatabaseIfModelChanges<EntityFrameworkDbContext>
     {
         protected override void Seed(EntityFrameworkDbContext context)
         {

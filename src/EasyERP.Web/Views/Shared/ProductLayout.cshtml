@@ -9,7 +9,7 @@
 
             <div id="root-nav">
 
-                <ul id="siderbar-nav" class="root-nav-categories">
+                <ul class="root-nav-categories">
                     <li>
                         <h3>@Html.ActionLink("产品信息", "Index", "Product")</h3>
                     </li>
@@ -25,23 +25,6 @@
             </div>
         </div>
     </div>
-    <script>
-        $(document).ready(function () {
-            var actionName = "@ViewContext.RouteData.Values["Action"].ToString()";
-            if (actionName === "Index") {
-                actionName = "List";
-            }
-            $("#siderbar-nav a").each(function (index) {
-                var action = this.pathname.split("/")[2];
-                if (!action || action === "index") {
-                    action = "List";
-                }
-                if (action === actionName) {
-                    $(this).parent().parent().addClass("active");
-                }
-            });
-        });
-    </script>
 
 }
 

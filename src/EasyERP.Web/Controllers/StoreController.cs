@@ -28,7 +28,7 @@ namespace EasyERP.Web.Controllers
 
         public ActionResult Index()
         {
-            if (!permissionService.Authorize(StandardPermissionProvider.ManageStores))
+            if (!permissionService.Authorize(StandardPermissionProvider.GetStoreList))
             {
                 return AccessDeniedView();
             }
@@ -37,7 +37,7 @@ namespace EasyERP.Web.Controllers
 
         public ActionResult List()
         {
-            if (!permissionService.Authorize(StandardPermissionProvider.ManageStores))
+            if (!permissionService.Authorize(StandardPermissionProvider.GetStoreList))
             {
                 return AccessDeniedView();
             }
@@ -48,7 +48,7 @@ namespace EasyERP.Web.Controllers
         [HttpPost]
         public ActionResult StoreList(DataSourceRequest command, ProductListModel model)
         {
-            if (!permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            if (!permissionService.Authorize(StandardPermissionProvider.GetStoreList))
             {
                 return AccessDeniedView();
             }
@@ -66,7 +66,7 @@ namespace EasyERP.Web.Controllers
 
         public ActionResult Create()
         {
-            if (!permissionService.Authorize(StandardPermissionProvider.ManageStores))
+            if (!permissionService.Authorize(StandardPermissionProvider.CreateStore))
             {
                 return AccessDeniedView();
             }
@@ -77,7 +77,7 @@ namespace EasyERP.Web.Controllers
         [HttpPost]
         public ActionResult Create(StoreModel model)
         {
-            if (!permissionService.Authorize(StandardPermissionProvider.ManageStores))
+            if (!permissionService.Authorize(StandardPermissionProvider.CreateStore))
             {
                 return AccessDeniedView();
             }
@@ -95,7 +95,7 @@ namespace EasyERP.Web.Controllers
 
         public ActionResult Edit(int id)
         {
-            if (!permissionService.Authorize(StandardPermissionProvider.ManageStores))
+            if (!permissionService.Authorize(StandardPermissionProvider.UpdateStore))
             {
                 return AccessDeniedView();
             }
@@ -112,7 +112,7 @@ namespace EasyERP.Web.Controllers
         [HttpPost]
         public ActionResult Edit(StoreModel model)
         {
-            if (!permissionService.Authorize(StandardPermissionProvider.ManageStores))
+            if (!permissionService.Authorize(StandardPermissionProvider.UpdateStore))
             {
                 return AccessDeniedView();
             }
@@ -140,7 +140,7 @@ namespace EasyERP.Web.Controllers
         [HttpPost]
         public ActionResult Destroy(DataSourceRequest request, int id)
         {
-            if (!permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            if (!permissionService.Authorize(StandardPermissionProvider.DeleteProduct))
             {
                 return AccessDeniedView();
             }
