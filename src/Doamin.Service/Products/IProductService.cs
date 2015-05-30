@@ -12,6 +12,8 @@
 
         Product GetProductById(long productId);
 
+        Product GetProductByItemNo(string itemNo);
+
         IEnumerable<Product> GetAutoCompleteProducts(string name);
 
         IList<Product> GetProductsByIds(int[] productIds);

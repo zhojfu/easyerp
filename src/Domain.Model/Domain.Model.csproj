@@ -81,6 +81,7 @@
     <Compile Include="Security\PermissionRecord.cs" />
     <Compile Include="Shipment\Shipment.cs" />
     <Compile Include="Shipment\ShipmentItem.cs" />
+    <Compile Include="Stores\PostRetail.cs" />
     <Compile Include="Stores\Store.cs" />
     <Compile Include="Test\TestDoubles.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

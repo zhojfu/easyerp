@@ -45,6 +45,8 @@
 
         public double SalaryOfMonth { get; set; }
 
+        public int StoreId { get; set; }
+
         public virtual ICollection<WorkTimeStatistic> WorkTimeRecords { get; set; }
     }
 }

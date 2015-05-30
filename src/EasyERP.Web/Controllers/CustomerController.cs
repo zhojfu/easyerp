@@ -1,41 +1,64 @@
-﻿namespace EasyERP.Web.Controllers
+﻿using EasyErp.Core;
+
+namespace EasyERP.Web.Controllers
 {
     using System;
     using System.Collections.Generic;
-    using System.Web.Mvc;
     using AutoMapper;
+    using System.Web.Mvc;
     using Doamin.Service.Customer;
     using Domain.Model.Customer;
     using EasyERP.Web.Models.Customer;
+    using Infrastructure.Utility;
+    using Doamin.Service.Security;
 
-    public class CustomerController : Controller
+    public class CustomerController : BaseAdminController
     {
         private readonly ICustomerService customerService;
+        private readonly IPermissionService permissionService;
+        private readonly IWorkContext workContext;
 
-        public CustomerController(ICustomerService customerService)
+        public CustomerController(ICustomerService customerService, IPermissionService permissionService,
+            IWorkContext workContext)
         {
             this.customerService = customerService;
+            this.permissionService = permissionService;
+            this.workContext = workContext;
         }
 
         public ActionResult Index()
         {
+            if (!this.permissionService.Authorize(StandardPermissionProvider.ManageStores))
+            {
+                return AccessDeniedView();
+            }
             return View();
         }
 
         public ActionResult Create()
         {
+            if (!this.permissionService.Authorize(StandardPermissionProvider.ManageStores))
+            {
+                return AccessDeniedView();
+            }
             return View();
         }
 
         [HttpPost]
         public ActionResult Create(CustomerModel customer)
         {
-            var e = Mapper.Map<CustomerModel, Customer>(customer);
+            if (!this.permissionService.Authorize(StandardPermissionProvider.ManageStores))
+            {
+                return AccessDeniedView();
+            }
+
+            Customer e = Mapper.Map<CustomerModel, Customer>(customer);
             if (e != null)
             {
                 e.CreatedOn = DateTime.Now;
                 e.UpdatedOn = DateTime.Now;
-                customerService.AddCustomer(e);
+                e.StoreId = workContext.CurrentUser.StoreId;
+                this.customerService.AddCustomer(e);
             }
 
             return RedirectToAction("Index");
@@ -43,14 +66,19 @@
 
         public JsonResult CustomerList(int skip, int take, int page, int pageSize)
         {
-            var cutomers = customerService.GetCustomers(page, pageSize);
+            if (!this.permissionService.Authorize(StandardPermissionProvider.ManageStores))
+            {
+                return AccessDeniedJson();
+            }
+
+            PagedResult<Customer> cutomers = this.customerService.GetCustomers(page, pageSize);
             if (cutomers != null)
             {
-                var customersList = new List<CustomerListModel>();
+                List<CustomerListModel> customersList = new List<CustomerListModel>();
 
                 foreach (var customer in cutomers)
                 {
-                    var model = Mapper.Map<Customer, CustomerListModel>(customer);
+                    CustomerListModel model = Mapper.Map<Customer, CustomerListModel>(customer);
                     model.Sex = customer.Male ? "男" : "女";
                     model.CreatedOn = customer.CreatedOn.ToShortDateString();
                     customersList.Add(model);
@@ -69,16 +97,27 @@
 
         public ActionResult Delete(List<int> ids)
         {
+            if (!this.permissionService.Authorize(StandardPermissionProvider.ManageStores))
+            {
+                return AccessDeniedView();
+            }
+
             if (ids != null)
             {
-                customerService.DeleteCustomerByIds(ids);
+                this.customerService.DeleteCustomerByIds(ids);
             }
             return RedirectToAction("Index");
         }
 
+
         public ActionResult Edit(int id)
         {
-            var c = customerService.GetCustomerById(id);
+            if (!this.permissionService.Authorize(StandardPermissionProvider.ManageStores))
+            {
+                return AccessDeniedView();
+            }
+
+            Customer c = this.customerService.GetCustomerById(id);
             if (c != null)
             {
                 var model = Mapper.Map<Customer, CustomerModel>(c);
@@ -87,13 +126,19 @@
             return View();
         }
 
+
         [HttpPost]
         public ActionResult Edit(CustomerModel customer)
         {
+            if (!this.permissionService.Authorize(StandardPermissionProvider.ManageStores))
+            {
+                return AccessDeniedView();
+            }
+
             var e = Mapper.Map<CustomerModel, Customer>(customer);
             if (e != null)
             {
-                customerService.UpdateCustomer(e);
+                this.customerService.UpdateCustomer(e);
             }
             return RedirectToAction("Index");
         }

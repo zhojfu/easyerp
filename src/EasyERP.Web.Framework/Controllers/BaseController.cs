@@ -101,5 +101,13 @@
                     pageUrl = Request.RawUrl
                 });
         }
+
+        protected JsonResult AccessDeniedJson()
+        {
+            return Json(
+            new {
+                ErrorMessage = "you dont have access right"
+            });
+        }
     }
 }

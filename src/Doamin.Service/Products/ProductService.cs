@@ -129,5 +129,10 @@
         {
             return string.IsNullOrEmpty(gtin) ? null : productRepository.FindAll(p => p.Gtin == gtin).FirstOrDefault();
         }
+
+        public Product GetProductByItemNo(string itemNo)
+        {
+            return string.IsNullOrEmpty(itemNo) ? null : productRepository.FindAll(p => p.ItemNo == itemNo).FirstOrDefault(); 
+        }
     }
 }

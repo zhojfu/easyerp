@@ -25,6 +25,8 @@
 
         public DateTime Birth { get; set; }
 
+        public int StoreId { get; set; }
+
         public virtual ICollection<Order> Orders { get; set; }
     }
 }

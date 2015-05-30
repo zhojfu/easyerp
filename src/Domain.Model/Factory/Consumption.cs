@@ -13,6 +13,8 @@
 
         public decimal PriceOfUnit { get; set; }
 
+        public int StoreId { get; set; }
+
         public virtual ICollection<ConsumptionStatistic> ConsumptionRecords { get; set; }
     }
 }
