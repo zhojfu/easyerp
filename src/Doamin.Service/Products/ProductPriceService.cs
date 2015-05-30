@@ -59,5 +59,16 @@
 
             unitOfWork.Commit();
         }
+
+
+        public IList<ProductPrice> GetproductPrice(int storeId, int productId)
+        {
+            if (productId < 1 || storeId < 1)
+            {
+                return null;
+            }
+
+            return priceRepository.FindAll(i => i.ProductId == productId && i.StoreId == storeId).ToList();
+        }
     }
 }

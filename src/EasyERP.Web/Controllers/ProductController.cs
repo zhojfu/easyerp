@@ -1,4 +1,6 @@
-﻿namespace EasyERP.Web.Controllers
+﻿using System.Runtime.Remoting.Messaging;
+
+namespace EasyERP.Web.Controllers
 {
     using System;
     using System.Collections.Generic;
@@ -530,79 +532,84 @@
                 });
         }
 
-        public ActionResult Price(int id)
+        public ActionResult Price()
         {
-            var model = new PriceListModel
-            {
-                ProductId = id
-            };
-
-            return View(model);
+            return View();
         }
 
         [HttpPost]
-        public ActionResult PriceList(DataSourceRequest command, PriceListModel model)
+        public ActionResult PriceList(DataSourceRequest command, int storeId, string storeName)
         {
             if (!permissionService.Authorize(StandardPermissionProvider.SetProductPrice))
             {
                 return AccessDeniedView();
             }
+            var products = productService.SearchProducts(storeIds: new List<int>{storeId});
 
-            var stores = storeService.GetStoresByProductId(model.ProductId).ToList();
-
-            var product = productService.GetProductById(model.ProductId);
-
-            if (product == null)
+            if (products == null)
             {
                 return new JsonResult();
             }
 
             var gridModel = new DataSourceResult
             {
-                Data = stores.Select(
+                Data = products.Select(
                     x =>
                     {
+                        var price = GetPrice(storeId, x.Id);
                         var priceModel = new PriceModel
                         {
-                            StoreName = x.Name,
-                            ProductId = product.Id,
-                            ProductName = product.Name,
-                            Cost = product.ProductCost,
-                            Price = product.Price,
+                            StoreName = storeName,
+                            ProductId = x.Id,
+                            ProductName = x.Name,
+                            CostPrice = price != null ? price.CostPrice : x.ProductCost,
+                            SalePrice = price != null ? price.SalePrice : x.Price,
                             StoreId = x.Id
                         };
 
                         return priceModel;
                     }),
-                Total = stores.Count
+                Total = products.Count
             };
 
             return Json(gridModel);
         }
 
+        private ProductPrice GetPrice(int storeId, int productId)
+        {
+            var prices = productPriceService.GetproductPrice(storeId, productId).ToList();
+
+            return prices == null ? null : prices.OrderBy(p => p.DateTime).FirstOrDefault();
+        }
+
         [HttpPost]
         public ActionResult PriceUpdate(
             DataSourceRequest request,
-            [Bind(Prefix = "models")] IEnumerable<PriceModel> priceModels)
+            PriceModel priceModel)
         {
-            if (priceModels != null &&
+            if (priceModel != null &&
                 ModelState.IsValid)
             {
-                foreach (var priceModel in priceModels)
+                    //var price = priceModel.ToEntity();
+                var price = new ProductPrice()
                 {
-                    var price = priceModel.ToEntity();
-                    price.DateTime = DateTime.Now;
-                    productPriceService.InsertPrice(price);
-                }
+                    DateTime = DateTime.Now,
+                    CostPrice = priceModel.CostPrice,
+                    SalePrice = priceModel.SalePrice,
+                    StoreId = priceModel.StoreId,
+                    ProductId = priceModel.ProductId
+                }; 
+                productPriceService.InsertPrice(price);
             }
+            
 
             var gridModel = new DataSourceResult
             {
-                Data = priceModels,
-                Total = priceModels.Count()
+                //Data = priceModel,
+                //Total = priceModel.Count()
             };
 
-            return Json(gridModel);
+            return Json(true);
         }
 
         public ActionResult Orders()

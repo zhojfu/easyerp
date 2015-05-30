@@ -92,8 +92,9 @@
                                 }
                             },
                             parameterMap: function(options, operation) {
+                                var data;
                                 if (operation === "read") {
-                                    var data = {
+                                    data = {
                                         SearchProductName: $("#search-product-name").val(),
                                         SearchStoreId: $("#selected-store").val(),
                                         SearchCategoryId: $("#selected-category").val()
