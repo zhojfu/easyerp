@@ -579,7 +579,7 @@ namespace EasyERP.Web.Controllers
         {
             var prices = productPriceService.GetproductPrice(storeId, productId).ToList();
 
-            return prices == null ? null : prices.OrderBy(p => p.DateTime).FirstOrDefault();
+            return prices == null ? null : prices.OrderByDescending(p => p.DateTime).FirstOrDefault();
         }
 
         [HttpPost]
@@ -590,7 +590,6 @@ namespace EasyERP.Web.Controllers
             if (priceModel != null &&
                 ModelState.IsValid)
             {
-                    //var price = priceModel.ToEntity();
                 var price = new ProductPrice()
                 {
                     DateTime = DateTime.Now,
@@ -599,17 +598,11 @@ namespace EasyERP.Web.Controllers
                     StoreId = priceModel.StoreId,
                     ProductId = priceModel.ProductId
                 }; 
-                productPriceService.InsertPrice(price);
+                productPriceService.InsertPrice(price); 
+                return Json(true);
             }
             
-
-            var gridModel = new DataSourceResult
-            {
-                //Data = priceModel,
-                //Total = priceModel.Count()
-            };
-
-            return Json(true);
+            return Json(false);
         }
 
         public ActionResult Orders()

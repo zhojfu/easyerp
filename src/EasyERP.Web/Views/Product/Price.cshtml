@@ -12,23 +12,11 @@
 @Html.AntiForgeryToken()
 @using (Html.BeginForm())
 {
-    @*@Html.HiddenFor(m => m.ProductId, new
-    {
-        id = "product-id"
-    })*@
-    <div class="section-header">
-        <div class="title">
-            <label>价格管理</label>
-        </div>
-    </div>
     <div>
         <div class="form-group">
              <input id="stores"/>
         </div>
 
-    @*<div class="form-group">
-        <input id="products" value="0"/>
-    </div>*@
         <div id="product-price-mapping-grid"></div>
     </div>
     <script>
@@ -51,71 +39,77 @@
                     },
                     schema: {
                         data: "Data"
-                    },
-                    onchange:function() {
-                        $("#product-price-mapping-grid").data("kendoGrid").page(1);
                     }
+                },
+                change: function(e) {
+                    e.preventDefault();
+                    products.read();
+                }, 
+                cascade: function(e) {
+                    e.preventDefault();
+                    products.read();
                 }
             });
-            var storeList = $("#stores").kendoDropDownList();
-            storeList.select(0);
-            $("#product-price-mapping-grid").kendoGrid({
-                dataSource: {
-                    type: "json",
-                    transport: {
-                        read: {
-                            url: "/Product/PriceList",
-                            type: "POST",
-                            dataType: "json"
-                        },
-                        update: {
-                            url: "/Product/PriceUpdate",
-                            type: "POST",
-                            dataType: "json"
-                        },
-                        parameterMap: function(options, operation) {
-                            var data;
-                            if (operation === "read") {
-                                data = {
-                                    storeId: "1",
-                                    storeName:"Store1"
-                                };
-                                addAntiForgeryToken(data);
-                                return data;
-                            } else if (operation === "update" && options.models) {
-                                data = options.models[0];
-                                addAntiForgeryToken(data);
-                                return data;
-                            }
+            var products = new kendo.data.DataSource({
+                type: "json",
+                transport: {
+                    read: {
+                        url: "/Product/PriceList",
+                        type: "POST",
+                        dataType: "json"
+                    },
+                    update: {
+                        url: "/Product/PriceUpdate",
+                        type: "POST",
+                        dataType: "json"
+                    },
+                    parameterMap: function(options, operation) {
+                        var data;
+                        if (operation === "read") {
+                            var store = $("#stores").data("kendoDropDownList");
+                            data = {
+                                storeId: store.value(),
+                                storeName: store.text()
+                            };
+                            addAntiForgeryToken(data);
+                            return data;
+                        } else if (operation === "update" && options.models) {
+                            data = options.models[0];
+                            addAntiForgeryToken(data);
+                            return data;
+                        }
+                    }
+                },
+                schema: {
+                    model: {
+                        id: "ProductId",
+                        fields: {
+                            StoreId: { editable: false, nullable: false },
+                            ProductId: { editable: false, nullable: false },
+                            StoreName: { editable: false, nullable: true },
+                            ProductName: { editable: false, nullable: true },
+                            CostPrice: { type: "number", validation: { min: 0, required: true } },
+                            SalePrice: { type: "number", validation: { min: 0, required: true } }
                         }
                     },
-                    schema: {
-                        model: {
-                            id: "ProductId",
-                            fields: {
-                                StoreId: { editable: false, nullable: false },
-                                ProductId: { editable: false, nullable: false },
-                                StoreName: { editable: false, nullable: true },
-                                ProductName: { editable: false, nullable: true },
-                                Cost: { type: "number", validation: { min: 0, required: true } },
-                                Price: { type: "number", validation: { min: 0, required: true } }
-                            }
-                        },
-                        data: "Data",
-                        total: "Total",
-                        errors: "Errors"
-                    },
-                    error: function(e) {
-                        display_kendoui_grid_error(e);
-                        // Cancel the changes
-                        this.cancelChanges();
-                    },
-                    pageSize: @(defaultGridPageSize),
-                    batch: true,
-                    serverPaging: true,
-                    serverFiltering: true,
-                    serverSorting: true
+                    data: "Data",
+                    total: "Total",
+                    errors: "Errors"
                 },
+                error: function(e) {
+                    display_kendoui_grid_error(e);
+                    // Cancel the changes
+                    this.cancelChanges();
+                },
+                pageSize: @(defaultGridPageSize),
+                batch: true,
+                serverPaging: true,
+                serverFiltering: true,
+                serverSorting: true
+            });
+            $("#product-price-mapping-grid").kendoGrid({
+                autoBind:false,
+                dataSource: products,
                 pageable: {
                     refresh: true,
                     pageSizes: [@(gridPageSizes)]
