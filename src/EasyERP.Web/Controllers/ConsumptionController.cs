@@ -36,7 +36,7 @@ namespace EasyERP.Web.Controllers
 
         public ActionResult Index()
         {
-            if (!this.permissionService.Authorize(StandardPermissionProvider.ManageStores))
+            if (!this.permissionService.Authorize(StandardPermissionProvider.GetConsumption))
             {
                 return AccessDeniedView();
             }
@@ -46,7 +46,7 @@ namespace EasyERP.Web.Controllers
 
         public JsonResult Get(int page, int pageSize)
         {
-            if (!this.permissionService.Authorize(StandardPermissionProvider.ManageStores))
+            if (!this.permissionService.Authorize(StandardPermissionProvider.GetConsumption))
             {
                 return AccessDeniedJson();
             }
@@ -74,7 +74,7 @@ namespace EasyERP.Web.Controllers
         [HttpPost]
         public JsonResult Update(ConsumptionModel model)
         {
-            if (!this.permissionService.Authorize(StandardPermissionProvider.ManageStores))
+            if (!this.permissionService.Authorize(StandardPermissionProvider.UpdateConsumptionRecord))
             {
                 return AccessDeniedJson();
             }
@@ -91,7 +91,7 @@ namespace EasyERP.Web.Controllers
         [HttpPost]
         public JsonResult Create(ConsumptionModel model)
         {
-            if (!this.permissionService.Authorize(StandardPermissionProvider.ManageStores))
+            if (!this.permissionService.Authorize(StandardPermissionProvider.CreateConsumptionRecord))
             {
                 return AccessDeniedJson();
             }
@@ -109,7 +109,7 @@ namespace EasyERP.Web.Controllers
         [HttpPost]
         public JsonResult Delete(ConsumptionModel model)
         {
-            if (!this.permissionService.Authorize(StandardPermissionProvider.ManageStores))
+            if (!this.permissionService.Authorize(StandardPermissionProvider.DeleteConsumptionRecord))
             {
                 return AccessDeniedJson();
             }
@@ -124,7 +124,7 @@ namespace EasyERP.Web.Controllers
 
         public ActionResult Statistic()
         {
-            if (!this.permissionService.Authorize(StandardPermissionProvider.ManageStores))
+            if (!this.permissionService.Authorize(StandardPermissionProvider.StatisticConsumption))
             {
                 return AccessDeniedView();
             }
@@ -134,7 +134,7 @@ namespace EasyERP.Web.Controllers
 
         public JsonResult GetStatistic(string date, int page, int pageSize)
         {
-            if (!this.permissionService.Authorize(StandardPermissionProvider.ManageStores))
+            if (!this.permissionService.Authorize(StandardPermissionProvider.StatisticConsumption))
             {
                 return AccessDeniedJson();
             }
@@ -164,7 +164,7 @@ namespace EasyERP.Web.Controllers
         [HttpPost]
         public JsonResult UpdateStatistic(TimesheetModel model)
         {
-            if (!this.permissionService.Authorize(StandardPermissionProvider.ManageStores))
+            if (!this.permissionService.Authorize(StandardPermissionProvider.UpdateConsumptionRecord))
             {
                 return AccessDeniedJson();
             }

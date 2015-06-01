@@ -577,7 +577,7 @@ namespace EasyERP.Web.Controllers
 
         private ProductPrice GetPrice(int storeId, int productId)
         {
-            var prices = productPriceService.GetproductPrice(storeId, productId).ToList();
+            var prices = productPriceService.GetProductPriceList(storeId, productId).ToList();
 
             return prices == null ? null : prices.OrderByDescending(p => p.DateTime).FirstOrDefault();
         }

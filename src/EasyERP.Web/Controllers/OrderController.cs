@@ -21,6 +21,7 @@
         private readonly IPermissionService permissionService;
 
         private readonly IProductService productService;
+        private readonly IProductPriceService productPriceService;
 
         private readonly IStoreService storeService;
 
@@ -31,6 +32,7 @@
             IStoreService storeService,
             IProductService productService,
             IOrderService orderService,
+            IProductPriceService productPriceService,
             IWorkContext workContext
             )
         {
@@ -38,6 +40,7 @@
             this.storeService = storeService;
             this.productService = productService;
             this.orderService = orderService;
+            this.productPriceService = productPriceService;
             this.workContext = workContext;
         }
 
@@ -84,7 +87,7 @@
                 return AccessDeniedView();
             }
 
-            var products = productService.SearchProducts();
+            var products = productService.SearchProducts(storeIds:new List<int>{workContext.CurrentUser.Id});
             var gridModel = new DataSourceResult
             {
                 Data = products.Select(
@@ -92,7 +95,7 @@
                     {
                         id = x.Id,
                         name = x.Name,
-                        price = x.Price
+                        price = productPriceService.GetProductPrice(workContext.CurrentUser.StoreId, x.Id).CostPrice
                     }),
                 Total = products.TotalCount
             };

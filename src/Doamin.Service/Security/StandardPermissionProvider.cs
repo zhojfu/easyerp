@@ -161,7 +161,7 @@
             Category = "Order"
         };
         
-        public static readonly PermissionRecord AddEmployee = new PermissionRecord
+        public static readonly PermissionRecord CreateEmployee = new PermissionRecord
         {
             Name = "Add Employee",
             SystemName = "Add Employee",
@@ -187,12 +187,85 @@
             Category = "Employee"
         };
 
+
+        public static readonly PermissionRecord UpdateTimeSheet = new PermissionRecord
+        {
+            Name = "UpdateTimeSheet",
+            SystemName = "UpdateTimeSheet",
+            Category = "Employee"
+        };
+        public static readonly PermissionRecord GetTimeSheet = new PermissionRecord
+        {
+            Name = "GetTimeSheet",
+            SystemName = "GetTimeSheet",
+            Category = "Employee"
+        };
+
+        public static readonly PermissionRecord GetCustomerList = new PermissionRecord
+        {
+            Name = "Get Customer List",
+            SystemName = "Get Customer List",
+            Category = "Customer"
+        }; 
+
+        public static readonly PermissionRecord CreateCustomer = new PermissionRecord
+        {
+            Name = "Create Customer",
+            SystemName = "Create Customer",
+            Category = "Customer"
+        }; 
+        public static readonly PermissionRecord DeleteCustomer = new PermissionRecord
+        {
+            Name = "Delete Customer",
+            SystemName = "Delete Customer",
+            Category = "Customer"
+        }; 
+        public static readonly PermissionRecord UpdateCustomer = new PermissionRecord
+        {
+            Name = "Update Customer",
+            SystemName = "Update Customer",
+            Category = "Customer"
+        }; 
+
+        public static readonly PermissionRecord CreateConsumptionRecord = new PermissionRecord
+        {
+            Name = "CreateConsumptionRecord",
+            SystemName = "CreateConsumptionRecord",
+            Category = "Consumption"
+        }; 
+
+        public static readonly PermissionRecord GetConsumption = new PermissionRecord
+        {
+            Name = "Get Consumption",
+            SystemName = "Get Consumption",
+            Category = "Consumption"
+        }; 
+        public static readonly PermissionRecord DeleteConsumptionRecord = new PermissionRecord
+        {
+            Name = "DeleteConsumptionRecord",
+            SystemName = "DeleteConsumptionRecord",
+            Category = "Consumption"
+        }; 
+        public static readonly PermissionRecord UpdateConsumptionRecord = new PermissionRecord
+        {
+            Name = "UpdateConsumptionRecord",
+            SystemName = "UpdateConsumptionRecord",
+            Category = "Consumption"
+        }; 
+
+        public static readonly PermissionRecord StatisticConsumption = new PermissionRecord
+        {
+            Name = "StatisticConsumption",
+            SystemName = "StatisticConsumption",
+            Category = "Consumption"
+        }; 
         public static readonly PermissionRecord ViewProductList = new PermissionRecord
         {
             Name = "View product list",
             SystemName = "ViewProductList",
             Category = "StoreAdmin"
         };
+
 
         public static readonly PermissionRecord AccessAdminPanel = new PermissionRecord
         {
@@ -201,13 +274,73 @@
             Category = "Catalog"
         };
 
+        public static readonly PermissionRecord GetStoreSalesRecord = new PermissionRecord()
+        {
+            Name = "GetStoreSales",
+            SystemName = "GetStoreSales",
+            Category = "StoreSales"
+        };
+
+        public static readonly PermissionRecord CreateStoreSalesRecord = new PermissionRecord()
+        {
+            Name = "CreateStoreSales",
+            SystemName = "CreateStoreSales",
+            Category = "StoreSales"
+        };
+        public static readonly PermissionRecord DeleteStoreSalesRecord = new PermissionRecord()
+        {
+            Name = "DeleteStoreSales",
+            SystemName = "DeleteStoreSales",
+            Category = "StoreSales"
+        };
+        public static readonly PermissionRecord UpdateStoreSalesRecord = new PermissionRecord()
+        {
+            Name = "UpdateStoreSales",
+            SystemName = "UpdateStoreSales",
+            Category = "StoreSales"
+        };
+
+        public static readonly PermissionRecord GetStoreProducts = new PermissionRecord()
+        {
+            Name = "Get Product in Store",
+            SystemName = "Get Product in Store",
+            Category = "Product"
+        };
+
+
+        public static readonly PermissionRecord GetCustomerOrder = new PermissionRecord()
+        {
+            Name = "GetCustomerOrder",
+            SystemName = "GetCustomerOrder",
+            Category = "Customer Order"
+        };
+        
+        public static readonly PermissionRecord CreateCustomerOrder = new PermissionRecord()
+        {
+            Name = "CreateCustomerOrder",
+            SystemName = "CreateCustomerOrder",
+            Category = "Customer Order"
+        };
+        public static readonly PermissionRecord UpdateCustomerOrder = new PermissionRecord()
+        {
+            Name = "UpdateCustomerOrder",
+            SystemName = "UpdateCustomerOrder",
+            Category = "Customer Order"
+        };
+        public static readonly PermissionRecord DeleteCustomerOrder = new PermissionRecord()
+        {
+            Name = "DeleteCustomerOrder",
+            SystemName = "DeleteCustomerOrder",
+            Category = "Customer Order"
+        };
+
         public IEnumerable<PermissionRecord> GetPermissions()
         {
             return new[]
             {
                 CreateProduct, DeleteProduct, InventoryProduct, UpdateProduct, GetProductList, ManageStoreProducts,
                 SetProductPrice, CreateStore, DeleteStore, UpdateStore, GetStoreList, GetCategoryList, GetOrderList,
-                CreateOrder, ReviewOrder, ApproveOrder, RejectOrder, ConfirmOrder, DeleteOrder, UpdateOrder, AddEmployee,
+                CreateOrder, ReviewOrder, ApproveOrder, RejectOrder, ConfirmOrder, DeleteOrder, UpdateOrder, CreateEmployee,
                 DeleteEmployee, UpdateEmployee, GetEmployee, ViewProductList, AccessAdminPanel
             };
         }
