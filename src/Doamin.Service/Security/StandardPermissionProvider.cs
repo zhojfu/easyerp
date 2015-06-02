@@ -6,6 +6,59 @@
 
     public class StandardPermissionProvider : IPermissionProvider
     {
+
+        private readonly string permissionTable = @"
+Name|Description|Category|Group
+CreateProduct|Create product|Product|Admin
+DeleteProduct|Delete product|Product|Admin
+UpdateProduct|Delete product|Product|Admin
+GetProduct|Delete product|Product|Admin
+Inventory|Product inventory|Product|Admin
+ExportProduct|Export product|Product|Admin
+SetPrice|Set price for product|Product|Admin
+
+GetProductInStore|Get product in store|Product|StoreAdmin
+ExportProductInStore|Export product in store|Product|StoreAdmin
+GetProductCategory|Get Product Category|Product|StoreAdmin
+
+GreateStore|Create Store|Store|Admin
+DeleteStore|Delete Store|Store|Admin
+UpdateStore|Update Store|Store|Admin
+GetStore|Get Store|Store|Admin
+
+GetStoreOrder|Get Order|StoreOrder|StoreAdmin
+CreateStoreOrder|Create store order|StoreOrder|StoreAdmin
+UpdateStoreOrder|Update store order|StoreOrder|Admin
+ReviewStoreOrder|Review order|StoreOrder|Admin
+ConfirmStoreOrder|Confirm order|StoreOrder|StoreAdmin
+DeleteStoreOrder|Delete order|StoreOrder|Admin
+ 
+CreateEmployee|Create employee|Employee|Admin
+GetEmployee|Get employee|Employee|Admin
+UpdateEmployee|Update employee|Employee|Admin
+DeleteEmployee|Delete employee|Employee|Admin
+
+UpdateTimeSheet|update timesheet|timesheet|StoreAdmin
+GetTimeSheet|Get timeSheet|timesheet|StoreAdmin
+
+GetCustomer|Get Customer|Customer|StoreAdmin
+CreateCustomer|Create Customer|Customer|StoreAdmin
+DeleteCustomer|Delete Customer|Customer|StoreAdmin
+UpdateCustomer|Update Customer|Customer|StoreAdmin
+GetConsumption|Get consumption|Consumption|StoreAdmin
+CreateConsumption|Create consumption|Consumption|StoreAdmin
+UpdateConsumption|Update consumption|Consumption|StoreAdmin
+DeleteConsumption|Delete consumption|Consumption|StoreAdmin
+StatisticConsumption|Statistic Consumption|Consumption|StoreAdmin
+
+GetConsumerOrder|GetConsumerOrder|ConsumerOrder|StoreAdmin
+UpdateConsumerOrder|UpdateConsumerOrder|ConsumerOrder|StoreAdmin
+DeleteConsumerOrder|DeleteConsumerOrder|ConsumerOrder|StoreAdmin
+CreateConsumerOrder|CreateConsumerOrder|ConsumerOrder|StoreAdmin
+AccessAdminPanel|AccessAdminPanel|Access|Admin
+";
+
+
         public static readonly PermissionRecord CreateProduct = new PermissionRecord
         {
             Name = "CreateProduct",
@@ -338,10 +391,15 @@
         {
             return new[]
             {
-                CreateProduct, DeleteProduct, InventoryProduct, UpdateProduct, GetProductList, ManageStoreProducts,
-                SetProductPrice, CreateStore, DeleteStore, UpdateStore, GetStoreList, GetCategoryList, GetOrderList,
-                CreateOrder, ReviewOrder, ApproveOrder, RejectOrder, ConfirmOrder, DeleteOrder, UpdateOrder, CreateEmployee,
-                DeleteEmployee, UpdateEmployee, GetEmployee, ViewProductList, AccessAdminPanel
+                AccessAdminPanel, ApproveOrder, ConfirmOrder, CreateConsumptionRecord, CreateCustomer,
+                CreateCustomerOrder, CreateEmployee, CreateOrder, CreateProduct, CreateStore, CreateStoreSalesRecord,
+                DeleteConsumptionRecord, DeleteCustomer, DeleteCustomerOrder, DeleteEmployee, DeleteOrder, DeleteProduct,
+                DeleteStore, DeleteStoreSalesRecord, ExportProduct, GetCategoryList, GetConsumption, GetCustomerList,
+                GetCustomerOrder, GetEmployee, GetOrderList, GetProductList, GetStoreList, GetStoreProducts,
+                GetStoreSalesRecord, GetTimeSheet, InventoryProduct, ManageStoreProducts, RejectOrder,
+                ReviewOrder, SetProductPrice, StatisticConsumption, UpdateConsumptionRecord, UpdateCustomer,
+                UpdateCustomerOrder, UpdateEmployee, UpdateOrder, UpdateProduct, UpdateStore, UpdateStoreSalesRecord,
+                UpdateTimeSheet, ViewOrder, ViewProductList
             };
         }
 
@@ -357,7 +415,13 @@
                 new DefaultPermissionRecord
                 {
                     UserRoleSystemName = SystemUserRoleNames.StoreAdmin,
-                    PermissionRecords = this.GetPermissions()
+                    PermissionRecords = new[]
+                    {
+                        GetProductList, GetCategoryList, GetOrderList, CreateOrder, ConfirmOrder, ViewProductList,
+                        AccessAdminPanel, GetStoreSalesRecord, CreateStoreSalesRecord, DeleteStoreSalesRecord,
+                        UpdateStoreSalesRecord, GetStoreProducts, CreateCustomer, GetCustomerOrder, CreateCustomerOrder,
+                        UpdateCustomerOrder
+                    }
                 },
                 new DefaultPermissionRecord
                 {

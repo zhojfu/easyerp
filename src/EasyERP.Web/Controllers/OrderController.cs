@@ -87,7 +87,7 @@
                 return AccessDeniedView();
             }
 
-            var products = productService.SearchProducts(storeIds:new List<int>{workContext.CurrentUser.Id});
+            var products = productService.SearchProducts();
             var gridModel = new DataSourceResult
             {
                 Data = products.Select(

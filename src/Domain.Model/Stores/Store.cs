@@ -37,8 +37,6 @@ namespace Domain.Model.Stores
 
         public virtual ICollection<Order> Orders { get; set; }
 
-        public virtual ICollection<ShoppingCartItem> ShoppingCartItems { get; set; }
-
         public virtual ICollection<Product> Products { get; set; }
 
         public virtual ICollection<Employee> Employees { get; set; }

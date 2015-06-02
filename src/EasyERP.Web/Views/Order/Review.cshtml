@@ -68,11 +68,11 @@
             $("#approve-group").hide(true);
             $("#reject-group").hide(true);
             $("#payment-group").hide(true);
-            if (s.orderStatus === 1) {
+            if (s.orderStatus === "订单未批准") {
                 $("#approve-group").show(true);
                 $("#reject-group").show(true);
             }
-            if (s.orderStatus === 2 && paymentStatus !== "已付款") {
+            if (s.orderStatus ===  "订单已批准" && paymentStatus !== "已付款") {
                 $("#payment-group").show(true);
             }
 
