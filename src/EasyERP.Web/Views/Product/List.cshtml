@@ -13,52 +13,59 @@
     var gridPageSizes = EngineContext.Current.Resolve<AreaSettings>().GridPageSizes;
 }
 
-<div class="options">
-    @*export selected (Excel). We don't use GET approach because it's limited to 2K-4K chars and won't work for large number of entities*@
-    @using (Html.BeginForm("ExportProducts", "Product", FormMethod.Post, new
-    {
-        id = "export-product"
-    }))
-    {
-        @Html.AntiForgeryToken()
-        <input type="hidden" id="selectedIds" name="selectedIds" value="" />
-    }
-    <button id="export-product-button">导出产品</button>
-</div>
+
+
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    <div class="form-group">
-        @Html.ValidationMessageFor(m => m.SearchProductName, "", new
+    <div class="row m-b">
+        <div class="form-group col-md-3">
+            @Html.ValidationMessageFor(m => m.SearchProductName, "", new
         {
             @class = "text-danger"
         })
-        @Html.LabelFor(m => m.SearchProductName)
-        @Html.TextBoxFor(model => model.SearchProductName, new
+            @Html.LabelFor(m => m.SearchProductName)
+            @Html.TextBoxFor(model => model.SearchProductName, new
         {
             id = "search-product-name"
         })
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.SearchCategoryId)
-        @Html.DropDownList("SearchCategoryId", Model.AvailableCategories, new
+        </div>
+        <div class="form-group col-md-3">
+            @Html.LabelFor(m => m.SearchCategoryId)
+            @Html.DropDownList("SearchCategoryId", Model.AvailableCategories, new
         {
             id = "selected-category",
             @onchange = "var grid = $(\"#products-grid\").data(\"kendoGrid\"); grid.dataSource.page(1);"
         })
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.SearchStoreId)
-        @Html.DropDownList("SearchStoreId", Model.AvailableStores, new
+        </div>
+        <div class="form-group col-md-3">
+            @Html.LabelFor(m => m.SearchStoreId)
+            @Html.DropDownList("SearchStoreId", Model.AvailableStores, new
         {
             id = "selected-store",
             @onchange = "var grid = $(\"#products-grid\").data(\"kendoGrid\"); grid.dataSource.page(1);"
         })
+        </div>
+        <div class="col-md-3">
+            @*export selected (Excel). We don't use GET approach because it's limited to 2K-4K chars and won't work for large number of entities*@
+            @using (Html.BeginForm("ExportProducts", "Product", FormMethod.Post, new
+    {
+        id = "export-product"
+    }))
+            {
+                @Html.AntiForgeryToken()
+                <input type="hidden" id="selectedIds" name="selectedIds" value="" />
+            }
+            <button class="button-nm btn-submit" id="export-product-button">导出产品</button>
+        </div>
     </div>
+  
     <div>
-        <input type="button" id="search-products" class="k-button" value="搜索" />
+        <input type="hidden" id="search-products" class="k-button" value="搜索" />
     </div>
-    <div>
+  
+
+        <div>
         <div id="products-grid"></div>
     </div>
     <script type="text/javascript">
