@@ -1,9 +1,13 @@
-﻿namespace EasyERP.Web.Models.Users
+﻿
+namespace EasyERP.Web.Models.Users
 {
     using System.ComponentModel.DataAnnotations;
     using System.Web.Mvc;
+    using EasyERP.Web.Validators;
     using EasyERP.Web.Framework.Mvc;
+    using FluentValidation.Attributes;
 
+    [Validator(typeof(LoginValidator))]
     public class LoginModel : BaseModel
     {
         public bool CheckoutAsGuest { get; set; }

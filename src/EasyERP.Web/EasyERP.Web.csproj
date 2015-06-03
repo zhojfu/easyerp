@@ -1167,6 +1167,7 @@
     <Compile Include="Validators\Orders\OrderValidator.cs" />
     <Compile Include="Validators\Products\InventoryValidator.cs" />
     <Compile Include="Validators\Products\ProductValidator.cs" />
+    <Compile Include="Validators\LoginValidator.cs" />
     <Compile Include="Validators\Stores\StoreValidator.cs" />
     <Compile Include="Models\Employee\TimesheetModel.cs" />
   </ItemGroup>
