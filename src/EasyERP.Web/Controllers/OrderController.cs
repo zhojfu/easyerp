@@ -1,4 +1,7 @@
-﻿namespace EasyERP.Web.Controllers
+﻿using System.Globalization;
+using WebGrease.Css.Extensions;
+
+namespace EasyERP.Web.Controllers
 {
     using Doamin.Service.Order;
     using Doamin.Service.Products;
@@ -179,9 +182,9 @@
                     o => new
                     {
                         orderGuid = o.OrderGuid,
-                        createdTime = o.CreatedOnUtc,
-                        totalPrice = o.OrderTotal,
-                        orderStatus = o.OrderStatus,
+                        createdTime = o.CreatedOnUtc.ToString("yyyy/M/d H:m:s", new CultureInfo("zh-CN")),
+                        totalPrice = o.OrderTotal, 
+                        orderStatus = ToOrderString(o.OrderStatus),
                         orderItems = o.OrderItems.Select(
                             i => new
                             {
@@ -254,7 +257,7 @@
                    case OrderStatus.Approved:
                     return "订单已批准";
                 case OrderStatus.Shipped:
-                    return "送货中";
+                    return "已收货";
                 case OrderStatus.Complete:
                     return "订单已完成";
                 case OrderStatus.Cancelled:
@@ -317,6 +320,11 @@
                 return AccessDeniedView();
             }
 
+            if (!workContext.CurrentUser.IsAdmin)
+            {
+                return AccessDeniedView();
+            }
+
             if (status < 1 && status > 5)
             {
                 return HttpNotFound();
@@ -329,7 +337,21 @@
             }
 
             order.OrderStatus = (OrderStatus)status;
-            order.ApproveTime = DateTime.Now;
+            if (order.OrderStatus == OrderStatus.Approved)
+            {
+                order.ApproveTime = DateTime.Now;
+            }
+
+            if (order.OrderStatus == OrderStatus.Shipped)
+            {
+                //TODO: update store products
+                //order.StoreId
+                //order.OrderItems.ForEach( i=> i.ProductId
+                //    );
+            }
+
+            //TODO: when user paid, set status to complete
+
             orderService.UpdateOrder(order);
 
             return Json(ToOrderString(order.OrderStatus));

@@ -107,6 +107,7 @@
     @Html.NopScripts(Url, ResourceLocation.Foot)
 <script>
     $(document).ready(function() {
+        kendo.culture("zh-CN");
         var controllerName = "@ViewContext.RouteData.Values["Controller"].ToString()";
         $("#subnav a").each(function(index) {
             if (this.pathname.split("/")[1] === controllerName) {

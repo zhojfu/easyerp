@@ -23,6 +23,9 @@
     <div class="form-group" id="reject-group">
         <button class="k-button" id="reject">取消</button>
     </div>
+    <div class="form-group" id="shipped-group">
+        <button class="k-button" id="shipped">确认收货</button>
+    </div>
     <div class="form-group" id="payment-group">
         <button class="k-button" id="payment">付款</button>
     </div>
@@ -67,14 +70,19 @@
             }();
             $("#approve-group").hide(true);
             $("#reject-group").hide(true);
+            $("#shipped-group").hide(true);
             $("#payment-group").hide(true);
             if (s.orderStatus === "订单未批准") {
                 $("#approve-group").show(true);
                 $("#reject-group").show(true);
             }
-            if (s.orderStatus ===  "订单已批准" && paymentStatus !== "已付款") {
+
+            if (s.orderStatus === "订单已批准") {
+                $("#shipped-group").show(true); 
+            } 
+            if(s.orderStatus!== "订单未批准" && paymentStatus !== "已付款") {
                 $("#payment-group").show(true);
-            }
+             } 
 
             $("#pay-status").text(paymentStatus);
             $("#paid-amount").text(s.paidAmount);
@@ -107,7 +115,28 @@
                 });
                 $("#approve-group").hide(true);
                 $("#reject-group").hide(true);
+                $("#shipped-group").show(true);
                 $("#payment-group").show(true);
+            });
+
+            //function status() {
+                
+            //}
+
+            $("#shipped").click(function(e) {
+                e.preventDefault();
+                $.ajax({
+                    url: "/Order/ChangeStatus",
+                    method: "POST",
+                    dateType: "json",
+                    data: addAntiForgeryToken({ orderGuid: s.orderGuid, status: 3 }),
+                    success: function(data) {
+                        $("#order-status").text(data);
+                    }
+                });
+                $("#approve-group").hide(true);
+                $("#reject-group").hide(true);
+                $("#shipped-group").hide(true);
             });
 
             $("#reject").click(function(e) {
@@ -122,6 +151,7 @@
                     }
                 });
                 $("#approve-group").hide(true);
+                $("#shipped-group").hide(true);
                 $("#reject-group").hide(true);
             });
         });

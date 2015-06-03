@@ -12,31 +12,38 @@
             <div class="order-header">
                 <p><em>订单号:</em><span data-bind="text: orderGuid"></span></p>
                 <p><em>提交时间:</em><span data-bind="text: createdTime"></span></p>
-                <a id="order-detail-info" href="\/Order/#: orderGuid#">详细信息</a>
-                <div class="orderitems" data-role="listview" data-bind="source: orderItems" data-template="order-item-template">
-                </div>
                 <p><em>状态:</em><span data-bind="text: orderStatus"></span></p>
+                @*<a id="order-detail-info" href="\/Order/#: orderGuid#">详细信息</a>*@
+                <table>
+                    <thead>
+                        <tr>
+                            <th>产品</th>
+                            <th>数量</th>
+                            <th>单价</th>
+                            <th>总计</th>
+                        </tr>
+                    </thead>
+                    <tbody class="orderitems" data-role="listview" data-bind="source: orderItems" data-template="order-item-template"> 
+                </table>
                 <p><em>总计:</em><span data-bind="text: totalPrice"></span></p>
             </div>
         </div>
     </script>
     <script id="order-item-template" type="text/x-kendo-template">
-        <div>
-            <ul>
-                <li><em>产品名:</em><span data-bind="text: productName"></span></li>
-                <li><em>数量:</em><span data-bind="text: quantity"></span></li>
-                <li><em>单价:</em><span data-bind="text: itemPrice"></span></li>
-                <li><em>总计:</em><span data-bind="text: total"></span></li>
-            </ul>
-        </div>
+            <tr>
+                <td><span data-bind="text: productName"></span></td>
+                <td><span data-bind="text: quantity"></span></td>
+                <td><span data-bind="text: itemPrice"></span></td>
+                <td><span data-bind="text: total"></span></td>
+            </tr>
     </script>
-    <div id="order-list"></div>
+    @*<div id="order-list"></div>*@
     <div id="view-model">
         <div data-role="listview" data-bind="source: orders" data-template="order-template"></div>
     </div>
 
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             var orderStatus = [
                 { text: "全部订单", value: "0" },
                 { text: "未处理", value: "1" },
@@ -77,14 +84,7 @@
                     }
                 },
                 schema: {
-                    data: "Data",
-                    model: {
-                        fields: {
-                            createdTime: { type: "date" },
-                            orderStatus: function() { return "未处理"; }
-
-                        }
-                    }
+                    data: "Data"
                 }
 
             });
