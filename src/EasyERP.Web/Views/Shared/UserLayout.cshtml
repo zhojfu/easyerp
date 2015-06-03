@@ -1,0 +1,24 @@
+﻿@using EasyErp.Core
+@using EasyERP.Web.Framework.UI
+@{
+
+    Html.AppendCssFileParts("~/Content/site.css");
+    Html.AppendCssFileParts("~/Content/bootstrap.min.css");
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>EasyErp 登录</title>
+    <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
+    @Html.NopHeadCustom()
+    @Html.NopCssFiles(Url, ResourceLocation.Head)
+    @Html.NopScripts(Url, ResourceLocation.Head)
+</head>
+<body class="login">
+    <div>
+        @RenderBody()
+    </div>
+    @Html.NopCssFiles(Url, ResourceLocation.Foot)
+    @Html.NopScripts(Url, ResourceLocation.Foot)
+</body>
+</html>

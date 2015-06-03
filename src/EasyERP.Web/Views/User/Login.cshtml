@@ -3,8 +3,6 @@
 @using EasyERP.Web.Framework.UI
 @model EasyERP.Web.Models.Users.LoginModel
 @{
-    Layout = null;
-
     //title
     Html.AddTitleParts("登录");
 }
@@ -12,7 +10,7 @@
 
     <div class="page-title">
 
-        <h1>欢迎</h1>
+        <h1 class="logo-name">米谷</h1>
 
     </div>
 
@@ -22,11 +20,7 @@
 
             <div class="returning-wrapper">
 
-                <div class="title">
-
-                    <strong>登录</strong>
-
-                </div>
+              
 
                 <div class="form-fields">
 
@@ -37,27 +31,25 @@
                             @Html.ValidationSummary(true, "登录失败")
                         </div>
 
-                        <div class="inputs">
+                        <div class="form-group">
 
-                            @Html.LabelFor(m => m.Username, new
-                            {
-                            }, ":")
+                           
                             @Html.TextBoxFor(m => m.Username, new
                             {
-                                @class = "username",
+                                @class = "form-control form-login",
+                                @placeholder="用户名",
                                 autofocus = "autofocus"
                             })
                             @Html.ValidationMessageFor(m => m.Username)
                         </div>
 
-                        <div class="inputs">
+                        <div class="form-group">
 
-                            @Html.LabelFor(m => m.Password, new
-                            {
-                            }, ":")
+                            
                             @Html.PasswordFor(m => m.Password, new
                             {
-                                @class = "password"
+                                @class = "form-control form-login",
+                                @placeholder = "密码"
                             })
                             @Html.ValidationMessageFor(m => m.Password)
                         </div>
@@ -68,11 +60,11 @@
                                 @Html.Raw(Html.GenerateCaptcha())
                             </div>
                         }
-                        <div class="buttons">
+                        
 
-                            <input class="button-1 login-button" type="submit" value="登录"/>
+                            <button type="submit" class="button-lg btn-submit" value="登录">登录</button>
 
-                        </div>
+                        
                     }
                 </div>
 

@@ -3357,3 +3357,113 @@ html.k-materialblack .demo-section.k-content {
     border-color:#0070c9;
     color: #fff;
 }
+
+.m-b {
+  margin-bottom: 9px;
+  margin-top:9px;
+}
+
+.button-nm{
+  padding:0.3em 1.2em;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.42857143;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  
+  background-image: none;
+  border: 1px solid transparent;
+  border-radius: 4px;
+    border-radius: 3px;
+      display: block;
+      
+}
+
+/*LogIn-Start*/
+.login{
+    font-family: 'Microsoft Yahei UI', 'Microsoft Yahei', Verdana, Simsun, 'Segoe UI Light', 'Helvetica Neue', Arial, sans-serif;
+    
+    background-color: #f3f3f4;
+    color:#676a6c;
+}
+.login-page{
+    text-align:center;
+     width: 300px;
+  margin-left: -150px;
+  margin-top: -220px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+    z-index: 100;
+}
+
+.logo-name{
+    color: #e6e6e6;
+    font-weight:800;
+}
+
+.login-page .page-title{
+    margin:2em;
+}
+
+.page-title h1 {
+    font-size:96px;
+    font-weight:800;
+}
+
+.form-control{
+    background-color: #FFFFFF;
+  background-image: none;
+  border: 1px solid #e5e6e7;
+  border-radius: 1px;
+  color: inherit;
+  display: block;
+  padding: 6px 12px;
+  transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+  width: 100%;
+}
+
+.form-control:focus{
+    background-color: #FFFFFF;
+}
+
+.message-error{
+    color:#ed5565;
+}
+
+input:-webkit-autofill{
+    background-color: #FFFFFF;
+}
+
+.button-lg{
+  padding: 6px 12px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.42857143;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  
+  background-image: none;
+  border: 1px solid transparent;
+  border-radius: 4px;
+    border-radius: 3px;
+      display: block;
+      width: 100% !important;
+}
+
+.btn-submit{
+      color: #fff;
+  background-color: #428bca;
+  border-color: #357ebd;
+}
+/*LogIn-End*/

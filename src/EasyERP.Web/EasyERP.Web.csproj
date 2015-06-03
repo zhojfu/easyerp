@@ -1351,6 +1351,8 @@
     <Content Include="Views\Payment\PayInfo.cshtml" />
     <Content Include="Views\Payment\_ViewStart.cshtml" />
     <Content Include="Views\Shared\StoreLayout.cshtml" />
+    <Content Include="Views\Shared\UserLayout.cshtml" />
+    <Content Include="Views\User\_ViewStart.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
