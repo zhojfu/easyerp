@@ -13,25 +13,28 @@
 {
     <div id="product-list"></div>
     <div id="cart" data-bind="visible: cartContentsClass">
-        <h1>Order Details</h1>
-        <ul>
-            <li>产品</li>
-            <li>数量</li>
-            <li>价格</li>
-        </ul>
-        <ul data-role="listview" data-bind="source: cart.contents" data-template="cart-item"></ul>
+        <h1>订单详情</h1>
+        <table>
+            <thead>
+            <tr>
+                <th>产品</th>
+                <th>数量</th>
+                <th>单价</th>
+            </tr>
+            </thead>
+        <tbody data-role="listview" data-bind="source: cart.contents" data-template="cart-item"></tbody>
+        </table>
         <p id="total-checkout">
-            <em>total:</em><span data-bind="text: totalPrice"></span></p>
-        <a class="cancel-order" href="#" data-bind="click: emptyCart">cancel order</a>
+            <em>合计：</em><span data-bind="text: totalPrice"></span></p>
+        <a class="cancel-order" href="#" data-bind="click: emptyCart">取消</a>
         <button class="order-now" id="order-now" data-bind="click: proceed">购买</button>
     </div>
     <script type="text/x-kendo-template" id="cart-item">
-        <ul>
-            <li><span class="product-name" data-bind="text: item.name"></span></li>
-            <li><input type="text" data-role="numerictextbox" data-min="0" data-decimals="0" data-format="\\#" data-bind="value: quantity"></li>
-            <li><p class="table-price" data-bind="text: itemPrice"><p></li>
-            @*<li><button class="delet" data-bind="click: deleted">删除</button></li>*@
-        </ul>
+        <tr>
+            <td><span class="product-name" data-bind="text: item.name"></span></td>
+            <td><input type="text" data-role="numerictextbox" data-min="0" data-decimals="0" data-format="\\#" data-bind="value: quantity"></td>
+            <td><p class="table-price" data-bind="text: itemPrice"><p></td>
+        </tr>
     </script>
     <script type="text/javascript">
         var products = new kendo.data.DataSource({
@@ -193,17 +196,21 @@
 <div id="confirm-window"></div>
 <script type="text/x-kendo-template" id="cart-confirm">
     <div>
-        <ul>
-            <li>产品</li>
-            <li>数量</li>
-            <li>价格</li>
-        </ul>
-        <ul data-role="listview" data-bind="source: cart.contents" data-template="cart-item"></ul>
+        <table>
+            <thead>
+            <tr>
+                <th>产品</th>
+                <th>数量</th>
+                <th>单价</th>
+            </tr>
+            </thead>
+        <tbody data-role="listview" data-bind="source: cart.contents" data-template="cart-item"></tbody>
+        </table>
         <p><em>总金额:</em><span data-bind="text: totalPrice"></span></p>
-        <p><em>预付额:</em><span data-bind="text: prePayAmount"></span></p>
-        <p><em>留言:</em><input type="text"></p>
-        <a class="cancel-order" href="\#" data-bind="click: emptyCart">cancel order</a>
-        <button id="buy-confirm" type="button">购买</button>
+        <p><em>应付预付额:</em><span data-bind="text: prePayAmount"></span></p>
+        @*<p><em>留言:</em><input type="text" ></p>*@
+        <button id="cancel-order-confirm" type="button">取消</button>
+        <button id="buy-confirm" type="button">确定</button>
     </div>
 </script>
 <script>
@@ -227,10 +234,7 @@
             cart.contents.forEach(function(item) {
                 data.push({ "ProductId": item.item.id, "Name": item.item.name, "Price": item.item.price, "Quantity": item.quantity });
             });
-
             var pushdata = addAntiForgeryToken({"":data});
-            
-
             $.ajax({
                 type: "POST",
                 url: "/Order/OrderUpdate",
@@ -240,7 +244,11 @@
                     window.location.href = data;
                 }
             });
-
+        });
+        $("#cancel-order-confirm").click(function(e) {
+            e.preventDefault();
+            cart.empty();
+            confirmWindow.close();
         });
     });
 </script>

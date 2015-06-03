@@ -54,7 +54,6 @@
     <Compile Include="Media\PictureType.cs" />
     <Compile Include="Orders\Order.cs" />
     <Compile Include="Orders\OrderItem.cs" />
-    <Compile Include="Orders\ShoppingCartItem.cs" />
     <Compile Include="Payments\PayItem.cs" />
     <Compile Include="Payments\Payment.cs" />
     <Compile Include="Products\Inventory.cs" />
