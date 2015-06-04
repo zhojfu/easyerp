@@ -183,22 +183,22 @@ namespace Domain.EntityFramework
                 }
             };
 
-            products.ForEach(
-                p =>
-                {
-                    s1.Products.Add(p);
-                    p.Stores.Add(s1);
-                });
+            //products.ForEach(
+            //    p =>
+            //    {
+            //        s1.Products.Add(p);
+            //        p.Stores.Add(s1);
+            //    });
 
-            products.ForEach(
-                p =>
-                {
-                    if (p.CategoryId == 1)
-                    {
-                        s2.Products.Add(p);
-                        p.Stores.Add(s2);
-                    }
-                });
+            //products.ForEach(
+            //    p =>
+            //    {
+            //        if (p.CategoryId == 1)
+            //        {
+            //            s2.Products.Add(p);
+            //            p.Stores.Add(s2);
+            //        }
+            //    });
 
             context.Entry(adminStore).State = EntityState.Added;
             context.Entry(s1).State = EntityState.Added;

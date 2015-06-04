@@ -4,16 +4,14 @@
 @section SectionTitle
 {
     <h1 id="crmTitle">
-        <strong>产品管理</strong>
+        <strong>产品目录</strong>
     </h1>
 }
 @{
-    ViewBag.Title = "产品管理";
+    ViewBag.Title = "产品目录";
     var defaultGridPageSize = EngineContext.Current.Resolve<AreaSettings>().DefaultGridPageSize;
     var gridPageSizes = EngineContext.Current.Resolve<AreaSettings>().GridPageSizes;
 }
-
-
 
 @using (Html.BeginForm())
 {
@@ -145,12 +143,10 @@
                     { field: "Name", title: "产品名", width: 100 },
                     { field: "ItemNo", title: "产品编码", width: 100 },
                     { field: "CategoryName", title: "产品目录", width: 100 },
-                    { field: "StockQuantity", title: "库存", width: 100 },
                     { field: "Price", title: "价格", width: 100 },
                     { field: "ProductCost", title: "成本", width: 100 },
                     { field: "Gtin", title: "条码", width: 100 },
                     { field: "Id", title: "&nbsp;", width: 100, template: "<a href=\"Edit/#=Id#\">修改</a>" },
-                    { field: "Id", title: "&nbsp;", width: 100, template: "<a href=\"Price/#=Id#\">修改价格</a>" },
                     { command: "destroy", text: "删除", title: "&nbsp;", width: 100 }
                 ]
             });

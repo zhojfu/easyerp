@@ -49,7 +49,7 @@
                         xmlWriter.WriteElementString("ShortDescription", string.Empty, product.ShortDescription);
                         xmlWriter.WriteElementString("FullDescription", string.Empty, product.FullDescription);
                         xmlWriter.WriteElementString("Gtin", string.Empty, product.Gtin);
-                        xmlWriter.WriteElementString("StockQuantity", string.Empty, product.StockQuantity.ToString());
+                        //TODO: the stock quantity info
                         xmlWriter.WriteElementString("Price", string.Empty, product.Price.ToString());
                         xmlWriter.WriteElementString("ProductCost", string.Empty, product.ProductCost.ToString());
                         xmlWriter.WriteElementString("Weight", string.Empty, product.Weight.ToString());

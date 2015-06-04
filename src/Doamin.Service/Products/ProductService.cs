@@ -96,7 +96,7 @@
             if (storeIds != null &&
                 storeIds.Any())
             {
-                products = products.Where(p => p.Stores.Any(ps => storeIds.Contains(ps.Id)));
+                products = products.Where(p => p.ProductStoreMappings.Any(ps => storeIds.Contains(ps.Id)));
             }
 
             return new PagedList<Product>(products.OrderBy(p => p.CategoryId), pageIndex, pageSize);

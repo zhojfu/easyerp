@@ -58,6 +58,7 @@
     <Compile Include="Payments\Payment.cs" />
     <Compile Include="Products\Inventory.cs" />
     <Compile Include="Products\Manufacturer.cs" />
+    <Compile Include="Products\ProductStoreMapping.cs" />
     <Compile Include="Products\Product.cs" />
     <Compile Include="Products\ProductAttributeValue.cs" />
     <Compile Include="Products\ProductAttributeMapping.cs" />

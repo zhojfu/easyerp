@@ -10,7 +10,7 @@
     {
         public Product()
         {
-            Stores = new List<Store>();
+            ProductStoreMappings = new List<ProductStoreMapping>();
             ProductPrices = new List<ProductPrice>();
         }
 
@@ -19,8 +19,6 @@
         public string ShortDescription { get; set; }
 
         public string FullDescription { get; set; }
-
-        public int StockQuantity { get; set; }
 
         public string Gtin { get; set; }
         public string Origin { get; set; }
@@ -53,7 +51,7 @@
 
         public virtual ICollection<MaterialStatisitc> MaterialComsumptions { get; set; }
 
-        public virtual ICollection<Store> Stores { get; set; }
+        public virtual ICollection<ProductStoreMapping> ProductStoreMappings { get; set; }
 
         public virtual ICollection<ProductPrice> ProductPrices { get; set; }
     }

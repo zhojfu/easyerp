@@ -26,11 +26,6 @@
 
         public List<int> SearchStoreIds { get; set; }
 
-        public int SearchPublishedId { get; set; }
-
-        [AllowHtml]
-        public string GoDirectlyToSku { get; set; }
-
         public IList<SelectListItem> AvailableCategories { get; set; }
 
         public IList<SelectListItem> AvailableStores { get; set; }

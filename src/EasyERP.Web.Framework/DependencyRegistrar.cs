@@ -113,6 +113,7 @@ namespace EasyERP.Web.Framework
             builder.RegisterType<DateTimeHelper>().As<IDateTimeHelper>().InstancePerLifetimeScope();
             builder.RegisterType<PageHeadBuilder>().As<IPageHeadBuilder>().InstancePerLifetimeScope();
             builder.RegisterType<RoutePublisher>().As<IRoutePublisher>().SingleInstance();
+            builder.RegisterType<ProductStoreMappingService>().As<IProductStoreMappingService>().SingleInstance();
         }
 
         public int Order

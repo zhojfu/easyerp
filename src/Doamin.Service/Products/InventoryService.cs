@@ -35,7 +35,6 @@
         {
             inventoryRepository.Add(inventory);
             var product = productRepository.GetByKey(inventory.ProductId);
-            product.StockQuantity += inventory.Quantity;
 
             productRepository.Update(product);
 
