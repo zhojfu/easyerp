@@ -208,12 +208,12 @@ namespace EasyERP.Web.Controllers
             }
 
             //stores
-            model.AvailableStores.Add(
-                new SelectListItem
-                {
-                    Text = "所有店面",
-                    Value = "0"
-                });
+            //model.AvailableStores.Add(
+            //    new SelectListItem
+            //    {
+            //        Text = "所有店面",
+            //        Value = "0"
+            //    });
             var stores = storeService.GetAllStores();
             foreach (var store in stores)
             {
@@ -316,6 +316,17 @@ namespace EasyERP.Web.Controllers
                             Value = p.Id.ToString()
                         });
                 });
+            
+            var stores = storeService.GetAllStores();
+            foreach (var store in stores)
+            {
+                model.AvailableStores.Add(
+                    new SelectListItem
+                    {
+                        Text = store.Name,
+                        Value = store.Id.ToString()
+                    });
+            }
 
             model.Paid = 0;
             model.DueDateTime = DateTime.Now + TimeSpan.FromDays(30);
@@ -332,29 +343,37 @@ namespace EasyERP.Web.Controllers
             }
             if (ModelState.IsValid)
             {
-                var inventory = model.ToEntity();
-                inventory.InStockTime = DateTime.Now;
-                var payment = new Payment
+                // TODO: add payment for productStoreMapping
+                var productStoreMapping = new ProductStoreMapping()
                 {
-                    DueDateTime = model.DueDateTime,
-                    TotalAmount = model.TotalAmount
+                    StoreId = model.StoreId,
+                    ProductId = model.ProductId,
+                    Quantity = model.Quantity
                 };
+                productStoreMappingService.InsertInventor(productStoreMapping);
+                //var inventory = model.ToEntity();
+                //inventory.InStockTime = DateTime.Now;
+                //var payment = new Payment
+                //{
+                //    DueDateTime = model.DueDateTime,
+                //    TotalAmount = model.TotalAmount
+                //};
 
-                if (model.Paid > 0)
-                {
-                    payment.Items.Add(
-                        new PayItem
-                        {
-                            Paid = model.Paid,
-                            PayDataTime = DateTime.Now
-                        });
-                }
-                inventory.Payment = payment;
+                //if (model.Paid > 0)
+                //{
+                //    payment.Items.Add(
+                //        new PayItem
+                //        {
+                //            Paid = model.Paid,
+                //            PayDataTime = DateTime.Now
+                //        });
+                //}
+                //inventory.Payment = payment;
 
-                inventoryService.InsertInventory(inventory, payment);
+                //inventoryService.InsertInventory(inventory, payment);
             }
 
-            return RedirectToAction("List");
+            return RedirectToAction("Inventory");
         }
 
         public ActionResult InventoryRecords()

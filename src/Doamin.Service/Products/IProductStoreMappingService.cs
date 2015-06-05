@@ -7,5 +7,6 @@
     public interface IProductStoreMappingService
     {
         IList<ProductStoreMapping> GetProductStoreMappings(string productName, int categoryId, int storeId);
+        void InsertInventor(ProductStoreMapping psm);
     }
 }

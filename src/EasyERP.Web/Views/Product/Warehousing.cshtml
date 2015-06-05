@@ -31,6 +31,10 @@
         @Html.DropDownList("ProductId", Model.AvailableProducts)
     </div>
     <div class="form-group">
+        @Html.LabelFor(m => m.StoreId)
+        @Html.DropDownList("StoreId", Model.AvailableStores)
+    </div>
+    <div class="form-group">
         @Html.LabelFor(m => m.Quantity)
         @Html.EditorFor(m => m.Quantity)
         @Html.ValidationMessageFor(model => model.Quantity, "", new

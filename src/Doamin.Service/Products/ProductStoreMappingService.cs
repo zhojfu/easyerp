@@ -21,22 +21,35 @@
         {
 
             var psm = productStoreMappingRepository.FindAll(i=>true);
-            if (storeId >= 0)
+            if (storeId > 0)
             {
                 psm = psm.Where(i => i.StoreId == storeId);
             }
 
-            if (categoryId >=0)
+            if (categoryId >0)
             {
                 psm = psm.Where(i => i.Product.CategoryId == categoryId);
             }
 
-            if (string.IsNullOrWhiteSpace(productName))
+            if (!string.IsNullOrWhiteSpace(productName))
             {
                 psm = psm.Where(i => i.Product.Name.Contains(productName));
             }
 
             return psm.ToList();
+        }
+
+
+        public void InsertInventor(ProductStoreMapping productStoreMapping)
+        {
+            if (productStoreMapping == null)
+            {
+                throw new ArgumentNullException("productStoreMapping");
+            }
+
+            productStoreMappingRepository.Add(productStoreMapping);
+            unitOfWork.Commit();
+            
         }
     }
 }
