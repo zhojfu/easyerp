@@ -28,6 +28,7 @@
             @Html.TextBoxFor(model => model.SearchProductName, new
         {
             id = "search-product-name"
+           
         })
         </div>
         <div class="form-group col-md-3">
@@ -35,6 +36,7 @@
             @Html.DropDownList("SearchCategoryId", Model.AvailableCategories, new
         {
             id = "selected-category",
+            
             @onchange = "var grid = $(\"#products-grid\").data(\"kendoGrid\"); grid.dataSource.page(1);"
         })
         </div>
@@ -149,7 +151,7 @@
                     { field: "Price", title: "价格", width: 100 },
                     { field: "ProductCost", title: "成本", width: 100 },
                     { field: "Gtin", title: "条码", width: 100 },
-                    { field: "Id", title: "&nbsp;", width: 100, template: "<a href=\"Edit/#=Id#\">修改</a>" },
+                    { field: "Id", title: "&nbsp;", width: 100, template: "<a href=\"Edit/#=Id#\">修改商品信息</a>" },
                     { field: "Id", title: "&nbsp;", width: 100, template: "<a href=\"Price/#=Id#\">修改价格</a>" },
                     { command: "destroy", text: "删除", title: "&nbsp;", width: 100 }
                 ]

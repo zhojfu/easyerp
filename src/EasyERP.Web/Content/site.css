@@ -2167,7 +2167,7 @@ ul.keyboard-legend li a {
     float: right;
 }
 
-.btn {
+/*.btn {
     color: #fff;
     background-color: #2a2d33;
     border: 1px solid #505156;
@@ -2185,12 +2185,15 @@ ul.keyboard-legend li a {
     font-weight: bold;
     text-align: center;
     margin: 1.467em 0.267em;
-}
+}*/
 
-.btn:hover {
+/*.btn:hover {
    background-color: #505156;
-}
+}*/
 
+.btn{
+    border-radius:3px;
+}
 .btn-primary {
     background-color: #ee5315;
     border-color: #ee5315;
@@ -3364,7 +3367,7 @@ html.k-materialblack .demo-section.k-content {
 }
 
 .button-nm{
-  padding:0.3em 1.2em;
+  padding:0.1em 1.2em;
   font-size: 12px;
   font-weight: 400;
   line-height: 1.42857143;
@@ -3460,10 +3463,111 @@ input:-webkit-autofill{
       display: block;
       width: 100% !important;
 }
-
+/*LogIn-End*/
 .btn-submit{
       color: #fff;
   background-color: #428bca;
   border-color: #357ebd;
 }
-/*LogIn-End*/
+.btn-submit:hover,
+.btn-submit:focus,
+.btn-submit:active,
+.btn-submit.active,
+.open .dropdown-toggle.btn-submit {
+    color: #fff;
+    background-color: #357ebd;
+  
+}
+.btn-submit:active,
+.btn-submit.active {
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15) inset;
+}
+.btn-submit:active,
+.btn-submit.active,
+.open .dropdown-toggle.btn-submit {
+  background-image: none;
+}
+.btn-submit.disabled,
+.btn-submit.disabled:hover,
+.btn-submit.disabled:focus,
+.btn-submit.disabled:active,
+.btn-submit.disabled.active,
+.btn-submit[disabled],
+.btn-submit[disabled]:hover,
+.btn-submit[disabled]:focus,
+.btn-submit[disabled]:active,
+.btn-submit.active[disabled],
+fieldset[disabled] .btn-submit,
+fieldset[disabled] .btn-submit:hover,
+fieldset[disabled] .btn-submit:focus,
+fieldset[disabled] .btn-submit:active,
+fieldset[disabled] .btn-submit.active {
+  color: #cacaca;
+}
+
+
+.pdt-nm{
+    color:#0070c9;
+    font-weight:800;
+}/*产品名*/
+.pdt-back {
+    margin-left: 2em;
+    font-size:14px;
+}/*返回上一层目录*/
+.pdt-back a{
+    color:rgb(103, 106, 108);
+}
+.pdt-back a:hover{
+    color:#F79D3C;
+}
+.btn-white {
+  color: inherit;
+  background: white;
+  border: 1px solid #e7eaec;
+}
+.btn-white:hover,
+.btn-white:focus,
+.btn-white:active,
+.btn-white.active,
+.open .dropdown-toggle.btn-white {
+  color: inherit;
+  border: 1px solid #d2d2d2;
+}
+.btn-white:active,
+.btn-white.active {
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15) inset;
+}
+.btn-white:active,
+.btn-white.active,
+.open .dropdown-toggle.btn-white {
+  background-image: none;
+}
+.btn-white.disabled,
+.btn-white.disabled:hover,
+.btn-white.disabled:focus,
+.btn-white.disabled:active,
+.btn-white.disabled.active,
+.btn-white[disabled],
+.btn-white[disabled]:hover,
+.btn-white[disabled]:focus,
+.btn-white[disabled]:active,
+.btn-white.active[disabled],
+fieldset[disabled] .btn-white,
+fieldset[disabled] .btn-white:hover,
+fieldset[disabled] .btn-white:focus,
+fieldset[disabled] .btn-white:active,
+fieldset[disabled] .btn-white.active {
+  color: #cacaca;
+}
+
+.date-info{
+    font-size:smaller;
+    font-style:italic;
+}
+.date-create label{
+    color:#16987E;
+}
+
+.date-update label{
+    color:#F79D3C;
+}
