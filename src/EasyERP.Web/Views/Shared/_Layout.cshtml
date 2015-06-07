@@ -5,11 +5,12 @@
     var currentUser = WorkContext.CurrentUser;
 
     //CSS resources
+    Html.AppendCssFileParts("~/Content/site.css"); 
     Html.AppendCssFileParts("~/Content/kendo/2014.2.716/kendo.bootstrap.min.css");
     Html.AppendCssFileParts("~/Content/kendo/2014.2.716/kendo.common.min.css");
     Html.AppendCssFileParts("~/Content/font-awesome/css/font-awesome.css");
     Html.AppendCssFileParts("~/Content/bootstrap.min.css");
-    Html.AppendCssFileParts("~/Content/site.css");
+    
 
     //javascripts
     Html.AppendScriptParts("~/Scripts/kendo/2014.2.716/kendo.messages.zh-CN.js");

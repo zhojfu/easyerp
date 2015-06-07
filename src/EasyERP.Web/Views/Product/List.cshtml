@@ -1,4 +1,4 @@
-﻿@using EasyErp.Core.Configuration.Settings
+@using EasyErp.Core.Configuration.Settings
 @using EasyErp.Core.Infrastructure
 @model EasyERP.Web.Models.Products.ProductListModel
 @section SectionTitle
@@ -26,6 +26,7 @@
             @Html.TextBoxFor(model => model.SearchProductName, new
         {
             id = "search-product-name"
+           
         })
         </div>
         <div class="form-group col-md-3">
@@ -33,6 +34,7 @@
             @Html.DropDownList("SearchCategoryId", Model.AvailableCategories, new
         {
             id = "selected-category",
+            
             @onchange = "var grid = $(\"#products-grid\").data(\"kendoGrid\"); grid.dataSource.page(1);"
         })
         </div>

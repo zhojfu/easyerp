@@ -1,5 +1,12 @@
 ﻿@using EasyERP.Web.Framework
 @model EasyERP.Web.Models.Products.ProductModel
+@section SectionTitle
+{
+    <h1 id="crmTitle">
+        <strong style="font-size: smaller">编辑产品信息 - </strong> <strong class="pdt-nm">@Model.Name</strong><strong class="pdt-back">@Html.ActionLink("回到产品列表", "List")</strong>
+    </h1>
+      
+}
 @{
     ViewBag.Title = "Edit";
     Layout = "~/Views/Shared/ProductLayout.cshtml";
@@ -11,15 +18,16 @@
 {
     @Html.AntiForgeryToken()
     <div class="section-header">
-        <div class="title">
-            编辑产品信息 - @Model.Name @Html.ActionLink("回到产品列表", "List")
-        </div>
+        
 
-        <div class="options">
-
-            <input type="submit" name="save" class="k-button" value="保存"/>
-
-            <span id="product-delete" class="k-button">删除</span>
+        <div class="row m-b">
+            <div class="col-md-4"></div>
+            <div class="col-md-4">
+                <input type="submit" name="save" class="k-button btn-submit" value="保存" />
+            
+                <span id="product-delete" class="k-button"><i class="fa fa-times"></i>删除</span>
+            </div>
+            <div class="col-md-4"></div>
         </div>
     </div>
     @Html.Partial("_CreateOrUpdate", Model)

@@ -24,7 +24,7 @@
         public string ItemNo { get; set; }
 
         [AllowHtml]
-        [DisplayName("简介")]
+        [DisplayName("产品简介")]
         public string ShortDescription { get; set; }
 
         [AllowHtml]
@@ -41,16 +41,16 @@
         [DisplayName("库存量")]
         public int StockQuantity { get; set; }
 
-        [DisplayName("当前价格")]
+        [DisplayName("售价")]
         public decimal Price { get; set; }
 
-        [DisplayName("成本")]
+        [DisplayName("进货价")]
         public decimal ProductCost { get; set; }
 
         [DisplayName("重量")]
         public decimal Weight { get; set; }
 
-        [DisplayName("重量")]
+        [DisplayName("长度")]
         public decimal Length { get; set; }
 
         [DisplayName("宽度")]
@@ -61,8 +61,9 @@
 
         public bool Published { get; set; }
 
+        [DisplayName("创建日期")]
         public DateTime? CreatedOn { get; set; }
-
+        [DisplayName("最近修改日期")]
         public DateTime? UpdatedOn { get; set; }
 
         public string CategoryName { get; set; }
