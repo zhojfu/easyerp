@@ -3,7 +3,9 @@
 @model EasyERP.Web.Models.Products.ProductListModel
 @section SectionTitle
 {
-    产品入库信息
+    <h1 id="crmTitle">
+    <strong>产品入库记录</strong> 
+</h1>
 }
 @{
     var defaultGridPageSize = EngineContext.Current.Resolve<AreaSettings>().DefaultGridPageSize;

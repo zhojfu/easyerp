@@ -3514,11 +3514,14 @@ fieldset[disabled] .btn-submit.active {
     margin-left: 2em;
     font-size:14px;
 }/*返回上一层目录*/
+.pdt-back{
+    color:#F79D3C;
+}
 .pdt-back a{
-    color:rgb(103, 106, 108);
+    color:#F79D3C;
 }
 .pdt-back a:hover{
-    color:#F79D3C;
+    font-weight:600;
 }
 .btn-white {
   color: inherit;
@@ -3570,4 +3573,69 @@ fieldset[disabled] .btn-white.active {
 
 .date-update label{
     color:#F79D3C;
+}
+
+.pay-btn{
+    text-align:center;
+    margin-top:0.5em;
+    margin-bottom:0.5em;
+}
+
+.btn-pay{
+  color: #fff;
+  background: #1A7BB9;
+  border: 1px solid #1872AB;
+  padding:0.3em 3.9em;
+  font-size:14px;
+}
+
+    .btn-pay:hover,
+    .btn-pay:focus,
+    .btn-pay:active,
+    .btn-pay.active,
+    .open .dropdown-toggle.btn-pay {
+        background: #1872AB;
+        border: 1px solid #1872AB;
+        color:#fff;
+    }
+   .btn-pay:active,
+.btn-pay.active {
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15) inset;
+}
+.btn-pay:active,
+.btn-pay.active,
+.open .dropdown-toggle.btn-pay {
+  background:#1872AB;
+}
+
+.emp-info label{
+    width:48px;
+}
+
+.cart{
+    
+    margin-top:2em;
+    padding-top:1em;
+}
+
+.cart h3{
+color:#1A7BB9;
+margin-bottom:0.5em;
+}
+.cart,
+.cart th,
+.cart td{
+    padding:0.4em 0.6em;
+}
+
+.t-price{
+    font-size:24px;
+    font-weight:600;
+    color:#EA394C;
+}
+
+.t-price-grn{
+    font-size:18px;
+    font-weight:400;
+    color:#1A7BB9;
 }

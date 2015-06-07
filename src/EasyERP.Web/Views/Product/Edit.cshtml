@@ -3,7 +3,7 @@
 @section SectionTitle
 {
     <h1 id="crmTitle">
-        <strong style="font-size: smaller">编辑产品信息 - </strong> <strong class="pdt-nm">@Model.Name</strong><strong class="pdt-back">@Html.ActionLink("回到产品列表", "List")</strong>
+        <strong style="font-size: smaller">编辑产品信息 - </strong> <strong class="pdt-nm">@Model.Name</strong><strong class="pdt-back"><i class="fa fa-reply"></i>@Html.ActionLink("回到产品列表", "List")</strong>
     </h1>
       
 }
@@ -21,12 +21,14 @@
         
 
         <div class="row m-b">
-            <div class="col-md-4"></div>
             <div class="col-md-4">
-                <input type="submit" name="save" class="k-button btn-submit" value="保存" />
-            
-                <span id="product-delete" class="k-button"><i class="fa fa-times"></i>删除</span>
+                <span id="product-delete" class="k-button"><i class="fa fa-times" style=" color: #EA394C;"></i>删除该产品</span>
             </div>
+            <div class="col-md-4">
+                <input type="submit" name="save" class="k-button btn-submit" style="padding-left:1.5em; padding-right:1.5em;"value="保存修改" />
+            </div>
+           
+            
             <div class="col-md-4"></div>
         </div>
     </div>

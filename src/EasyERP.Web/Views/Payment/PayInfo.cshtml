@@ -4,7 +4,9 @@
 @model EasyERP.Web.Models.Payments.PaymentModel
 @section SectionTitle
 {
-    付款信息查
+   <h1 id="crmTitle">
+    <strong>付款信息明细</strong><strong class="pdt-back" style="margin-left:2em;"> <i class="fa fa-reply"></i>@Html.ActionLink("返回入库记录", "InventoryRecords", "Product")</strong>
+</h1>
 }
 @{
     var defaultGridPageSize = EngineContext.Current.Resolve<AreaSettings>().DefaultGridPageSize;
@@ -15,41 +17,41 @@
     @Html.AntiForgeryToken()
     if (Model.Paid.Equals(Model.TotalAmount))
     {
-        <div class="property-content">
-            <label>已付全款</label>
+        <div class="property-content m-b">
+            <label style="font-size:18px; font-weight:600; color:#1872AB;">货款已付清！</label>
         </div>
     }
-    <div>
+    <div class="m-b">
         <p>
-            <em>付款总额:</em><label>@Model.TotalAmount</label>
+            <label>总应付款:&nbsp;&nbsp;&nbsp;&nbsp;</label><label style="font-size:24px; font-weight:800;">@Model.TotalAmount</label><label>元</label>
+        </p>
+    </div>
+    <div class="m-b">
+        <p>
+            <label>已付款:&nbsp;&nbsp;&nbsp;&nbsp;</label><label style="font-size:18px; font-weight:800;">@Model.Paid</label><label>元</label>
+        </p>
+    </div>
+    <div class="m-b" style="color:#EA394C;">
+        <p>
+            <label>剩余应付:&nbsp;&nbsp;&nbsp;&nbsp;</label><label style="font-size:18px; font-weight:800;">@(Model.TotalAmount - Model.Paid)</label><label>元</label>
+        </p>
+    </div>
+    <div class="m-b" style="color:#1872AB;">
+        <p>
+            <em>截止日期:</em><em>@Model.DueDateTime</em>
         </p>
     </div>
     <div>
         <p>
-            <em>已付款:</em><label>@Model.Paid</label>
-        </p>
-    </div>
-    <div>
-        <p>
-            <em>应付款:</em><label>@(Model.TotalAmount - Model.Paid)</label>
-        </p>
-    </div>
-    <div>
-        <p>
-            <em>截至日期:</em><label>@Model.DueDateTime</label>
-        </p>
-    </div>
-    <div>
-        <p>
-            <em>付款信息:</em>
+            <label>付款信息:</label>
         </p>
     </div>
     <div id="payitems"></div>
     <div id="pay-window"></div>
 
     <script type="text/x-kendo-template" id="toolbar-template">
-        <div class="toolbar" id="toolbar">
-            <button type="button" id="pay-button">付款</button>
+        <div class="pay-btn" id="toolbar">
+            <button type="button" id="pay-button" class="k-button btn-pay">付款</button>
         </div>
     </script>
 
