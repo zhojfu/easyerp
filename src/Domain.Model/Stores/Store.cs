@@ -12,7 +12,7 @@ namespace Domain.Model.Stores
         public Store()
         {
             ProductPrices = new List<ProductPrice>();
-            Products = new List<Product>();
+            ProductInventories = new List<Inventory>();
         }
 
         public string ShortDescription { get; set; }
@@ -37,7 +37,7 @@ namespace Domain.Model.Stores
 
         public virtual ICollection<Order> Orders { get; set; }
 
-        public virtual ICollection<Product> Products { get; set; }
+        public virtual ICollection<Inventory> ProductInventories { get; set; }
 
         public virtual ICollection<Employee> Employees { get; set; }
 

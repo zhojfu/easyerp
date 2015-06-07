@@ -1,4 +1,6 @@
 ﻿using System.Runtime.Remoting.Messaging;
+using System.Security.Permissions;
+using WebGrease.Css.Extensions;
 
 namespace EasyERP.Web.Controllers
 {
@@ -70,49 +72,42 @@ namespace EasyERP.Web.Controllers
                 return AccessDeniedView();
             }
 
-            var categoryIds = new List<int>
+            if (ModelState.IsValid)
             {
-                model.SearchCategoryId
-            };
+                var categoryIds = new List<int>
+                {
+                    model.SearchCategoryId
+                };
 
-            var storeIds = new List<int>
-            {
-                model.SearchStoreId
-            };
+                var storeIds = new List<int>
+                {
+                    model.SearchStoreId
+                };
 
-            bool? overridePublished = null;
-            if (model.SearchPublishedId == 1)
-            {
-                overridePublished = true;
+                var products = productService.SearchProducts(
+                    categoryIds: categoryIds,
+                    storeIds: storeIds,
+                    keywords: model.SearchProductName,
+                    pageIndex: command.Page - 1,
+                    pageSize: command.PageSize
+                    );
+                var gridModel = new DataSourceResult
+                {
+                    Data = products.Select(
+                        x =>
+                        {
+                            var productModel = x.ToModel();
+
+                            productModel.FullDescription = "";
+
+                            return productModel;
+                        }),
+                    Total = products.TotalCount
+                };
+
+                return Json(gridModel);
             }
-            else if (model.SearchPublishedId == 2)
-            {
-                overridePublished = false;
-            }
-
-            var products = productService.SearchProducts(
-                categoryIds: categoryIds,
-                storeIds: storeIds,
-                keywords: model.SearchProductName,
-                pageIndex: command.Page - 1,
-                pageSize: command.PageSize,
-                overridePublished: overridePublished
-                );
-            var gridModel = new DataSourceResult
-            {
-                Data = products.Select(
-                    x =>
-                    {
-                        var productModel = x.ToModel();
-
-                        productModel.FullDescription = "";
-
-                        return productModel;
-                    }),
-                Total = products.TotalCount
-            };
-
-            return Json(gridModel);
+            return Json(false);
         }
 
         public ActionResult List()
@@ -188,6 +183,103 @@ namespace EasyERP.Web.Controllers
             {
                 return AccessDeniedView();
             }
+            var model = new ProductListModel();
+
+            //categories
+            model.AvailableCategories.Add(
+                new SelectListItem
+                {
+                    Text = "所有目录",
+                    Value = "0"
+                });
+
+            var categories = categoryService.GetAllCategories();
+            foreach (var c in categories)
+            {
+                model.AvailableCategories.Add(
+                    new SelectListItem
+                    {
+                        Text = c.Name,
+                        Value = c.Id.ToString()
+                    });
+            }
+
+            //stores
+            //model.AvailableStores.Add(
+            //    new SelectListItem
+            //    {
+            //        Text = "所有店面",
+            //        Value = "0"
+            //    });
+            var stores = storeService.GetAllStores();
+            foreach (var store in stores)
+            {
+                model.AvailableStores.Add(
+                    new SelectListItem
+                    {
+                        Text = store.Name,
+                        Value = store.Id.ToString()
+                    });
+            }
+
+            model.AvailablePublishedOptions.Add(
+                new SelectListItem
+                {
+                    Text = "所有",
+                    Value = "0"
+                });
+            model.AvailablePublishedOptions.Add(
+                new SelectListItem
+                {
+                    Text = "已发布",
+                    Value = "1"
+                });
+            model.AvailablePublishedOptions.Add(
+                new SelectListItem
+                {
+                    Text = "未发布",
+                    Value = "2"
+                });
+
+            return View(model);
+        }
+        
+        [HttpPost]
+        public ActionResult StockInfo(DataSourceRequest command, ProductListModel model)
+        {
+            if (!permissionService.Authorize(StandardPermissionProvider.InventoryProduct))
+            {
+                return AccessDeniedView();
+            }
+            if (ModelState.IsValid)
+            {
+                var psm = inventoryService.GetProductInventories(model.SearchProductName,
+                    model.SearchCategoryId, model.SearchStoreId);
+
+
+                var gridModel = new DataSourceResult
+                {
+                    Data = psm.Select(
+                        x => new
+                        {
+                            ProductName = x.Product.Name,
+                            StoreName = x.Store.Name,
+                            Quantity = x.Quantity
+                        }),
+                    Total = psm.Count
+                };
+
+                return Json(gridModel);
+            }
+            return Json(false);
+        }
+
+        public ActionResult Warehousing()
+        {
+            if (!permissionService.Authorize(StandardPermissionProvider.InventoryProduct))
+            {
+                return AccessDeniedView();
+            }
 
             var model = new InventoryModel();
 
@@ -220,6 +312,17 @@ namespace EasyERP.Web.Controllers
                             Value = p.Id.ToString()
                         });
                 });
+            
+            var stores = storeService.GetAllStores();
+            foreach (var store in stores)
+            {
+                model.AvailableStores.Add(
+                    new SelectListItem
+                    {
+                        Text = store.Name,
+                        Value = store.Id.ToString()
+                    });
+            }
 
             model.Paid = 0;
             model.DueDateTime = DateTime.Now + TimeSpan.FromDays(30);
@@ -228,7 +331,7 @@ namespace EasyERP.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult Inventory(InventoryModel model)
+        public ActionResult Warehousing(InventoryModel model)
         {
             if (!permissionService.Authorize(StandardPermissionProvider.InventoryProduct))
             {
@@ -236,7 +339,12 @@ namespace EasyERP.Web.Controllers
             }
             if (ModelState.IsValid)
             {
-                var inventory = model.ToEntity();
+                var inventory = new Inventory
+                {
+                    StoreId = model.StoreId,
+                    ProductId = model.ProductId,
+                    Quantity = model.Quantity
+                };
                 inventory.InStockTime = DateTime.Now;
                 var payment = new Payment
                 {
@@ -255,26 +363,91 @@ namespace EasyERP.Web.Controllers
                 }
                 inventory.Payment = payment;
 
-                inventoryService.InsertInventory(inventory, payment);
+                inventoryService.InsertInventory(inventory);
             }
 
-            return RedirectToAction("List");
+            return RedirectToAction("Inventory");
         }
 
         public ActionResult InventoryRecords()
         {
-            return View();
+            if (!permissionService.Authorize(StandardPermissionProvider.InventoryProduct))
+            {
+                return AccessDeniedView();
+            }
+            var model = new ProductListModel();
+
+            //categories
+            model.AvailableCategories.Add(
+                new SelectListItem
+                {
+                    Text = "所有目录",
+                    Value = "0"
+                });
+
+            var categories = categoryService.GetAllCategories();
+            foreach (var c in categories)
+            {
+                model.AvailableCategories.Add(
+                    new SelectListItem
+                    {
+                        Text = c.Name,
+                        Value = c.Id.ToString()
+                    });
+            }
+
+            //stores
+            //model.AvailableStores.Add(
+            //    new SelectListItem
+            //    {
+            //        Text = "所有店面",
+            //        Value = "0"
+            //    });
+            var stores = storeService.GetAllStores();
+            foreach (var store in stores)
+            {
+                model.AvailableStores.Add(
+                    new SelectListItem
+                    {
+                        Text = store.Name,
+                        Value = store.Id.ToString()
+                    });
+            }
+
+            model.AvailablePublishedOptions.Add(
+                new SelectListItem
+                {
+                    Text = "所有",
+                    Value = "0"
+                });
+            model.AvailablePublishedOptions.Add(
+                new SelectListItem
+                {
+                    Text = "已发布",
+                    Value = "1"
+                });
+            model.AvailablePublishedOptions.Add(
+                new SelectListItem
+                {
+                    Text = "未发布",
+                    Value = "2"
+                });
+
+            return View(model);
         }
 
         [HttpPost]
-        public ActionResult InventoryRecords(int productId, bool showUnPaidOnly)
+        public ActionResult InventoryRecords(DataSourceRequest command, ProductListModel model)
         {
             if (!permissionService.Authorize(StandardPermissionProvider.InventoryProduct))
             {
                 return AccessDeniedView();
             }
 
-            var inventories = inventoryService.GetAllInventoriesForProduct(productId);
+            if (ModelState.IsValid)
+            {
+                var inventories = inventoryService.GetProductInventoryRecords(model.SearchProductName, model.SearchCategoryId,
+                    model.SearchStoreId);
 
             if (inventories == null ||
                 !inventories.Any())
@@ -305,10 +478,10 @@ namespace EasyERP.Web.Controllers
                     IsPaid = (i.Payment.TotalAmount - i.Payment.Items.Sum(iii => iii.Paid)).Equals(0)
                 }).ToList();
 
-            if (showUnPaidOnly)
-            {
-                inventoryDataSource = inventoryDataSource.Where(i => !i.IsPaid).ToList();
-            }
+            //if (showUnPaidOnly)
+            //{
+            //    inventoryDataSource = inventoryDataSource.Where(i => !i.IsPaid).ToList();
+            //}
             var gridModel = new DataSourceResult
             {
                 Data = inventoryDataSource,
@@ -316,6 +489,10 @@ namespace EasyERP.Web.Controllers
             };
 
             return Json(gridModel);
+            }
+            
+
+            return Json(false);
         }
 
         [HttpPost]
@@ -504,34 +681,6 @@ namespace EasyERP.Web.Controllers
             return RedirectToAction("List");
         }
 
-        [HttpPost]
-        public ActionResult DeleteSelected(ICollection<int> selectedIds)
-        {
-            if (!permissionService.Authorize(StandardPermissionProvider.DeleteProduct))
-            {
-                return AccessDeniedView();
-            }
-
-            var products = new List<Product>();
-            if (selectedIds != null)
-            {
-                products.AddRange(productService.GetProductsByIds(selectedIds.ToArray()));
-
-                for (var i = 0; i < products.Count; i++)
-                {
-                    var product = products[i];
-
-                    productService.DeleteProduct(product);
-                }
-            }
-
-            return Json(
-                new
-                {
-                    Result = true
-                });
-        }
-
         public ActionResult Price()
         {
             return View();
@@ -544,7 +693,7 @@ namespace EasyERP.Web.Controllers
             {
                 return AccessDeniedView();
             }
-            var products = productService.SearchProducts(storeIds: new List<int>{storeId});
+            var products = productService.SearchProducts();
 
             if (products == null)
             {

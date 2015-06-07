@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -1166,9 +1166,9 @@
     <Compile Include="Validators\Employees\EmployeeValidator.cs" />
     <Compile Include="Validators\Orders\OrderValidator.cs" />
     <Compile Include="Validators\Products\InventoryValidator.cs" />
+    <Compile Include="Validators\Products\ProductListModelValidator.cs" />
     <Compile Include="Validators\Products\ProductValidator.cs" />
     <Compile Include="Validators\Stores\StoreValidator.cs" />
- 
     <Compile Include="Validators\LoginValidator.cs" />
     <Compile Include="Models\Employee\TimesheetModel.cs" />
   </ItemGroup>
@@ -1314,7 +1314,7 @@
     <Content Include="Views\Employee\Edit.cshtml" />
     <Content Include="Views\Employee\EmployeeArea.cshtml" />
     <Content Include="sitemap.config" />
-    <Content Include="Views\Product\Inventory.cshtml" />
+    <Content Include="Views\Product\Warehousing.cshtml" />
     <Content Include="Views\Shared\FactoryLayout.cshtml" />
     <Content Include="Views\Store\_CreateOrUpdate.cshtml" />
     <Content Include="Views\Store\_CreateOrUpdate.Info.cshtml" />
@@ -1355,6 +1355,7 @@
     <Content Include="Views\Shared\StoreLayout.cshtml" />
     <Content Include="Views\Shared\UserLayout.cshtml" />
     <Content Include="Views\User\_ViewStart.cshtml" />
+    <Content Include="Views\Product\Inventory.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

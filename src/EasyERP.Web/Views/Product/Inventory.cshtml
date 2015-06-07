@@ -1,78 +1,122 @@
-﻿@model EasyERP.Web.Models.Products.InventoryModel
+﻿@using EasyErp.Core.Configuration.Settings
+@using EasyErp.Core.Infrastructure
+@model EasyERP.Web.Models.Products.ProductListModel
+@section SectionTitle
+{
+    <h1 id="crmTitle">
+        <strong>库存管理</strong>
+    </h1>
+}
 @{
-    ViewBag.Title = "入库";
+    ViewBag.Title = "库存管理";
+    var defaultGridPageSize = EngineContext.Current.Resolve<AreaSettings>().DefaultGridPageSize;
+    var gridPageSizes = EngineContext.Current.Resolve<AreaSettings>().GridPageSizes;
 }
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    <div class="section-header">
-
-        <div class="title">
-            <label>入库</label>
+    <div class="row m-b">
+        <div class="form-group col-md-3">
+            @Html.ValidationMessageFor(m => m.SearchProductName, "", new
+        {
+            @class = "text-danger"
+        })
+            @Html.LabelFor(m => m.SearchProductName)
+            @Html.TextBoxFor(model => model.SearchProductName, new
+        {
+            id = "search-product-name"
+        })
         </div>
-
-        <div class="section-header">
-            <div class="options">
-
-                <input type="submit" name="save" class="k-button" value="保存"/>
-
-                <span id="product-delete" class="k-button">取消</span>
-            </div>
+        <div class="form-group col-md-3">
+            @Html.LabelFor(m => m.SearchCategoryId)
+            @Html.DropDownList("SearchCategoryId", Model.AvailableCategories, new
+        {
+            id = "selected-category",
+            @onchange = "var grid = $(\"#products-grid\").data(\"kendoGrid\"); grid.dataSource.page(1);"
+        })
+        </div>
+        <div class="form-group col-md-3">
+            @Html.LabelFor(m => m.SearchStoreId)
+            @Html.DropDownList("SearchStoreId", Model.AvailableStores, new
+        {
+            id = "selected-store",
+            @onchange = "var grid = $(\"#products-grid\").data(\"kendoGrid\"); grid.dataSource.page(1);"
+        })
         </div>
     </div>
-    <div class="form-group">
+    <div>
+        <input type="hidden" id="search-products" class="k-button" value="搜索" />
+    </div>
+        <div id="products-grid">
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function() {
 
-        @Html.LabelFor(m => m.SelectedCategoryId)
-        @Html.DropDownList("SearchCategoryId", Model.AvailableCategories)
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.ProductId)
-        @Html.DropDownList("ProductId", Model.AvailableProducts)
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.Quantity)
-        @Html.EditorFor(m => m.Quantity)
-        @Html.ValidationMessageFor(model => model.Quantity, "", new
-        {
-            @class = "text-danger"
-        })
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.TotalAmount)
-        @Html.EditorFor(m => m.TotalAmount)
-        @Html.ValidationMessageFor(model => model.TotalAmount, "", new
-        {
-            @class = "text-danger"
-        })
-    </div>
+                $("#products-grid").kendoGrid({
+                    dataSource: {
+                        transport: {
+                            read: {
+                                url: "/Product/StockInfo",
+                                type: "POST",
+                                dataType: "json"
+                            },
+                            parameterMap: function(options, operation) {
+                                if (operation === "read") {
+                                    var data = {
+                                        SearchProductName: $("#search-product-name").val(),
+                                        SearchStoreId: $("#selected-store").val(),
+                                        SearchCategoryId: $("#selected-category").val()
+                                    };
+                                    addAntiForgeryToken(data);
+                                    return data;
+                                }
+                            }
+                        },
+                    schema: {
+                        data: "Data",
+                        total: "Total",
+                        errors: "Errors"
+                    },
+                    error: function(e) {
+                        display_kendoui_grid_error(e);
+                        this.cancelChanges();
+                    },
+                    pageSize: @(defaultGridPageSize),
+                    serverPaging: true,
+                    serverFiltering: true,
+                    serverSorting: true
+                },
+                pageable: {
+                    refresh: true,
+                    pageSizes: [@(gridPageSizes)]
+                },
+                batch: false,
+                editable: {
+                    confirmation: true,
+                    mode: "inline",
+                    destroy: true
+                },
+                scrollable: false,
+                columns: [
+                    { field: "ProductName", title: "产品", width: 100 },
+                    { field: "StoreName", title: "门店", width: 100 },
+                    { field: "Quantity", title: "库存", width: 100 }
+                ]
+            });
+            //search button
+            $("#search-products").click(function() {
+                var grid = $("#products-grid").data("kendoGrid");
+                grid.dataSource.page(1);
+                return false;
+            });
 
-    <div class="form-group">
-        @Html.LabelFor(m => m.Paid)
-        @Html.EditorFor(m => m.Paid)
-        @Html.ValidationMessageFor(model => model.Paid, "", new
-        {
-            @class = "text-danger"
-        })
-    </div>
-
-    <div class="form-group">
-
-        @Html.LabelFor(m => m.DueDateTime)
-        @Html.EditorFor(m => m.DueDateTime)
-        @Html.ValidationMessageFor(model => model.DueDateTime, "", new
-        {
-            @class = "text-danger"
-        })
-    </div>
-
-    <div class="form-group">
-
-        @Html.LabelFor(m => m.Note)
-        @Html.EditorFor(m => m.Note)
-        @Html.ValidationMessageFor(model => model.Note, "", new
-        {
-            @class = "text-danger"
-        })
-    </div>
+            $("#search-product-name").keydown(function(event) {
+                if (event.keyCode === 13) {
+                    $("#search-products").click();
+                    return false;
+                }
+            });
+        });
+    </script>
 }

@@ -1,0 +1,82 @@
+﻿@model EasyERP.Web.Models.Products.InventoryModel
+@{
+    ViewBag.Title = "入库";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="section-header">
+
+        <div class="title">
+            <label>入库</label>
+        </div>
+
+        <div class="section-header">
+            <div class="options">
+
+                <input type="submit" name="save" class="k-button" value="保存"/>
+
+                <span id="product-delete" class="k-button">取消</span>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+
+        @Html.LabelFor(m => m.SelectedCategoryId)
+        @Html.DropDownList("SearchCategoryId", Model.AvailableCategories)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.ProductId)
+        @Html.DropDownList("ProductId", Model.AvailableProducts)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.StoreId)
+        @Html.DropDownList("StoreId", Model.AvailableStores)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Quantity)
+        @Html.EditorFor(m => m.Quantity)
+        @Html.ValidationMessageFor(model => model.Quantity, "", new
+        {
+            @class = "text-danger"
+        })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.TotalAmount)
+        @Html.EditorFor(m => m.TotalAmount)
+        @Html.ValidationMessageFor(model => model.TotalAmount, "", new
+        {
+            @class = "text-danger"
+        })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Paid)
+        @Html.EditorFor(m => m.Paid)
+        @Html.ValidationMessageFor(model => model.Paid, "", new
+        {
+            @class = "text-danger"
+        })
+    </div>
+
+    <div class="form-group">
+
+        @Html.LabelFor(m => m.DueDateTime)
+        @Html.EditorFor(m => m.DueDateTime)
+        @Html.ValidationMessageFor(model => model.DueDateTime, "", new
+        {
+            @class = "text-danger"
+        })
+    </div>
+
+    <div class="form-group">
+
+        @Html.LabelFor(m => m.Note)
+        @Html.EditorFor(m => m.Note)
+        @Html.ValidationMessageFor(model => model.Note, "", new
+        {
+            @class = "text-danger"
+        })
+    </div>
+}

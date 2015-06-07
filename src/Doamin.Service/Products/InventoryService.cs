@@ -1,4 +1,6 @@
-﻿namespace Doamin.Service.Products
+﻿using System;
+
+namespace Doamin.Service.Products
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -31,15 +33,65 @@
                        : inventoryRepository.FindAll(i => i.ProductId == productId).ToList();
         }
 
-        public void InsertInventory(Inventory inventory, Payment payment)
+        public void InsertInventory(Inventory inventory)
         {
+            if (inventory == null)
+            {
+                throw new ArgumentNullException("inventory");
+            }
             inventoryRepository.Add(inventory);
-            var product = productRepository.GetByKey(inventory.ProductId);
-            product.StockQuantity += inventory.Quantity;
-
-            productRepository.Update(product);
-
             unitOfWork.Commit();
+        }
+        public IList<StockModel> GetProductInventories(string productName, int categoryId, int storeId)
+        {
+
+            var psm = inventoryRepository.FindAll(i=>true);
+            if (storeId > 0)
+            {
+                psm = psm.Where(i => i.StoreId == storeId);
+            }
+
+            if (categoryId >0)
+            {
+                psm = psm.Where(i => i.Product.CategoryId == categoryId);
+            }
+
+            if (!string.IsNullOrWhiteSpace(productName))
+            {
+                psm = psm.Where(i => i.Product.Name.Contains(productName));
+            }
+
+            return psm.GroupBy(p => new {p.StoreId, p.ProductId})
+                .Select(l => new StockModel
+                {
+                    Store = l.FirstOrDefault().Store,
+                    Product = l.FirstOrDefault().Product,
+                    ProductId = l.FirstOrDefault().ProductId,
+                    Quantity = l.Sum(cc => cc.Quantity),
+                    StoreId = l.FirstOrDefault().StoreId
+                }).ToList();
+
+        }
+        public IList<Inventory> GetProductInventoryRecords(string productName, int categoryId, int storeId, bool unpaidOnly = false)
+        {
+
+            var psm = inventoryRepository.FindAll(i=>true);
+            if (storeId > 0)
+            {
+                psm = psm.Where(i => i.StoreId == storeId);
+            }
+
+            if (categoryId >0)
+            {
+                psm = psm.Where(i => i.Product.CategoryId == categoryId);
+            }
+
+            if (!string.IsNullOrWhiteSpace(productName))
+            {
+                psm = psm.Where(i => i.Product.Name.Contains(productName));
+            }
+
+            return psm.ToList();
         }
     }
 }
