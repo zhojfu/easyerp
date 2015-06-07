@@ -9,7 +9,6 @@ namespace Domain.EntityFramework.Configurations.Products
     {
         public ProductStoreMappingConfiguration()
         {
-            ToTable("Product");
             ToTable("Project_Store_Mapping");
             HasKey(pam => pam.Id);
 

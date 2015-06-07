@@ -49,7 +49,7 @@ namespace Doamin.Service.Stores
         {
             return productId < 0
                        ? new List<Store>()
-                       : storeRepository.FindAll(i => i.ProductStoreMappings.Any(p => p.Id == productId)).ToList();
+                       : storeRepository.FindAll(i => i.ProductInventories.Any(p => p.Id == productId)).ToList();
         }
 
         public void InsertStore(Store store)

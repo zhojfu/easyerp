@@ -10,7 +10,7 @@
     {
         public Product()
         {
-            ProductStoreMappings = new List<ProductStoreMapping>();
+            ProductInventories = new List<Inventory>();
             ProductPrices = new List<ProductPrice>();
         }
 
@@ -51,7 +51,7 @@
 
         public virtual ICollection<MaterialStatisitc> MaterialComsumptions { get; set; }
 
-        public virtual ICollection<ProductStoreMapping> ProductStoreMappings { get; set; }
+        public virtual ICollection<Inventory> ProductInventories { get; set; }
 
         public virtual ICollection<ProductPrice> ProductPrices { get; set; }
     }

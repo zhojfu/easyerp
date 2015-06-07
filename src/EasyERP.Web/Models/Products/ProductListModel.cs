@@ -1,10 +1,14 @@
-﻿namespace EasyERP.Web.Models.Products
+﻿
+namespace EasyERP.Web.Models.Products
 {
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Web.Mvc;
     using EasyERP.Web.Framework.Mvc;
+    using EasyERP.Web.Validators.Products;
+    using FluentValidation.Attributes;
 
+    [Validator(typeof(ProductListModelValidator))]
     public class ProductListModel : BaseModel
     {
         public ProductListModel()

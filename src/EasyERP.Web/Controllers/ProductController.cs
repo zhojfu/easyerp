@@ -38,7 +38,6 @@ namespace EasyERP.Web.Controllers
         private readonly IProductService productService;
 
         private readonly IStoreService storeService;
-        private readonly IProductStoreMappingService productStoreMappingService;
 
         public ProductController(
             IPermissionService permissionService,
@@ -48,7 +47,6 @@ namespace EasyERP.Web.Controllers
             IProductPriceService productPriceService,
             IInventoryService inventoryService,
             IDateTimeHelper dateTimeHelper,
-            IProductStoreMappingService psmsService,
             IExportManager exportManager)
         {
             this.permissionService = permissionService;
@@ -57,7 +55,6 @@ namespace EasyERP.Web.Controllers
             this.storeService = storeService;
             this.productPriceService = productPriceService;
             this.inventoryService = inventoryService;
-            this.productStoreMappingService = psmsService;
             this.dateTimeHelper = dateTimeHelper;
             this.exportManager = exportManager;
         }
@@ -256,7 +253,7 @@ namespace EasyERP.Web.Controllers
             }
             if (ModelState.IsValid)
             {
-                var psm = productStoreMappingService.GetProductStoreMappings(model.SearchProductName,
+                var psm = inventoryService.GetProductInventories(model.SearchProductName,
                     model.SearchCategoryId, model.SearchStoreId);
 
 
@@ -265,7 +262,6 @@ namespace EasyERP.Web.Controllers
                     Data = psm.Select(
                         x => new
                         {
-                            Id = x.Id,
                             ProductName = x.Product.Name,
                             StoreName = x.Store.Name,
                             Quantity = x.Quantity
@@ -343,34 +339,31 @@ namespace EasyERP.Web.Controllers
             }
             if (ModelState.IsValid)
             {
-                // TODO: add payment for productStoreMapping
-                var productStoreMapping = new ProductStoreMapping()
+                var inventory = new Inventory
                 {
                     StoreId = model.StoreId,
                     ProductId = model.ProductId,
                     Quantity = model.Quantity
                 };
-                productStoreMappingService.InsertInventor(productStoreMapping);
-                //var inventory = model.ToEntity();
-                //inventory.InStockTime = DateTime.Now;
-                //var payment = new Payment
-                //{
-                //    DueDateTime = model.DueDateTime,
-                //    TotalAmount = model.TotalAmount
-                //};
+                inventory.InStockTime = DateTime.Now;
+                var payment = new Payment
+                {
+                    DueDateTime = model.DueDateTime,
+                    TotalAmount = model.TotalAmount
+                };
 
-                //if (model.Paid > 0)
-                //{
-                //    payment.Items.Add(
-                //        new PayItem
-                //        {
-                //            Paid = model.Paid,
-                //            PayDataTime = DateTime.Now
-                //        });
-                //}
-                //inventory.Payment = payment;
+                if (model.Paid > 0)
+                {
+                    payment.Items.Add(
+                        new PayItem
+                        {
+                            Paid = model.Paid,
+                            PayDataTime = DateTime.Now
+                        });
+                }
+                inventory.Payment = payment;
 
-                //inventoryService.InsertInventory(inventory, payment);
+                inventoryService.InsertInventory(inventory);
             }
 
             return RedirectToAction("Inventory");
@@ -378,18 +371,83 @@ namespace EasyERP.Web.Controllers
 
         public ActionResult InventoryRecords()
         {
-            return View();
+            if (!permissionService.Authorize(StandardPermissionProvider.InventoryProduct))
+            {
+                return AccessDeniedView();
+            }
+            var model = new ProductListModel();
+
+            //categories
+            model.AvailableCategories.Add(
+                new SelectListItem
+                {
+                    Text = "所有目录",
+                    Value = "0"
+                });
+
+            var categories = categoryService.GetAllCategories();
+            foreach (var c in categories)
+            {
+                model.AvailableCategories.Add(
+                    new SelectListItem
+                    {
+                        Text = c.Name,
+                        Value = c.Id.ToString()
+                    });
+            }
+
+            //stores
+            //model.AvailableStores.Add(
+            //    new SelectListItem
+            //    {
+            //        Text = "所有店面",
+            //        Value = "0"
+            //    });
+            var stores = storeService.GetAllStores();
+            foreach (var store in stores)
+            {
+                model.AvailableStores.Add(
+                    new SelectListItem
+                    {
+                        Text = store.Name,
+                        Value = store.Id.ToString()
+                    });
+            }
+
+            model.AvailablePublishedOptions.Add(
+                new SelectListItem
+                {
+                    Text = "所有",
+                    Value = "0"
+                });
+            model.AvailablePublishedOptions.Add(
+                new SelectListItem
+                {
+                    Text = "已发布",
+                    Value = "1"
+                });
+            model.AvailablePublishedOptions.Add(
+                new SelectListItem
+                {
+                    Text = "未发布",
+                    Value = "2"
+                });
+
+            return View(model);
         }
 
         [HttpPost]
-        public ActionResult InventoryRecords(int productId, bool showUnPaidOnly)
+        public ActionResult InventoryRecords(DataSourceRequest command, ProductListModel model)
         {
             if (!permissionService.Authorize(StandardPermissionProvider.InventoryProduct))
             {
                 return AccessDeniedView();
             }
 
-            var inventories = inventoryService.GetAllInventoriesForProduct(productId);
+            if (ModelState.IsValid)
+            {
+                var inventories = inventoryService.GetProductInventoryRecords(model.SearchProductName, model.SearchCategoryId,
+                    model.SearchStoreId);
 
             if (inventories == null ||
                 !inventories.Any())
@@ -420,10 +478,10 @@ namespace EasyERP.Web.Controllers
                     IsPaid = (i.Payment.TotalAmount - i.Payment.Items.Sum(iii => iii.Paid)).Equals(0)
                 }).ToList();
 
-            if (showUnPaidOnly)
-            {
-                inventoryDataSource = inventoryDataSource.Where(i => !i.IsPaid).ToList();
-            }
+            //if (showUnPaidOnly)
+            //{
+            //    inventoryDataSource = inventoryDataSource.Where(i => !i.IsPaid).ToList();
+            //}
             var gridModel = new DataSourceResult
             {
                 Data = inventoryDataSource,
@@ -431,6 +489,10 @@ namespace EasyERP.Web.Controllers
             };
 
             return Json(gridModel);
+            }
+            
+
+            return Json(false);
         }
 
         [HttpPost]

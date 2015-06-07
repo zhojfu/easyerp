@@ -74,7 +74,6 @@
                             }
                         },
                     schema: {
-                        model: { id: "Id" },
                         data: "Data",
                         total: "Total",
                         errors: "Errors"
@@ -117,12 +116,6 @@
                     $("#search-products").click();
                     return false;
                 }
-            });
-
-            $('#export-product-button').click(function(e) {
-                e.preventDefault();
-                $('#export-product').submit();
-                return false;
             });
         });
     </script>
