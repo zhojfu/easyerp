@@ -9,8 +9,9 @@ namespace Domain.Model.Products
     public class Inventory : BaseEntity, IAggregateRoot
     {
         public DateTime InStockTime { get; set; }
+        public string Notes { get; set; }
 
-        public int Quantity { get; set; }
+        public float Quantity { get; set; }
 
         public int ProductId { get; set; }
 

@@ -6,7 +6,7 @@ namespace Domain.Model.Products
 
     public class StockModel
     {
-        public int Quantity { get; set; }
+        public float Quantity { get; set; }
 
         public int ProductId { get; set; }
 

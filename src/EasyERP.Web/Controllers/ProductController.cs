@@ -343,7 +343,8 @@ namespace EasyERP.Web.Controllers
                 {
                     StoreId = model.StoreId,
                     ProductId = model.ProductId,
-                    Quantity = model.Quantity
+                    Quantity = model.Quantity, 
+                    Notes = model.Note
                 };
                 inventory.InStockTime = DateTime.Now;
                 var payment = new Payment
@@ -463,19 +464,24 @@ namespace EasyERP.Web.Controllers
                     ProductName = i.Product.Name,
                     i.Quantity,
                     InventoryTime = i.InStockTime,
-                    Payment = new
+                    Payment = i.Payment.IfNotNull(pp=>
                     {
-                        Total = i.Payment.TotalAmount,
-                        DueDate = i.Payment.DueDateTime,
-                        Items = i.Payment.Items.Select(
-                            p => new
-                            {
-                                PayDate = p.PayDataTime,
-                                p.Paid
-                            })
-                    },
-                    UnPaid = i.Payment.TotalAmount - i.Payment.Items.Sum(iii => iii.Paid),
-                    IsPaid = (i.Payment.TotalAmount - i.Payment.Items.Sum(iii => iii.Paid)).Equals(0)
+                        return new
+                        {
+                            Total = pp.TotalAmount,
+                            DueDate = pp.DueDateTime,
+                            Items = pp.Items.Select(
+                                p => new
+                                {
+                                    PayDate = p.PayDataTime,
+                                    p.Paid
+                                })
+                        };
+                    }),
+                    Note = i.Notes,
+                    UnPaid = i.Payment.IfNotNull(pp =>pp.TotalAmount - pp.Items.Sum(iii => iii.Paid)),
+                    IsPaid = i.Payment.IfNotNull(
+                        pp => { return (pp.TotalAmount - pp.Items.Sum(iii => iii.Paid)).Equals(0);})
                 }).ToList();
 
             //if (showUnPaidOnly)
@@ -490,7 +496,6 @@ namespace EasyERP.Web.Controllers
 
             return Json(gridModel);
             }
-            
 
             return Json(false);
         }

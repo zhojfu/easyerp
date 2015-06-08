@@ -85,7 +85,7 @@
                     { field: "ProductName", title: "产品名", width: 100 },
                     { field: "Quantity", title: "数量", width: 100 },
                     { field: "InventoryTime", title: "入库日期", width: 100, template: '#= kendo.toString(InventoryTime, "MM/dd/yyyy" ) #' },
-                    { field: "PaymentId", title: "付款信息", width: 100, template: "<a href=\"/Payment/PayInfo/#=PaymentId#\"># if(IsPaid) {#已付全款#;} else{#部分付款#} #</a>" }
+                    { field: "PaymentId", title: "付款信息", width: 100, template: "<a href=\"/Payment/PayInfo/#=PaymentId#\"># if(PaymentId == 0) {#无付款信息#} else if(IsPaid) {#已付全款#;} else{#部分付款#} #</a>" }
                 ]
             }).data("kendoGrid");
         });

@@ -1,11 +1,15 @@
-﻿namespace EasyERP.Web.Models.Products
+﻿
+namespace EasyERP.Web.Models.Products
 {
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Web.Mvc;
     using EasyERP.Web.Framework.Mvc;
+    using EasyERP.Web.Validators.Products;
+    using FluentValidation.Attributes;
 
+    [Validator(typeof(InventoryValidator))]
     public class InventoryModel : BaseEntityModel
     {
         public InventoryModel()
@@ -30,7 +34,7 @@
         public int StoreId { get; set; }
 
         [DisplayName("产品数量:")]
-        public int Quantity { get; set; }
+        public float Quantity { get; set; }
 
         [DisplayName("付款截止日期：")]
         public DateTime DueDateTime { get; set; }

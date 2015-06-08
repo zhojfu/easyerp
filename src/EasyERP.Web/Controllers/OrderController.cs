@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using Domain.Model.Products;
 using WebGrease.Css.Extensions;
 
 namespace EasyERP.Web.Controllers
@@ -27,6 +28,7 @@ namespace EasyERP.Web.Controllers
         private readonly IProductPriceService productPriceService;
 
         private readonly IStoreService storeService;
+        private readonly IInventoryService inventoryService;
 
         private readonly IWorkContext workContext;
 
@@ -36,6 +38,7 @@ namespace EasyERP.Web.Controllers
             IProductService productService,
             IOrderService orderService,
             IProductPriceService productPriceService,
+            IInventoryService inventoryService,
             IWorkContext workContext
             )
         {
@@ -44,6 +47,7 @@ namespace EasyERP.Web.Controllers
             this.productService = productService;
             this.orderService = orderService;
             this.productPriceService = productPriceService;
+            this.inventoryService = inventoryService;
             this.workContext = workContext;
         }
 
@@ -344,14 +348,26 @@ namespace EasyERP.Web.Controllers
 
             if (order.OrderStatus == OrderStatus.Shipped)
             {
-                //TODO: update store products
-                //order.StoreId
-                //order.OrderItems.ForEach( i=> i.ProductId
-                //    );
+                //TODO: use on inventory info
+                foreach (var item in order.OrderItems)
+                {
+
+                    var inventory = new Inventory()
+                    {
+                        InStockTime = DateTime.Now,
+                        StoreId = order.StoreId.Value,
+                        ProductId = item.ProductId,
+                        Quantity = item.Quantity,
+                        Notes = "订单入库",
+                        Payment = new Payment() {  DueDateTime = order.Payment.DueDateTime}
+                    };
+
+                    inventoryService.InsertInventory(inventory);
+                }
+                
             }
 
             //TODO: when user paid, set status to complete
-
             orderService.UpdateOrder(order);
 
             return Json(ToOrderString(order.OrderStatus));
