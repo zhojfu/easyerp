@@ -20,12 +20,21 @@ namespace Domain.EntityFramework
             var c1 = new Category
             {
                 Name = "米",
-                ItemNo = "RI",
+                ItemNo = "RC",
                 Description = "米粮",
                 UpdatedOnUtc = DateTime.Now,
                 CreatedOnUtc = DateTime.Now
             };
-            var c2 = new Category
+
+            var c2  = new Category
+            {
+                Name = "面",
+                ItemNo = "ND",
+                Description = "面",
+                UpdatedOnUtc = DateTime.Now,
+                CreatedOnUtc = DateTime.Now
+            };
+            var c3 = new Category
             {
                 Name = "油",
                 ItemNo = "OL",
@@ -33,7 +42,16 @@ namespace Domain.EntityFramework
                 UpdatedOnUtc = DateTime.Now,
                 CreatedOnUtc = DateTime.Now
             };
-            var c3 = new Category
+            var c4 = new Category
+            {
+                Name = "调味料",
+                ItemNo = "SP",
+                Description = "调味料",
+                UpdatedOnUtc = DateTime.Now,
+                CreatedOnUtc = DateTime.Now
+            };
+
+            var c5 = new Category
             {
                 Name = "其他",
                 ItemNo = "OT",

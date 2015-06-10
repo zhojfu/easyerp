@@ -33,6 +33,17 @@ namespace Doamin.Service.Products
                        : inventoryRepository.FindAll(i => i.ProductId == productId).ToList();
         }
 
+        public float GetProductQuantity(int productId, int storeId)
+        {
+            if (productId <= 0 || storeId <= 0)
+            {
+                return 0;
+            }
+
+            var psm = inventoryRepository.FindAll(i => i.ProductId == storeId && i.StoreId == storeId);
+            return psm.Sum(p => p.Quantity);
+        }
+
         public void InsertInventory(Inventory inventory)
         {
             if (inventory == null)
