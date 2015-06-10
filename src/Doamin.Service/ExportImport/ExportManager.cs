@@ -1,4 +1,6 @@
-﻿namespace Doamin.Service.ExportImport
+﻿using System;
+
+namespace Doamin.Service.ExportImport
 {
     using System.Collections.Generic;
     using System.IO;
@@ -11,10 +13,16 @@
     public class ExportManager : IExportManager
     {
         private readonly ICategoryService categoryService;
+        private readonly IProductPriceService productPriceService;
+        private readonly IInventoryService inventoryService;
+        private IWorkContext workContext;
 
-        public ExportManager(ICategoryService categoryService)
+        public ExportManager(ICategoryService categoryService, IProductPriceService priceService, IInventoryService inventoryService, IWorkContext workContext)
         {
             this.categoryService = categoryService;
+            this.productPriceService = priceService;
+            this.inventoryService = inventoryService;
+            this.workContext = workContext;
         }
 
         public string ExportProductsToXml(IList<Product> products)
@@ -41,6 +49,7 @@
                     xmlWriter.WriteStartElement("Products");
                     foreach (var product in products)
                     {
+                        var price = productPriceService.GetProductPrice(product.Id, workContext.CurrentUser.StoreId);
                         xmlWriter.WriteStartElement("Product");
 
                         xmlWriter.WriteElementString("ProductId", string.Empty, product.Id.ToString());
@@ -49,9 +58,9 @@
                         xmlWriter.WriteElementString("ShortDescription", string.Empty, product.ShortDescription);
                         xmlWriter.WriteElementString("FullDescription", string.Empty, product.FullDescription);
                         xmlWriter.WriteElementString("Gtin", string.Empty, product.Gtin);
-                        //TODO: the stock quantity info
-                        xmlWriter.WriteElementString("Price", string.Empty, product.Price.ToString());
-                        xmlWriter.WriteElementString("ProductCost", string.Empty, product.ProductCost.ToString());
+                        xmlWriter.WriteElementString("StockQuantity", String.Empty, inventoryService.GetProductQuantity(product.Id, workContext.CurrentUser.StoreId).ToString());
+                        xmlWriter.WriteElementString("Price", string.Empty, price.SalePrice.ToString());
+                        xmlWriter.WriteElementString("ProductCost", string.Empty, price.CostPrice.ToString());
                         xmlWriter.WriteElementString("Weight", string.Empty, product.Weight.ToString());
                         xmlWriter.WriteElementString("Length", string.Empty, product.Length.ToString());
                         xmlWriter.WriteElementString("Width", string.Empty, product.Width.ToString());

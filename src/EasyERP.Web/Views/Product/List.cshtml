@@ -44,131 +44,231 @@
             @onchange = "var grid = $(\"#products-grid\").data(\"kendoGrid\"); grid.dataSource.page(1);"
         })
         </div>
-        <div class="col-md-3">
-            @*export selected (Excel). We don't use GET approach because it's limited to 2K-4K chars and won't work for large number of entities*@
-            @using (Html.BeginForm("ExportProducts", "Product", FormMethod.Post, new
-    {
-        id = "export-product"
-    }))
-            {
-                @Html.AntiForgeryToken()
-                <input type="hidden" id="selectedIds" name="selectedIds" value="" />
-            }
-            <button class="button-nm btn-submit" id="export-product-button">导出产品</button>
-        </div>
     </div>
   
     <div>
         <input type="hidden" id="search-products" class="k-button" value="搜索" />
     </div>
-  
-
-        <div>
-        <div id="products-grid"></div>
-    </div>
-    <script type="text/javascript">
-        $(document).ready(function() {
-
-                $("#products-grid").kendoGrid({
-                    dataSource: {
-                        transport: {
-                            read: {
-                                url: "/Product/ProductList",
-                                type: "POST",
-                                dataType: "json",
-                                data: function() {
-                                    var data = {
-                                        SearchProductName: $("#search-product-name").val(),
-                                        SearchStoreId: $("#selected-store").val(),
-                                        SearchCategoryId: $("#selected-category").val()
-                                    };
-                                    addAntiForgeryToken(data);
-                                    return data;
-                                }
-                            },
-                            destroy: {
-                                url: "/Product/Destroy",
-                                type: "POST",
-                                dataType: "json",
-                                data: function(options) {
-                                    var data = { id: options.Id };
-                                    addAntiForgeryToken(data);
-                                    return data;
-                                }
-                            },
-                            parameterMap: function(options, operation) {
-                                var data;
-                                if (operation === "read") {
-                                    data = {
-                                        SearchProductName: $("#search-product-name").val(),
-                                        SearchStoreId: $("#selected-store").val(),
-                                        SearchCategoryId: $("#selected-category").val()
-                                    };
-                                    addAntiForgeryToken(data);
-                                    return data;
-                                } else if (operation === "destroy") {
-                                    data = { id: options.Id };
-                                    addAntiForgeryToken(data);
-                                    return data;
-                                }
-                            }
-                        },
-                    schema: {
-                        model: { id: "Id" },
-                        data: "Data",
-                        total: "Total",
-                        errors: "Errors"
-                    },
-                    error: function(e) {
-                        display_kendoui_grid_error(e);
-                        this.cancelChanges();
-                    },
-                    pageSize: @(defaultGridPageSize),
-                    serverPaging: true,
-                    serverFiltering: true,
-                    serverSorting: true
-                },
-                pageable: {
-                    refresh: true,
-                    pageSizes: [@(gridPageSizes)]
-                },
-                batch: false,
-                editable: {
-                    confirmation: true,
-                    mode: "inline",
-                    destroy: true
-                },
-                scrollable: false,
-                columns: [
-                    { field: "Name", title: "产品名", width: 100 },
-                    { field: "ItemNo", title: "产品编码", width: 100 },
-                    { field: "CategoryName", title: "产品目录", width: 100 },
-                    { field: "Price", title: "价格", width: 100 },
-                    { field: "ProductCost", title: "成本", width: 100 },
-                    { field: "Gtin", title: "条码", width: 100 },
-                    { field: "Id", title: "&nbsp;", width: 100, template: "<a href=\"Edit/#=Id#\">修改商品信息</a>" },
-                    { command: "destroy", text: "删除", title: "&nbsp;", width: 100 }
-                ]
-            });
-            //search button
-            $("#search-products").click(function() {
-                var grid = $("#products-grid").data("kendoGrid");
-                grid.dataSource.page(1);
-                return false;
-            });
-
-            $("#search-product-name").keydown(function(event) {
-                if (event.keyCode === 13) {
-                    $("#search-products").click();
-                    return false;
-                }
-            });
-
-            $('#export-product-button').click(function(e) {
-                e.preventDefault();
-                $('#export-product').submit();
-                return false;
-            });
-        });
-    </script>
 }
+<div class="row m-b">
+    <div class="col-md-3">
+        @using (Html.BeginForm("ExportProducts", "Product", FormMethod.Post, new
+    {
+        id = "export-product"
+    }))
+        {
+            @Html.AntiForgeryToken()
+            <input type="hidden" id="selectedIds" name="selectedIds" value="" />
+        }
+        <button class="button-nm btn-submit" id="export-product-button">导出产品</button>
+    </div>
+</div>
+<div>
+    <div id="products-grid"></div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function() {
+
+        $("#products-grid").kendoGrid({
+            dataSource: {
+                transport: {
+                    read: {
+                        url: "/Product/ProductList",
+                        type: "POST",
+                        dataType: "json",
+                        data: function() {
+                            var data = {
+                                SearchProductName: $("#search-product-name").val(),
+                                SearchStoreId: $("#selected-store").val(),
+                                SearchCategoryId: $("#selected-category").val()
+                            };
+                            addAntiForgeryToken(data);
+                            return data;
+                        }
+                    },
+                    destroy: {
+                        url: "/Product/Destroy",
+                        type: "POST",
+                        dataType: "json",
+                        data: function(options) {
+                            var data = { id: options.Id };
+                            addAntiForgeryToken(data);
+                            return data;
+                        }
+                    },
+                    parameterMap: function(options, operation) {
+                        var data;
+                        if (operation === "read") {
+                            data = {
+                                SearchProductName: $("#search-product-name").val(),
+                                SearchStoreId: $("#selected-store").val(),
+                                SearchCategoryId: $("#selected-category").val()
+                            };
+                            addAntiForgeryToken(data);
+                            return data;
+                        } else if (operation === "destroy") {
+                            data = { id: options.Id };
+                            addAntiForgeryToken(data);
+                            return data;
+                        }
+                    }
+                },
+                schema: {
+                    model: { id: "Id" },
+                    data: "Data",
+                    total: "Total",
+                    errors: "Errors"
+                },
+                error: function(e) {
+                    display_kendoui_grid_error(e);
+                    this.cancelChanges();
+                },
+                pageSize: @(defaultGridPageSize),
+                serverPaging: true,
+                serverFiltering: true,
+                serverSorting: true
+            },
+            pageable: {
+                refresh: true,
+                pageSizes: [@(gridPageSizes)]
+            },
+            batch: false,
+            editable: {
+                confirmation: true,
+                mode: "inline",
+                destroy: true
+            },
+            scrollable: false,
+            columns: [
+                { field: "Name", title: "产品名", width: 100 },
+                { field: "ItemNo", title: "产品编码", width: 100 },
+                { field: "CategoryName", title: "产品目录", width: 100 },
+                { field: "Price", title: "价格", width: 100 },
+                { field: "ProductCost", title: "成本", width: 100 },
+                { field: "Gtin", title: "条码", width: 100 },
+                { field: "Id", title: "&nbsp;", width: 100, template: "<a href=\"Edit/#=Id#\">修改商品信息</a>" },
+                { command: "destroy", text: "删除", title: "&nbsp;", width: 100 }
+            ]
+        });
+        //search button
+        $("#search-products").click(function() {
+            var grid = $("#products-grid").data("kendoGrid");
+            grid.dataSource.page(1);
+            return false;
+        });
+
+        $("#search-product-name").keydown(function(event) {
+            if (event.keyCode === 13) {
+                $("#search-products").click();
+            }
+        });
+
+        $('#export-product-button').click(function(e) {
+            e.preventDefault();
+            $('#export-product').submit();
+        });
+    });
+</script>
+<script type="text/javascript">
+    $(document).ready(function() {
+
+        $("#products-grid").kendoGrid({
+            dataSource: {
+                transport: {
+                    read: {
+                        url: "/Product/ProductList",
+                        type: "POST",
+                        dataType: "json",
+                        data: function() {
+                            var data = {
+                                SearchProductName: $("#search-product-name").val(),
+                                SearchStoreId: $("#selected-store").val(),
+                                SearchCategoryId: $("#selected-category").val()
+                            };
+                            addAntiForgeryToken(data);
+                            return data;
+                        }
+                    },
+                    destroy: {
+                        url: "/Product/Destroy",
+                        type: "POST",
+                        dataType: "json",
+                        data: function(options) {
+                            var data = { id: options.Id };
+                            addAntiForgeryToken(data);
+                            return data;
+                        }
+                    },
+                    parameterMap: function(options, operation) {
+                        var data;
+                        if (operation === "read") {
+                            data = {
+                                SearchProductName: $("#search-product-name").val(),
+                                SearchStoreId: $("#selected-store").val(),
+                                SearchCategoryId: $("#selected-category").val()
+                            };
+                            addAntiForgeryToken(data);
+                            return data;
+                        } else if (operation === "destroy") {
+                            data = { id: options.Id };
+                            addAntiForgeryToken(data);
+                            return data;
+                        }
+                    }
+                },
+                schema: {
+                    model: { id: "Id" },
+                    data: "Data",
+                    total: "Total",
+                    errors: "Errors"
+                },
+                error: function(e) {
+                    display_kendoui_grid_error(e);
+                    this.cancelChanges();
+                },
+                pageSize: @(defaultGridPageSize),
+                serverPaging: true,
+                serverFiltering: true,
+                serverSorting: true
+            },
+            pageable: {
+                refresh: true,
+                pageSizes: [@(gridPageSizes)]
+            },
+            batch: false,
+            editable: {
+                confirmation: true,
+                mode: "inline",
+                destroy: true
+            },
+            scrollable: false,
+            columns: [
+                { field: "Name", title: "产品名", width: 100 },
+                { field: "ItemNo", title: "产品编码", width: 100 },
+                { field: "CategoryName", title: "产品目录", width: 100 },
+                { field: "Price", title: "价格", width: 100 },
+                { field: "ProductCost", title: "成本", width: 100 },
+                { field: "Gtin", title: "条码", width: 100 },
+                { field: "Id", title: "&nbsp;", width: 100, template: "<a href=\"Edit/#=Id#\">修改商品信息</a>" },
+                { command: "destroy", text: "删除", title: "&nbsp;", width: 100 }
+            ]
+        });
+        //search button
+        $("#search-products").click(function() {
+            var grid = $("#products-grid").data("kendoGrid");
+            grid.dataSource.page(1);
+            return false;
+        });
+
+        $("#search-product-name").keydown(function(event) {
+            if (event.keyCode === 13) {
+                $("#search-products").click();
+            }
+        });
+
+        $('#export-product-button').click(function(e) {
+            e.preventDefault();
+            $('#export-product').submit();
+        });
+    });
+</script>

@@ -85,6 +85,7 @@ namespace EasyERP.Web.Controllers
             if (ModelState.IsValid)
             {
                 var store = model.ToEntity();
+                store.CompanyId = 1;
                 store.CreatedOn = DateTime.Now;
                 store.UpdatedOn = DateTime.Now;
                 storeService.InsertStore(store);
