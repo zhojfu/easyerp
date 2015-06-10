@@ -35,8 +35,12 @@
         [DisplayName("电话号码")]
         public string PhoneNumber { get; set; }
 
+        [AllowHtml]
+        [DisplayName("创建日期")]
         public DateTime? CreatedOn { get; set; }
 
+        [AllowHtml]
+        [DisplayName("最近修改日期")]
         public DateTime? UpdatedOn { get; set; }
     }
 }

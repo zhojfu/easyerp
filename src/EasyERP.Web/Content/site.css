@@ -3568,7 +3568,7 @@ fieldset[disabled] .btn-white.active {
     font-style:italic;
 }
 .date-create label{
-    color:#16987E;
+    color:#1A7BB9;
 }
 
 .date-update label{
@@ -3613,7 +3613,7 @@ fieldset[disabled] .btn-white.active {
 }
 
 .cart{
-    
+
     margin-top:2em;
     padding-top:1em;
 }
@@ -3638,4 +3638,59 @@ margin-bottom:0.5em;
     font-size:18px;
     font-weight:400;
     color:#1A7BB9;
+}
+
+.order-item{
+    margin:2em 2em;
+}
+
+.order-header em{
+    font-weight:400;
+    color:#1A7BB9;
+}
+.order-header p{
+    margin-bottom:0.5em;
+}
+.order-header thead{
+    margin-bottom:0.36em;
+}
+.order-total{
+    margin-top:0.5em;
+}
+
+.order-total em{
+    font-size:larger;
+    color:#000;
+}
+.order-total span{
+    font-size:18px;
+    color:#EA394C;
+}
+
+.hr-line-dashed {
+    border-top: 1px dashed #e7eaec;
+    color: #ffffff;
+    background-color: #ffffff;
+    height: 1px;
+    margin: 20px 0;
+}
+
+.table{
+    max-width:360px;
+}
+.table > thead > tr > th, 
+.table > tbody > tr > th, 
+.table > tfoot > tr > th, 
+.table > thead > tr > td, 
+.table > tbody > tr > td, 
+.table > tfoot > tr > td
+{
+  border-top: 1px solid #e7eaec;
+  line-height: 1.42857;
+  padding: 0.3em;
+  vertical-align: top;
+}
+
+.order-status label{
+    color:#F79D3C;
 }

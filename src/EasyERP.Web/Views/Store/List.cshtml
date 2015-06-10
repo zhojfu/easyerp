@@ -15,7 +15,7 @@
 {
     @Html.AntiForgeryToken()
 
-    <div id="stores-grid"></div>
+    <div id="stores-grid" class="m-b"></div>
 
     <script type="text/javascript">
 
@@ -78,10 +78,10 @@
                 },
                 scrollable: false,
                 columns: [
-                    { field: "Name", title: "店名", width: 300 },
-                    { field: "Address", title: "地址", width: 100 },
+                    { field: "Name", title: "店名", width: 150 },
+                    { field: "Address", title: "地址", width: 200 },
                     { field: "PhoneNumber", title: "电话", width: 100 },
-                    { field: "Id", title: "&nbsp;", width: 100, template: "<a href=\"Edit/#=Id#\">编辑</a>" },
+                    { field: "Id", title: "&nbsp;", width: 100, template: "<a href=\"Edit/#=Id#\">编辑门店信息</a>" },
                     { command: "destroy", text: "删除", title: "&nbsp;", width: 100 }
                 ]
             });
