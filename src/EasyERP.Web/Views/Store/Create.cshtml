@@ -1,4 +1,11 @@
 ﻿@model EasyERP.Web.Models.Stores.StoreModel
+@section SectionTitle
+{
+    <h1 id="crmTitle">
+        <strong style="font-size: smaller">新增门店</strong>
+    </h1>
+
+}
 @{
     //page title
     ViewBag.Title = "新增门店";
@@ -10,13 +17,13 @@
 {
     @Html.AntiForgeryToken()
     <div class="section-header">
-        <div class="title">
-            <label>新增门店</label>
+       
+            <div class="row m-b">
+                <div class="col-md-4"></div>
+                <div class="col-md-4">
+                    <input type="submit" name="save" class="k-button btn-submit" style="padding-left:1.5em; padding-right:1.5em;" value="保存" />
+                </div>
+            </div>
         </div>
-        <div class="options">
-            <input type="submit" name="save" class="k-button" value="Save"/>
-            <input type="submit" name="save-continue" class="k-button" value="Save Contine"/>
-        </div>
-    </div>
     @Html.Partial("_CreateOrUpdate", Model)
 }

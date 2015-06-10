@@ -1,32 +1,40 @@
-﻿@using (Html.BeginForm())
+﻿
+@section SectionTitle{
+    <h1 id="crmTitle">
+        <strong>我的订单</strong>
+    </h1>
+}
+
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
     <div class="section-header">
-        <div class="title">我的订单</div>
+        
     </div>
-    <div class="form-group">
+    <div class="form-group m-b">
         <input id="order-status" value="1"/>
     </div>
     <script id="order-template" type="text/x-kendo-template">
         <div class="order-item">
             <div class="order-header">
-                <p><em>订单号:</em><span data-bind="text: orderGuid"></span></p>
-                <p><em>提交时间:</em><span data-bind="text: createdTime"></span></p>
-                <p><em>状态:</em><span data-bind="text: orderStatus"></span></p>
+                <p><em>订单号:</em>&nbsp;&nbsp;<span data-bind="text: orderGuid"></span></p>
+                <p><em>提交时间:</em>&nbsp;&nbsp;<span data-bind="text: createdTime"></span></p>
+                <p><em>状态:</em>&nbsp;&nbsp;<span data-bind="text: orderStatus"></span></p>
                 @*<a id="order-detail-info" href="\/Order/#: orderGuid#">详细信息</a>*@
-                <table>
+                <table class="table">
                     <thead>
                         <tr>
                             <th>产品</th>
                             <th>数量</th>
                             <th>单价</th>
-                            <th>总计</th>
+                            <th>总价</th>
                         </tr>
                     </thead>
                     <tbody class="orderitems" data-role="listview" data-bind="source: orderItems" data-template="order-item-template"> 
                 </table>
-                <p><em>总计:</em><span data-bind="text: totalPrice"></span></p>
+                <p class="order-total"><em>价格总计:</em>&nbsp;&nbsp;<span data-bind="text: totalPrice"></span>&nbsp;<em>元</em></p>
             </div>
+            <div class="hr-line-dashed"></div>
         </div>
     </script>
     <script id="order-item-template" type="text/x-kendo-template">

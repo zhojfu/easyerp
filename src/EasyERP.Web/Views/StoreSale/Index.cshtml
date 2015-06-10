@@ -1,14 +1,22 @@
 ﻿@using System.Web.Optimization
 @section SectionTitle
 {
-    订单管理
+    <h1 id="crmTitle">
+        <strong>
+            订单管理
+        </strong>
+    </h1>
 }
-
-@Html.ActionLink("创建订单", "Create")
-
-<a href="#" id="deleteOrder">删除订单</a>
+<div class="row m-b">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+        @Html.ActionLink("创建订单", "Create")
+        <a href="#" id="deleteOrder">删除订单</a>
+    </div>
+       
+        
+    </div>
 <div id="orderList"></div>
-
 
 @section scripts
 {
