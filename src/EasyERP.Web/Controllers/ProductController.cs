@@ -81,7 +81,7 @@ namespace EasyERP.Web.Controllers
 
                 var storeIds = new List<int>
                 {
-                    model.SearchStoreId
+                    0
                 };
 
                 var products = productService.SearchProducts(
@@ -97,7 +97,9 @@ namespace EasyERP.Web.Controllers
                         x =>
                         {
                             var productModel = x.ToModel();
-
+                            var price = productPriceService.GetProductPrice(model.SearchStoreId, x.Id);
+                            productModel.Price = price.SalePrice;
+                            productModel.ProductCost = price.CostPrice;
                             productModel.FullDescription = "";
 
                             return productModel;
@@ -138,12 +140,12 @@ namespace EasyERP.Web.Controllers
             }
 
             //stores
-            model.AvailableStores.Add(
-                new SelectListItem
-                {
-                    Text = "所有店面",
-                    Value = "0"
-                });
+            //model.AvailableStores.Add(
+            //    new SelectListItem
+            //    {
+            //        Text = "所有店面",
+            //        Value = "0"
+            //    });
             var stores = storeService.GetAllStores();
             foreach (var store in stores)
             {
@@ -718,7 +720,7 @@ namespace EasyERP.Web.Controllers
                             ProductName = x.Name,
                             CostPrice = price != null ? price.CostPrice : x.ProductCost,
                             SalePrice = price != null ? price.SalePrice : x.Price,
-                            StoreId = x.Id
+                            StoreId = storeId
                         };
 
                         return priceModel;

@@ -348,6 +348,8 @@
     <Content Include="Content\kendo\2014.2.716\Uniform\sprite_2x.png" />
     <Content Include="Content\site.css" />
     <Content Include="Content\styles.css" />
+    <Content Include="ErrorPage.htm" />
+    <Content Include="FileNotFound.htm" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\kendo\2014.2.716\images\kendoui.woff" />

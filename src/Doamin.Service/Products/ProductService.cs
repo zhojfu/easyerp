@@ -93,11 +93,11 @@
                 products = products.Where(p => categoryIds.Contains(p.CategoryId));
             }
 
-            if (storeIds != null &&
-                storeIds.Any())
-            {
-                products = products.Where(p => p.ProductInventories.Any(ps => storeIds.Contains(ps.Id)));
-            }
+            //if (storeIds != null &&
+            //    storeIds.Any())
+            //{
+            //    products = products.Where(p => p.ProductInventories.Any(ps => storeIds.Contains(ps.Id)));
+            //}
 
             return new PagedList<Product>(products.OrderBy(p => p.CategoryId), pageIndex, pageSize);
         }
