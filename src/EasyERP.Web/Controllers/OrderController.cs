@@ -1,9 +1,9 @@
-﻿namespace EasyERP.Web.Controllers
+﻿using System.Globalization;
+using Domain.Model.Products;
+using WebGrease.Css.Extensions;
+
+namespace EasyERP.Web.Controllers
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Web.Mvc;
     using Doamin.Service.Order;
     using Doamin.Service.Products;
     using Doamin.Service.Security;
@@ -13,6 +13,10 @@
     using EasyErp.Core;
     using EasyERP.Web.Framework.Kendoui;
     using EasyERP.Web.Models.Orders;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Web.Mvc;
 
     public class OrderController : BaseAdminController
     {
@@ -21,8 +25,10 @@
         private readonly IPermissionService permissionService;
 
         private readonly IProductService productService;
+        private readonly IProductPriceService productPriceService;
 
         private readonly IStoreService storeService;
+        private readonly IInventoryService inventoryService;
 
         private readonly IWorkContext workContext;
 
@@ -31,6 +37,8 @@
             IStoreService storeService,
             IProductService productService,
             IOrderService orderService,
+            IProductPriceService productPriceService,
+            IInventoryService inventoryService,
             IWorkContext workContext
             )
         {
@@ -38,6 +46,8 @@
             this.storeService = storeService;
             this.productService = productService;
             this.orderService = orderService;
+            this.productPriceService = productPriceService;
+            this.inventoryService = inventoryService;
             this.workContext = workContext;
         }
 
@@ -79,7 +89,7 @@
         [HttpPost]
         public ActionResult ProductList(DataSourceRequest data, OrderModel model)
         {
-            if (!permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            if (!permissionService.Authorize(StandardPermissionProvider.GetProductList))
             {
                 return AccessDeniedView();
             }
@@ -92,7 +102,7 @@
                     {
                         id = x.Id,
                         name = x.Name,
-                        price = x.Price
+                        price = productPriceService.GetProductPrice(workContext.CurrentUser.StoreId, x.Id).CostPrice
                     }),
                 Total = products.TotalCount
             };
@@ -102,7 +112,7 @@
 
         public ActionResult Detail(Guid guid)
         {
-            if (!permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            if (!permissionService.Authorize(StandardPermissionProvider.ViewOrder))
             {
                 return AccessDeniedView();
             }
@@ -114,7 +124,7 @@
         [HttpPost]
         public ActionResult OrderUpdate(DataSourceRequest request, IEnumerable<CartItemModel> cartItems)
         {
-            if (!permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            if (!permissionService.Authorize(StandardPermissionProvider.UpdateOrder))
             {
                 return AccessDeniedView();
             }
@@ -132,7 +142,6 @@
                     OrderStatus = OrderStatus.Pending,
                     CreatedOnUtc = DateTime.Now,
                     StoreId = workContext.CurrentUser.StoreId,
-                    PaymentStatus = PaymentStatus.Pending
                 };
                 order.OrderItems = cartItems.Select(
                     c => new OrderItem
@@ -177,9 +186,9 @@
                     o => new
                     {
                         orderGuid = o.OrderGuid,
-                        createdTime = o.CreatedOnUtc,
-                        totalPrice = o.OrderTotal,
-                        orderStatus = o.OrderStatus,
+                        createdTime = o.CreatedOnUtc.ToString("yyyy/M/d H:m:s", new CultureInfo("zh-CN")),
+                        totalPrice = o.OrderTotal, 
+                        orderStatus = ToOrderString(o.OrderStatus),
                         orderItems = o.OrderItems.Select(
                             i => new
                             {
@@ -202,13 +211,12 @@
         [HttpPost]
         public ActionResult OrderList(DataSourceRequest command, SearchModel model)
         {
-            if (!permissionService.Authorize(StandardPermissionProvider.ManageOrders))
+            if (!permissionService.Authorize(StandardPermissionProvider.GetOrderList))
             {
                 return AccessDeniedView();
             }
 
             var orderStatus = model.OrderStatus > 0 ? (OrderStatus?)(model.OrderStatus) : null;
-            var payStatus = model.PayStatus > 0 ? (PaymentStatus?)(model.OrderStatus) : null;
 
             //load orders
             var orders = orderService.SearchOrders(
@@ -216,7 +224,6 @@
                 0,
                 0,
                 orderStatus,
-                payStatus,
                 command.Page - 1,
                 command.PageSize);
             var gridModel = new DataSourceResult
@@ -231,8 +238,7 @@
                             OrderGuid = x.OrderGuid,
                             StoreName = store != null ? store.Name : "Unknown",
                             OrderTotal = x.OrderTotal,
-                            OrderStatus = (int)x.OrderStatus,
-                            PaymentStatus = x.PaymentStatus.ToString(),
+                            OrderStatus = ToOrderString(x.OrderStatus),
                             CreatedOn = x.CreatedOnUtc
                         };
                     }),
@@ -245,9 +251,29 @@
             };
         }
 
+        [NonAction]
+        private string ToOrderString(OrderStatus status)
+        {
+            switch (status)
+            {
+                case OrderStatus.Pending:
+                    return "订单未批准";
+                   case OrderStatus.Approved:
+                    return "订单已批准";
+                case OrderStatus.Shipped:
+                    return "已收货";
+                case OrderStatus.Complete:
+                    return "订单已完成";
+                case OrderStatus.Cancelled:
+                    return "订单被取消";
+                default:
+                    return "订单状态错误";
+            }
+        }
+
         public ActionResult Review(Guid orderGuid)
         {
-            if (!permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            if (!permissionService.Authorize(StandardPermissionProvider.ReviewOrder))
             {
                 return AccessDeniedView();
             }
@@ -263,8 +289,7 @@
                 OrderGuid = order.OrderGuid,
                 StoreName = order.Store.Name,
                 OrderTotal = order.OrderTotal,
-                OrderStatus = (int)order.OrderStatus,
-                PaymentStatus = order.PaymentStatus.ToString(),
+                OrderStatus = ToOrderString(order.OrderStatus),
                 CreatedOn = order.CreatedOnUtc,
                 Items = order.OrderItems.Select(
                     i => new OrderItemModel
@@ -272,7 +297,9 @@
                         Price = i.Price,
                         Quantity = i.Quantity,
                         ProductName = i.Product.Name
-                    }).ToList()
+                    }).ToList(),
+                PaidAmount = order.Payment.Items.Sum(i => i.Paid),
+                PaymentId = order.PaymentId
             };
 
             return View(orderModel);
@@ -281,12 +308,69 @@
         [HttpPost]
         public ActionResult Review(OrderModel orderModel)
         {
-            if (!permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            if (!permissionService.Authorize(StandardPermissionProvider.ReviewOrder))
             {
                 return AccessDeniedView();
             }
 
             return null;
+        }
+
+        [HttpPost]
+        public ActionResult ChangeStatus(Guid orderGuid, int status)
+        {
+            if (!permissionService.Authorize(StandardPermissionProvider.ReviewOrder))
+            {
+                return AccessDeniedView();
+            }
+
+            if (!workContext.CurrentUser.IsAdmin)
+            {
+                return AccessDeniedView();
+            }
+
+            if (status < 1 && status > 5)
+            {
+                return HttpNotFound();
+            }
+
+            var order = orderService.GetOrderByGuid(orderGuid);
+            if (order == null)
+            {
+                return RedirectToAction("MyOrder");
+            }
+
+            order.OrderStatus = (OrderStatus)status;
+            if (order.OrderStatus == OrderStatus.Approved)
+            {
+                order.ApproveTime = DateTime.Now;
+            }
+
+            if (order.OrderStatus == OrderStatus.Shipped)
+            {
+                //TODO: use on inventory info
+                foreach (var item in order.OrderItems)
+                {
+
+                    var inventory = new Inventory()
+                    {
+                        InStockTime = DateTime.Now,
+                        StoreId = order.StoreId.Value,
+                        ProductId = item.ProductId,
+                        Quantity = item.Quantity,
+                        Notes = "订单入库",
+                        Payment = new Payment() {  DueDateTime = order.Payment.DueDateTime}
+                    };
+
+                    inventoryService.InsertInventory(inventory);
+                }
+                
+            }
+
+            //TODO: when user paid, set status to complete
+            orderService.UpdateOrder(order);
+
+            return Json(ToOrderString(order.OrderStatus));
         }
     }
 }

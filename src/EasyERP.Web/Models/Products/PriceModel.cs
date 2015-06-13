@@ -4,9 +4,9 @@
 
     public class PriceModel : BaseModel
     {
-        public decimal Cost { get; set; }
+        public decimal CostPrice { get; set; }
 
-        public decimal Price { get; set; }
+        public decimal SalePrice { get; set; }
 
         public int StoreId { get; set; }
 

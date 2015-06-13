@@ -1,4 +1,8 @@
-﻿namespace EasyERP.Web.Controllers
+﻿using System.Runtime.Remoting.Messaging;
+using System.Security.Permissions;
+using WebGrease.Css.Extensions;
+
+namespace EasyERP.Web.Controllers
 {
     using System;
     using System.Collections.Generic;
@@ -43,7 +47,6 @@
             IProductPriceService productPriceService,
             IInventoryService inventoryService,
             IDateTimeHelper dateTimeHelper,
-            IAclService aclService,
             IExportManager exportManager)
         {
             this.permissionService = permissionService;
@@ -56,7 +59,6 @@
             this.exportManager = exportManager;
         }
 
-        // GET: Product
         public ActionResult Index()
         {
             return RedirectToAction("List");
@@ -65,57 +67,54 @@
         [HttpPost]
         public ActionResult ProductList(DataSourceRequest command, ProductListModel model)
         {
-            if (!permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            if (!permissionService.Authorize(StandardPermissionProvider.GetProductList))
             {
                 return AccessDeniedView();
             }
 
-            var categoryIds = new List<int>
+            if (ModelState.IsValid)
             {
-                model.SearchCategoryId
-            };
-
-            var storeIds = new List<int>
-            {
-                model.SearchStoreId
-            };
-
-            bool? overridePublished = null;
-            if (model.SearchPublishedId == 1)
-            {
-                overridePublished = true;
-            }
-            else if (model.SearchPublishedId == 2)
-            {
-                overridePublished = false;
-            }
-
-            var products = productService.SearchProducts(
-                categoryIds: categoryIds,
-                storeIds: storeIds,
-                keywords: model.SearchProductName,
-                pageIndex: command.Page - 1,
-                pageSize: command.PageSize,
-                overridePublished: overridePublished
-                );
-            var gridModel = new DataSourceResult();
-            gridModel.Data = products.Select(
-                x =>
+                var categoryIds = new List<int>
                 {
-                    var productModel = x.ToModel();
+                    model.SearchCategoryId
+                };
 
-                    productModel.FullDescription = "";
+                var storeIds = new List<int>
+                {
+                    0
+                };
 
-                    return productModel;
-                });
-            gridModel.Total = products.TotalCount;
+                var products = productService.SearchProducts(
+                    categoryIds: categoryIds,
+                    storeIds: storeIds,
+                    keywords: model.SearchProductName,
+                    pageIndex: command.Page - 1,
+                    pageSize: command.PageSize
+                    );
+                var gridModel = new DataSourceResult
+                {
+                    Data = products.Select(
+                        x =>
+                        {
+                            var productModel = x.ToModel();
+                            var price = productPriceService.GetProductPrice(model.SearchStoreId, x.Id);
+                            productModel.Price = price.SalePrice;
+                            productModel.ProductCost = price.CostPrice;
+                            productModel.FullDescription = "";
 
-            return Json(gridModel);
+                            return productModel;
+                        }),
+                    Total = products.TotalCount
+                };
+
+                return Json(gridModel);
+            }
+            return Json(false);
         }
 
         public ActionResult List()
         {
-            if (!permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            if (!permissionService.Authorize(StandardPermissionProvider.GetProductList))
             {
                 return AccessDeniedView();
             }
@@ -141,12 +140,12 @@
             }
 
             //stores
-            model.AvailableStores.Add(
-                new SelectListItem
-                {
-                    Text = "所有店面",
-                    Value = "0"
-                });
+            //model.AvailableStores.Add(
+            //    new SelectListItem
+            //    {
+            //        Text = "所有店面",
+            //        Value = "0"
+            //    });
             var stores = storeService.GetAllStores();
             foreach (var store in stores)
             {
@@ -182,7 +181,104 @@
 
         public ActionResult Inventory()
         {
-            if (!permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            if (!permissionService.Authorize(StandardPermissionProvider.InventoryProduct))
+            {
+                return AccessDeniedView();
+            }
+            var model = new ProductListModel();
+
+            //categories
+            model.AvailableCategories.Add(
+                new SelectListItem
+                {
+                    Text = "所有目录",
+                    Value = "0"
+                });
+
+            var categories = categoryService.GetAllCategories();
+            foreach (var c in categories)
+            {
+                model.AvailableCategories.Add(
+                    new SelectListItem
+                    {
+                        Text = c.Name,
+                        Value = c.Id.ToString()
+                    });
+            }
+
+            //stores
+            //model.AvailableStores.Add(
+            //    new SelectListItem
+            //    {
+            //        Text = "所有店面",
+            //        Value = "0"
+            //    });
+            var stores = storeService.GetAllStores();
+            foreach (var store in stores)
+            {
+                model.AvailableStores.Add(
+                    new SelectListItem
+                    {
+                        Text = store.Name,
+                        Value = store.Id.ToString()
+                    });
+            }
+
+            model.AvailablePublishedOptions.Add(
+                new SelectListItem
+                {
+                    Text = "所有",
+                    Value = "0"
+                });
+            model.AvailablePublishedOptions.Add(
+                new SelectListItem
+                {
+                    Text = "已发布",
+                    Value = "1"
+                });
+            model.AvailablePublishedOptions.Add(
+                new SelectListItem
+                {
+                    Text = "未发布",
+                    Value = "2"
+                });
+
+            return View(model);
+        }
+        
+        [HttpPost]
+        public ActionResult StockInfo(DataSourceRequest command, ProductListModel model)
+        {
+            if (!permissionService.Authorize(StandardPermissionProvider.InventoryProduct))
+            {
+                return AccessDeniedView();
+            }
+            if (ModelState.IsValid)
+            {
+                var psm = inventoryService.GetProductInventories(model.SearchProductName,
+                    model.SearchCategoryId, model.SearchStoreId);
+
+
+                var gridModel = new DataSourceResult
+                {
+                    Data = psm.Select(
+                        x => new
+                        {
+                            ProductName = x.Product.Name,
+                            StoreName = x.Store.Name,
+                            Quantity = x.Quantity
+                        }),
+                    Total = psm.Count
+                };
+
+                return Json(gridModel);
+            }
+            return Json(false);
+        }
+
+        public ActionResult Warehousing()
+        {
+            if (!permissionService.Authorize(StandardPermissionProvider.InventoryProduct))
             {
                 return AccessDeniedView();
             }
@@ -218,6 +314,17 @@
                             Value = p.Id.ToString()
                         });
                 });
+            
+            var stores = storeService.GetAllStores();
+            foreach (var store in stores)
+            {
+                model.AvailableStores.Add(
+                    new SelectListItem
+                    {
+                        Text = store.Name,
+                        Value = store.Id.ToString()
+                    });
+            }
 
             model.Paid = 0;
             model.DueDateTime = DateTime.Now + TimeSpan.FromDays(30);
@@ -226,15 +333,21 @@
         }
 
         [HttpPost]
-        public ActionResult Inventory(InventoryModel model)
+        public ActionResult Warehousing(InventoryModel model)
         {
-            if (!permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            if (!permissionService.Authorize(StandardPermissionProvider.InventoryProduct))
             {
                 return AccessDeniedView();
             }
             if (ModelState.IsValid)
             {
-                var inventory = model.ToEntity();
+                var inventory = new Inventory
+                {
+                    StoreId = model.StoreId,
+                    ProductId = model.ProductId,
+                    Quantity = model.Quantity, 
+                    Notes = model.Note
+                };
                 inventory.InStockTime = DateTime.Now;
                 var payment = new Payment
                 {
@@ -253,26 +366,91 @@
                 }
                 inventory.Payment = payment;
 
-                inventoryService.InsertInventory(inventory, payment);
+                inventoryService.InsertInventory(inventory);
             }
 
-            return RedirectToAction("List");
+            return RedirectToAction("Inventory");
         }
 
         public ActionResult InventoryRecords()
         {
-            return View();
+            if (!permissionService.Authorize(StandardPermissionProvider.InventoryProduct))
+            {
+                return AccessDeniedView();
+            }
+            var model = new ProductListModel();
+
+            //categories
+            model.AvailableCategories.Add(
+                new SelectListItem
+                {
+                    Text = "所有目录",
+                    Value = "0"
+                });
+
+            var categories = categoryService.GetAllCategories();
+            foreach (var c in categories)
+            {
+                model.AvailableCategories.Add(
+                    new SelectListItem
+                    {
+                        Text = c.Name,
+                        Value = c.Id.ToString()
+                    });
+            }
+
+            //stores
+            //model.AvailableStores.Add(
+            //    new SelectListItem
+            //    {
+            //        Text = "所有店面",
+            //        Value = "0"
+            //    });
+            var stores = storeService.GetAllStores();
+            foreach (var store in stores)
+            {
+                model.AvailableStores.Add(
+                    new SelectListItem
+                    {
+                        Text = store.Name,
+                        Value = store.Id.ToString()
+                    });
+            }
+
+            model.AvailablePublishedOptions.Add(
+                new SelectListItem
+                {
+                    Text = "所有",
+                    Value = "0"
+                });
+            model.AvailablePublishedOptions.Add(
+                new SelectListItem
+                {
+                    Text = "已发布",
+                    Value = "1"
+                });
+            model.AvailablePublishedOptions.Add(
+                new SelectListItem
+                {
+                    Text = "未发布",
+                    Value = "2"
+                });
+
+            return View(model);
         }
 
         [HttpPost]
-        public ActionResult InventoryRecords(int productId, bool showUnPaidOnly)
+        public ActionResult InventoryRecords(DataSourceRequest command, ProductListModel model)
         {
-            if (!permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            if (!permissionService.Authorize(StandardPermissionProvider.InventoryProduct))
             {
                 return AccessDeniedView();
             }
 
-            var inventories = inventoryService.GetAllInventoriesForProduct(productId);
+            if (ModelState.IsValid)
+            {
+                var inventories = inventoryService.GetProductInventoryRecords(model.SearchProductName, model.SearchCategoryId,
+                    model.SearchStoreId);
 
             if (inventories == null ||
                 !inventories.Any())
@@ -288,25 +466,30 @@
                     ProductName = i.Product.Name,
                     i.Quantity,
                     InventoryTime = i.InStockTime,
-                    Payment = new
+                    Payment = i.Payment.IfNotNull(pp=>
                     {
-                        Total = i.Payment.TotalAmount,
-                        DueDate = i.Payment.DueDateTime,
-                        Items = i.Payment.Items.Select(
-                            p => new
-                            {
-                                PayDate = p.PayDataTime,
-                                p.Paid
-                            })
-                    },
-                    UnPaid = i.Payment.TotalAmount - i.Payment.Items.Sum(iii => iii.Paid),
-                    IsPaid = (i.Payment.TotalAmount - i.Payment.Items.Sum(iii => iii.Paid)).Equals(0)
+                        return new
+                        {
+                            Total = pp.TotalAmount,
+                            DueDate = pp.DueDateTime,
+                            Items = pp.Items.Select(
+                                p => new
+                                {
+                                    PayDate = p.PayDataTime,
+                                    p.Paid
+                                })
+                        };
+                    }),
+                    Note = i.Notes,
+                    UnPaid = i.Payment.IfNotNull(pp =>pp.TotalAmount - pp.Items.Sum(iii => iii.Paid)),
+                    IsPaid = i.Payment.IfNotNull(
+                        pp => { return (pp.TotalAmount - pp.Items.Sum(iii => iii.Paid)).Equals(0);})
                 }).ToList();
 
-            if (showUnPaidOnly)
-            {
-                inventoryDataSource = inventoryDataSource.Where(i => !i.IsPaid).ToList();
-            }
+            //if (showUnPaidOnly)
+            //{
+            //    inventoryDataSource = inventoryDataSource.Where(i => !i.IsPaid).ToList();
+            //}
             var gridModel = new DataSourceResult
             {
                 Data = inventoryDataSource,
@@ -314,12 +497,15 @@
             };
 
             return Json(gridModel);
+            }
+
+            return Json(false);
         }
 
         [HttpPost]
         public ActionResult Categories()
         {
-            if (!permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            if (!permissionService.Authorize(StandardPermissionProvider.GetCategoryList))
             {
                 return AccessDeniedView();
             }
@@ -345,7 +531,7 @@
         //create product
         public ActionResult Create()
         {
-            if (!permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            if (!permissionService.Authorize(StandardPermissionProvider.CreateProduct))
             {
                 return AccessDeniedView();
             }
@@ -360,7 +546,7 @@
         [HttpPost, ParameterBasedOnFormName("save-continue", "continueEditing")]
         public ActionResult Create(ProductModel model, bool continueEditing)
         {
-            if (!permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            if (!permissionService.Authorize(StandardPermissionProvider.CreateProduct))
             {
                 return AccessDeniedView();
             }
@@ -395,7 +581,7 @@
 
         public ActionResult Edit(int id)
         {
-            if (!permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            if (!permissionService.Authorize(StandardPermissionProvider.UpdateProduct))
             {
                 return AccessDeniedView();
             }
@@ -419,7 +605,7 @@
         [HttpPost, ParameterBasedOnFormName("save-continue", "continueEditing")]
         public ActionResult Edit(ProductModel model, bool continueEditing)
         {
-            if (!permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            if (!permissionService.Authorize(StandardPermissionProvider.UpdateProduct))
             {
                 return AccessDeniedView();
             }
@@ -465,30 +651,27 @@
         }
 
         [HttpPost]
-        public ActionResult Destroy(DataSourceRequest request, ProductModel model)
+        public ActionResult Destroy(DataSourceRequest request, int id)
         {
-            if (!permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            if (!permissionService.Authorize(StandardPermissionProvider.DeleteProduct))
             {
                 return AccessDeniedView();
             }
 
-            if (model != null &&
-                model.Id > 0)
+            if (id < 1)
             {
-                var product = productService.GetProductById(model.Id);
-                product.DoIfNotNull(p => productService.DeleteProduct(p));
+                return Json( new { Result = false });
             }
-            return Json(
-                new
-                {
-                    Result = true
-                });
+
+            var product = productService.GetProductById(id);
+            product.DoIfNotNull(p => productService.DeleteProduct(p));
+            return Json(new { Result = true });
         }
 
         [HttpPost]
         public ActionResult Delete(int id)
         {
-            if (!permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            if (!permissionService.Authorize(StandardPermissionProvider.DeleteProduct))
             {
                 return AccessDeniedView();
             }
@@ -505,107 +688,77 @@
             return RedirectToAction("List");
         }
 
-        [HttpPost]
-        public ActionResult DeleteSelected(ICollection<int> selectedIds)
+        public ActionResult Price()
         {
-            if (!permissionService.Authorize(StandardPermissionProvider.ManageProducts))
-            {
-                return AccessDeniedView();
-            }
-
-            var products = new List<Product>();
-            if (selectedIds != null)
-            {
-                products.AddRange(productService.GetProductsByIds(selectedIds.ToArray()));
-
-                for (var i = 0; i < products.Count; i++)
-                {
-                    var product = products[i];
-
-                    productService.DeleteProduct(product);
-                }
-            }
-
-            return Json(
-                new
-                {
-                    Result = true
-                });
-        }
-
-        public ActionResult Price(int id)
-        {
-            var model = new PriceListModel
-            {
-                ProductId = id
-            };
-
-            return View(model);
+            return View();
         }
 
         [HttpPost]
-        public ActionResult PriceList(DataSourceRequest command, PriceListModel model)
+        public ActionResult PriceList(DataSourceRequest command, int storeId, string storeName)
         {
-            if (!permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            if (!permissionService.Authorize(StandardPermissionProvider.SetProductPrice))
             {
                 return AccessDeniedView();
             }
+            var products = productService.SearchProducts();
 
-            var stores = storeService.GetStoresByProductId(model.ProductId).ToList();
-
-            var product = productService.GetProductById(model.ProductId);
-
-            if (product == null)
+            if (products == null)
             {
                 return new JsonResult();
             }
 
             var gridModel = new DataSourceResult
             {
-                Data = stores.Select(
+                Data = products.Select(
                     x =>
                     {
+                        var price = GetPrice(storeId, x.Id);
                         var priceModel = new PriceModel
                         {
-                            StoreName = x.Name,
-                            ProductId = product.Id,
-                            ProductName = product.Name,
-                            Cost = product.ProductCost,
-                            Price = product.Price,
-                            StoreId = x.Id
+                            StoreName = storeName,
+                            ProductId = x.Id,
+                            ProductName = x.Name,
+                            CostPrice = price != null ? price.CostPrice : x.ProductCost,
+                            SalePrice = price != null ? price.SalePrice : x.Price,
+                            StoreId = storeId
                         };
 
                         return priceModel;
                     }),
-                Total = stores.Count
+                Total = products.Count
             };
 
             return Json(gridModel);
         }
 
+        private ProductPrice GetPrice(int storeId, int productId)
+        {
+            var prices = productPriceService.GetProductPriceList(storeId, productId).ToList();
+
+            return prices == null ? null : prices.OrderByDescending(p => p.DateTime).FirstOrDefault();
+        }
+
         [HttpPost]
         public ActionResult PriceUpdate(
             DataSourceRequest request,
-            [Bind(Prefix = "models")] IEnumerable<PriceModel> priceModels)
+            PriceModel priceModel)
         {
-            if (priceModels != null &&
+            if (priceModel != null &&
                 ModelState.IsValid)
             {
-                foreach (var priceModel in priceModels)
+                var price = new ProductPrice()
                 {
-                    var price = priceModel.ToEntity();
-                    price.DateTime = DateTime.Now;
-                    productPriceService.InsertPrice(price);
-                }
+                    DateTime = DateTime.Now,
+                    CostPrice = priceModel.CostPrice,
+                    SalePrice = priceModel.SalePrice,
+                    StoreId = priceModel.StoreId,
+                    ProductId = priceModel.ProductId
+                }; 
+                productPriceService.InsertPrice(price); 
+                return Json(true);
             }
-
-            var gridModel = new DataSourceResult
-            {
-                Data = priceModels,
-                Total = priceModels.Count()
-            };
-
-            return Json(gridModel);
+            
+            return Json(false);
         }
 
         public ActionResult Orders()
@@ -615,7 +768,7 @@
 
         public ActionResult ExportProducts()
         {
-            if (!permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            if (!permissionService.Authorize(StandardPermissionProvider.ExportProduct))
             {
                 return AccessDeniedView();
             }

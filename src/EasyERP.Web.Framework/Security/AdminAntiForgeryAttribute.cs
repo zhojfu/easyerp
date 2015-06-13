@@ -36,10 +36,6 @@
             {
                 return;
             }
-
-            //var securitySettings = EngineContext.Current.Resolve<SecuritySettings>();
-            //if (!securitySettings.EnableXsrfProtectionForAdminArea)
-
             var validator = new ValidateAntiForgeryTokenAttribute();
             validator.OnAuthorization(filterContext);
         }

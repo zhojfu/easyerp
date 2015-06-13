@@ -1,145 +1,130 @@
 ﻿@model EasyERP.Web.Models.Products.ProductModel
 
 @Html.HiddenFor(m => m.Id)
-<div class="form-group">
-    @Html.LabelFor(model => model.Name):
-    @Html.EditorFor(model => model.Name)
-    @Html.ValidationMessageFor(model => model.Name)
-</div>
 
-<div class="form-group">
-    @Html.LabelFor(model => model.CategoryId)
-    @Html.DropDownList("CategoryId", Model.AvailableCategories)
-</div>
+<div class="row">
+    <div class="form-group col-md-3">
+        @Html.LabelFor(model => model.Name):
+        @Html.EditorFor(model => model.Name)
+        @Html.ValidationMessageFor(model => model.Name)
+    </div>@*产品名称*@
+    <div class="form-group col-md-3">
+        @Html.LabelFor(model => model.ItemNo):
 
-<div class="form-group">
-
-    @Html.LabelFor(model => model.ShortDescription):
-    @Html.TextAreaFor(x => x.ShortDescription, new
-    {
-        style = "Height:150px;Width:250px;"
-    })
-    @Html.ValidationMessageFor(model => model.ShortDescription)
-</div>
-
-<div class="form-group">
-    @Html.LabelFor(model => model.FullDescription):
-    @Html.EditorFor(x => x.FullDescription, "RichEditor")
-    @Html.ValidationMessageFor(model => model.FullDescription, "", new
+        @Html.EditorFor(model => model.ItemNo)
+        @Html.ValidationMessageFor(model => model.ItemNo, "", new
     {
         @class = "text-danger"
     })
-</div>
+    </div>
+    <div class="form-group col-md-3">
+        @Html.LabelFor(model => model.Gtin):
 
-<div class="form-group">
-
-    @Html.LabelFor(model => model.ItemNo):
-
-    @Html.EditorFor(model => model.ItemNo)
-    @Html.ValidationMessageFor(model => model.ItemNo, "", new
+        @Html.EditorFor(model => model.Gtin)
+        @Html.ValidationMessageFor(model => model.Gtin, "", new
     {
         @class = "text-danger"
     })
-
+    </div>    
 </div>
-
-<div class="form-group">
-
-    @Html.LabelFor(model => model.Gtin):
-
-    @Html.EditorFor(model => model.Gtin)
-    @Html.ValidationMessageFor(model => model.Gtin, "", new
+<div class="row">
+    <div class="form-group col-md-3">
+        @Html.LabelFor(model => model.CategoryId)
+        @Html.DropDownList("CategoryId", Model.AvailableCategories)
+    </div>@*目录*@
+    <div class="form-group col-md-3">
+        @Html.LabelFor(model => model.Origin):
+        @Html.EditorFor(model => model.Origin)
+        @Html.ValidationMessageFor(model => model.Origin, "", new
     {
         @class = "text-danger"
     })
+    </div>@*产地*@
 </div>
 
+<div class="row">
+    <div class="form-group col-md-3">
+        @Html.LabelFor(model => model.ProductCost):
 
-<div class="form-group">
-
-    @Html.LabelFor(model => model.Price):
-
-    @Html.EditorFor(model => model.Price)
-    @Html.ValidationMessageFor(model => model.Price, "", new
+        @Html.EditorFor(model => model.ProductCost)
+        @Html.ValidationMessageFor(model => model.ProductCost, "", new
     {
         @class = "text-danger"
     })
+    </div>
+    <div class="form-group col-md-3">
+        @Html.LabelFor(model => model.Price):
 
-</div>
-
-<div class="form-group">
-
-    @Html.LabelFor(model => model.ProductCost):
-
-    @Html.EditorFor(model => model.ProductCost)
-    @Html.ValidationMessageFor(model => model.ProductCost, "", new
+        @Html.EditorFor(model => model.Price)
+        @Html.ValidationMessageFor(model => model.Price, "", new
     {
         @class = "text-danger"
     })
-
+    </div>  
 </div>
-
-<div class="form-group">
-    @Html.LabelFor(model => model.Origin):
-    @Html.EditorFor(model => model.Origin)
-    @Html.ValidationMessageFor(model => model.Origin, "", new
+<div class="row">
+    <div class="form-group col-md-3">
+        @Html.LabelFor(model => model.Weight):
+        @Html.EditorFor(model => model.Weight)
+        @Html.ValidationMessageFor(model => model.Weight, "", new
+    {
+        @class = "text-danger"
+    })
+    </div>
+    <div class="form-group col-md-3">
+        @Html.LabelFor(model => model.Length):
+        @Html.EditorFor(model => model.Length)
+        @Html.ValidationMessageFor(model => model.Length, "", new
     {
         @class = "text-danger"
     })
 
-</div>
-
-<div class="form-group">
-    @Html.LabelFor(model => model.Weight):
-    @Html.EditorFor(model => model.Weight)
-    @Html.ValidationMessageFor(model => model.Weight, "", new
-    {
-        @class = "text-danger"
-    })
-
-</div>
-
-<div class="form-group">
-    @Html.LabelFor(model => model.Length):
-    @Html.EditorFor(model => model.Length)
-    @Html.ValidationMessageFor(model => model.Length, "", new
-    {
-        @class = "text-danger"
-    })
+    </div>
    
-</div>
-
-<div class="form-group">
-    @Html.LabelFor(model => model.Width):
-    @Html.EditorFor(model => model.Width)
-    @Html.ValidationMessageFor(model => model.Width, "", new
+    </div>
+<div class="row">
+    <div class="form-group col-md-3">
+        @Html.LabelFor(model => model.Width):
+        @Html.EditorFor(model => model.Width)
+        @Html.ValidationMessageFor(model => model.Width, "", new
     {
         @class = "text-danger"
     })
-
-</div>
-
-<div class="form-group">
-    @Html.LabelFor(model => model.Height):
-    @Html.EditorFor(model => model.Height)
-    @Html.ValidationMessageFor(model => model.Height, "", new
+    </div>
+    <div class="form-group col-md-3">
+        @Html.LabelFor(model => model.Height):
+        @Html.EditorFor(model => model.Height)
+        @Html.ValidationMessageFor(model => model.Height, "", new
     {
         @class = "text-danger"
     })
-
+    </div>
 </div>
+<div class="row">
+    <div class="form-group col-md-9">
+        @Html.LabelFor(model => model.ShortDescription):
+    <br />
+        @Html.TextAreaFor(x => x.ShortDescription, new
+    {
+        style = "Width: 100%; Height: 150px;"
+    })
+        @Html.ValidationMessageFor(model => model.ShortDescription)
+    </div>@*产品简介*@
+</div>
+<div class="row date-info">
 
-@if (Model.CreatedOn.HasValue)
-{
-    <div class="form-group">
-        @Html.LabelFor(model => model.CreatedOn):
-        @Model.CreatedOn.Value.ToString("F")
-    </div>
-}
-@if (Model.UpdatedOn.HasValue)
-{
-    <div class="form-group">
-        @Html.LabelFor(model => model.UpdatedOn):
-        @Model.UpdatedOn.Value.ToString("F")
-    </div>
-}
+    @if (Model.CreatedOn.HasValue)
+    {
+        <div class="form-group col-md-3 date-create">
+            @Html.LabelFor(model => model.CreatedOn):
+            @Model.CreatedOn.Value.ToString("F")
+        </div>
+    }
+    @if (Model.UpdatedOn.HasValue)
+    {
+        <div class="form-group col-md-3 date-update">
+            @Html.LabelFor(model => model.UpdatedOn):
+            @Model.UpdatedOn.Value.ToString("F")
+        </div>
+    }
+</div>

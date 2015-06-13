@@ -1,14 +1,20 @@
 ﻿@using System.Web.Optimization
 @section SectionTitle
 {
-    员工信息
+    <h1 id="crmTitle">
+        <strong>员工信息</strong>
+    </h1>
 }
 
-@Html.ActionLink("创建员工", "Create")
+<div class="row m-b" style="margin-bottom:2.5em;">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+        <span class="k-button">@Html.ActionLink("创建员工", "Create")</span>
+        <span class="k-button" id="deleteEmployee"><i class="fa fa-times" style=" color: #EA394C;"></i>删除员工</span>
+    </div>
+</div>
 
-<a href="#" id="deleteEmployee">删除员工</a>
 <div id="employeesList"></div>
-
 
 @section scripts
 {

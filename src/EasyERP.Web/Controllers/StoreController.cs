@@ -1,14 +1,16 @@
-﻿namespace EasyERP.Web.Controllers
+﻿using Infrastructure;
+
+namespace EasyERP.Web.Controllers
 {
-    using System;
-    using System.Linq;
-    using System.Web.Mvc;
     using Doamin.Service.Security;
     using Doamin.Service.Stores;
     using EasyERP.Web.Extensions;
     using EasyERP.Web.Framework.Kendoui;
     using EasyERP.Web.Models.Products;
     using EasyERP.Web.Models.Stores;
+    using System;
+    using System.Linq;
+    using System.Web.Mvc;
 
     public class StoreController : BaseAdminController
     {
@@ -26,7 +28,7 @@
 
         public ActionResult Index()
         {
-            if (!permissionService.Authorize(StandardPermissionProvider.ManageStores))
+            if (!permissionService.Authorize(StandardPermissionProvider.GetStoreList))
             {
                 return AccessDeniedView();
             }
@@ -35,7 +37,7 @@
 
         public ActionResult List()
         {
-            if (!permissionService.Authorize(StandardPermissionProvider.ManageStores))
+            if (!permissionService.Authorize(StandardPermissionProvider.GetStoreList))
             {
                 return AccessDeniedView();
             }
@@ -46,7 +48,7 @@
         [HttpPost]
         public ActionResult StoreList(DataSourceRequest command, ProductListModel model)
         {
-            if (!permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+            if (!permissionService.Authorize(StandardPermissionProvider.GetStoreList))
             {
                 return AccessDeniedView();
             }
@@ -64,7 +66,7 @@
 
         public ActionResult Create()
         {
-            if (!permissionService.Authorize(StandardPermissionProvider.ManageStores))
+            if (!permissionService.Authorize(StandardPermissionProvider.CreateStore))
             {
                 return AccessDeniedView();
             }
@@ -75,7 +77,7 @@
         [HttpPost]
         public ActionResult Create(StoreModel model)
         {
-            if (!permissionService.Authorize(StandardPermissionProvider.ManageStores))
+            if (!permissionService.Authorize(StandardPermissionProvider.CreateStore))
             {
                 return AccessDeniedView();
             }
@@ -83,6 +85,7 @@
             if (ModelState.IsValid)
             {
                 var store = model.ToEntity();
+                store.CompanyId = 1;
                 store.CreatedOn = DateTime.Now;
                 store.UpdatedOn = DateTime.Now;
                 storeService.InsertStore(store);
@@ -93,7 +96,7 @@
 
         public ActionResult Edit(int id)
         {
-            if (!permissionService.Authorize(StandardPermissionProvider.ManageStores))
+            if (!permissionService.Authorize(StandardPermissionProvider.UpdateStore))
             {
                 return AccessDeniedView();
             }
@@ -110,7 +113,7 @@
         [HttpPost]
         public ActionResult Edit(StoreModel model)
         {
-            if (!permissionService.Authorize(StandardPermissionProvider.ManageStores))
+            if (!permissionService.Authorize(StandardPermissionProvider.UpdateStore))
             {
                 return AccessDeniedView();
             }
@@ -124,12 +127,34 @@
 
             if (ModelState.IsValid)
             {
-                store = model.ToEntity();
+                store.Name = model.Name;
+                store.FullDescription = model.FullDescription;
+                store.Address = model.Address;
+                store.PhoneNumber = model.PhoneNumber;
                 store.UpdatedOn = DateTime.Now;
                 storeService.UpdateStore(store);
                 return RedirectToAction("List");
             }
             return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult Destroy(DataSourceRequest request, int id)
+        {
+            if (!permissionService.Authorize(StandardPermissionProvider.DeleteProduct))
+            {
+                return AccessDeniedView();
+            }
+
+            if (id < 1)
+            {
+                return Json(new { Result = false });
+            }
+
+            var store = storeService.GetStoreById(id);
+            store.DoIfNotNull(s => storeService.DeleteStore(s));
+
+            return Json(new { Result = true });
         }
     }
 }

@@ -1,6 +1,8 @@
 ﻿@model EasyERP.Web.Models.Products.ProductModel
 @section SectionTitle{
-    添加新产品
+    <h1 id="crmTitle">
+        <strong>添加新产品</strong>
+    </h1>   
 }
 @using (Html.BeginForm(null, null, FormMethod.Post, new
 {
@@ -9,11 +11,19 @@
 {
     @Html.AntiForgeryToken()
     <div class="section-header">
-        <div class="options">
 
-            <input type="submit" name="save" class="k-button" value="Save"/>
-
+        <div class="title">
+      
         </div>
+        <div class="row m-b">
+            <div class="col-md-4"></div>
+            <div class="col-md-4">
+                <input type="submit" name="save" class="k-button btn-submit" style="padding-left:1.5em; padding-right:1.5em;" value="保存" />
+    
+            </div>
+            <div class="col-md-4"></div>
+        </div>
+
     </div>
     @Html.Partial("_CreateOrUpdate", Model)
 }

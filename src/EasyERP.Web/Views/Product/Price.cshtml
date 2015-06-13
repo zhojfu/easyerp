@@ -1,9 +1,10 @@
 ﻿@using EasyErp.Core.Configuration.Settings
 @using EasyErp.Core.Infrastructure
-@model EasyERP.Web.Models.Products.PriceListModel
 @section SectionTitle
 {
-    价格管理
+    <h1 id="crmTitle">
+    <strong>价格管理</strong>
+</h1>
 }
 @{
     ViewBag.Title = "价格管理";
@@ -13,87 +14,119 @@
 @Html.AntiForgeryToken()
 @using (Html.BeginForm())
 {
-    @Html.HiddenFor(m => m.ProductId, new
-    {
-        id = "product-id"
-    })
-    <div class="section-header">
-        <div class="title">
-            <label>价格管理</label>
+    <div class="m-b">
+        <div class="form-group">
+             <input id="stores"/>
         </div>
-    </div>
-    <div>
+
         <div id="product-price-mapping-grid"></div>
-        <script type="text/javascript">
-            $(document).ready(function() {
-                $("#product-price-mapping-grid").kendoGrid({
-                    dataSource: {
-                        type: "json",
-                        transport: {
-                            read: {
-                                url: "/Product/PriceList",
-                                type: "POST",
-                                dataType: "json",
-                                data: additionalData
-                            },
-                            update: {
-                                url: "/Product/PriceUpdate",
-                                type: "POST",
-                                dataType: "json"
-                                //data:additionalData
-                            }
-                        },
-                        schema: {
-                            model: {
-                                id: "ProductId",
-                                fields: {
-                                    StoreId: { editable: false, nullable: false },
-                                    ProductId: { editable: false, nullable: false },
-                                    StoreName: { editable: false, nullable: true },
-                                    ProductName: { editable: false, nullable: true },
-                                    Cost: { type: "number", validation: { min: 0, required: true } },
-                                    Price: { type: "number", validation: { min: 0, required: true } }
-                                }
-                            },
-                            data: "Data",
-                            total: "Total",
-                            errors: "Errors"
-                        },
-                        error: function(e) {
-                            display_kendoui_grid_error(e);
-                            // Cancel the changes
-                            this.cancelChanges();
-                        },
-                        pageSize: @(defaultGridPageSize),
-                        batch: true,
-                        serverPaging: true,
-                        serverFiltering: true,
-                        serverSorting: true
-                    },
-                    pageable: {
-                        refresh: true,
-                        pageSizes: [@(gridPageSizes)]
-                    },
-                    editable: true,
-                    toolbar: ["create", "save"],
-                    columns: [
-                        { field: "StoreName", title: "店名", width: 50 },
-                        { field: "ProductName", title: "产品名", width: 50 },
-                        { field: "Cost", title: "购进价格", width: 100 },
-                        { field: "Price", title: "售价", width: 100 },
-                        { command: "edit", title: "&nbsp;", width: "250px" }
-                    ]
-                });
-            });
-        </script>
     </div>
     <script>
-        function additionalData() {
-            var data = {
-                ProductId: $("#product-id").val()
-            };
-            addAntiForgeryToken(data);
-            return data;
-        }
+        $(document).ready(function() {
+            $("#stores").kendoDropDownList({
+                dataTextField: "Name",
+                dataValueField: "Id",
+                dataSource: {
+                    transport: {
+                        read: {
+                            dataType: "json",
+                            type: "POST",
+                            url: "/Store/StoreList",
+                            data: function() {
+                                var data = {};
+                                addAntiForgeryToken(data);
+                                return data;
+                            }
+                        }
+                    },
+                    schema: {
+                        data: "Data"
+                    }
+                },
+                change: function(e) {
+                    e.preventDefault();
+                    products.read();
+                }, 
+                cascade: function(e) {
+                    e.preventDefault();
+                    products.read();
+                }
+            });
+            var products = new kendo.data.DataSource({
+                type: "json",
+                transport: {
+                    read: {
+                        url: "/Product/PriceList",
+                        type: "POST",
+                        dataType: "json"
+                    },
+                    update: {
+                        url: "/Product/PriceUpdate",
+                        type: "POST",
+                        dataType: "json"
+                    },
+                    parameterMap: function(options, operation) {
+                        var data;
+                        if (operation === "read") {
+                            var store = $("#stores").data("kendoDropDownList");
+                            data = {
+                                storeId: store.value(),
+                                storeName: store.text()
+                            };
+                            addAntiForgeryToken(data);
+                            return data;
+                        } else if (operation === "update" && options.models) {
+                            data = options.models[0];
+                            addAntiForgeryToken(data);
+                            return data;
+                        }
+                    }
+                },
+                schema: {
+                    model: {
+                        id: "ProductId",
+                        fields: {
+                            StoreId: { editable: false, nullable: false },
+                            ProductId: { editable: false, nullable: false },
+                            StoreName: { editable: false, nullable: true },
+                            ProductName: { editable: false, nullable: true },
+                            CostPrice: { type: "number", validation: { min: 0, required: true } },
+                            SalePrice: { type: "number", validation: { min: 0, required: true } }
+                        }
+                    },
+                    data: "Data",
+                    total: "Total",
+                    errors: "Errors"
+                },
+                error: function(e) {
+                    display_kendoui_grid_error(e);
+                    // Cancel the changes
+                    this.cancelChanges();
+                },
+                pageSize: @(defaultGridPageSize),
+                batch: true,
+                serverPaging: true,
+                serverFiltering: true,
+                serverSorting: true
+            });
+            $("#product-price-mapping-grid").kendoGrid({
+                autoBind:false,
+                dataSource: products,
+                pageable: {
+                    refresh: true,
+                    pageSizes: [@(gridPageSizes)]
+                },
+                editable: "popup",
+                columns: [
+                    { field: "StoreName", title: "店名", width: 50 },
+                    { field: "ProductName", title: "产品名", width: 50 },
+                    { field: "CostPrice", title: "采购价(元）", width: 100 },
+                    { field: "SalePrice", title: "店铺零售价(元）", width: 100 },
+                    { command: "edit", title: "&nbsp;", width: "250px" }
+                ]
+            });
+
+        });
+        
     </script>
 }

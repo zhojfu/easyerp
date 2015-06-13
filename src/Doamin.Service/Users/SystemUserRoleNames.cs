@@ -9,12 +9,12 @@ namespace Doamin.Service.Users
 
         public static string StoreAdmin
         {
-            get { return "Store"; }
+            get { return "StoreAdmin"; }
         }
 
         public static string FactoryAdmin
         {
-            get { return "Factory"; }
+            get { return "FactoryAdmin"; }
         }
     }
 }

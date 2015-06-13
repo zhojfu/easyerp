@@ -21,7 +21,6 @@ namespace Domain.EntityFramework.Configurations.Products
             Property(p => p.Width).HasPrecision(18, 4).IsOptional();
             Property(p => p.Height).HasPrecision(18, 4).IsOptional();
             HasRequired(p => p.Category).WithMany().HasForeignKey(p => p.CategoryId);
-            HasMany(p => p.Stores).WithMany(w => w.Products).Map(m => m.ToTable("Project_Store_Mapping"));
             Property(t => t.ItemNo).IsRequired().HasMaxLength(6).HasColumnAnnotation(
                 IndexAnnotation.AnnotationName,
                 new IndexAnnotation(new IndexAttribute("IX_ItemNo", 1) {IsUnique = true}));

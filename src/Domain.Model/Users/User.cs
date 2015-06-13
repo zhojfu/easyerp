@@ -24,6 +24,8 @@
 
         public Store Store { get; set; }
 
+        public bool IsAdmin { get; set; }
+
         public virtual ICollection<UserRole> UserRoles
         {
             get { return userRoles ?? (userRoles = new List<UserRole>()); }
@@ -33,7 +35,5 @@
         public DateTime CreatedOn { get; set; }
 
         public DateTime LastLoginDate { get; set; }
-
-        public virtual ICollection<ShoppingCartItem> ShoppingCartItems { get; set; }
     }
 }

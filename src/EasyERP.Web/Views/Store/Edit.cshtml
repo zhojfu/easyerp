@@ -2,8 +2,20 @@
 @model EasyERP.Web.Models.Stores.StoreModel
 @{
     ViewBag.Title = "Edit";
-    Layout = "~/Views/Shared/ProductLayout.cshtml";
 }
+@section SectionTitle
+{
+    <h1 id="crmTitle">
+        <strong style="font-size: smaller">编辑门店信息 - </strong>
+        <strong class="pdt-nm">@Model.Name</strong>
+        <strong class="pdt-back">
+            <i class="fa fa-reply"></i> 
+            @Html.ActionLink("回到门店列表", "List")
+        </strong>
+</h1>
+}
+
+
 @using (Html.BeginForm(null, null, FormMethod.Post, new
 {
     id = "store-form"
@@ -12,13 +24,16 @@
     @Html.AntiForgeryToken()
     <div class="section-header">
         <div class="title">
-            <img src="@Url.Content("~/Administration/Content/images/ico-catalog.png")" alt=""/>
-            "门店修改" - @Model.Name @Html.ActionLink("BackToList", "List")
+            
         </div>
-        <div class="options">
-            <input type="submit" name="save" class="k-button" value="保存"/>
-            <span id="store-delete" class="k-button">删除</span>
-        </div>
+        <div class="row m-b">
+            <div class="col-md-4">
+                <span id="store-delete" class="k-button"><i class="fa fa-times" style=" color: #EA394C;"></i>删除该门店信息</span>               
+            </div>
+            <div class="col-md-4">
+                <input type="submit" name="save" class="k-button btn-submit" style="padding-left:1.5em; padding-right:1.5em;" value="保存" />
+            </div>
+            </div>
     </div>
     @Html.Partial("_CreateOrUpdate", Model)
 }

@@ -20,7 +20,7 @@
 
         public PagedResult<Order> GetOrders(int pageNumber, int pageSize)
         {
-            return repository.FindAll(pageSize, pageNumber, e => true, m => m.CreatedOnUtc, SortOrder.Descending);
+            return repository.FindAll(pageSize, pageNumber, e => e.CustomerId.HasValue, m => m.CreatedOnUtc, SortOrder.Descending);
         }
 
         public void DeleteOrderByIds(IEnumerable<int> ids)

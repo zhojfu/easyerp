@@ -7,6 +7,10 @@
     public interface IInventoryService
     {
         IList<Inventory> GetAllInventoriesForProduct(int productId);
-        void InsertInventory(Inventory inventory, Payment payment);
+        IList<Inventory> GetProductInventoryRecords(string productName, int categoryId, int storeId, bool unpaidOnly = false);
+        IList<StockModel> GetProductInventories(string productName, int categoryId, int storeId);
+        void InsertInventory(Inventory inventory);
+
+        float GetProductQuantity(int productId, int storeId);
     }
 }

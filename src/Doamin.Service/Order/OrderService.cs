@@ -1,11 +1,11 @@
 ﻿namespace Doamin.Service.Order
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
     using Domain.Model.Orders;
     using EasyErp.Core;
     using Infrastructure.Domain;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
 
     public class OrderService : IOrderService
     {
@@ -31,7 +31,6 @@
             int customerId = 0,
             int productId = 0,
             OrderStatus? os = null,
-            PaymentStatus? ps = null,
             int pageIndex = 0,
             int pageSize = int.MaxValue)
         {
@@ -41,11 +40,6 @@
                 orderStatusId = (int)os.Value;
             }
 
-            int? paymentStatusId = null;
-            if (ps.HasValue)
-            {
-                paymentStatusId = (int)ps.Value;
-            }
             var orders = orderRepository.FindAll(x => x.Id > 0);
 
             if (storeId > 0)
@@ -66,10 +60,6 @@
             if (orderStatusId.HasValue)
             {
                 orders = orders.Where(o => o.OrderStatusId == orderStatusId.Value);
-            }
-            if (paymentStatusId.HasValue)
-            {
-                orders = orders.Where(o => o.PaymentStatusId == paymentStatusId.Value);
             }
 
             orders = orders.Where(o => !o.Deleted);
@@ -128,9 +118,19 @@
                 OrderStatus = OrderStatus.Pending,
                 CreatedOnUtc = DateTime.Now,
                 CustomerId = workContext.CurrentUser.StoreId,
-                PaymentStatus = PaymentStatus.Pending
             };
             orderRepository.Add(order);
+        }
+
+        public void UpdateOrder(Order order)
+        {
+            if (order == null)
+            {
+                throw new ArgumentNullException("order");
+            }
+
+            orderRepository.Update(order);
+            unitOfWork.Commit();
         }
     }
 }

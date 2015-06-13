@@ -1,4 +1,5 @@
-﻿namespace Domain.EntityFramework
+﻿
+namespace Domain.EntityFramework
 {
     using System;
     using System.Collections.Generic;
@@ -9,6 +10,7 @@
     using Domain.Model.Products;
     using Domain.Model.Stores;
     using Domain.Model.Users;
+    using Doamin.Service.Users; 
     using EasyErp.Core.Infrastructure;
 
     public class DatabaseInitializer : DropCreateDatabaseIfModelChanges<EntityFrameworkDbContext>
@@ -18,12 +20,21 @@
             var c1 = new Category
             {
                 Name = "米",
-                ItemNo = "RI",
+                ItemNo = "RC",
                 Description = "米粮",
                 UpdatedOnUtc = DateTime.Now,
                 CreatedOnUtc = DateTime.Now
             };
-            var c2 = new Category
+
+            var c2  = new Category
+            {
+                Name = "面",
+                ItemNo = "ND",
+                Description = "面",
+                UpdatedOnUtc = DateTime.Now,
+                CreatedOnUtc = DateTime.Now
+            };
+            var c3 = new Category
             {
                 Name = "油",
                 ItemNo = "OL",
@@ -31,7 +42,16 @@
                 UpdatedOnUtc = DateTime.Now,
                 CreatedOnUtc = DateTime.Now
             };
-            var c3 = new Category
+            var c4 = new Category
+            {
+                Name = "调味料",
+                ItemNo = "SP",
+                Description = "调味料",
+                UpdatedOnUtc = DateTime.Now,
+                CreatedOnUtc = DateTime.Now
+            };
+
+            var c5 = new Category
             {
                 Name = "其他",
                 ItemNo = "OT",
@@ -50,9 +70,18 @@
             };
             context.Entry(company).State = EntityState.Added;
 
-            var s1 = new Store
+            var adminStore = new Store
             {
                 Id = 1,
+                Name = "MIGU",
+                CompanyId = company.Id,
+                CreatedOn = DateTime.Now,
+                UpdatedOn = DateTime.Now
+            };
+
+            var s1 = new Store
+            {
+                Id = 2,
                 Name = "Store1",
                 CompanyId = company.Id,
                 CreatedOn = DateTime.Now,
@@ -61,8 +90,17 @@
 
             var s2 = new Store
             {
-                Id = 2,
+                Id = 3,
                 Name = "Store2",
+                CompanyId = company.Id,
+                CreatedOn = DateTime.Now,
+                UpdatedOn = DateTime.Now
+            };
+            
+            var s3 = new Store
+            {
+                Id = 4,
+                Name = "Store3",
                 CompanyId = company.Id,
                 CreatedOn = DateTime.Now,
                 UpdatedOn = DateTime.Now
@@ -163,25 +201,27 @@
                 }
             };
 
-            products.ForEach(
-                p =>
-                {
-                    s1.Products.Add(p);
-                    p.Stores.Add(s1);
-                });
+            //products.ForEach(
+            //    p =>
+            //    {
+            //        s1.Products.Add(p);
+            //        p.Stores.Add(s1);
+            //    });
 
-            products.ForEach(
-                p =>
-                {
-                    if (p.CategoryId == 1)
-                    {
-                        s2.Products.Add(p);
-                        p.Stores.Add(s2);
-                    }
-                });
+            //products.ForEach(
+            //    p =>
+            //    {
+            //        if (p.CategoryId == 1)
+            //        {
+            //            s2.Products.Add(p);
+            //            p.Stores.Add(s2);
+            //        }
+            //    });
 
+            context.Entry(adminStore).State = EntityState.Added;
             context.Entry(s1).State = EntityState.Added;
             context.Entry(s2).State = EntityState.Added;
+            context.Entry(s3).State = EntityState.Added;
 
             products.ForEach(p => context.Entry(p).State = EntityState.Added);
 
@@ -205,7 +245,7 @@
             }
             defaultRoles.ForEach(r => context.Entry(r).State = EntityState.Added);
 
-            var u1 = new User
+            var admin = new User
             {
                 Name = "pancake",
                 Active = true,
@@ -213,12 +253,44 @@
                 UseGuid = Guid.NewGuid(),
                 PasswordSalt = saltKey,
                 Password = enryptionService.CreatePasswordHash("pancake", saltKey),
+                IsAdmin = true,
                 CreatedOn = DateTime.Now,
                 LastLoginDate = DateTime.Now,
                 UserRoles = defaultRoles
             };
+            
+            var store1 = new User
+            {
+                Name = "Store1",
+                Active = true,
+                StoreId = s2.Id,
+                UseGuid = Guid.NewGuid(),
+                PasswordSalt = saltKey,
+                Password = enryptionService.CreatePasswordHash("Store1", saltKey),
+                IsAdmin = false,
+                CreatedOn = DateTime.Now,
+                LastLoginDate = DateTime.Now,
+                UserRoles = defaultRoles.FindAll(i=>i.Name == SystemUserRoleNames.StoreAdmin)
+            };
 
-            context.Entry(u1).State = EntityState.Added;
+
+            var store2 = new User
+            {
+                Name = "Store2",
+                Active = true,
+                StoreId = s3.Id,
+                UseGuid = Guid.NewGuid(),
+                PasswordSalt = saltKey,
+                Password = enryptionService.CreatePasswordHash("Store2", saltKey),
+                IsAdmin = false,
+                CreatedOn = DateTime.Now,
+                LastLoginDate = DateTime.Now,
+                UserRoles = defaultRoles.FindAll(i=>i.Name == SystemUserRoleNames.StoreAdmin)
+            };
+
+            context.Entry(admin).State = EntityState.Added;
+            context.Entry(store1).State = EntityState.Added;
+            context.Entry(store2).State = EntityState.Added;
             context.SaveChanges();
         }
 

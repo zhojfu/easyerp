@@ -1,197 +1,199 @@
 ﻿@using System.Web.Optimization
 @model EasyERP.Web.Models.Employee.EmployeeModel
-<div>
-
-    <button type="submit">保存</button>
+<div class="row m-b" style="margin-bottom:1.5em;">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+        <button type="submit" class="k-button btn-submit" style="padding-left:1.5em; padding-right:1.5em;">保存</button>
+    </div>
+    <div class="col-md-4"></div>
+    
 
 </div>
 
 @Html.HiddenFor(m => m.Id)
-<div class="form-group">
-
-    @Html.ValidationMessageFor(m => m.Name, "", new
+<div class="row emp-info">
+    <div class="form-group col-md-3">
+        @Html.ValidationMessageFor(m => m.Name, "", new
     {
         @class = "text-danger"
     })
-    @Html.LabelFor(m => m.Name, new
+        @Html.LabelFor(m => m.Name, new
     {
         @class = ""
     })
-    @Html.TextBoxFor(m => m.Name, new
+        @Html.TextBoxFor(m => m.Name, new
     {
         @class = ""
     })
-</div>
-
-<div class="form-group">
-
-    @Html.ValidationMessageFor(m => m.IdNumber, "", new
-    {
-        @class = "text-danger"
-    })
-    @Html.LabelFor(m => m.IdNumber, new
+    </div>
+    <div class="form-group col-md-3">
+        @Html.LabelFor(m => m.Male, new
     {
         @class = ""
     })
-    @Html.TextBoxFor(m => m.IdNumber, new
-    {
-        @class = ""
-    })
-</div>
-
-<div class="form-group">
-
-    @Html.LabelFor(m => m.Birth, new
-    {
-        @class = ""
-    })
-    @Html.TextBoxFor(m => m.Birth, new
-    {
-        @id = "datepicker",
-        @value = "2014-01-04"
-    })
-</div>
-
-<div class="form-group">
-
-    @Html.LabelFor(m => m.Male, new
-    {
-        @class = ""
-    })
-    @Html.RadioButtonFor(m => m.Male, true, new
+      
+            @Html.RadioButtonFor(m => m.Male, true, new
     {
         @checked = "checked"
     })男
 
-    @Html.RadioButtonFor(m => m.Male, false)女
-
-</div>
-
-<div class="form-group">
-
-    @Html.LabelFor(m => m.Married, new
+            @Html.RadioButtonFor(m => m.Male, false)女
+      
+    </div>
+    <div class="form-group col-md-3">
+        @Html.LabelFor(m => m.Married, new
     {
         @class = ""
     })
-    @Html.RadioButtonFor(m => m.Married, true, new
+        @Html.RadioButtonFor(m => m.Married, true, new
     {
         @checked = "checked"
     })已婚
 
-    @Html.RadioButtonFor(m => m.Married, false)未婚
+        @Html.RadioButtonFor(m => m.Married, false)未婚
 
+    </div>
+    
+    
+    
 </div>
 
-<div class="form-group">
-
-    @Html.LabelFor(m => m.Race, new
-    {
-        @class = ""
-    })
-    @Html.TextBoxFor(m => m.Race, new
-    {
-        @class = ""
-    })
-</div>
-
-<div class="form-group">
-
-    @Html.LabelFor(m => m.Education, new
-    {
-        @class = ""
-    })
-    @Html.TextBoxFor(m => m.Education, new
-    {
-        @class = ""
-    })
-</div>
-
-<div class="form-group">
-
-    @Html.LabelFor(m => m.CellPhone, new
-    {
-        @class = ""
-    })
-    @Html.TextBoxFor(m => m.CellPhone, new
-    {
-        @class = ""
-    })
-</div>
-
-<div class="form-group">
-
-    @Html.LabelFor(m => m.NativePlace, new
-    {
-        @class = ""
-    })
-    @Html.TextBoxFor(m => m.NativePlace, new
-    {
-        @class = ""
-    })
-</div>
-
-<div class="form-group">
-
-    @Html.LabelFor(m => m.Address, new
-    {
-        @class = ""
-    })
-    @Html.TextBoxFor(m => m.Address, new
-    {
-        @class = ""
-    })
-</div>
-
-<div class="form-group">
-
-    @Html.LabelFor(m => m.HomePhone, new
-    {
-        @class = ""
-    })
-    @Html.TextBoxFor(m => m.HomePhone, new
-    {
-        @class = ""
-    })
-</div>
-
-<div class="form-group">
-
-    @Html.LabelFor(m => m.EMail, new
-    {
-        @class = ""
-    })
-    @Html.TextBoxFor(m => m.EMail, new
-    {
-        @class = ""
-    })
-</div>
-
-<div class="form-group">
-
-    @Html.LabelFor(m => m.Department, new
-    {
-        @class = ""
-    })
-    @Html.TextBoxFor(m => m.Department, new
-    {
-        @class = ""
-    })
-</div>
-
-<div class="form-group">
-
-    @Html.ValidationMessageFor(m => m.SalaryOfMonth, "", new
+<div class="row emp-info">
+    <div class="form-group col-md-3">
+        @Html.ValidationMessageFor(m => m.IdNumber, "", new
     {
         @class = "text-danger"
     })
-    @Html.LabelFor(m => m.SalaryOfMonth, new
+        @Html.LabelFor(m => m.IdNumber, new
     {
         @class = ""
     })
-    @Html.TextBoxFor(m => m.SalaryOfMonth, new
+        @Html.TextBoxFor(m => m.IdNumber, new
     {
         @class = ""
     })
+    </div>
+    <div class="form-group col-md-3">
+        @Html.LabelFor(m => m.Birth, new
+    {
+        @class = ""
+    })
+        @Html.TextBoxFor(m => m.Birth, new
+    {
+        @id = "datepicker",
+        @value = "2014-01-04"
+    })
+    </div>
+    <div class="form-group col-md-3">
+        @Html.LabelFor(m => m.NativePlace, new
+    {
+        @class = ""
+    })
+        @Html.TextBoxFor(m => m.NativePlace, new
+    {
+        @class = ""
+    })
+    </div>
+
+
+</div>
+<div class="row emp-info">
+    <div class="form-group col-md-3">
+        @Html.LabelFor(m => m.Race, new
+    {
+        @class = ""
+    })
+        @Html.TextBoxFor(m => m.Race, new
+    {
+        @class = ""
+    })
+    </div>
+    <div class="form-group col-md-3">
+        @Html.LabelFor(m => m.Education, new
+    {
+        @class = ""
+    })
+        @Html.TextBoxFor(m => m.Education, new
+    {
+        @class = ""
+    })
+    </div>
+</div>
+
+<div class="row emp-info">
+    <div class="form-group col-md-3">
+        @Html.LabelFor(m => m.CellPhone, new
+    {
+        @class = ""
+    })
+        @Html.TextBoxFor(m => m.CellPhone, new
+    {
+        @class = ""
+    })
+    </div>
+    <div class="form-group col-md-3">
+        @Html.LabelFor(m => m.HomePhone, new
+    {
+        @class = ""
+    })
+        @Html.TextBoxFor(m => m.HomePhone, new
+    {
+        @class = ""
+    })
+    </div>
+    <div class="form-group col-md-3">
+        @Html.LabelFor(m => m.EMail, new
+    {
+        @class = ""
+    })
+        @Html.TextBoxFor(m => m.EMail, new
+    {
+        @class = ""
+    })
+    </div>
+</div>
+
+
+<div class="row emp-info">
+    <div class="form-group col-md-9">
+        @Html.LabelFor(m => m.Address, new
+    {
+        @class = ""
+    })
+        <br />
+        @Html.TextAreaFor(m => m.Address, new
+    {
+        style = "Width: 100%; Height: 60px;"
+    })
+    </div>
+</div>
+
+<div class="row emp-info">
+    <div class="form-group col-md-3">
+        @Html.LabelFor(m => m.Department, new
+    {
+        @class = ""
+    })
+        @Html.TextBoxFor(m => m.Department, new
+    {
+        @class = ""
+    })
+    </div>
+    <div class="form-group col-md-3">
+        @Html.ValidationMessageFor(m => m.SalaryOfMonth, "", new
+    {
+        @class = "text-danger"
+    })
+        @Html.LabelFor(m => m.SalaryOfMonth, new
+    {
+        @class = ""
+    })
+        @Html.TextBoxFor(m => m.SalaryOfMonth, new
+    {
+        @class = ""
+    })
+    </div>
+
 </div>
 
 

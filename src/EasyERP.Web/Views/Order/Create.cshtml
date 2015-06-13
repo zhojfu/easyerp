@@ -2,36 +2,56 @@
 @using EasyErp.Core.Infrastructure
 @section SectionTitle
 {
-    新建订单
+    <h1 id="crmTitle">
+        <strong>
+            新建订单
+        </strong>
+    </h1>
 }
 @{
     var defaultGridPageSize = EngineContext.Current.Resolve<AreaSettings>().DefaultGridPageSize;
     var gridPageSizes = EngineContext.Current.Resolve<AreaSettings>().GridPageSizes;
 }
+<div class="m-b"></div>
 @Html.AntiForgeryToken()
 @using (Html.BeginForm())
 {
     <div id="product-list"></div>
-    <div id="cart" data-bind="visible: cartContentsClass">
-        <h1>Order Details</h1>
-        <ul>
-            <li>产品</li>
-            <li>数量</li>
-            <li>价格</li>
-        </ul>
-        <ul data-role="listview" data-bind="source: cart.contents" data-template="cart-item"></ul>
-        <p id="total-checkout">
-            <em>total:</em><span data-bind="text: totalPrice"></span></p>
-        <a class="cancel-order" href="#" data-bind="click: emptyCart">cancel order</a>
-        <button class="order-now" id="order-now" data-bind="click: proceed">购买</button>
+
+    <div id="cart" data-bind="visible: cartContentsClass" class="cart">
+        <h3>订单详情</h3>
+        <div ="row">
+            <div class="col-md-6">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>产品</th>
+                            <th>数量</th>
+                            <th>单价</th>
+                        </tr>
+                    </thead>
+                    <tbody data-role="listview" data-bind="source: cart.contents" data-template="cart-item"></tbody>
+                </table>
+            </div>
+            <div class="col-md-6" style=" border-left: 1px solid #D3D3D3;">
+                <p id="total-checkout" style="margin-top:0.8em;" class="t-price">
+                    <em style="color:#000000; font-size:12px; font-weight:400;">合计：</em><span data-bind="text: totalPrice"></span>
+                </p>
+                <a class="k-button" href="#" data-bind="click: emptyCart"><i class="fa fa-times" style="margin-right:0.5em;"></i>取消</a>
+                <button class="k-button btn-submit" id="order-now" data-bind="click: proceed" style="margin-left:1.5em; padding-right:1.5em;padding-left:1.5em;">购买</button>
+            </div>
+        </div>
     </div>
+
+
     <script type="text/x-kendo-template" id="cart-item">
-        <ul>
-            <li><span class="product-name" data-bind="text: item.name"></span></li>
-            <li><input type="text" data-role="numerictextbox" data-min="0" data-decimals="0" data-format="\\#" data-bind="value: quantity"></li>
-            <li><p class="table-price" data-bind="text: itemPrice"><p></li>
-            @*<li><button class="delet" data-bind="click: deleted">删除</button></li>*@
-        </ul>
+       
+            <tr>
+                <td><span class="product-name" data-bind="text: item.name"></span></td>
+                <td><input type="text" data-role="numerictextbox" data-min="0" data-decimals="0" data-format="\\#" data-bind="value: quantity"></td>
+                <td><p class="table-price" data-bind="text: itemPrice"><p></td>
+            </tr>
+    
     </script>
     <script type="text/javascript">
         var products = new kendo.data.DataSource({
@@ -46,7 +66,7 @@
                     url: "/Order/ProductList",
                     type: "POST",
                     dataType: "json",
-                    data: function() {
+                    data: function () {
                         var data = {};
                         addAntiForgeryToken(data);
                         return data;
@@ -59,11 +79,11 @@
             contents: [],
             cleared: false,
 
-            contentsCount: function() {
+            contentsCount: function () {
                 return this.get("contents").length;
             },
 
-            add: function(item) {
+            add: function (item) {
                 var found = false;
 
                 this.set("cleared", false);
@@ -82,7 +102,7 @@
                 }
             },
 
-            remove: function(item) {
+            remove: function (item) {
                 for (var i = 0; i < this.contents.length; i++) {
                     var current = this.contents[i];
                     if (current === item) {
@@ -92,18 +112,18 @@
                 }
             },
 
-            empty: function() {
+            empty: function () {
                 var contents = this.get("contents");
                 contents.splice(0, contents.length);
             },
 
-            clear: function() {
+            clear: function () {
                 var contents = this.get("contents");
                 contents.splice(0, contents.length);
                 this.set("cleared", true);
             },
 
-            total: function() {
+            total: function () {
                 var price = 0,
                     contents = this.get("contents"),
                     length = contents.length,
@@ -121,39 +141,39 @@
             cart: cart,
             isVisible: false,
 
-            cartContentsClass: function() {
+            cartContentsClass: function () {
                 return this.cart.contentsCount() > 0 ? true : false;
             },
 
-            removeFromCart: function(e) {
+            removeFromCart: function (e) {
                 this.get("cart").remove(e.data);
                 if (this.cart.contents.length === 0) {
                     this.isVisible = false;
                 }
             },
 
-            emptyCart: function() {
+            emptyCart: function () {
                 cart.empty();
                 this.isVisible = false;
             },
 
-            itemPrice: function(cartItem) {
+            itemPrice: function (cartItem) {
                 return kendo.format("{0:c}", cartItem.item.price);
             },
 
-            totalPrice: function() {
+            totalPrice: function () {
                 var price = this.get("cart").total();
                 return kendo.format("{0:c}", price);
             },
 
-            prePayAmount: function() {
+            prePayAmount: function () {
                 var price = this.get("cart").total() * 0.3;
                 return kendo.format("{0:c}", price);
             },
 
-            proceed: function(e) {
+            proceed: function (e) {
                 var data = new Array();
-                this.cart.contents.forEach(function(item) {
+                this.cart.contents.forEach(function (item) {
                     data.push({ "ProductId": item.item.id, "Name": item.item.name, "Price": item.item.price, "Quantity": item.quantity });
                 });
 
@@ -161,7 +181,7 @@
             }
         });
 
-        $(document).ready(function() {
+        $(document).ready(function () {
             $("#product-list").kendoGrid({
                 dataSource: products,
                 pageable: {
@@ -192,22 +212,26 @@
 }
 <div id="confirm-window"></div>
 <script type="text/x-kendo-template" id="cart-confirm">
-    <div>
-        <ul>
-            <li>产品</li>
-            <li>数量</li>
-            <li>价格</li>
-        </ul>
-        <ul data-role="listview" data-bind="source: cart.contents" data-template="cart-item"></ul>
-        <p><em>总金额:</em><span data-bind="text: totalPrice"></span></p>
-        <p><em>预付额:</em><span data-bind="text: prePayAmount"></span></p>
-        <p><em>留言:</em><input type="text"></p>
-        <a class="cancel-order" href="\#" data-bind="click: emptyCart">cancel order</a>
-        <button id="buy-confirm" type="button">购买</button>
+    <div class="cart">
+        <table>
+            <thead>
+                <tr>
+                    <th>产品</th>
+                    <th>数量</th>
+                    <th>单价</th>
+                </tr>
+            </thead>
+            <tbody data-role="listview" data-bind="source: cart.contents" data-template="cart-item"></tbody>
+        </table>
+        <p><em>总金额:</em><label class="t-price"><span data-bind="text: totalPrice"></span></label></p>
+        <p><em>应付预付额:</em><label class="t-price-grn"><span data-bind="text: prePayAmount"></span></label></p>
+        @*<p><em>留言:</em><input type="text" ></p>*@
+        <button id="cancel-order-confirm" class="k-button"><i class="fa fa-times" style="margin-right:0.5em;"></i>取消</button>
+        <button id="buy-confirm" class="k-button btn-submit" style="margin-left:1.5em; padding-right:1.5em;padding-left:1.5em;">确定</button>
     </div>
 </script>
 <script>
-    $("#order-now").click(function(e) {
+    $("#order-now").click(function (e) {
         e.preventDefault();
         var confirmWindow = $("#confirm-window").kendoWindow({
             title: "购买",
@@ -222,25 +246,26 @@
         kendo.bind(confirmWindow.element, cartPreviewModel);
         confirmWindow.open().center();
 
-        $("#buy-confirm").click(function() {
+        $("#buy-confirm").click(function () {
             var data = new Array();
-            cart.contents.forEach(function(item) {
+            cart.contents.forEach(function (item) {
                 data.push({ "ProductId": item.item.id, "Name": item.item.name, "Price": item.item.price, "Quantity": item.quantity });
             });
-
-            var pushdata = addAntiForgeryToken({"":data});
-            
-
+            var pushdata = addAntiForgeryToken({ "": data });
             $.ajax({
                 type: "POST",
                 url: "/Order/OrderUpdate",
                 data: pushdata,
                 dataType: "json",
-                success: function(data) {
+                success: function (data) {
                     window.location.href = data;
                 }
             });
-
+        });
+        $("#cancel-order-confirm").click(function (e) {
+            e.preventDefault();
+            cart.empty();
+            confirmWindow.close();
         });
     });
 </script>

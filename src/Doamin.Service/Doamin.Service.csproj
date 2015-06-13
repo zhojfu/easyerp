@@ -76,13 +76,10 @@
     <Compile Include="Products\ICategoryService.cs" />
     <Compile Include="Products\CategoryService.cs" />
     <Compile Include="Products\IInventoryService.cs" />
-    <Compile Include="Products\IManufacturerService.cs" />
     <Compile Include="Products\InventoryService.cs" />
     <Compile Include="Products\IProductPriceService.cs" />
     <Compile Include="Products\ProductPriceService.cs" />
     <Compile Include="Products\IProductService.cs" />
-    <Compile Include="Products\ManufacturerExtensions.cs" />
-    <Compile Include="Products\ManufacturerService.cs" />
     <Compile Include="Products\ProductService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Security\AclService.cs" />

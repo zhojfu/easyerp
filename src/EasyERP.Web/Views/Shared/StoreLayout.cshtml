@@ -1,0 +1,31 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section SiderBar{
+    <div id="nav-wrapper">
+
+        <div id="nav" class="root">
+
+            <div id="root-nav">
+
+                <ul class="root-nav-categories">
+                    <li>
+                        <h3>@Html.ActionLink("门店信息", "Index", "Store")</h3>
+                    </li>
+
+                    <li>
+                        <h3>@Html.ActionLink("新增门店", "Create", "Store")</h3>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+}
+
+<div id="section-title" class="row">@RenderSection("SectionTitle", false)</div>
+
+@RenderBody()
+
+@RenderSection("scripts", false)

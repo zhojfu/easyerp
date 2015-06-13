@@ -1,10 +1,14 @@
-﻿namespace EasyERP.Web.Models.Products
+﻿
+namespace EasyERP.Web.Models.Products
 {
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Web.Mvc;
     using EasyERP.Web.Framework.Mvc;
+    using EasyERP.Web.Validators.Products;
+    using FluentValidation.Attributes;
 
+    [Validator(typeof(ProductListModelValidator))]
     public class ProductListModel : BaseModel
     {
         public ProductListModel()
@@ -25,11 +29,6 @@
         public int SearchStoreId { get; set; }
 
         public List<int> SearchStoreIds { get; set; }
-
-        public int SearchPublishedId { get; set; }
-
-        [AllowHtml]
-        public string GoDirectlyToSku { get; set; }
 
         public IList<SelectListItem> AvailableCategories { get; set; }
 

@@ -36,7 +36,7 @@ namespace EasyERP.Web.Controllers
         // GET: /Employee/
         public ActionResult Index()
         {
-            if (!this.permissionService.Authorize(StandardPermissionProvider.ManageStores))
+            if (!this.permissionService.Authorize(StandardPermissionProvider.GetEmployee))
             {
                 return AccessDeniedView();
             }
@@ -46,7 +46,7 @@ namespace EasyERP.Web.Controllers
 
         public ActionResult Create()
         {
-            if (!this.permissionService.Authorize(StandardPermissionProvider.ManageStores))
+            if (!this.permissionService.Authorize(StandardPermissionProvider.CreateEmployee))
             {
                 return AccessDeniedView();
             }
@@ -55,7 +55,7 @@ namespace EasyERP.Web.Controllers
 
         public ActionResult Timesheet()
         {
-            if (!this.permissionService.Authorize(StandardPermissionProvider.ManageStores))
+            if (!this.permissionService.Authorize(StandardPermissionProvider.UpdateTimeSheet))
             {
                 return AccessDeniedView();
             }
@@ -64,7 +64,7 @@ namespace EasyERP.Web.Controllers
 
         public ActionResult Edit(int id)
         {
-            if (!this.permissionService.Authorize(StandardPermissionProvider.ManageStores))
+            if (!this.permissionService.Authorize(StandardPermissionProvider.UpdateEmployee))
             {
                 return AccessDeniedView();
             }
@@ -81,7 +81,7 @@ namespace EasyERP.Web.Controllers
         [HttpPost]
         public ActionResult Edit(EmployeeModel model)
         {
-            if (!this.permissionService.Authorize(StandardPermissionProvider.ManageStores))
+            if (!this.permissionService.Authorize(StandardPermissionProvider.UpdateEmployee))
             {
                 return AccessDeniedView();
             }
@@ -98,7 +98,7 @@ namespace EasyERP.Web.Controllers
         [HttpPost]
         public ActionResult Create(EmployeeModel employee)
         {
-            if (!this.permissionService.Authorize(StandardPermissionProvider.ManageStores))
+            if (!this.permissionService.Authorize(StandardPermissionProvider.CreateEmployee))
             {
                 return AccessDeniedView();
             }
@@ -116,7 +116,7 @@ namespace EasyERP.Web.Controllers
         [HttpPost]
         public JsonResult Delete(List<int> ids)
         {
-            if (!this.permissionService.Authorize(StandardPermissionProvider.ManageStores))
+            if (!this.permissionService.Authorize(StandardPermissionProvider.DeleteEmployee))
             {
                 return AccessDeniedJson();
             }
@@ -130,7 +130,7 @@ namespace EasyERP.Web.Controllers
 
         public JsonResult EmployeeList(int skip, int take, int page, int pageSize)
         {
-            if (!this.permissionService.Authorize(StandardPermissionProvider.ManageStores))
+            if (!this.permissionService.Authorize(StandardPermissionProvider.GetEmployee))
             {
                 return AccessDeniedJson();
             }
@@ -160,7 +160,7 @@ namespace EasyERP.Web.Controllers
 
         public JsonResult GetTimeSheetByDate(string date, int page, int pageSize)
         {
-            if (!this.permissionService.Authorize(StandardPermissionProvider.ManageStores))
+            if (!this.permissionService.Authorize(StandardPermissionProvider.GetTimeSheet))
             {
                 return AccessDeniedJson();
             }
@@ -194,7 +194,7 @@ namespace EasyERP.Web.Controllers
         [HttpPost]
         public JsonResult UpdateTimesheet(TimesheetModel model)
         {
-            if (!this.permissionService.Authorize(StandardPermissionProvider.ManageStores))
+            if (!this.permissionService.Authorize(StandardPermissionProvider.UpdateTimeSheet))
             {
                 return AccessDeniedJson();
             }
