@@ -75,26 +75,12 @@
                     read: {
                         url: "/Product/ProductList",
                         type: "POST",
-                        dataType: "json",
-                        data: function() {
-                            var data = {
-                                SearchProductName: $("#search-product-name").val(),
-                                SearchStoreId: $("#selected-store").val(),
-                                SearchCategoryId: $("#selected-category").val()
-                            };
-                            addAntiForgeryToken(data);
-                            return data;
-                        }
+                        dataType: "json"
                     },
                     destroy: {
                         url: "/Product/Destroy",
                         type: "POST",
-                        dataType: "json",
-                        data: function(options) {
-                            var data = { id: options.Id };
-                            addAntiForgeryToken(data);
-                            return data;
-                        }
+                        dataType: "json"
                     },
                     parameterMap: function(options, operation) {
                         var data;
