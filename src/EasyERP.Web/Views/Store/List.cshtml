@@ -14,77 +14,120 @@
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-
     <div id="stores-grid" class="m-b"></div>
+    <div id="window"></div>
+}
 
-    <script type="text/javascript">
+<script type="text/x-kendo-template" id="confirmWindowTemplate">
+    <p>删除门店：<strong>#= Name #</strong> ? </p> 
+    <button class="k-button" id="yesButton">确定</button>
+    <button class="k-button" id="noButton"> 取消</button>
+</script>
 
-        $(document).ready(function() {
 
-            function additionalRequestData(data) {
-                addAntiForgeryToken(data);
-                return data;
-            }
+<script type="text/x-kendo-template" id="warningWindowTemplate">
+    <p>不能删除总店门店：<strong>#= Name #</strong> ? </p> 
+    <button class="k-button" id="okButton">确定</button>
+</script>
 
-            $("#stores-grid").kendoGrid({
-                dataSource: {
-                    type: "json",
-                    transport: {
-                        read: {
-                            url: "@Html.Raw(Url.Action("StoreList", "Store"))",
-                            type: "POST",
-                            dataType: "json",
-                            data: function() {
-                                var data = {};
-                                addAntiForgeryToken(data);
-                                return data;
-                            }
-                        },
-                        destroy: {
-                            url: "/Store/Destroy",
-                            type: "POST",
-                            dataType: "json",
-                            data: function(options) {
-                                var data = {id: options.Id};
-                                addAntiForgeryToken(data);
-                                return data;
-                            }
+<script type="text/javascript">
+
+    $(document).ready(function() {
+        var window = $("#window").kendoWindow({
+            title: "删除确认",
+            visible: false,
+            width: "400px",
+            height: "200px"
+        }).data("kendoWindow");
+
+        var confirmWindowTemplate = kendo.template($("#confirmWindowTemplate").html());
+        var warningWindowTemplate = kendo.template($("#warningWindowTemplate").html());
+        var storeGrid = $("#stores-grid").kendoGrid({
+            dataSource: {
+                type: "json",
+                transport: {
+                    read: {
+                        url: "@Html.Raw(Url.Action("StoreList", "Store"))",
+                        type: "POST",
+                        dataType: "json",
+                        data: function() {
+                            var data = {};
+                            addAntiForgeryToken(data);
+                            return data;
                         }
                     },
-                    schema: {
-                        model: { id: "Id" },
-                        data: "Data",
-                        total: "Total",
-                        errors: "Errors"
-                    },
-                    error: function(e) {
-                        display_kendoui_grid_error(e);
-                        this.cancelChanges();
-                    },
-                    pageSize: @(defaultGridPageSize),
-                    serverPaging: true,
-                    serverFiltering: true,
-                    serverSorting: true
+                    destroy: {
+                        url: "/Store/Destroy",
+                        type: "POST",
+                        dataType: "json",
+                        data: function(options) {
+                            var data = { id: options.Id };
+                            addAntiForgeryToken(data);
+                            return data;
+                        }
+                    }
                 },
-                pageable: {
-                    refresh: true,
-                    pageSizes: [@(gridPageSizes)]
+                schema: {
+                    model: { id: "Id" },
+                    data: "Data",
+                    total: "Total",
+                    errors: "Errors"
                 },
-                batch: false,
-                editable: {
-                    confirmation: true,
-                    mode: "inline",
-                    destroy: true
+                error: function(e) {
+                    display_kendoui_grid_error(e);
+                    this.cancelChanges();
                 },
-                scrollable: false,
-                columns: [
-                    { field: "Name", title: "店名", width: 150 },
-                    { field: "Address", title: "地址", width: 200 },
-                    { field: "PhoneNumber", title: "电话", width: 100 },
-                    { field: "Id", title: "&nbsp;", width: 100, template: "<a href=\"Edit/#=Id#\">编辑门店信息</a>" },
-                    { command: "destroy", text: "删除", title: "&nbsp;", width: 100 }
-                ]
-            });
-        });
-    </script>
-}
+                pageSize: @(defaultGridPageSize),
+                serverPaging: true,
+                serverFiltering: true,
+                serverSorting: true
+            },
+            pageable: {
+                refresh: true,
+                pageSizes: [@(gridPageSizes)]
+            },
+            batch: false,
+            editable: {
+                confirmation: true,
+                mode: "inline",
+                destroy: true
+            },
+            scrollable: false,
+            columns: [
+                { field: "Name", title: "店名", width: 150 },
+                { field: "Address", title: "地址", width: 300 },
+                { field: "PhoneNumber", title: "电话", width: 150 },
+                { field: "Id", title: "&nbsp;", width: 100, template: "<a href=\"Edit/#=Id#\">编辑门店信息</a>" },
+                {
+                    command: {
+                        name: "删除",
+                        title: "&nbsp;",
+                        click: function(e) {
+                            var tr = $(e.target).closest("tr");
+                            var data = this.dataItem(tr);
+                            if (data.Id === 1) {
+                                window.content(warningWindowTemplate(data));
+                                window.open().center();
+                                $("#okButton").click(function() {
+                                    window.close();
+                                });
+                            } else {
+                                window.content(confirmWindowTemplate(data));
+                                window.open().center();
+
+                                $("#yesButton").click(function() {
+                                    storeGrid.dataSource.remove(data);
+                                    storeGrid.dataSource.sync();
+                                    window.close();
+                                });
+                                $("#noButton").click(function() {
+                                    window.close();
+                                });
+                            }
+                        }
+                    }
+                }
+            ]
+        }).data("kendoGrid");
+    });
+</script>

@@ -13,7 +13,7 @@ namespace Domain.EntityFramework
     using Doamin.Service.Users; 
     using EasyErp.Core.Infrastructure;
 
-    public class DatabaseInitializer : DropCreateDatabaseIfModelChanges<EntityFrameworkDbContext>
+    public class DatabaseInitializer : CreateDatabaseIfNotExists<EntityFrameworkDbContext>
     {
         protected override void Seed(EntityFrameworkDbContext context)
         {
@@ -62,6 +62,8 @@ namespace Domain.EntityFramework
             context.Entry(c1).State = EntityState.Added;
             context.Entry(c2).State = EntityState.Added;
             context.Entry(c3).State = EntityState.Added;
+            context.Entry(c4).State = EntityState.Added;
+            context.Entry(c5).State = EntityState.Added;
 
             var company = new Company
             {
@@ -201,23 +203,6 @@ namespace Domain.EntityFramework
                 }
             };
 
-            //products.ForEach(
-            //    p =>
-            //    {
-            //        s1.Products.Add(p);
-            //        p.Stores.Add(s1);
-            //    });
-
-            //products.ForEach(
-            //    p =>
-            //    {
-            //        if (p.CategoryId == 1)
-            //        {
-            //            s2.Products.Add(p);
-            //            p.Stores.Add(s2);
-            //        }
-            //    });
-
             context.Entry(adminStore).State = EntityState.Added;
             context.Entry(s1).State = EntityState.Added;
             context.Entry(s2).State = EntityState.Added;
@@ -249,7 +234,7 @@ namespace Domain.EntityFramework
             {
                 Name = "pancake",
                 Active = true,
-                StoreId = s1.Id,
+                StoreId = adminStore.Id,
                 UseGuid = Guid.NewGuid(),
                 PasswordSalt = saltKey,
                 Password = enryptionService.CreatePasswordHash("pancake", saltKey),
@@ -263,7 +248,7 @@ namespace Domain.EntityFramework
             {
                 Name = "Store1",
                 Active = true,
-                StoreId = s2.Id,
+                StoreId = s1.Id,
                 UseGuid = Guid.NewGuid(),
                 PasswordSalt = saltKey,
                 Password = enryptionService.CreatePasswordHash("Store1", saltKey),
@@ -273,12 +258,11 @@ namespace Domain.EntityFramework
                 UserRoles = defaultRoles.FindAll(i=>i.Name == SystemUserRoleNames.StoreAdmin)
             };
 
-
             var store2 = new User
             {
                 Name = "Store2",
                 Active = true,
-                StoreId = s3.Id,
+                StoreId = s2.Id,
                 UseGuid = Guid.NewGuid(),
                 PasswordSalt = saltKey,
                 Password = enryptionService.CreatePasswordHash("Store2", saltKey),
