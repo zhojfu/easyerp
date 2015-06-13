@@ -13,7 +13,7 @@ namespace Domain.EntityFramework
     using Doamin.Service.Users; 
     using EasyErp.Core.Infrastructure;
 
-    public class DatabaseInitializer : CreateDatabaseIfNotExists<EntityFrameworkDbContext>
+    public class DatabaseInitializer : DropCreateDatabaseIfModelChanges<EntityFrameworkDbContext>
     {
         protected override void Seed(EntityFrameworkDbContext context)
         {
