@@ -5,23 +5,38 @@ function ConsumptionGrid() {
     var dataSource = new kendo.data.DataSource({
         transport: {
             read: {
-                url: baseUrl + "/Consumption/Get",
+                url: baseUrl + "Consumption/Get",
                 dataType: "json"
             },
             update: {
-                url: baseUrl + "/Consumption/Update",
+                url: baseUrl + "Consumption/Update",
                 type: "post",
-                dataType: "json"
+                dataType: "json",
+                data: function (option) {
+                    var data = option;
+                    addAntiForgeryToken(data);
+                    return data;
+                }
             },
             destroy: {
-                url: baseUrl + "/Consumption/Delete",
+                url: baseUrl + "Consumption/Delete",
                 type: "post",
-                dataType: "json"
+                dataType: "json",
+                data: function (option) {
+                    var data = option;
+                    addAntiForgeryToken(data);
+                    return data;
+                }
             },
             create: {
-                url: baseUrl + "/Consumption/Create",
+                url: baseUrl + "Consumption/Create",
                 type: "post",
-                dataType: "json"
+                dataType: "json",
+                data: function(option) {
+                    var data = option;
+                    addAntiForgeryToken(data);
+                    return data;
+                }
             },
             schema: {
                 data: "data",
@@ -50,7 +65,7 @@ function ConsumptionGrid() {
             dataSource: dataSource,
             selectable: "multiple",
             pageable: {
-                refresh: true,
+                refresh: true
             },
             columns: [
                 { field: "Name", title: "类名", editable: false },
@@ -69,6 +84,6 @@ $(document).ready(function() {
     var grid = new ConsumptionGrid();
     grid.initiConsumptionGrid();
 
-    var timesheet = new Timesheet("/Consumption/GetStatistic", "/Consumption/UpdateStatistic");
+    var timesheet = new Timesheet("Consumption/GetStatistic", "Consumption/UpdateStatistic");
     timesheet.InitialTimesheetGrid();
 });

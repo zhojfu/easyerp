@@ -15,7 +15,7 @@ $(document).ready(function() {
             }
         },
         serverPaging: true,
-        pageSize: 2,
+        pageSize: 10,
         schema: {
             data: "data",
             total: "total",
@@ -65,8 +65,21 @@ $(document).ready(function() {
     $("#deleteEmployee").click(function() {
         $.ajax({
             type: "post",
-            url: "/Employee/Delete",
-            data: JSON.stringify({ ids: selectedItems }),
+            url: "Employee/Delete",
+            data: JSON.stringify(addAntiForgeryToken({ ids: selectedItems })),
+
+            /*dataFilter: function (data, type) {
+
+                addAntiForgeryToken(data);
+                return data;
+            },*/
+            /*data: function () {
+                console.log(selectedItems);
+                var a = ;
+                addAntiForgeryToken(a);
+                return a;
+                // return JSON.stringify(data);
+            },*/
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             success: function() {
@@ -77,6 +90,6 @@ $(document).ready(function() {
     });
 
 
-    var timesheet = new Timesheet("/Employee/GetTimeSheetByDate", "/Employee/UpdateTimesheet");
+    var timesheet = new Timesheet("Employee/GetTimeSheetByDate", "Employee/UpdateTimesheet");
     timesheet.InitialTimesheetGrid();
 });

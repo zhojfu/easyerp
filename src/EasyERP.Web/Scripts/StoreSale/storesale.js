@@ -58,8 +58,13 @@ $(document).ready(function() {
     $("#deleteOrder").click(function() {
         $.ajax({
             type: "post",
-            url: "/StoreSale/Delete",
-            data: JSON.stringify({ ids: selectedItems }),
+            url: "StoreSale/Delete",
+            data: function () {
+                var data = JSON.stringify({
+                    ids: selectedItems
+                });
+                return data;
+            },
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             success: function() {
