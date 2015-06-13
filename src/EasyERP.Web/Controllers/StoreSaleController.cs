@@ -215,8 +215,9 @@ namespace EasyERP.Web.Controllers
             order.OrderItems = orderItems;
 
             storeSaleService.AddOrder(order);
-
-            return Json(null);
+            //return RedirectToAction("Index");
+            return Json(Url.Action("Index", "StoreSale"));
+            //return Json(null);
         }
 
         public JsonResult OrderList(int skip, int take, int page, int pageSize)
@@ -274,7 +275,7 @@ namespace EasyERP.Web.Controllers
         [HttpPost]
         public ActionResult UploadRetail()
         {
-            if (this.permissionService.Authorize(StandardPermissionProvider.UpdateCustomerOrder))
+            if (!this.permissionService.Authorize(StandardPermissionProvider.UpdateCustomerOrder))
             {
                 return AccessDeniedView();
             }

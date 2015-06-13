@@ -169,15 +169,10 @@
 </div>
 
 <div class="row emp-info">
+
     <div class="form-group col-md-3">
-        @Html.LabelFor(m => m.Department, new
-    {
-        @class = ""
-    })
-        @Html.TextBoxFor(m => m.Department, new
-    {
-        @class = ""
-    })
+        @Html.LabelFor(m => m.Departments)
+        @Html.DropDownListFor(m => m.SelectedDepartmentId, Model.Departments)
     </div>
     <div class="form-group col-md-3">
         @Html.ValidationMessageFor(m => m.SalaryOfMonth, "", new
@@ -200,7 +195,8 @@
 <script>
     $(document).ready(function() {
         $("#datepicker").kendoDatePicker({
-            format: "yyyy-MM-dd"
+            format: "yyyy-MM-dd",
+            value: new Date()
         });
     })
 </script>

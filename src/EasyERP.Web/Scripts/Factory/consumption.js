@@ -84,6 +84,6 @@ $(document).ready(function() {
     var grid = new ConsumptionGrid();
     grid.initiConsumptionGrid();
 
-    var timesheet = new Timesheet("Consumption/GetStatistic", "Consumption/UpdateStatistic");
+    var timesheet = new Timesheet("GetStatistic", "UpdateStatistic");
     timesheet.InitialTimesheetGrid();
 });

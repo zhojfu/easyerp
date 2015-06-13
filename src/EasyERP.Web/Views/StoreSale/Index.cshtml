@@ -11,6 +11,7 @@
     <div class="col-md-4"></div>
     <div class="col-md-4">
         @Html.ActionLink("创建订单", "Create")
+        @Html.AntiForgeryToken()
         <a href="#" id="deleteOrder">删除订单</a>
     </div>
        

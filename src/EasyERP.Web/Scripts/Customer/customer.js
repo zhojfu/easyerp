@@ -62,13 +62,8 @@ $(document).ready(function() {
         $.ajax({
             type: "post",
             url: "Customer/Delete",
-            data: function () {
-                var data = JSON.stringify({ ids: selectedItems });
-                addAntiForgeryToken(data);
-                return data;
-            },
+            data: addAntiForgeryToken({ ids: selectedItems }),
             dataType: "json",
-            contentType: "application/json; charset=utf-8",
             success: function() {
                 $("#customerList").data("kendoGrid").dataSource.read();
             }

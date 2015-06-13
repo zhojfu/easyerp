@@ -212,11 +212,11 @@ $(document).ready(function() {
         $.ajax({
             type: "post",
             url: "Create",
-            data: JSON.stringify(addAntiForgeryToken(order)),
+            data: addAntiForgeryToken(order),
             dataType: "json",
-            contentType: "application/json; charset=utf-8",
             success: function() {
                 //$('#customerList').data('kendoGrid').dataSource.read();
+                window.location.href = "Index";
             }
         });
 

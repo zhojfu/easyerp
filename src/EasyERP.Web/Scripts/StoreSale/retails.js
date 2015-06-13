@@ -3,7 +3,7 @@ $(document).ready(function() {
     var dataSource = new kendo.data.DataSource({
         transport: {
             read: {
-                url: "StoreSale/RetailList",
+                url: "RetailList",
                 dataType: "json",
                 contentType: "application/json; charset=utf-8"
             },
