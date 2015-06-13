@@ -5,9 +5,10 @@
 }
 
 <form id="uploadRetial" action="/StoreSale/UploadRetail" method="post" enctype="multipart/form-data">
+    @Html.AntiForgeryToken()
     <label>导入收银机销售记录</label>
     <input type="file" name="retialfile">
-    <input id="ButtonUpload" type="submit" value="Upload" />
+    <input id="ButtonUpload" type="submit" value="Upload"/>
 </form>
 
 <div id="retailRecords"></div>

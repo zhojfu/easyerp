@@ -14,7 +14,7 @@ $(document).ready(function() {
             }
         },
         serverPaging: true,
-        pageSize: 2,
+        pageSize: 10,
         schema: {
             data: "data",
             total: "total",
@@ -59,14 +59,8 @@ $(document).ready(function() {
         $.ajax({
             type: "post",
             url: "StoreSale/Delete",
-            data: function () {
-                var data = JSON.stringify({
-                    ids: selectedItems
-                });
-                return data;
-            },
+            data: addAntiForgeryToken({ ids: selectedItems }),
             dataType: "json",
-            contentType: "application/json; charset=utf-8",
             success: function() {
                 $("#orderList").data("kendoGrid").dataSource.read();
             }

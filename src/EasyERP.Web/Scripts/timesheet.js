@@ -39,7 +39,10 @@
                 update: {
                     url: updateUrl,
                     dataType: "json",
-                    type: "post"
+                    type: "post",
+                    data: function(option) {
+                        return addAntiForgeryToken(option);
+                    }
                 },
                 batch: true,
                 schema: {
@@ -48,7 +51,7 @@
                 }
             },
             serverPaging: true,
-            pageSize: 2,
+            pageSize: 10,
             schema: {
                 data: "data",
                 total: "total",
@@ -56,7 +59,7 @@
                     id: "Id",
                     fields: {
                         Id: { type: "string", editable: false },
-                        DateOfWeek: { type: "string", editable: false, },
+                        DateOfWeek: { type: "string", editable: false},
                         Title: { type: "string", editable: false },
                         Mon: { type: "number", validation: { min: 0, max: 24 } },
                         Tue: { type: "number", validation: { min: 0, max: 24 } },

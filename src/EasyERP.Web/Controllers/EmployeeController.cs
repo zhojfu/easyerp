@@ -1,4 +1,5 @@
 ﻿using Doamin.Service.Security;
+using Doamin.Service.Stores;
 using EasyErp.Core;
 
 namespace EasyERP.Web.Controllers
@@ -18,6 +19,7 @@ namespace EasyERP.Web.Controllers
     {
         private readonly IEmployeeService employeeService;
         private readonly IPermissionService permissionService;
+        private readonly IStoreService storeService;
         private readonly IWorkContext workContext;
         private readonly ITimesheetService<WorkTimeStatistic> timesheetService;
 
@@ -25,12 +27,14 @@ namespace EasyERP.Web.Controllers
             IEmployeeService employeeService,
             IPermissionService permissionService,
             ITimesheetService<WorkTimeStatistic> timesheetService,
+            IStoreService storeService,
             IWorkContext workContext)
         {
             this.employeeService = employeeService;
             this.timesheetService = timesheetService;
             this.permissionService = permissionService;
             this.workContext = workContext;
+            this.storeService = storeService;
         }
 
         // GET: /Employee/
@@ -40,7 +44,7 @@ namespace EasyERP.Web.Controllers
             {
                 return AccessDeniedView();
             }
-                
+
             return View();
         }
 
@@ -50,7 +54,26 @@ namespace EasyERP.Web.Controllers
             {
                 return AccessDeniedView();
             }
-            return View();
+            var stores = this.storeService.GetAllStores();
+            if (stores == null)
+            {
+                return View();
+            }
+            EmployeeModel model = new EmployeeModel
+            {
+                Departments = new SelectList(
+                    stores.Select(t => new
+                    {
+                        text = t.Name,
+                        value = t.Id
+                    }).ToList(),
+                    "value",
+                    "text",
+                    stores.First().Id
+                    ),
+                SelectedDepartmentId = stores.First().Id
+            };
+            return View(model);
         }
 
         public ActionResult Timesheet()
@@ -73,6 +96,18 @@ namespace EasyERP.Web.Controllers
             if (e != null)
             {
                 var model = Mapper.Map<Employee, EmployeeModel>(e);
+                var stores = this.storeService.GetAllStores();
+                model.Departments = new SelectList(
+                       stores.Select(t => new
+                       {
+                           text = t.Name,
+                           value = t.Id
+                       }).ToList(),
+                       "value",
+                       "text",
+                       e.StoreId
+               );
+                model.SelectedDepartmentId = e.StoreId;
                 return View(model);
             }
             return View();
@@ -89,6 +124,7 @@ namespace EasyERP.Web.Controllers
             var e = Mapper.Map<EmployeeModel, Employee>(model);
             if (e != null)
             {
+                e.StoreId = model.SelectedDepartmentId;
                 employeeService.UpdateEmployee(e);
             }
 
@@ -106,7 +142,7 @@ namespace EasyERP.Web.Controllers
             var e = Mapper.Map<EmployeeModel, Employee>(employee);
             if (e != null)
             {
-                e.StoreId = workContext.CurrentUser.StoreId;
+                e.StoreId = employee.SelectedDepartmentId;
                 employeeService.AddEmployee(e);
             }
 
@@ -128,7 +164,8 @@ namespace EasyERP.Web.Controllers
             return Json(ids);
         }
 
-        public JsonResult EmployeeList(int skip, int take, int page, int pageSize)
+
+       public JsonResult EmployeeList(int skip, int take, int page, int pageSize)
         {
             if (!this.permissionService.Authorize(StandardPermissionProvider.GetEmployee))
             {

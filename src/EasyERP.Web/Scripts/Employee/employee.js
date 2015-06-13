@@ -66,7 +66,7 @@ $(document).ready(function() {
         $.ajax({
             type: "post",
             url: "Employee/Delete",
-            data: addAntiForgeryToken({ ids: selectedItems }) ,
+            data: addAntiForgeryToken({ ids: selectedItems }),
             dataType: "json",
             success: function() {
                 $("#employeesList").data("kendoGrid").dataSource.read();
@@ -76,6 +76,7 @@ $(document).ready(function() {
     });
 
 
-    var timesheet = new Timesheet("Employee/GetTimeSheetByDate", "Employee/UpdateTimesheet");
+    var timesheet = new Timesheet("GetTimeSheetByDate", "UpdateTimesheet");
     timesheet.InitialTimesheetGrid();
 });
+

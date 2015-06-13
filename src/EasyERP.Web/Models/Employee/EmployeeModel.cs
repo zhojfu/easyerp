@@ -1,4 +1,6 @@
-﻿namespace EasyERP.Web.Models.Employee
+﻿using System.Web.Mvc;
+
+namespace EasyERP.Web.Models.Employee
 {
     using System;
     using System.ComponentModel;
@@ -59,10 +61,14 @@
         [DisplayName("照片")]
         public string Photo { get; set; }
 
-        [DisplayName("部门")]
+        /*[DisplayName("部门")]
         [StringLength(50)]
         [Required]
-        public string Department { get; set; }
+        public string Department { get; set; }*/
+        [DisplayName("部门")]
+        public SelectList Departments { get; set; }
+
+        public int SelectedDepartmentId { get; set; }
 
         [DisplayName("月薪")]
         [RegularExpression(@"^\d+.{0,1}\d*$", ErrorMessage = "必须为数字")]
