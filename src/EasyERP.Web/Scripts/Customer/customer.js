@@ -14,7 +14,7 @@ $(document).ready(function() {
             }
         },
         serverPaging: true,
-        pageSize: 2,
+        pageSize: 10,
         schema: {
             data: "data",
             total: "total",
@@ -38,7 +38,7 @@ $(document).ready(function() {
         dataSource: dataSource,
         selectable: "single",
         pageable: {
-            refresh: true,
+            refresh: true
         },
         columns: [
             { field: "Name", title: "姓名", template: "<a href=\"/Customer/Edit/${Id}\" target=\"_blank\">${Name}</a>" },
@@ -61,8 +61,12 @@ $(document).ready(function() {
     $("#deleteCustomer").click(function() {
         $.ajax({
             type: "post",
-            url: "/Customer/Delete",
-            data: JSON.stringify({ ids: selectedItems }),
+            url: "Customer/Delete",
+            data: function () {
+                var data = JSON.stringify({ ids: selectedItems });
+                addAntiForgeryToken(data);
+                return data;
+            },
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             success: function() {

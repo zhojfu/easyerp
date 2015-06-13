@@ -65,7 +65,7 @@ $(document).ready(function() {
     $("#deleteEmployee").click(function() {
         $.ajax({
             type: "post",
-            url: "/Employee/Delete",
+            url: "Employee/Delete",
             data: JSON.stringify({ ids: selectedItems }),
             dataType: "json",
             contentType: "application/json; charset=utf-8",

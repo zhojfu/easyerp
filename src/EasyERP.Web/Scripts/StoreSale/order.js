@@ -7,17 +7,17 @@
             
             },
             update: {
-                url: "/StoreSale/UpdateOrderItem",
+                url: "UpdateOrderItem",
                 type: "post",
                 dataType: "json"
             },
             destroy: {
-                url: "/StoreSale/DeleteOrderItem",
+                url: "DeleteOrderItem",
                 type: "post",
                 dataType: "json"
             },
             create: {
-                url: "/StoreSale/AddOrderItem",
+                url: "AddOrderItem",
                 type: "post",
                 dataType: "json"
             },
@@ -74,7 +74,7 @@
                     dataSource: {
                         serverFiltering: true,
                         transport: {
-                            read: "/StoreSale/AutoCompleteProducts",
+                            read: "AutoCompleteProducts",
                             dataType: "json",
                             parameterMap: function(data, action) {
                                 if (action === "read") {
@@ -141,7 +141,7 @@ function CustomerAutoComplete() {
         serverFiltering: true,
 
         transport: {
-            read: "/StoreSale/AutoCompleteCustomers",
+            read: "AutoCompleteCustomers",
 
             parameterMap: function(data, action) {
                 if (action === "read") {
@@ -211,8 +211,8 @@ $(document).ready(function() {
 
         $.ajax({
             type: "post",
-            url: "/StoreSale/Create",
-            data: JSON.stringify(order),
+            url: "Create",
+            data: JSON.stringify(addAntiForgeryToken(order)),
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             success: function() {

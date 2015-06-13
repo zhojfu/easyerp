@@ -158,7 +158,7 @@ namespace EasyERP.Web.Controllers
 
         public ActionResult Retail()
         {
-            if (this.permissionService.Authorize(StandardPermissionProvider.CreateCustomerOrder))
+            if (!this.permissionService.Authorize(StandardPermissionProvider.CreateCustomerOrder))
             {
                 return AccessDeniedView();
             }
