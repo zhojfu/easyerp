@@ -766,6 +766,7 @@ namespace EasyERP.Web.Controllers
             return View();
         }
 
+        [HttpPost]
         public ActionResult ExportProducts()
         {
             if (!permissionService.Authorize(StandardPermissionProvider.ExportProduct))
