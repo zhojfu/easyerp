@@ -58,7 +58,7 @@
     </script>
 
     <script type="text/javascript">
-        $(Document).ready(function() {
+        $(document).ready(function() {
             var s = @(Html.ToJson(Model));
             $("#order-status").text(s.orderStatus);
             var paymentStatus = function() {
@@ -122,10 +122,6 @@
                 $("#shipped-group").show(true);
                 $("#payment-group").show(true);
             });
-
-            //function status() {
-                
-            //}
 
             $("#shipped").click(function(e) {
                 e.preventDefault();

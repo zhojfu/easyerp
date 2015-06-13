@@ -40,8 +40,9 @@ namespace Doamin.Service.Products
                 return 0;
             }
 
-            var psm = inventoryRepository.FindAll(i => i.ProductId == storeId && i.StoreId == storeId);
-            return psm.Sum(p => p.Quantity);
+            var psm = inventoryRepository.FindAll(i => i.ProductId == storeId && i.StoreId == storeId).ToList();
+
+            return !psm.Any() ? 0 : psm.Sum(p => p.Quantity);
         }
 
         public void InsertInventory(Inventory inventory)

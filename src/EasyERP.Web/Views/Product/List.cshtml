@@ -52,15 +52,11 @@
 }
 <div class="row m-b">
     <div class="col-md-3">
-        @using (Html.BeginForm("ExportProducts", "Product", FormMethod.Post, new
-    {
-        id = "export-product"
-    }))
+        @using (Html.BeginForm("ExportProducts", "Product", FormMethod.Post))
         {
             @Html.AntiForgeryToken()
-            <input type="hidden" id="selectedIds" name="selectedIds" value="" />
+            <input type="submit" class="button-nm btn-submit" id="export-product-button" value="导出产品">
         }
-        <button class="button-nm btn-submit" id="export-product-button">导出产品</button>
     </div>
 </div>
 <div>
@@ -75,26 +71,12 @@
                     read: {
                         url: "/Product/ProductList",
                         type: "POST",
-                        dataType: "json",
-                        data: function() {
-                            var data = {
-                                SearchProductName: $("#search-product-name").val(),
-                                SearchStoreId: $("#selected-store").val(),
-                                SearchCategoryId: $("#selected-category").val()
-                            };
-                            addAntiForgeryToken(data);
-                            return data;
-                        }
+                        dataType: "json"
                     },
                     destroy: {
                         url: "/Product/Destroy",
                         type: "POST",
-                        dataType: "json",
-                        data: function(options) {
-                            var data = { id: options.Id };
-                            addAntiForgeryToken(data);
-                            return data;
-                        }
+                        dataType: "json"
                     },
                     parameterMap: function(options, operation) {
                         var data;
@@ -161,11 +143,6 @@
             if (event.keyCode === 13) {
                 $("#search-products").click();
             }
-        });
-
-        $('#export-product-button').click(function(e) {
-            e.preventDefault();
-            $('#export-product').submit();
         });
     });
 </script>

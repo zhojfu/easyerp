@@ -1,8 +1,4 @@
-﻿using System.Runtime.Remoting.Messaging;
-using System.Security.Permissions;
-using WebGrease.Css.Extensions;
-
-namespace EasyERP.Web.Controllers
+﻿namespace EasyERP.Web.Controllers
 {
     using System;
     using System.Collections.Generic;
@@ -18,6 +14,9 @@ namespace EasyERP.Web.Controllers
     using EasyERP.Web.Extensions;
     using EasyERP.Web.Framework.Kendoui;
     using EasyERP.Web.Framework.Mvc;
+    using System.Runtime.Remoting.Messaging;
+    using System.Security.Permissions;
+    using WebGrease.Css.Extensions;   
     using EasyERP.Web.Models.Products;
     using Infrastructure;
 
@@ -399,13 +398,6 @@ namespace EasyERP.Web.Controllers
                     });
             }
 
-            //stores
-            //model.AvailableStores.Add(
-            //    new SelectListItem
-            //    {
-            //        Text = "所有店面",
-            //        Value = "0"
-            //    });
             var stores = storeService.GetAllStores();
             foreach (var store in stores)
             {
@@ -766,6 +758,7 @@ namespace EasyERP.Web.Controllers
             return View();
         }
 
+        [HttpPost]
         public ActionResult ExportProducts()
         {
             if (!permissionService.Authorize(StandardPermissionProvider.ExportProduct))

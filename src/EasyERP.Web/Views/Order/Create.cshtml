@@ -13,14 +13,14 @@
     var gridPageSizes = EngineContext.Current.Resolve<AreaSettings>().GridPageSizes;
 }
 <div class="m-b"></div>
-@Html.AntiForgeryToken()
 @using (Html.BeginForm())
 {
+    @Html.AntiForgeryToken()
     <div id="product-list"></div>
 
     <div id="cart" data-bind="visible: cartContentsClass" class="cart">
         <h3>订单详情</h3>
-        <div ="row">
+        <div class="row">
             <div class="col-md-6">
                 <table>
                     <thead>
@@ -43,15 +43,12 @@
         </div>
     </div>
 
-
     <script type="text/x-kendo-template" id="cart-item">
-       
-            <tr>
-                <td><span class="product-name" data-bind="text: item.name"></span></td>
-                <td><input type="text" data-role="numerictextbox" data-min="0" data-decimals="0" data-format="\\#" data-bind="value: quantity"></td>
-                <td><p class="table-price" data-bind="text: itemPrice"><p></td>
-            </tr>
-    
+        <tr>
+            <td><span class="product-name" data-bind="text: item.name"></span></td>
+            <td><input type="text" data-role="numerictextbox" data-min="0" data-decimals="0" data-format="\\#" data-bind="value: quantity"></td>
+            <td><p class="table-price" data-bind="text: itemPrice"><p></td>
+        </tr>
     </script>
     <script type="text/javascript">
         var products = new kendo.data.DataSource({
@@ -85,9 +82,7 @@
 
             add: function (item) {
                 var found = false;
-
                 this.set("cleared", false);
-
                 for (var i = 0; i < this.contents.length; i++) {
                     var current = this.contents[i];
                     if (current.item === item) {
@@ -176,8 +171,6 @@
                 this.cart.contents.forEach(function (item) {
                     data.push({ "ProductId": item.item.id, "Name": item.item.name, "Price": item.item.price, "Quantity": item.quantity });
                 });
-
-                //$.post("/Order/OrderUpdate", { "": data });
             }
         });
 
@@ -225,7 +218,6 @@
         </table>
         <p><em>总金额:</em><label class="t-price"><span data-bind="text: totalPrice"></span></label></p>
         <p><em>应付预付额:</em><label class="t-price-grn"><span data-bind="text: prePayAmount"></span></label></p>
-        @*<p><em>留言:</em><input type="text" ></p>*@
         <button id="cancel-order-confirm" class="k-button"><i class="fa fa-times" style="margin-right:0.5em;"></i>取消</button>
         <button id="buy-confirm" class="k-button btn-submit" style="margin-left:1.5em; padding-right:1.5em;padding-left:1.5em;">确定</button>
     </div>

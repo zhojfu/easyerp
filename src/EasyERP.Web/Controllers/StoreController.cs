@@ -146,7 +146,7 @@ namespace EasyERP.Web.Controllers
                 return AccessDeniedView();
             }
 
-            if (id < 1)
+            if (id < 1 || id ==1)
             {
                 return Json(new { Result = false });
             }
