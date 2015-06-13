@@ -66,22 +66,8 @@ $(document).ready(function() {
         $.ajax({
             type: "post",
             url: "Employee/Delete",
-            data: JSON.stringify(addAntiForgeryToken({ ids: selectedItems })),
-
-            /*dataFilter: function (data, type) {
-
-                addAntiForgeryToken(data);
-                return data;
-            },*/
-            /*data: function () {
-                console.log(selectedItems);
-                var a = ;
-                addAntiForgeryToken(a);
-                return a;
-                // return JSON.stringify(data);
-            },*/
+            data: addAntiForgeryToken({ ids: selectedItems }) ,
             dataType: "json",
-            contentType: "application/json; charset=utf-8",
             success: function() {
                 $("#employeesList").data("kendoGrid").dataSource.read();
                 $("#employeesList").data("kendoGrid").refresh();
