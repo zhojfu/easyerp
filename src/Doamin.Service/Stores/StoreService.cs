@@ -1,3 +1,5 @@
+using EasyErp.Core;
+
 namespace Doamin.Service.Stores
 {
     using System;
@@ -14,11 +16,13 @@ namespace Doamin.Service.Stores
         private readonly IRepository<Store> storeRepository;
 
         private readonly IUnitOfWork unitOfWork;
+        private readonly IWorkContext workContext;
 
-        public StoreService(IRepository<Store> storeRepository, IUnitOfWork unitOfWork)
+        public StoreService(IRepository<Store> storeRepository, IUnitOfWork unitOfWork, IWorkContext workContext)
         {
             this.storeRepository = storeRepository;
             this.unitOfWork = unitOfWork;
+            this.workContext = workContext;
         }
 
         public void DeleteStore(Store store)
@@ -33,7 +37,13 @@ namespace Doamin.Service.Stores
 
         public IList<Store> GetAllStores()
         {
-            return storeRepository.FindAll(i => i.Id > 0).ToList();
+            var stores =  storeRepository.FindAll(i => i.Id > 0).ToList();
+            if (workContext.CurrentUser.IsAdmin)
+            {
+                return stores;
+            }
+
+            return stores.Where(s => s.Id == workContext.CurrentUser.StoreId).ToList();
         }
 
         public Store GetStoreById(int storeId)

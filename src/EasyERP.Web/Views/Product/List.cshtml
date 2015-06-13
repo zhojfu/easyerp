@@ -13,43 +13,40 @@
     var gridPageSizes = EngineContext.Current.Resolve<AreaSettings>().GridPageSizes;
 }
 
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-    <div class="row m-b">
-        <div class="form-group col-md-3">
-            @Html.ValidationMessageFor(m => m.SearchProductName, "", new
+@Html.AntiForgeryToken()
+<div class="row m-b">
+    <div class="form-group col-md-3">
+        @Html.ValidationMessageFor(m => m.SearchProductName, "", new
         {
             @class = "text-danger"
         })
-            @Html.LabelFor(m => m.SearchProductName)
-            @Html.TextBoxFor(model => model.SearchProductName, new
+        @Html.LabelFor(m => m.SearchProductName)
+        @Html.TextBoxFor(model => model.SearchProductName, new
         {
             id = "search-product-name"
         })
-        </div>
-        <div class="form-group col-md-3">
-            @Html.LabelFor(m => m.SearchCategoryId)
-            @Html.DropDownList("SearchCategoryId", Model.AvailableCategories, new
+    </div>
+    <div class="form-group col-md-3">
+        @Html.LabelFor(m => m.SearchCategoryId)
+        @Html.DropDownList("SearchCategoryId", Model.AvailableCategories, new
         {
             id = "selected-category",
             @onchange = "var grid = $(\"#products-grid\").data(\"kendoGrid\"); grid.dataSource.page(1);"
         })
-        </div>
-        <div class="form-group col-md-3">
-            @Html.LabelFor(m => m.SearchStoreId)
-            @Html.DropDownList("SearchStoreId", Model.AvailableStores, new
+    </div>
+    <div class="form-group col-md-3">
+        @Html.LabelFor(m => m.SearchStoreId)
+        @Html.DropDownList("SearchStoreId", Model.AvailableStores, new
         {
             id = "selected-store",
             @onchange = "var grid = $(\"#products-grid\").data(\"kendoGrid\"); grid.dataSource.page(1);"
         })
-        </div>
     </div>
-  
-    <div>
-        <input type="hidden" id="search-products" class="k-button" value="搜索" />
-    </div>
-}
+</div>
+
+<div>
+    <input type="hidden" id="search-products" class="k-button" value="搜索" />
+</div>
 <div class="row m-b">
     <div class="col-md-3">
         @using (Html.BeginForm("ExportProducts", "Product", FormMethod.Post))
@@ -132,17 +129,17 @@
                 { command: "destroy", text: "删除", title: "&nbsp;", width: 100 }
             ]
         });
-        //search button
-        $("#search-products").click(function() {
-            var grid = $("#products-grid").data("kendoGrid");
-            grid.dataSource.page(1);
-            return false;
+
+        $("#search-product-name").keydown(function(e) {
+            if (e.keyCode === 13) {
+                var grid = $("#products-grid").data("kendoGrid");
+                grid.dataSource.page(1);
+            }
         });
 
-        $("#search-product-name").keydown(function(event) {
-            if (event.keyCode === 13) {
-                $("#search-products").click();
-            }
+        $('#export-product-button').click(function(e) {
+            e.preventDefault();
+            $('#export-product').submit();
         });
     });
 </script>
