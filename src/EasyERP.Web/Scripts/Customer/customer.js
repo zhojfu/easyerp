@@ -6,7 +6,7 @@ $(document).ready(function() {
             read: {
                 url: "customer/customerList",
                 dataType: "json",
-                contentType: "application/json; charset=utf-8",
+                contentType: "application/json; charset=utf-8"
             },
             schema: {
                 data: "data",
