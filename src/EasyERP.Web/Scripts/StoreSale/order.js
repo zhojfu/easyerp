@@ -59,7 +59,7 @@
 
                         var dataSource = grid.dataSource;
                         var selectedRowIndex = grid.select().index();
-                        var gridRow = null;
+                        var gridRow;
                         if (selectedRowIndex === -1) {
                             gridRow = dataSource.data()[0];
                         } else {

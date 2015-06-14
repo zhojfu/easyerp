@@ -95,18 +95,18 @@ namespace EasyERP.Web.Controllers
             return Json(null);
         }
 
-        public ActionResult Delete(List<int> ids)
+        public JsonResult Delete(List<int> ids)
         {
             if (!this.permissionService.Authorize(StandardPermissionProvider.DeleteCustomer))
             {
-                return AccessDeniedView();
+                return AccessDeniedJson();
             }
 
             if (ids != null)
             {
                 this.customerService.DeleteCustomerByIds(ids);
             }
-            return RedirectToAction("Index");
+            return Json(ids);
         }
 
 

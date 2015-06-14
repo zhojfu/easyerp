@@ -82,6 +82,7 @@ namespace EasyERP.Web.Controllers
             var consumption = Mapper.Map<ConsumptionModel, Consumption>(model);
             if (consumption != null)
             {
+                consumption.StoreId = workContext.CurrentUser.StoreId;
                 consumptionService.UpdateConsumptionCategory(consumption);
             }
 

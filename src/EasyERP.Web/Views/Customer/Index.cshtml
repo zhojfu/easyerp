@@ -8,6 +8,7 @@
     </h1>
 }
 @Html.ActionLink("创建客户", "Create")
+@Html.AntiForgeryToken()
 <a href="#" id="deleteCustomer">删除客户</a>
 <div id="customerList"></div>
 
