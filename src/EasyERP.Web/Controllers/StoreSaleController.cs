@@ -104,6 +104,48 @@ namespace EasyERP.Web.Controllers
             return Json(orderItem);
         }
 
+        public ActionResult Edit(int id)
+        {
+            if (!this.permissionService.Authorize(StandardPermissionProvider.UpdateStoreSalesRecord))
+            {
+                return AccessDeniedView();
+            }
+
+            OrderModel model = new OrderModel();
+            model.OrderId = id;
+
+            return View(model);
+        }
+
+        public JsonResult GetOrder(int id)
+        {
+            if (!this.permissionService.Authorize(StandardPermissionProvider.UpdateCustomer))
+            {
+                return AccessDeniedJson();
+            }
+
+            var order = storeSaleService.GetOrderById(id);
+            if (order != null)
+            {
+                object model = new
+                {
+                    customer = order.Customer.Name,
+                    address = order.Customer.Address,
+                    name = order.Name,
+                    orderTotal = order.OrderTotal,
+                    orderItems = order.OrderItems.Select(orderitem => new
+                    {
+                        Name = orderitem.Product.Name,
+                        PriceOfUnit = orderitem.Price,
+                        Quantity = orderitem.Quantity,
+                        TotalPrice = orderitem.Price * (decimal)orderitem.Quantity   
+                    })
+                };
+                return Json(model, JsonRequestBehavior.AllowGet);
+            }
+            return Json(null);
+        }
+
         [HttpGet]
         public JsonResult AutoCompleteCustomers(string name)
         {

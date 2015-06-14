@@ -1102,6 +1102,8 @@
     <Content Include="Views\Shared\UserLayout.cshtml" />
     <Content Include="Views\User\_ViewStart.cshtml" />
     <Content Include="Views\Product\Inventory.cshtml" />
+    <Content Include="Views\StoreSale\Edit.cshtml" />
+    <Content Include="Views\StoreSale\OrderArea.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

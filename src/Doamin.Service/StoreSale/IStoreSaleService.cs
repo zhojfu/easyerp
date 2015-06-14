@@ -6,15 +6,10 @@
 
     public interface IStoreSaleService
     {
-        /*Customer GetCustomerById(int id);
-        void AddCustomer(Customer customer);
-
-        void DeleteCustomerByIds(List<int> ids);
-        void UpdateCustomer(Customer customer);*/
-
         void DeleteOrderByIds(IEnumerable<int> ids);
         void UpdateOrder(Order order);
         void AddOrder(Order order);
+        Order GetOrderById(int id);
         PagedResult<Order> GetOrders(int pageNumber, int pageSize);
     }
 }

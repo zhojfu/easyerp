@@ -1,0 +1,42 @@
+﻿@section SectionTitle
+{
+    <div>
+        订单 - 明细 
+    </div>
+}
+@model EasyERP.Web.Models.StoreSale.OrderModel
+
+@Html.Partial("OrderArea")
+@Html.HiddenFor(m=>m.OrderId)
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#orderOwner").attr("disabled", true);
+        $("#submitOrder").hide();
+        $("#orderTitle").attr("disabled", true);
+        $("#order").attr("disabled", true);
+
+        $.ajax({
+            type: "get",
+            url: "/storesale/GetOrder",
+            data: addAntiForgeryToken({ id: $("#OrderId").val() }),
+            dataType: "json",
+            success: function(data) {
+                $("#orderOwner").val(data.customer);
+                $("#orderTitle").val(data.name);
+                $("#address").val(data.address);
+                $("#totalcost").val(data.orderTotal);
+                
+                $('#order').kendoGrid({
+                    pageable: true,
+                    selectable: "row",
+                    dataSource: { data: data.orderItems, pageSize: 10 },
+                    columns: [
+                        { field: "Name", title: "产品"},
+                        { field: "PriceOfUnit", title: "单价"},
+                        { field: "Quantity", title: "数量" },
+                        { field: "TotalPrice", title: "总价"}
+                    ]
+                });
+            }});
+    });
+</script>

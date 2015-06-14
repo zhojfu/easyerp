@@ -40,7 +40,7 @@ $(document).ready(function() {
             refresh: true
         },
         columns: [
-            { field: "Title", title: "订单名称", template: "<a href=\"/StoreSale/Order/${Id}\" target=\"_blank\">${Title}</a>" },
+            { field: "Title", title: "订单名称", template: "<a href=\"/StoreSale/Edit/${Id}\" target=\"_blank\">${Title}</a>" },
             { field: "Owner", title: "收货人" },
             { field: "TotalPrice", title: "总价" },
             { field: "Address", title: "送货地址" },
