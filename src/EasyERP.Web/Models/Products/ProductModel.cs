@@ -59,6 +59,25 @@
         [DisplayName("高度")]
         public decimal Height { get; set; }
 
+
+        [DisplayName("规格")]
+        public string Specification { get; set; }
+
+        [DisplayName("生产厂名")]
+        public string VenderName { get; set; }
+        [DisplayName("厂址")]
+        public string VenderAddres { get; set; }
+        [DisplayName("保质期")]
+        public string ShelfLifeDays { get; set; }
+        [DisplayName("主要成份及含量")]
+        public string Composition { get; set; }
+        [DisplayName("生产批号")]
+        public string ProductionBatchNumber { get; set; }
+        [DisplayName("产品标准号")]
+        public string ProductStandardsNumber { get; set; }
+        [DisplayName("检验检疫证明")]
+        public string InspectionCertification { get; set; }
+
         public bool Published { get; set; }
 
         [DisplayName("创建日期")]

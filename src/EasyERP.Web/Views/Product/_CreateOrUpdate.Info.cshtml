@@ -40,6 +40,16 @@
         @class = "text-danger"
     })
     </div>@*产地*@
+
+    <div class="form-group col-md-3">
+        @Html.LabelFor(model => model.InspectionCertification):
+
+        @Html.EditorFor(model => model.InspectionCertification)
+        @Html.ValidationMessageFor(model => model.InspectionCertification, "", new
+    {
+        @class = "text-danger"
+    })
+    </div>  
 </div>
 
 <div class="row">
@@ -61,6 +71,16 @@
         @class = "text-danger"
     })
     </div>  
+
+    <div class="form-group col-md-3">
+        @Html.LabelFor(model => model.ProductStandardsNumber):
+
+        @Html.EditorFor(model => model.ProductStandardsNumber)
+        @Html.ValidationMessageFor(model => model.ProductStandardsNumber, "", new
+    {
+        @class = "text-danger"
+    })
+    </div>  
 </div>
 <div class="row">
     <div class="form-group col-md-3">
@@ -72,29 +92,46 @@
     })
     </div>
     <div class="form-group col-md-3">
-        @Html.LabelFor(model => model.Length):
-        @Html.EditorFor(model => model.Length)
-        @Html.ValidationMessageFor(model => model.Length, "", new
+        @Html.LabelFor(model => model.Specification):
+        @Html.EditorFor(model => model.Specification)
+        @Html.ValidationMessageFor(model => model.Specification, "", new
     {
         @class = "text-danger"
     })
+    </div>
 
+    <div class="form-group col-md-3">
+        @Html.LabelFor(model => model.ProductionBatchNumber):
+        @Html.EditorFor(model => model.ProductionBatchNumber)
+        @Html.ValidationMessageFor(model => model.ProductionBatchNumber, "", new
+    {
+        @class = "text-danger"
+    })
     </div>
    
     </div>
 <div class="row">
     <div class="form-group col-md-3">
-        @Html.LabelFor(model => model.Width):
-        @Html.EditorFor(model => model.Width)
-        @Html.ValidationMessageFor(model => model.Width, "", new
+        @Html.LabelFor(model => model.ShelfLifeDays):
+        @Html.EditorFor(model => model.ShelfLifeDays)
+        @Html.ValidationMessageFor(model => model.ShelfLifeDays, "", new
     {
         @class = "text-danger"
     })
     </div>
     <div class="form-group col-md-3">
-        @Html.LabelFor(model => model.Height):
-        @Html.EditorFor(model => model.Height)
-        @Html.ValidationMessageFor(model => model.Height, "", new
+        @Html.LabelFor(model => model.VenderName):
+        @Html.EditorFor(model => model.VenderName)
+        @Html.ValidationMessageFor(model => model.VenderName, "", new
+    {
+        @class = "text-danger"
+    })
+    </div>
+
+    <div class="form-group col-md-3">
+        @Html.LabelFor(model => model.VenderAddres):
+        @Html.EditorFor(model => model.VenderAddres)
+        @Html.ValidationMessageFor(model => model.VenderAddres, "", new
     {
         @class = "text-danger"
     })
@@ -109,6 +146,18 @@
         style = "Width: 100%; Height: 150px;"
     })
         @Html.ValidationMessageFor(model => model.ShortDescription)
+    </div>@*产品简介*@
+</div>
+
+<div class="row">
+    <div class="form-group col-md-9">
+        @Html.LabelFor(model => model.Composition):
+    <br />
+        @Html.TextAreaFor(x => x.Composition, new
+    {
+        style = "Width: 100%; Height: 150px;"
+    })
+        @Html.ValidationMessageFor(model => model.Composition)
     </div>@*产品简介*@
 </div>
 <div class="row date-info">

@@ -1,4 +1,6 @@
-﻿namespace Domain.Model.Products
+﻿using System.Security;
+
+namespace Domain.Model.Products
 {
     using System;
     using System.Collections.Generic;
@@ -38,6 +40,19 @@
         public bool Deleted { get; set; }
 
         public bool Published { get; set; }
+
+        public string Specification { get; set; }
+
+        public string VenderName { get; set; }
+        public string VenderAddres { get; set; }
+        public string ShelfLifeDays { get; set; }
+        public string Composition { get; set; }
+        public string ProductionBatchNumber { get; set; }
+
+        public string ProductStandardsNumber { get; set; }
+
+        public string InspectionCertification { get; set; }
+
 
         public DateTime CreatedOnUtc { get; set; }
 
